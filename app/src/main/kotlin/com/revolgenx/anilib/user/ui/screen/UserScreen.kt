@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -26,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,7 +43,6 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalWindowInsets
-import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userMediaListScreen
@@ -66,7 +65,6 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonCheckOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSettings
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
-import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
 import com.revolgenx.anilib.list.ui.screen.MangaListScreen
@@ -76,7 +74,6 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.screen.userStats.UserStatsScreen
 import com.revolgenx.anilib.user.ui.viewmodel.UserScreenPageType
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -397,7 +394,7 @@ private fun UserCountInfo(
                 modifier = Modifier.size(17.dp),
                 imageVector = icon,
                 contentDescription = null,
-                tint = onSurfaceVariant
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         Text(
@@ -410,7 +407,7 @@ private fun UserCountInfo(
             text = label,
             fontSize = 17.sp,
             letterSpacing = 0.1.sp,
-            color = onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }

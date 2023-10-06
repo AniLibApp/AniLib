@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -30,7 +31,6 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
-import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,7 +112,7 @@ fun CollapsingAppbar(
                     .graphicsLayer {
                         alpha = containerAlpha
                     }
-                    .background(surfaceContainer)
+                    .background(MaterialTheme.colorScheme.surfaceContainerLowest)
             ) {}
         }
 
@@ -120,7 +120,6 @@ fun CollapsingAppbar(
             colors = AppBarLayoutDefaults.transparentColors()
         ) {
             AppBar(
-                colors = AppBarDefaults.transparentColor(),
                 title = {
                         title(isCollapsed)
                 },

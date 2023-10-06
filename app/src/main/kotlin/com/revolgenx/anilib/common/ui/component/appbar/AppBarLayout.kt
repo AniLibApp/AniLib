@@ -15,8 +15,8 @@ import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.material3.ColorScheme
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -34,8 +34,7 @@ import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.Velocity
-import androidx.compose.ui.unit.isSpecified
-import com.revolgenx.anilib.common.ui.theme.surfaceContainer
+import androidx.compose.ui.unit.dp
 import kotlin.math.abs
 import kotlin.math.roundToInt
 
@@ -82,7 +81,7 @@ fun AppBarLayout(
         Modifier
     }
 
-    Surface(modifier = Modifier.then(appBarDragModifier),color = appBarContainerColor) {
+    Surface(modifier = Modifier.then(appBarDragModifier), color = appBarContainerColor) {
         val height = LocalDensity.current.run {
             containerHeight.toPx() + (scrollBehavior?.state?.heightOffset
                 ?: 0f) + topPadding
@@ -123,8 +122,8 @@ fun TopAppBarContent(windowInsets: WindowInsets, heightPx: Float, content: @Comp
 object AppBarLayoutDefaults {
     @Composable
     fun appBarLayoutColors(
-        containerColor: Color = surfaceContainer,
-        scrolledContainerColor: Color = surfaceContainer,
+        containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
+        scrolledContainerColor: Color = MaterialTheme.colorScheme.surfaceContainer,
     ): AppBarLayoutColors =
         AppBarLayoutColors(
             containerColor,
@@ -222,10 +221,5 @@ class AppBarLayoutColors internal constructor(
     }
 }
 
-internal fun ColorScheme.applyTonalElevation(backgroundColor: Color, elevation: Dp): Color {
-    return if (backgroundColor == surface) {
-        surfaceColorAtElevation(elevation)
-    } else {
-        backgroundColor
-    }
-}
+
+val OnScrollContainerElevation = 3.dp

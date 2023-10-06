@@ -72,7 +72,3 @@ val Typography = Typography(
         platformStyle = PlatformTextStyle(includeFontPadding = true)
     ),
 )
-
-
-@Composable
-fun typography() = MaterialTheme.typography

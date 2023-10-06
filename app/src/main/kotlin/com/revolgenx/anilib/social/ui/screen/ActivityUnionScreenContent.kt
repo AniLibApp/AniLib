@@ -18,6 +18,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -32,7 +33,6 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userScreen
-import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.LightText
@@ -46,8 +46,8 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcMessage
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.ui.icons.appicon.IcNotification
 import com.revolgenx.anilib.common.ui.icons.appicon.IcNotificationOutline
-import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
+import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
 import com.revolgenx.anilib.social.ui.model.ActivityModel
 import com.revolgenx.anilib.social.ui.model.ListActivityModel
 import com.revolgenx.anilib.social.ui.model.MessageActivityModel
@@ -249,7 +249,7 @@ private fun ActivityItemBottom(model: ActivityModel) {
         ) {
 
             TextButton(
-                colors = ButtonDefaults.textButtonColors(contentColor = onSurface),
+                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
                 onClick = { /*TODO*/ },
                 contentPadding = PaddingValues(8.dp)
             ) {
@@ -267,7 +267,7 @@ private fun ActivityItemBottom(model: ActivityModel) {
 
 
             TextButton(
-                colors = ButtonDefaults.textButtonColors(contentColor = onSurface),
+                colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
                 onClick = { /*TODO*/ },
                 contentPadding = PaddingValues(8.dp)
             ) {

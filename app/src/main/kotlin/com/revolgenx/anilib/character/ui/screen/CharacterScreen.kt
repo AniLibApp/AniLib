@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
@@ -54,23 +57,25 @@ private val pages = listOf(
 @Composable
 private fun CharacterScreenContent(characterId: Int) {
     val pagerState = rememberPagerState { pages.size }
-    val aboutViewModel = koinViewModel<CharacterAboutViewModel>()
-    val mediaViewModel = koinViewModel<CharacterMediaViewModel>()
-    val actorViewModel = koinViewModel<CharacterActorViewModel>()
+    val aboutViewModel: CharacterAboutViewModel = koinViewModel()
+    val mediaViewModel: CharacterMediaViewModel = koinViewModel()
+    val actorViewModel: CharacterActorViewModel = koinViewModel()
 
-    LaunchedEffect(aboutViewModel, mediaViewModel) {
-        aboutViewModel.field.characterId = characterId
-        mediaViewModel.field.characterId = characterId
-        actorViewModel.field.characterId = characterId
-    }
+    aboutViewModel.field.characterId = characterId
+    mediaViewModel.field.characterId = characterId
+    actorViewModel.field.characterId = characterId
+
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     PagerScreenScaffold(
         pages = pages,
-        pagerState = pagerState
+        pagerState = pagerState,
+        scrollBehavior = scrollBehavior
     ) { page ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
             when (pages[page].type) {
                 CharacterScreenPageType.ABOUT -> CharacterAboutScreen(aboutViewModel)

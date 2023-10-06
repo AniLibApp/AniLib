@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,14 +24,13 @@ import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.theme.secondaryContainer
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationType
 import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationViewModel
 import com.revolgenx.anilib.user.ui.model.UserModel
-import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import anilib.i18n.R as I18nR
@@ -94,7 +94,7 @@ fun UserRelationItem(user: UserModel) {
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .height(32.dp),
-                color = secondaryContainer,
+                color = MaterialTheme.colorScheme.secondaryContainer,
                 shape = ButtonDefaults.shape,
             ) {
                 Box() {

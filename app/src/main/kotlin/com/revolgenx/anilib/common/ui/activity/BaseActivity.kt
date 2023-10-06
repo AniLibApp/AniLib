@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.activity
+package com.revolgenx.anilib.common.ui.activity
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -17,6 +17,7 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
 import com.revolgenx.anilib.common.data.event.CommonEvent
 import com.revolgenx.anilib.common.data.event.EventBusListener
 import com.revolgenx.anilib.common.data.event.OpenCharacterScreenEvent
@@ -62,7 +63,7 @@ abstract class BaseActivity : ComponentActivity(), EventBusListener {
     val NOTIFICATION_CHANNEL_ID = BuildConfig.APPLICATION_ID + ".channel"
     val NOTIFICATION_MESSAGE_TAG = "message from notification"
 
-    fun newIntent(context: Context) = Intent(context, MainActivity::class.java).apply {
+    fun newIntent(context: Context) = Intent(context, this::class.java).apply {
         putExtra(
             NOTIFICATION_MESSAGE_TAG, "Hi ☕\uD83C\uDF77\uD83C\uDF70"
         )
@@ -89,7 +90,7 @@ abstract class BaseActivity : ComponentActivity(), EventBusListener {
 
         // create a pending intent that opens MainActivity when the user clicks on the notification
         val stackBuilder = TaskStackBuilder.create(context)
-            .addParentStack(MainActivity::class.java)
+            .addParentStack(this::class.java)
             .addNextIntent(intent)
         val notificationPendingIntent = stackBuilder
             .getPendingIntent(getUniqueId(), FLAG_IMMUTABLE)

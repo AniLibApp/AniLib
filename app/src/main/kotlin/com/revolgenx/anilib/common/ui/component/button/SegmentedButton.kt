@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,11 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.common.ui.theme.onSecondaryContainer
-import com.revolgenx.anilib.common.ui.theme.onSurface
-import com.revolgenx.anilib.common.ui.theme.secondaryContainer
-import com.revolgenx.anilib.common.ui.theme.surfaceContainer
-import com.revolgenx.anilib.common.ui.theme.typography
 
 
 @Composable
@@ -28,6 +24,7 @@ fun SegmentedButton(
     selectedPosition: Int,
     onItemSelected: (index: Int) -> Unit
 ) {
+    val colorScheme  = MaterialTheme.colorScheme
     Card {
         Row(
             modifier = Modifier
@@ -44,14 +41,14 @@ fun SegmentedButton(
                         .clickable {
                             onItemSelected(index)
                         },
-                    color = if (index == selectedPosition) secondaryContainer else surfaceContainer
+                    color = if (index == selectedPosition) colorScheme.secondaryContainer else colorScheme.surfaceContainerLowest
                 ) {
                     Box {
                         Text(
                             modifier = Modifier.align(Alignment.Center),
                             text = item,
-                            style = typography().labelLarge,
-                            color = if (index == selectedPosition) onSecondaryContainer else onSurface
+                            style = MaterialTheme.typography.labelLarge,
+                            color = if (index == selectedPosition) colorScheme.onSecondaryContainer else colorScheme.onSurface
                         )
                     }
                 }

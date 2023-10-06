@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.common.ui.viewmodel
 
-import com.revolgenx.anilib.activity.MainActivityViewModel
+import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel

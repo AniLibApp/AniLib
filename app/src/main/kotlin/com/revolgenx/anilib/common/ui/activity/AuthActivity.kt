@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.activity
+package com.revolgenx.anilib.common.ui.activity
 
 import android.content.Intent
 import android.net.Uri
@@ -6,11 +6,9 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.lifecycleScope
+import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.common.data.store.AuthDataStore
-import com.revolgenx.anilib.common.data.store.ThemeDataStore
-import com.revolgenx.anilib.common.ext.launchIO
 import com.revolgenx.anilib.common.ui.screen.state.LoadingScreen
 import com.revolgenx.anilib.common.ui.theme.AppTheme
 import kotlinx.coroutines.launch

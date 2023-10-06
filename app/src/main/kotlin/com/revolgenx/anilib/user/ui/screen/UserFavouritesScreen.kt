@@ -42,7 +42,6 @@ import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
-import com.revolgenx.anilib.common.ui.theme.background
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.component.MediaCard
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -197,8 +196,7 @@ private fun FavouriteTypeFilterBottomSheet(
     if (openBottomSheet.value) {
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
-            sheetState = bottomSheetState,
-            containerColor = background
+            sheetState = bottomSheetState
         ) {
             Column(
                 modifier = Modifier

@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.review.ui.screen
 
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,12 +21,15 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,12 +46,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.userScreen
-import com.revolgenx.anilib.common.ui.component.action.ActionMenu
+import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
-import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -56,18 +63,14 @@ import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
-import com.revolgenx.anilib.common.ui.icons.appicon.IcNotification
-import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
-import com.revolgenx.anilib.common.ui.theme.inverseOnSurface
-import com.revolgenx.anilib.common.ui.theme.onSurface
-import com.revolgenx.anilib.common.ui.theme.surfaceContainer
-import com.revolgenx.anilib.common.ui.theme.typography
+import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
 import com.revolgenx.anilib.type.ReviewRating
+import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -84,6 +87,10 @@ class ReviewScreen(private val reviewId: Int) : AndroidScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ReviewScreenContent(viewModel: ReviewViewModel) {
+
+    val context = localContext()
+    val scope = rememberCoroutineScope()
+
     LaunchedEffect(viewModel) {
         viewModel.getResource()
     }
@@ -92,11 +99,18 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
 
     val navigator = localNavigator()
 
-    ScreenScaffold(topBar = {
-        ReviewScreenTopAppBar(
-            viewModel, scrollBehavior = scrollBehavior
-        )
-    }) {
+    ScreenScaffold(
+        topBar = {
+            val snackbarHostState = localSnackbarHostState()
+
+            ReviewScreenTopAppBar(
+                reviewModel = viewModel.resource.value?.stateValue,
+                scrollBehavior = scrollBehavior,
+                context = context,
+                scope = scope,
+                snackbarHostState = snackbarHostState
+            )
+        }) {
         ResourceScreen(viewModel = viewModel) { review ->
             val user = review.user
             Column(
@@ -192,12 +206,13 @@ fun ReviewLikeDislikeButton(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ReviewScreenTopAppBar(
-    viewModel: ReviewViewModel, scrollBehavior: TopAppBarScrollBehavior
+    reviewModel: ReviewModel?,
+    scrollBehavior: TopAppBarScrollBehavior,
+    context: Context,
+    snackbarHostState: SnackbarHostState,
+    scope: CoroutineScope
 ) {
-    val resourceValue = viewModel.resource.value
-    val review = resourceValue?.stateValue
-
-    val media = review?.media
+    val media = reviewModel?.media
     val containerHeight = 200.dp
 
     CollapsingAppbar(
@@ -222,7 +237,8 @@ private fun ReviewScreenTopAppBar(
                     .background(
                         brush = Brush.verticalGradient(
                             colors = listOf(
-                                Color.Transparent, surfaceContainer.copy(0.8f)
+                                Color.Transparent,
+                                MaterialTheme.colorScheme.surfaceContainerLowest.copy(0.8f)
                             )
                         )
                     )
@@ -233,12 +249,13 @@ private fun ReviewScreenTopAppBar(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
                                 .padding(bottom = 14.dp),
-                            color = onSurface,
-                            text = media?.title?.title(type) ?: stringResource(id = I18nR.string.review),
+                            color = MaterialTheme.colorScheme.onSurface,
+                            text = media?.title?.title(type)
+                                ?: stringResource(id = I18nR.string.review),
                             textAlign = TextAlign.Center,
-                            style = typography().titleLarge.copy(
+                            style = MaterialTheme.typography.titleLarge.copy(
                                 shadow = Shadow(
-                                    color = inverseOnSurface,
+                                    color = MaterialTheme.colorScheme.inverseOnSurface,
                                     offset = Offset(2.0f, 2.0f),
                                     blurRadius = 1f
                                 )
@@ -260,13 +277,23 @@ private fun ReviewScreenTopAppBar(
             }
         },
         actions = { isCollapsed ->
-            ActionMenu(icon = AppIcons.IcSearch, tonalButton = !isCollapsed) {
-
-            }
-            ActionMenu(
-                icon = AppIcons.IcNotification, tonalButton = !isCollapsed
-            ) {
-
+            reviewModel?.siteUrl?.let { site ->
+                OverflowMenu(
+                    tonalButton = !isCollapsed
+                ) {
+                    OpenInBrowserOverflowMenu(
+                        link = site,
+                        context = context,
+                        scope = scope,
+                        snackbarHostState = snackbarHostState
+                    )
+                    ShareOverflowMenu(
+                        text = site,
+                        context = context,
+                        scope = scope,
+                        snackbarHostState = snackbarHostState
+                    )
+                }
             }
         }
     )

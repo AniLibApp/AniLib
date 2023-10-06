@@ -29,7 +29,6 @@ import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConn
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.radio.TextRadioButton
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.theme.background
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsGenreViewModel
@@ -142,8 +141,7 @@ fun UserStatsTypeBottomSheet(
     if (openBottomSheet.value) {
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
-            sheetState = bottomSheetState,
-            containerColor = background
+            sheetState = bottomSheetState
         ) {
             Column(
                 modifier = Modifier

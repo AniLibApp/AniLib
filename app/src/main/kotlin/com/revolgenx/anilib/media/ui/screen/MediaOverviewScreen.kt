@@ -76,12 +76,6 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcInfo
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMarkdownYoutube
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPlay
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
-import com.revolgenx.anilib.common.ui.theme.background
-import com.revolgenx.anilib.common.ui.theme.inverseOnSurface
-import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
-import com.revolgenx.anilib.common.ui.theme.secondary
-import com.revolgenx.anilib.common.ui.theme.shapes
-import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.common.util.OnMediaClick
@@ -131,7 +125,7 @@ private fun MediaOverview(
         context.openLink(
             url = url,
             scope = scope,
-            snackbar = snackbarHostState
+            snackbarHostState = snackbarHostState
         )
     }
 
@@ -290,7 +284,7 @@ fun MediaHeader(text: String) {
         modifier = Modifier,
         text = text,
         fontSize = 18.sp,
-        color = onSurfaceVariant,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         fontWeight = FontWeight.Medium
     )
 }
@@ -343,7 +337,7 @@ fun MediaTrailer(
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp)
-            .clip(shapes().small)
+            .clip(MaterialTheme.shapes.small)
             .clickable {
                 onClick(trailer)
             }
@@ -408,7 +402,7 @@ fun MediaStats(media: MediaModel) {
                         text = item.title,
                         fontSize = 15.sp,
                         lineHeight = 16.sp,
-                        color = onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.Medium
                     )
                     Text(
@@ -433,8 +427,8 @@ fun MediaExternalLink(
     MediaFlowRow {
         externalLinks?.forEach { link ->
             Surface(
-                shape = shapes().small,
-                color = link.color ?: surfaceContainer
+                shape = MaterialTheme.shapes.small,
+                color = link.color ?: MaterialTheme.colorScheme.surfaceContainerLowest
             ) {
                 Row(
                     modifier = Modifier
@@ -453,7 +447,7 @@ fun MediaExternalLink(
                     }
                     Text(
                         text = link.site.naText(), style = LocalTextStyle.current.shadow(
-                            inverseOnSurface
+                            MaterialTheme.colorScheme.inverseOnSurface
                         )
                     )
                 }
@@ -502,7 +496,7 @@ private fun MediaTag(
         (if (showSpoilerTags.value) tags else tagsWithoutSpoiler).forEach { tag ->
             Surface(
                 modifier = Modifier,
-                shape = shapes().small
+                shape = MaterialTheme.shapes.small
             ) {
                 Row(
                     modifier = Modifier
@@ -517,7 +511,7 @@ private fun MediaTag(
                         Icon(
                             imageVector = AppIcons.IcHide,
                             contentDescription = null,
-                            tint = secondary
+                            tint = MaterialTheme.colorScheme.secondary
                         )
                     }
                     Text(
@@ -527,7 +521,7 @@ private fun MediaTag(
                     Icon(
                         imageVector = AppIcons.IcInfo,
                         contentDescription = null,
-                        tint = secondary
+                        tint = MaterialTheme.colorScheme.secondary
                     )
                 }
             }
@@ -606,7 +600,7 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
                 Text(
                     text = item.title,
                     lineHeight = 16.sp,
-                    color = onSurfaceVariant,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
@@ -653,7 +647,7 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
                 ) {
                     Text(
                         text = it.title,
-                        color = onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontSize = 15.sp,
                         fontWeight = FontWeight.Medium
                     )
@@ -727,8 +721,7 @@ fun MediaTagDetailBottomSheet(
     if (openBottomSheet.value && tag != null) {
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
-            sheetState = bottomSheetState,
-            containerColor = background
+            sheetState = bottomSheetState
         ) {
             Column(
                 modifier = Modifier
@@ -768,7 +761,7 @@ fun MediaTagDetailItem(title: String, value: String) {
         Text(
             modifier = Modifier.weight(1f),
             text = title,
-            color = onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium
         )
@@ -785,7 +778,7 @@ fun MediaTagDetailItem(title: String, value: String) {
 @Composable
 private fun MediaInfoChip(text: String, onClick: OnClick) {
     Surface(
-        shape = shapes().small,
+        shape = MaterialTheme.shapes.small,
         onClick = onClick
     ) {
         Box(

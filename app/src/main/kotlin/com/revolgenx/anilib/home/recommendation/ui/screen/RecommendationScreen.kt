@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -23,10 +24,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -36,12 +35,9 @@ import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
-import com.revolgenx.anilib.common.ui.icons.appicon.IcCalendar
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
-import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
-import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
@@ -150,7 +146,7 @@ private fun RecommendationButton(
                         .size(14.dp),
                     imageVector = AppIcons.IcThumbUp,
                     contentDescription = null,
-                    tint = if (model.userRating == RecommendationRating.RATE_UP) primary else onSurfaceVariant
+                    tint = if (model.userRating == RecommendationRating.RATE_UP) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
@@ -165,7 +161,7 @@ private fun RecommendationButton(
                         .size(14.dp),
                     imageVector = AppIcons.IcThumbDown,
                     contentDescription = null,
-                    tint = if (model.userRating == RecommendationRating.RATE_DOWN) primary else onSurfaceVariant
+                    tint = if (model.userRating == RecommendationRating.RATE_DOWN) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 

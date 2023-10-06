@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 
-public val AppIcons.IcAbout: ImageVector
+val AppIcons.IcAbout: ImageVector
     get() {
         if (_icAbout != null) {
             return _icAbout!!

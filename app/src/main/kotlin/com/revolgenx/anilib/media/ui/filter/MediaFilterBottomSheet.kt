@@ -26,7 +26,6 @@ import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
-import com.revolgenx.anilib.common.ui.theme.background
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.model.toMediaFormat
 import com.revolgenx.anilib.media.ui.model.toMediaSeason
@@ -165,8 +164,7 @@ fun MediaFilterBottomSheet(
     if (openBottomSheet.value) {
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
-            sheetState = bottomSheetState,
-            containerColor = background
+            sheetState = bottomSheetState
         ) {
             MediaFilterBottomSheetContent(
                 field = viewModel.field,

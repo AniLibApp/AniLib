@@ -11,6 +11,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -46,8 +47,6 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcPercent
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPlay
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTv
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
-import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
-import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.list.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.model.toStringRes
@@ -295,7 +294,7 @@ private fun StatsNumberText(icon: ImageVector, label: String, value: String) {
                     .align(Alignment.CenterEnd),
                 imageVector = icon,
                 contentDescription = null,
-                tint = onSurfaceVariant
+                tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
         Column(
@@ -310,7 +309,7 @@ private fun StatsNumberText(icon: ImageVector, label: String, value: String) {
 
             Text(
                 text = label,
-                color = onSurfaceVariant,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Medium,
                 fontSize = 14.sp
             )
@@ -325,7 +324,7 @@ private fun HeaderText(text: String) {
         fontSize = 20.sp,
         fontWeight = FontWeight.SemiBold,
         letterSpacing = 0.1.sp,
-        color = onSurfaceVariant
+        color = MaterialTheme.colorScheme.onSurfaceVariant
     )
 }
 
@@ -382,6 +381,6 @@ private fun StatisticModelItemHeader(header: String) {
         fontSize = 16.sp,
         fontWeight = FontWeight.Medium,
         letterSpacing = 0.1.sp,
-        color = primary
+        color = MaterialTheme.colorScheme.primary
     )
 }

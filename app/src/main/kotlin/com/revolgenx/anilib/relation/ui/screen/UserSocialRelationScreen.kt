@@ -5,9 +5,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
@@ -56,15 +59,18 @@ fun UserSocialRelationScreenContent(userId: Int, isFollower: Boolean?) {
             pagerState.scrollToPage(1)
         }
     }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     PagerScreenScaffold(
         pages = pages,
         pagerState = pagerState,
-        actions = {}
+        actions = {},
+        scrollBehavior = scrollBehavior
     ) { page ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
             when (pages[page].type) {
                 UserRelationScreenPageType.FOLLOWING -> UserRelationScreen(userId, false)

@@ -25,16 +25,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
+import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarColors
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
-import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
-import com.revolgenx.anilib.common.ui.theme.background
-import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,9 +45,9 @@ fun ScreenScaffold(
     topBar: (@Composable () -> Unit)? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     floatingActionButton: @Composable () -> Unit = {},
-    containerColor: Color = background,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
     appBarLayoutColors: AppBarLayoutColors = AppBarLayoutDefaults.appBarLayoutColors(),
-    appBarColors: AppBarColors = AppBarDefaults.appBarColors(),
+    appBarColors: AppBarColors = AppBarDefaults.transparentColor(),
     actions: (@Composable RowScope.() -> Unit)? = null,
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     onMoreClick: (() -> Unit)? = null,
@@ -95,7 +93,7 @@ fun ScreenTopAppbar(
     actions: (@Composable RowScope.() -> Unit)? = null,
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     appBarLayoutColors: AppBarLayoutColors = AppBarLayoutDefaults.appBarLayoutColors(),
-    appBarColors: AppBarColors = AppBarDefaults.appBarColors(),
+    appBarColors: AppBarColors = AppBarDefaults.transparentColor(),
     onMoreClick: (() -> Unit)? = null
 ) {
     AppBarLayout(
@@ -105,15 +103,15 @@ fun ScreenTopAppbar(
     ) {
         AppBar(
             title = {
-                Column(verticalArrangement = Arrangement.Center) {
+                Column {
                     Text(
-                        text = title
+                        text = title,
                     )
                     subTitle?.let {
                         Text(
                             text = it,
                             fontSize = 12.sp,
-                            color = onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                 }

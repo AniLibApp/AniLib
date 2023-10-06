@@ -23,13 +23,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowDown
 import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowUp
@@ -38,7 +36,6 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcNeutral
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSad
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStarOutline
-import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.type.ScoreFormat
 import kotlin.math.round
@@ -269,7 +266,7 @@ private fun StarScoreButton(selected: Boolean, onClick: OnClick) {
             modifier = Modifier.align(Alignment.Center),
             imageVector = if (selected) AppIcons.IcStar else AppIcons.IcStarOutline,
             contentDescription = null,
-            tint = if (selected) primary else LocalContentColor.current
+            tint = if (selected) MaterialTheme.colorScheme.primary else LocalContentColor.current
         )
     }
 }
@@ -306,7 +303,7 @@ private fun SmileyScoreButton(selected: Boolean, icon: ImageVector, onClick: OnC
         Icon(
             imageVector = icon,
             contentDescription = null,
-            tint = if (selected) primary else LocalContentColor.current
+            tint = if (selected) MaterialTheme.colorScheme.primary else LocalContentColor.current
         )
     }
 }

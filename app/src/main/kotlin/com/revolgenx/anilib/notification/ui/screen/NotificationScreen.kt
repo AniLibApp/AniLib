@@ -1,6 +1,8 @@
 package com.revolgenx.anilib.notification.ui.screen
 
+import android.content.Context
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +16,9 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -21,30 +26,32 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaScreen
-import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
-import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
-import com.revolgenx.anilib.common.ui.theme.primary
-import com.revolgenx.anilib.common.ui.theme.secondary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.notification.ui.model.ActivityNotificationModel
 import com.revolgenx.anilib.notification.ui.model.AiringNotificationModel
 import com.revolgenx.anilib.notification.ui.model.FollowingNotificationModel
@@ -56,7 +63,8 @@ import com.revolgenx.anilib.notification.ui.model.ThreadNotificationModel
 import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
 import com.revolgenx.anilib.social.ui.screen.ActivityScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
-import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -72,12 +80,14 @@ class NotificationScreen : AndroidScreen() {
 private fun NotificationScreenContent(
     viewModel: NotificationViewModel = koinViewModel()
 ) {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val navigator = localNavigator()
     ScreenScaffold(
         title = stringResource(id = I18nR.string.notifications),
         scrollBehavior = scrollBehavior
     ) {
+        val snackbarHostState = localSnackbarHostState()
+        val scope = rememberCoroutineScope()
         val pagingItems = viewModel.collectAsLazyPagingItems()
         Box(
             modifier = Modifier
@@ -213,13 +223,35 @@ private fun NotificationScreenContent(
                         }
                     }
 
+                    reason =
+                        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+                    val notificationTitle = text.orEmpty()
                     NotificationItem(
-                        context = text ?: "",
+                        notificationTitle = notificationTitle,
                         image = image,
                         reason = reason,
                         isUnread = notificationModel.unreadNotificationCount >= index + 1,
                         createdAt = createdAt,
                         onImageClick = onImageClick,
+                        onTitleClick = {
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = notificationTitle,
+                                    withDismissAction = true,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
+                        },
+                        showReasonClick = {
+                            scope.launch {
+                                snackbarHostState.showSnackbar(
+                                    message = reason!!,
+                                    withDismissAction = true,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
+                        },
                         onClick = onClick
                     )
                 }
@@ -231,15 +263,16 @@ private fun NotificationScreenContent(
 
 @Composable
 private fun NotificationItem(
-    context: String,
+    notificationTitle: String,
     image: String?,
     reason: String?,
     createdAt: String,
     isUnread: Boolean,
     onImageClick: (() -> Unit)? = null,
+    onTitleClick: OnClick,
+    showReasonClick: OnClick,
     onClick: OnClick
 ) {
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -269,40 +302,53 @@ private fun NotificationItem(
                     .clickable {
                         onClick()
                     }
-                    .padding(8.dp),
+                    .padding(horizontal = 8.dp)
+                    .padding(bottom = 8.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = context,
-                    maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
+                MediumText(
+                    modifier = Modifier.clickable(
+                        interactionSource = remember { MutableInteractionSource() },
+                        indication = null
+                    ) {
+                        onTitleClick()
+                    },
+                    text = notificationTitle,
+                    fontSize = 16.sp,
+                    lineHeight = 18.sp,
+                    maxLines = 3
                 )
                 Column {
                     reason?.let {
                         val showReason = stringResource(id = I18nR.string.show_reason)
                         val reasonState = remember { mutableStateOf(showReason) }
-                        Text(
-                            modifier = Modifier.clickable {
-                                reasonState.value = reason
+                        LightText(
+                            modifier = Modifier.clickable(
+                                interactionSource = remember { MutableInteractionSource() },
+                                indication = null
+                            ) {
+                                if (reasonState.value == reason) {
+                                    showReasonClick()
+                                } else {
+                                    reasonState.value = reason
+                                }
                             },
-                            text = reasonState.value,
-                            color = secondary,
-                            fontSize = 11.sp,
-                            lineHeight = 11.sp,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis
+                            text = reasonState.value
                         )
                     }
                     Text(
                         text = createdAt,
                         fontSize = 10.sp,
-                        color = onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
 
             if (isUnread) {
-                HorizontalDivider(modifier = Modifier.padding(4.dp), color = primary)
+                HorizontalDivider(
+                    modifier = Modifier.padding(4.dp),
+                    color = MaterialTheme.colorScheme.primary
+                )
             }
 
         }
@@ -313,11 +359,13 @@ private fun NotificationItem(
 @Composable
 fun NotificationItemPreview() {
     NotificationItem(
-        context = "DarthMarine started following you.",
+        notificationTitle = "DarthMarine started following you.",
         reason = "reason",
         createdAt = "1 week ago",
         isUnread = true,
-        image = ""
+        image = "",
+        onTitleClick = {},
+        showReasonClick = {}
     ) {
 
     }

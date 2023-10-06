@@ -35,8 +35,6 @@ import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
-import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
-import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.LightText
@@ -48,11 +46,11 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronLeft
 import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronRight
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
-import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
-import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.data.field.MediaField
+import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -60,9 +58,7 @@ import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toImageVector
 import com.revolgenx.anilib.media.ui.model.toStringRes
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import com.revolgenx.anilib.type.MediaStatus
-import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -171,7 +167,7 @@ private fun SeasonItem(
                         LightText(
                             text = genre,
                             fontSize = 10.sp,
-                            color = primary,
+                            color = MaterialTheme.colorScheme.primary,
                         )
                     }
                 }
@@ -187,7 +183,7 @@ private fun SeasonItem(
                         media.endDate?.toString().naText()
                     }",
                     fontSize = 12.sp,
-                    color = onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
                     stringResource(id = I18nR.string.ep_d_s).format(
@@ -195,13 +191,13 @@ private fun SeasonItem(
                         media.duration.naText()
                     ),
                     fontSize = 12.sp,
-                    color = onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
                 Text(
                     stringResource(id = media.format.toStringRes()),
                     fontSize = 12.sp,
-                    color = primary,
+                    color = MaterialTheme.colorScheme.primary,
                 )
             }
         }

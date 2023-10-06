@@ -30,6 +30,7 @@ query ReviewQuery($reviewId:Int){
         body
         private
         userRating
+        siteUrl
     }
 }
 

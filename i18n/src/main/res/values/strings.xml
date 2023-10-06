@@ -412,7 +412,9 @@
     <string name="low">Low</string>
     <string name="medium">Medium</string>
     <string name="show_adult_content_desc">Changing this won\'t change setting in AniList. It depends on AniList, so disabling users preference on AniList would remove this setting.</string>
-
     <!--Settings-->
+
+    <string name="open_in_browser">Open in browser</string>
+    <string name="share">Share</string>
 
 </resources>

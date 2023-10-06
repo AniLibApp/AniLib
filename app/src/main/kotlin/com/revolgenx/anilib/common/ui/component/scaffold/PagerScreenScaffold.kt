@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
@@ -18,6 +19,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.revolgenx.anilib.common.ui.component.appbar.PagerScreenTopAppBar
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
@@ -31,6 +33,7 @@ fun <T> PagerScreenScaffold(
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     actions: (@Composable RowScope.() -> Unit)? = null,
+    containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     onMoreClick: (() -> Unit)? = null,
@@ -41,6 +44,7 @@ fun <T> PagerScreenScaffold(
     CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
         val coroutineScope = rememberCoroutineScope()
         Scaffold(
+            containerColor = containerColor,
             contentWindowInsets = contentWindowInsets,
             snackbarHost = { SnackbarHost(snackbarHostState) },
             topBar = {

@@ -16,6 +16,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ScaffoldDefaults
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,9 +29,10 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.BuildConfig
-import com.revolgenx.anilib.activity.MainActivity
+import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.openLink
 import com.revolgenx.anilib.common.ext.toStringResource
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
@@ -96,6 +98,7 @@ fun SettingScreenContent(isTab: Boolean) {
 
     val viewModel: SettingsViewModel = koinViewModel()
     val context = localContext()
+    var snackbarHostState: SnackbarHostState? = null
     val scope = rememberCoroutineScope()
     val navigator = localNavigator()
 
@@ -122,6 +125,7 @@ fun SettingScreenContent(isTab: Boolean) {
         },
         contentWindowInsets = if (isTab) WindowInsets.statusBars else ScaffoldDefaults.contentWindowInsets
     ) {
+        snackbarHostState = localSnackbarHostState()
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
@@ -209,7 +213,7 @@ fun SettingScreenContent(isTab: Boolean) {
                     icon = AppIcons.IcNotification,
                     title = I18nR.string.notifications.toStringResource(),
                     subtitle = I18nR.string.settings_notifications_desc.toStringResource()
-                ){
+                ) {
                     navigator.push(NotificationSettingsScreen())
                 }
             }
@@ -263,7 +267,7 @@ fun SettingScreenContent(isTab: Boolean) {
         message = stringResource(id = I18nR.string.settings_login_signup_notice),
         title = stringResource(id = I18nR.string.settings_important_to_know)
     ) {
-        register(context)
+        context.openLink(Config.SIGN_UP_URL, scope = scope, snackbarHostState = snackbarHostState)
     }
 
     ConfirmationDialog(
@@ -282,10 +286,6 @@ fun SettingScreenContent(isTab: Boolean) {
         }
     }
 
-}
-
-private fun register(context: Context) {
-    context.openLink(Config.SIGN_UP_URL)
 }
 
 private fun login(context: Context) {

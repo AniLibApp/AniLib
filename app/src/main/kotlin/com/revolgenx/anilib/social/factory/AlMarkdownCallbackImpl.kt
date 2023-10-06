@@ -1,8 +1,6 @@
 package com.revolgenx.anilib.social.factory
 
 import android.text.Spanned
-import cafe.adriel.voyager.navigator.Navigator
-import com.revolgenx.anilib.activity.MainActivityViewModel
 import com.revolgenx.anilib.common.data.event.OpenCharacterScreenEvent
 import com.revolgenx.anilib.common.data.event.OpenImageEvent
 import com.revolgenx.anilib.common.data.event.OpenMediaScreenEvent

@@ -17,10 +17,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import coil.Coil
 import coil.request.ImageRequest
-import coil.request.ImageResult
-import coil.request.SuccessResult
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.activity.MainActivity
 import com.revolgenx.anilib.common.data.constant.LauncherShortcutKeys
 import com.revolgenx.anilib.common.data.constant.LauncherShortcuts
 import com.revolgenx.anilib.common.ui.theme.LightColorScheme
@@ -193,7 +190,7 @@ class NotificationWorker(
     }
 
     private fun createNotificationPendingIntent(): PendingIntent {
-        val intent = Intent(Intent.ACTION_VIEW, null, context, MainActivity::class.java).also {
+        val intent = Intent(Intent.ACTION_VIEW, null, context, this::class.java).also {
             it.putExtra(
                 LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
                 LauncherShortcuts.NOTIFICATION

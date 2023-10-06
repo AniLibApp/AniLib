@@ -40,6 +40,7 @@ fun ExploreScreen() {
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
 
+
         val navigator = localNavigator()
         Spacer(modifier = Modifier.size(20.dp))
         SegmentedButton(items = arrayOf("Day", "Week", "Month"), selectedPosition = 0) {

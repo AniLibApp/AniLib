@@ -79,9 +79,6 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronRight
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTime
 import com.revolgenx.anilib.common.ui.model.HeaderModel
-import com.revolgenx.anilib.common.ui.theme.background
-import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
-import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
@@ -112,7 +109,7 @@ private fun AiringScreenContent(
 
     val context = LocalContext.current
     val field = viewModel.field
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     val openBottomSheet = rememberSaveable { mutableStateOf(false) }
     val navigator = localNavigator()
@@ -310,7 +307,7 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                             Text(
                                 genre,
                                 fontSize = 10.sp,
-                                color = primary,
+                                color = MaterialTheme.colorScheme.primary,
                                 overflow = TextOverflow.Ellipsis
                             )
                         }
@@ -319,7 +316,7 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                     Text(
                         stringResource(id = media.format.toStringRes()),
                         fontSize = 12.sp,
-                        color = primary,
+                        color = MaterialTheme.colorScheme.primary,
                     )
                 }
 
@@ -345,7 +342,7 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                 Column {
                     Text(
                         text = epAiringTitle,
-                        color = onSurfaceVariant,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.Medium,
                         fontSize = 12.sp
                     )
@@ -381,7 +378,7 @@ private fun AiringScheduleTimer(
         fontSize = 18.sp,
         fontWeight = FontWeight.SemiBold,
         lineHeight = 20.sp,
-        color = onSurfaceVariant,
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
         letterSpacing = 0.2.sp
     )
 }
@@ -400,8 +397,7 @@ private fun AiringScheduleFilterBottomSheet(
 
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
-            sheetState = bottomSheetState,
-            containerColor = background
+            sheetState = bottomSheetState
         ) {
             AiringScheduleFilterBottomSheetContent(
                 field = viewModel.field.value,
@@ -530,13 +526,13 @@ private fun AiringScheduleAction(
         OverflowMenuItem(
             textRes = I18nR.string.weekly,
             icon = AppIcons.IcTime,
-            onClick = {
-                expanded.value = false
+            contentDescriptionRes = I18nR.string.weekly,
+            isChecked = isWeeklyTypeDate,
+            onCheckedChange = {
                 onWeekly()
             },
-            contentDescriptionRes = I18nR.string.weekly,
-            isChecked = isWeeklyTypeDate
         ) {
+            expanded.value = false
             onWeekly()
         }
     }

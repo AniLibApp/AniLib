@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.activity
+package com.revolgenx.anilib.app.ui.viewmodel
 
 import android.text.Spanned
 import androidx.compose.runtime.getValue

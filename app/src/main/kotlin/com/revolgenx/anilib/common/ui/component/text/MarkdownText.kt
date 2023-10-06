@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,7 +22,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.isNotNull
-import com.revolgenx.anilib.common.ui.theme.onBackground
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.social.factory.markdown
 
@@ -48,19 +48,19 @@ fun MarkdownText(
     modifier: Modifier = Modifier,
     text: String? = null,
     spanned: Spanned? = null,
-    color: Color = onBackground,
+    color: Color = MaterialTheme.colorScheme.onSurface,
     fontSize: TextUnit = TextUnit.Unspecified,
     maxLines: Int = Int.MAX_VALUE,
     overflow: TextOverflow = TextOverflow.Clip,
     onClick: OnClick? = null
 ) {
     val textSize = with(LocalDensity.current) {
-            if (fontSize.isSpecified) {
-                fontSize.toPx()
-            } else {
-                LocalTextStyle.current.fontSize.toPx()
-            }
+        if (fontSize.isSpecified) {
+            fontSize.toPx()
+        } else {
+            LocalTextStyle.current.fontSize.toPx()
         }
+    }
 
     AndroidView(
         modifier = modifier.fillMaxWidth(),
@@ -77,9 +77,7 @@ fun MarkdownText(
                 }
                 it.setTextColor(color.toArgb())
 
-                if (fontSize.isSpecified) {
-                    it.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
-                }
+                it.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 if (text.isNullOrBlank().not()) {
                     markdown.setMarkdown(it, text!!)
                 }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,10 +25,9 @@ import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
-import com.revolgenx.anilib.common.ui.theme.onSurfaceVariant
-import com.revolgenx.anilib.common.ui.theme.primary
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.stats.BaseStatisticModel
@@ -37,7 +37,6 @@ import com.revolgenx.anilib.user.ui.model.stats.UserStudioStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserTagStatisticModel
 import com.revolgenx.anilib.user.ui.model.stats.UserVoiceActorStatisticModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeViewModel
-import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import anilib.i18n.R as I18nR
 
 @Composable
@@ -125,7 +124,7 @@ fun StatsTypeCardItem(@StringRes labelId: Int, text: String) {
     Column {
         Text(
             text = text,
-            color = primary,
+            color = MaterialTheme.colorScheme.primary,
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,
             letterSpacing = 0.1.sp,
@@ -133,7 +132,7 @@ fun StatsTypeCardItem(@StringRes labelId: Int, text: String) {
         )
         Text(
             text = stringResource(id = labelId),
-            color = onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
@@ -146,6 +145,6 @@ private fun HeaderText(text: String?) {
         fontSize = 20.sp,
         fontWeight = FontWeight.SemiBold,
         letterSpacing = 0.1.sp,
-        color = onSurfaceVariant
+        color = MaterialTheme.colorScheme.onSurfaceVariant
     )
 }

@@ -30,8 +30,6 @@ import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
-import com.revolgenx.anilib.common.ui.theme.onSurface
-import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import kotlin.math.max
 import kotlin.math.roundToInt
 
@@ -45,7 +43,7 @@ fun AppBar(
     navigationIcon: @Composable () -> Unit = {},
     actions: @Composable RowScope.() -> Unit = {},
     windowInsets: WindowInsets = emptyWindowInsets(),
-    colors: AppBarColors = AppBarDefaults.appBarColors(),
+    colors: AppBarColors = AppBarDefaults.transparentColor(),
     containerHeight: Dp = AppBarHeight,
     centeredTitle: Boolean = false,
     titleTextStyle: TextStyle = MaterialTheme.typography.titleLarge,
@@ -212,10 +210,10 @@ private fun AppBarContent(
 object AppBarDefaults {
     @Composable
     fun appBarColors(
-        containerColor: Color = surfaceContainer,
-        navigationIconContentColor: Color = onSurface,
-        titleContentColor: Color = onSurface,
-        actionIconContentColor: Color = onSurface,
+        containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
+        navigationIconContentColor: Color = MaterialTheme.colorScheme.onSurface,
+        titleContentColor: Color = MaterialTheme.colorScheme.onSurface,
+        actionIconContentColor: Color = MaterialTheme.colorScheme.onSurface,
     ): AppBarColors =
         AppBarColors(
             containerColor,

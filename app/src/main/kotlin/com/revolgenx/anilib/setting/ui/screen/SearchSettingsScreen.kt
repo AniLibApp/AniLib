@@ -48,10 +48,7 @@ private fun SearchSettingScreenContent() {
 @Composable
 fun SearchSettingTopAppBar() {
     AppBarLayout(
-        colors = AppBarLayoutDefaults.appBarLayoutColors(
-            containerColor = Color.Transparent,
-            scrolledContainerColor = Color.Transparent
-        ),
+        colors = AppBarLayoutDefaults.transparentColors(),
         containerHeight = SearchBarContainerHeight
     ) {
         Box(

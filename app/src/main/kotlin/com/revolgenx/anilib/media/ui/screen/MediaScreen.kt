@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.media.ui.screen
 
+import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -26,7 +27,9 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -51,28 +54,38 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
-import com.revolgenx.anilib.common.ext.orZero
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
+import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.appbar.collapse
-import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
-import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.component.text.shadow
-import com.revolgenx.anilib.common.ui.theme.onSurface
-import com.revolgenx.anilib.common.ui.theme.primary
-import com.revolgenx.anilib.common.ui.theme.surfaceContainer
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
+import com.revolgenx.anilib.common.ui.icons.appicon.IcReview
+import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
 import com.revolgenx.anilib.list.ui.model.toStringRes
+import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaScreenPageType
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
@@ -81,15 +94,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.common.ui.component.image.ImageOptions
-import com.revolgenx.anilib.common.ui.icons.AppIcons
-import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
-import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
-import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
-import com.revolgenx.anilib.common.ui.icons.appicon.IcReview
-import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
-import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
-import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
@@ -112,6 +117,7 @@ fun MediaScreenContent(
     mediaType: MediaType,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val context = localContext()
     val viewModel: MediaViewModel = koinViewModel()
     val recommendationViewModel: MediaRecommendationViewModel = koinViewModel()
     val statsViewModel: MediaStatsViewModel = koinViewModel()
@@ -147,7 +153,15 @@ fun MediaScreenContent(
     ScreenScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            MediaScreenTopAppBar(mediaType, viewModel, scrollBehavior)
+            val snackbarHostState = localSnackbarHostState()
+            MediaScreenTopAppBar(
+                mediaType = mediaType,
+                mediaModel = viewModel.resource.value?.stateValue,
+                scrollBehavior = scrollBehavior,
+                context = context,
+                scope = coroutineScope,
+                snackbarHostState = snackbarHostState
+            )
         },
         contentWindowInsets = emptyWindowInsets()
     ) {
@@ -205,10 +219,12 @@ fun MediaScreenContent(
 @Composable
 private fun MediaScreenTopAppBar(
     mediaType: MediaType,
-    viewModel: MediaViewModel,
-    scrollBehavior: TopAppBarScrollBehavior
+    mediaModel: MediaModel?,
+    scrollBehavior: TopAppBarScrollBehavior,
+    context: Context,
+    snackbarHostState: SnackbarHostState,
+    scope: CoroutineScope
 ) {
-    val media = viewModel.resource.value?.stateValue
     val containerHeight = 320.dp
     CollapsingAppbar(
         scrollBehavior = scrollBehavior,
@@ -216,7 +232,7 @@ private fun MediaScreenTopAppBar(
         containerContent = {
             MediaTopAppBarContainerContent(
                 containerHeight = containerHeight,
-                media = media,
+                media = mediaModel,
                 mediaType = mediaType,
                 isCollapsed = it
             )
@@ -225,7 +241,8 @@ private fun MediaScreenTopAppBar(
             if (isCollapsed) {
                 MediaTitleType {
                     Text(
-                        text = media?.title?.title(it) ?: stringResource(id = I18nR.string.media),
+                        text = mediaModel?.title?.title(it)
+                            ?: stringResource(id = I18nR.string.media),
                         overflow = TextOverflow.Ellipsis,
                         maxLines = 1,
                     )
@@ -233,10 +250,24 @@ private fun MediaScreenTopAppBar(
             }
         },
         actions = { isCollapsed ->
-            ActionMenu(
-                icon = AppIcons.IcSearch,
-                tonalButton = !isCollapsed, onClick = {}
-            )
+            mediaModel?.siteUrl?.let { site ->
+                OverflowMenu(
+                    tonalButton = !isCollapsed
+                ) {
+                    OpenInBrowserOverflowMenu(
+                        link = site,
+                        context = context,
+                        scope = scope,
+                        snackbarHostState = snackbarHostState
+                    )
+                    ShareOverflowMenu(
+                        text = site,
+                        context = context,
+                        scope = scope,
+                        snackbarHostState = snackbarHostState
+                    )
+                }
+            }
         }
     )
 }
@@ -263,6 +294,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
         viewable = true
     )
 
+    val surfaceContainerLowest = MaterialTheme.colorScheme.surfaceContainerLowest
     Box(
         modifier = Modifier
             .height(containerHeight)
@@ -270,7 +302,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
             .background(
                 brush = Brush.verticalGradient(
                     colors = listOf(
-                        surfaceContainer.copy(0.1f), surfaceContainer
+                        surfaceContainerLowest.copy(0.1f), surfaceContainerLowest
                     )
                 )
             )
@@ -319,8 +351,8 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                 fontSize = 20.sp,
                                 lineHeight = 22.sp,
                                 maxLines = 2,
-                                color = onSurface,
-                                style = LocalTextStyle.current.shadow(surfaceContainer)
+                                color = MaterialTheme.colorScheme.onSurface,
+                                style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
                         }
 
@@ -339,7 +371,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                 text = media?.popularity.orZero().prettyNumberFormat(),
                                 fontSize = 14.sp,
                                 lineHeight = 15.sp,
-                                style = LocalTextStyle.current.shadow(surfaceContainer)
+                                style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
 
                             Spacer(modifier = Modifier.width(6.dp))
@@ -352,7 +384,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                 text = media?.favourites.orZero().prettyNumberFormat(),
                                 fontSize = 14.sp,
                                 lineHeight = 15.sp,
-                                style = LocalTextStyle.current.shadow(surfaceContainer)
+                                style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
                         }
 
@@ -370,7 +402,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                 ),
                                 fontSize = 14.sp,
                                 lineHeight = 15.sp,
-                                style = LocalTextStyle.current.shadow(surfaceContainer)
+                                style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
                         }
 
@@ -382,14 +414,14 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                 ),
                                 fontSize = 15.sp,
                                 lineHeight = 16.sp,
-                                style = LocalTextStyle.current.shadow(surfaceContainer)
+                                style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
                         }
 
                     }
                 }
 
-                Card(colors = CardDefaults.cardColors(containerColor = primary)) {
+                Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primary)) {
                     Row(
                         modifier = Modifier.fillMaxWidth()
                     ) {

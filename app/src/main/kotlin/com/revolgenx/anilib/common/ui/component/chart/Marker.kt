@@ -2,6 +2,7 @@ package com.revolgenx.anilib.common.ui.component.chart
 
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
@@ -31,14 +32,11 @@ import com.patrykandpatrick.vico.core.marker.Marker
 import com.patrykandpatrick.vico.core.marker.MarkerLabelFormatter
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ui.theme.onSurface
-import com.revolgenx.anilib.common.ui.theme.surfaceContainer
-
 
 
 @Composable
 internal fun rememberMarker(mLabelFormatter: MarkerLabelFormatter? = null): Marker {
-    val surfaceContainer = surfaceContainer
+    val surfaceContainer = MaterialTheme.colorScheme.surfaceContainerLowest
     val labelBackground = remember(surfaceContainer) {
         ShapeComponent(labelBackgroundShape, surfaceContainer.toArgb()).setShadow(
             radius = LABEL_BACKGROUND_SHADOW_RADIUS,
@@ -68,7 +66,7 @@ internal fun rememberMarker(mLabelFormatter: MarkerLabelFormatter? = null): Mark
         innerPaddingAll = indicatorCenterAndOuterComponentPaddingValue,
     )
     val guideline = lineComponent(
-        onSurface.copy(GUIDELINE_ALPHA),
+        MaterialTheme.colorScheme.onSurface.copy(GUIDELINE_ALPHA),
         guidelineThickness,
         guidelineShape,
     )

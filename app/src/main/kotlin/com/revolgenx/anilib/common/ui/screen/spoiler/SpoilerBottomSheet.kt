@@ -20,7 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
-import com.revolgenx.anilib.common.ui.theme.background
 import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -33,8 +32,7 @@ fun SpoilerBottomSheet(
     if (openBottomSheet.value) {
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
-            sheetState = bottomSheetState,
-            containerColor = background
+            sheetState = bottomSheetState
         ) {
             Column(
                 modifier = Modifier

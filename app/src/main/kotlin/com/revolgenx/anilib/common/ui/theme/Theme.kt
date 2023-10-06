@@ -1,11 +1,8 @@
 package com.revolgenx.anilib.common.ui.theme
 
-import android.content.Context
-import android.content.res.Configuration
 import android.os.Build
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
@@ -13,12 +10,17 @@ import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.data.store.ThemeDataStore
 import com.revolgenx.anilib.common.ext.componentActivity
+import com.revolgenx.anilib.common.util.colorAtElevation
+import com.revolgenx.anilib.common.util.getTintColor
 import org.koin.androidx.compose.get
+
 
 val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
@@ -39,12 +41,12 @@ val LightColorScheme = lightColorScheme(
     onErrorContainer = md_theme_light_onErrorContainer,
     background = md_theme_light_background,
     onBackground = md_theme_light_onBackground,
-    surfaceContainerLowest = md_theme_light_surface,
-    surfaceContainerLow = md_theme_light_surface,
-    surfaceContainer = md_theme_light_surface,
-    surfaceContainerHigh = md_theme_light_surface,
-    surfaceContainerHighest = md_theme_light_surfaceVariant,
-    surface = md_theme_light_surface,
+    surfaceContainerLowest = md_theme_light_surface, //surface
+    surfaceContainerLow = md_theme_light_surface, // level +1
+    surfaceContainer = md_theme_light_surface_container, // level +2
+    surfaceContainerHigh = md_theme_light_surface, // level +3 4 5
+    surfaceContainerHighest = md_theme_light_surfaceVariant, // surface variant
+    surface = md_theme_light_surface, // surface
     surfaceVariant = md_theme_light_surfaceVariant,
     onSurface = md_theme_light_onSurface,
     onSurfaceVariant = md_theme_light_onSurfaceVariant,
@@ -139,7 +141,3 @@ fun AppTheme(
         }
     )
 }
-
-
-@Composable
-fun shapes() = MaterialTheme.shapes

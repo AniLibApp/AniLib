@@ -1,5 +1,8 @@
 package com.revolgenx.anilib.common.ui.component.action
 
+import IcOpenInNew
+import IcShare
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
@@ -12,6 +15,8 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -23,12 +28,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.openLink
+import com.revolgenx.anilib.common.ext.shareText
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBack
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
-import com.revolgenx.anilib.common.ui.theme.surfaceContainer
 import com.revolgenx.anilib.common.util.OnClick
+import kotlinx.coroutines.CoroutineScope
 import anilib.i18n.R as I18nR
 
 const val ActionMenuContainerAlpha = 0.17f
@@ -44,7 +52,7 @@ fun ActionMenu(
         FilledTonalIconButton(
             onClick = onClick,
             colors = IconButtonDefaults.filledTonalIconButtonColors(
-                containerColor = surfaceContainer.copy(alpha = ActionMenuContainerAlpha)
+                containerColor = MaterialTheme.colorScheme.surfaceContainerLowest.copy(alpha = ActionMenuContainerAlpha)
             )
         ) {
             ActionMenuIcon(
@@ -79,17 +87,19 @@ private fun ActionMenuIcon(
 @Composable
 fun OverflowMenu(
     icon: ImageVector? = null,
+    tonalButton: Boolean = false,
     content: @Composable ColumnScope.(isOpen: MutableState<Boolean>) -> Unit
 ) {
     val expanded = remember { mutableStateOf(false) }
-    IconButton(onClick = {
+
+    ActionMenu(
+        icon = icon ?: AppIcons.IcMoreHoriz,
+        contentDescriptionRes = I18nR.string.more,
+        tonalButton = tonalButton
+    ) {
         expanded.value = !expanded.value
-    }) {
-        Icon(
-            imageVector = icon ?: AppIcons.IcMoreHoriz,
-            contentDescription = stringResource(id = I18nR.string.more),
-        )
     }
+
     DropdownMenu(
         expanded = expanded.value,
         offset = DpOffset(8.dp, 0.dp),
@@ -110,8 +120,8 @@ fun OverflowMenuItem(
     icon: ImageVector? = null,
     @StringRes contentDescriptionRes: Int? = null,
     isChecked: Boolean = false,
-    onClick: OnClick,
     onCheckedChange: ((Boolean) -> Unit)? = null,
+    onClick: OnClick,
 ) {
     DropdownMenuItem(
         text = {
@@ -153,5 +163,37 @@ fun NavigationIcon(
     val navigator = LocalMainNavigator.current
     ActionMenu(icon = icon ?: AppIcons.IcBack, tonalButton = tonalButton) {
         onClick?.invoke() ?: navigator.pop()
+    }
+}
+
+@Composable
+fun OpenInBrowserOverflowMenu(
+    link: String,
+    context: Context,
+    scope: CoroutineScope? = null,
+    snackbarHostState: SnackbarHostState? = null
+) {
+    OverflowMenuItem(
+        textRes = I18nR.string.open_in_browser,
+        icon = AppIcons.IcOpenInNew,
+        contentDescriptionRes = null,
+    ) {
+        context.openLink(link, scope, snackbarHostState)
+    }
+}
+
+@Composable
+fun ShareOverflowMenu(
+    text: String,
+    context: Context,
+    scope: CoroutineScope? = null,
+    snackbarHostState: SnackbarHostState? = null
+) {
+    OverflowMenuItem(
+        textRes = I18nR.string.share,
+        icon = AppIcons.IcShare,
+        contentDescriptionRes = null,
+    ) {
+        context.shareText(text, scope, snackbarHostState)
     }
 }

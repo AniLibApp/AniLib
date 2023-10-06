@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.common.ui.icons
 
+import IcOpenInNew
+import IcShare
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.size
@@ -113,6 +115,8 @@ val AppIcons.AllIcons: ____KtList<ImageVector>
         }
         __AllIcons = listOf(
             IcAbout,
+            IcShare,
+            IcOpenInNew,
             IcAnilib,
             IcArrowDown,
             IcArrowUp,

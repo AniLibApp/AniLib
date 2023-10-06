@@ -18,6 +18,7 @@ import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -28,11 +29,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -42,7 +41,6 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
-import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.isAnime
 import anilib.i18n.R as I18nR
@@ -63,7 +61,7 @@ abstract class MediaListScreen : BaseTabScreen() {
 private fun MediaListScreenContent(viewModel: MediaListViewModel) {
 
     var active by rememberSaveable { mutableStateOf(false) }
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     val openFilterBottomSheet = rememberSaveable { mutableStateOf(false) }
     val isAnime = viewModel.field.type.isAnime
@@ -79,10 +77,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
         topBar = {
             AppBarLayout(
                 scrollBehavior = scrollBehavior,
-                colors = AppBarLayoutDefaults.appBarLayoutColors(
-                    containerColor = Color.Transparent,
-                    scrolledContainerColor = Color.Transparent
-                ),
+                colors = AppBarLayoutDefaults.transparentColors(),
                 containerHeight = appbarAnimation
             ) {
                 Box(
@@ -145,7 +140,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                 viewModel.searchNow()
                             },
                             label = { Text(text = "hello") },
-                            colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = onSurface),
+                            colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = MaterialTheme.colorScheme.onSurface),
                             trailingIcon = {
                                 Icon(
                                     modifier = Modifier

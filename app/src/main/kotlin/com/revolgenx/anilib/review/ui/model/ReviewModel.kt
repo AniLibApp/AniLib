@@ -55,7 +55,8 @@ fun ReviewQuery.Review.toModel(): ReviewModel {
         body = body,
         anilifiedBody = anilifiedBody,
         bodySpanned = markdown.toMarkdown(anilifiedBody),
-        private = this.private ?: false
+        private = this.private ?: false,
+        siteUrl = siteUrl,
     ).also {
         it.userRating.value = userRating ?: ReviewRating.NO_VOTE
     }

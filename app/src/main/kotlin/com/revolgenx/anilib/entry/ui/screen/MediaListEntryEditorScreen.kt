@@ -45,7 +45,6 @@ import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.date.CalendarBottomSheet
-import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -60,7 +59,6 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSave
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
-import com.revolgenx.anilib.common.ui.theme.onSurface
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.entry.ui.component.CountEditor
 import com.revolgenx.anilib.entry.ui.component.DoubleCountEditor
@@ -69,6 +67,7 @@ import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
 import com.revolgenx.anilib.list.ui.model.getAlMediaListStatusForType
 import com.revolgenx.anilib.list.ui.model.getStatusFromAlMediaListStatus
 import com.revolgenx.anilib.list.ui.model.toAlMediaListStatus
+import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.type.ScoreFormat
 import org.koin.androidx.compose.koinViewModel
 import java.time.Instant
@@ -462,7 +461,7 @@ private fun CardHeaderContent(
                 modifier = Modifier.padding(horizontal = 16.dp),
                 text = heading,
                 maxLines = 1,
-                color = onSurface,
+                color = MaterialTheme.colorScheme.onSurface,
                 style = MaterialTheme.typography.bodySmall
             )
             Box(modifier = Modifier.let {
@@ -512,7 +511,7 @@ private fun CalendarPicker(
     TextButton(
         modifier = Modifier.fillMaxSize(),
         onClick = { openCalendar.value = true },
-        colors = ButtonDefaults.textButtonColors(contentColor = onSurface)
+        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface)
     ) {
         Icon(
             imageVector = AppIcons.IcCalendar,
