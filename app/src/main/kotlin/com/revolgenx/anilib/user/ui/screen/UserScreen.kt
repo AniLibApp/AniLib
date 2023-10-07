@@ -48,6 +48,10 @@ import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userMediaListScreen
 import com.revolgenx.anilib.common.ext.userRelationScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
+import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
+import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.appbar.collapse
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
@@ -365,9 +369,24 @@ private fun UserScreenTopAppbar(
         },
         navigationIcon = if (isTab.not()) null else ({}),
         actions = { isCollapsed ->
-            ActionMenu(icon = AppIcons.IcSettings, tonalButton = !isCollapsed) {
-                SettingScreen.isTab = false
-                navigator.push(SettingScreen)
+            OverflowMenu(
+                tonalButton = !isCollapsed
+            ) { expanded ->
+                if (isTab) {
+                    OverflowMenuItem(
+                        textRes = I18nR.string.settings,
+                        icon = AppIcons.IcSettings,
+                        contentDescriptionRes = null,
+                    ) {
+                        expanded.value = false
+                        SettingScreen.isTab = false
+                        navigator.push(SettingScreen)
+                    }
+                }
+                user?.siteUrl?.let { site ->
+                    OpenInBrowserOverflowMenu(link = site)
+                    ShareOverflowMenu(text = site)
+                }
             }
         }
     )

@@ -6,8 +6,8 @@ import java.io.InputStream
 import java.io.OutputStream
 
 
-open class MediaFilterSerializer : Serializer<MediaFilter> {
-    override val defaultValue: MediaFilter = MediaFilter()
+open class MediaFilterSerializer(override val defaultValue: MediaFilter = MediaFilter()) :
+    Serializer<MediaFilter> {
 
     override suspend fun readFrom(input: InputStream): MediaFilter {
         return try {

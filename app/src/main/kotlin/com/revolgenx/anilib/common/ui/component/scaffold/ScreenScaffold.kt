@@ -1,10 +1,11 @@
 package com.revolgenx.anilib.common.ui.component.scaffold
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MoreVert
@@ -24,6 +25,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
@@ -32,6 +34,8 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
+import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 
 
@@ -42,6 +46,9 @@ fun ScreenScaffold(
     title: String = "",
     subTitle: String? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    attachScrollBehaviorConnection: Boolean = true,
+    bottomNestedScrollConnection: BottomNestedScrollConnection? = null,
+    attachBottomScrollConnection: Boolean = true,
     topBar: (@Composable () -> Unit)? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     floatingActionButton: @Composable () -> Unit = {},
@@ -50,8 +57,7 @@ fun ScreenScaffold(
     appBarColors: AppBarColors = AppBarDefaults.transparentColor(),
     actions: (@Composable RowScope.() -> Unit)? = null,
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
-    onMoreClick: (() -> Unit)? = null,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
@@ -70,11 +76,27 @@ fun ScreenScaffold(
                     scrollBehavior = scrollBehavior,
                     navigationIcon = navigationIcon,
                     actions = actions,
-                    onMoreClick = onMoreClick,
                 )
             }
         ) { paddingValues ->
-            Box(modifier = Modifier.padding(paddingValues)) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .let {
+                        if (attachBottomScrollConnection && bottomNestedScrollConnection != null) {
+                            it.nestedScroll(bottomNestedScrollConnection)
+                        } else {
+                            it
+                        }
+                    }.let {
+                        if (attachScrollBehaviorConnection && scrollBehavior != null) {
+                            it.nestedScroll(scrollBehavior.nestedScrollConnection)
+                        } else {
+                            it
+                        }
+                    }
+            ) {
                 content()
             }
         }
@@ -94,7 +116,6 @@ fun ScreenTopAppbar(
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     appBarLayoutColors: AppBarLayoutColors = AppBarLayoutDefaults.appBarLayoutColors(),
     appBarColors: AppBarColors = AppBarDefaults.transparentColor(),
-    onMoreClick: (() -> Unit)? = null
 ) {
     AppBarLayout(
         scrollBehavior = scrollBehavior,
@@ -108,10 +129,8 @@ fun ScreenTopAppbar(
                         text = title,
                     )
                     subTitle?.let {
-                        Text(
-                            text = it,
-                            fontSize = 12.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        SmallLightText(
+                            text = it
                         )
                     }
                 }
@@ -119,13 +138,7 @@ fun ScreenTopAppbar(
             navigationIcon = navigationIcon ?: {
                 NavigationIcon()
             },
-            actions = actions ?: {
-                IconButton(onClick = {
-                    onMoreClick?.invoke()
-                }) {
-                    Icon(Icons.Filled.MoreVert, null)
-                }
-            },
+            actions = actions ?: {},
             colors = appBarColors
         )
     }

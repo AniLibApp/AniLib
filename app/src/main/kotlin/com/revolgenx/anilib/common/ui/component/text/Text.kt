@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun SemiBoldText(
+fun LargeSemiBoldText(
     text: String,
     modifier: Modifier = Modifier,
     fontSize: TextUnit? = null,
@@ -58,7 +58,7 @@ fun MediumText(
         text = text,
         maxLines = maxLines ?: 2,
         fontSize = fontSize ?: 13.sp,
-        lineHeight = lineHeight ?: 14.sp,
+        lineHeight = lineHeight ?: 16.sp,
         overflow = TextOverflow.Ellipsis,
         fontWeight = FontWeight.Medium,
         letterSpacing = 0.2.sp,
@@ -70,7 +70,7 @@ fun MediumText(
 
 
 @Composable
-fun LightText(
+fun SmallRegularText(
     text: String,
     modifier: Modifier = Modifier,
     fontSize: TextUnit? = null,
@@ -78,6 +78,32 @@ fun LightText(
     lineHeight: TextUnit? = null,
     textAlign: TextAlign? = null,
     color: Color? = null,
+    style: TextStyle = LocalTextStyle.current
+) {
+    Text(
+        modifier = modifier,
+        text = text,
+        maxLines = maxLines ?: 2,
+        fontSize = fontSize ?: 12.sp,
+        lineHeight = lineHeight ?: 13.sp,
+        overflow = TextOverflow.Ellipsis,
+        letterSpacing = 0.2.sp,
+        textAlign = textAlign,
+        color = color ?: MaterialTheme.colorScheme.onSurfaceVariant,
+        style = style
+    )
+}
+
+
+@Composable
+fun SmallLightText(
+    text: String,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit? = null,
+    maxLines: Int? = null,
+    lineHeight: TextUnit? = null,
+    textAlign: TextAlign? = null,
+    color: Color? = null
 ) {
     Text(
         modifier = modifier,

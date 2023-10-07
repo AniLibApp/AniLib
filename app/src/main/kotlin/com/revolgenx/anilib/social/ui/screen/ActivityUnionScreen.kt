@@ -99,15 +99,10 @@ object ActivityUnionScreen : BaseTabScreen() {
                 }
             },
             scrollBehavior = scrollBehavior,
+            bottomNestedScrollConnection = bottomNestedScrollConnection,
             contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
         ) {
-            Box(
-                modifier = Modifier
-                    .nestedScroll(bottomNestedScrollConnection)
-                    .nestedScroll(scrollBehavior.nestedScrollConnection),
-            ) {
-                ActivityUnionScreenContent(viewModel = viewModel)
-            }
+            ActivityUnionScreenContent(viewModel = viewModel)
         }
     }
 }

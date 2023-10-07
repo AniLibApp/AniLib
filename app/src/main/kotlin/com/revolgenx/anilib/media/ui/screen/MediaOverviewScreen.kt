@@ -64,7 +64,7 @@ import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ui.component.button.SmallTextButton
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
-import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -222,8 +222,7 @@ fun MediaRelationCard(
     MediaCard(
         media = media,
         width = 140.dp,
-        bottomContent = {
-
+        footerContent = {
             val format = media.format.toStringRes().toStringResource()
             val status = media.status.toStringRes().toStringResource()
             val source = mediaEdgeModel.relationType.toStringRes().toStringResource()
@@ -233,22 +232,14 @@ fun MediaRelationCard(
             } else {
                 source
             }
-            Spacer(modifier = Modifier.weight(1f))
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(bottom = 2.dp)
-                    .padding(horizontal = 4.dp)
-            ) {
-                LightText(
-                    text = sourceYearText,
-                    lineHeight = 11.sp
-                )
-                LightText(
-                    text = stringResource(id = I18nR.string.s_dot_s).format(format, status),
-                    lineHeight = 11.sp
-                )
-            }
+            SmallLightText(
+                text = sourceYearText,
+                lineHeight = 11.sp
+            )
+            SmallLightText(
+                text = stringResource(id = I18nR.string.s_dot_s).format(format, status),
+                lineHeight = 11.sp
+            )
         },
         onMediaClick = onMediaClick
     )
@@ -378,7 +369,8 @@ fun MediaStats(media: MediaModel) {
                 ),
                 MediaInfoItem(
                     title = I18nR.string.mean_score.toStringResource(),
-                    value = I18nR.string.s_percent.toStringResource().format(media.meanScore.orZero())
+                    value = I18nR.string.s_percent.toStringResource()
+                        .format(media.meanScore.orZero())
                 ),
                 MediaInfoItem(
                     title = I18nR.string.popularity.toStringResource(),

@@ -1,14 +1,11 @@
 package com.revolgenx.anilib.notification.ui.screen
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -18,7 +15,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
@@ -30,7 +26,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -38,13 +33,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -63,7 +57,6 @@ import com.revolgenx.anilib.notification.ui.model.ThreadNotificationModel
 import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
 import com.revolgenx.anilib.social.ui.screen.ActivityScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
@@ -89,174 +82,169 @@ private fun NotificationScreenContent(
         val snackbarHostState = localSnackbarHostState()
         val scope = rememberCoroutineScope()
         val pagingItems = viewModel.collectAsLazyPagingItems()
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
-        ) {
-            LazyPagingList(
-                pagingItems = pagingItems,
-                onRefresh = {
-                    viewModel.refresh()
-                },
-                itemContentIndex = { index, notificationModel ->
-                    notificationModel ?: return@LazyPagingList
-                    var text by remember { mutableStateOf<String?>(null) }
-                    var image by remember { mutableStateOf<String?>(null) }
-                    var reason: String? = null
-                    val createdAt: String = notificationModel.createdAtPrettyTime ?: ""
-                    var onImageClick: (() -> Unit)? = null
-                    var onClick = {}
 
-                    when (notificationModel) {
-                        is AiringNotificationModel -> {
-                            MediaCoverImageType {
-                                image = notificationModel.media?.coverImage?.image(it)
-                            }
-                            MediaTitleType {
-                                val (c1, c2, c3) = notificationModel.contexts
-                                    ?: return@MediaTitleType
-                                text =
-                                    "$c1 ${notificationModel.episode} $c2 ${
-                                        notificationModel.media?.title?.title(
-                                            it
-                                        )
-                                    } $c3"
-                            }
-                            onClick = {
-                                navigator.mediaScreen(
-                                    notificationModel.animeId,
-                                    notificationModel.media?.type
-                                )
-                            }
+        LazyPagingList(
+            pagingItems = pagingItems,
+            onRefresh = {
+                viewModel.refresh()
+            },
+            itemContentIndex = { index, notificationModel ->
+                notificationModel ?: return@LazyPagingList
+                var text by remember { mutableStateOf<String?>(null) }
+                var image by remember { mutableStateOf<String?>(null) }
+                var reason: String? = null
+                val createdAt: String = notificationModel.createdAtPrettyTime ?: ""
+                var onImageClick: (() -> Unit)? = null
+                var onClick = {}
+
+                when (notificationModel) {
+                    is AiringNotificationModel -> {
+                        MediaCoverImageType {
+                            image = notificationModel.media?.coverImage?.image(it)
                         }
-
-                        is ActivityNotificationModel -> {
-                            image = notificationModel.user?.avatar?.image
-                            text = "${notificationModel.user?.name} ${notificationModel.context}"
-
-                            onImageClick = {
-                                navigator.push(UserScreen(notificationModel.userId))
-                            }
-                            onClick = {
-                                navigator.push(ActivityScreen(notificationModel.activityId))
-                            }
-                        }
-
-                        is FollowingNotificationModel -> {
-                            image = notificationModel.user?.avatar?.image
-                            text = "${notificationModel.user?.name} ${notificationModel.context}"
-
-                            onClick = {
-                                navigator.push(UserScreen(notificationModel.userId))
-                            }
-                        }
-
-                        is ThreadNotificationModel -> {
-                            image = notificationModel.user?.avatar?.image
+                        MediaTitleType {
+                            val (c1, c2, c3) = notificationModel.contexts
+                                ?: return@MediaTitleType
                             text =
-                                "${notificationModel.user?.name} ${notificationModel.context} ${notificationModel.thread?.title}"
-                            onImageClick = {
-                                navigator.push(UserScreen(notificationModel.userId))
-                            }
-                            onClick = {
-                                //todo: open thread link
-                            }
+                                "$c1 ${notificationModel.episode} $c2 ${
+                                    notificationModel.media?.title?.title(
+                                        it
+                                    )
+                                } $c3"
                         }
-
-                        is RelatedMediaNotificationModel -> {
-                            MediaCoverImageType {
-                                image = notificationModel.media?.coverImage?.image(it)
-                            }
-                            MediaTitleType {
-                                text =
-                                    "${notificationModel.media?.title?.title(it)} ${notificationModel.context}"
-                            }
-                            onClick = {
-                                navigator.mediaScreen(
-                                    notificationModel.mediaId,
-                                    notificationModel.media?.type
-                                )
-                            }
-                        }
-
-                        is MediaDataChangeNotificationModel -> {
-                            MediaCoverImageType {
-                                image = notificationModel.media?.coverImage?.image(it)
-                            }
-                            MediaTitleType {
-                                text =
-                                    "${notificationModel.media?.title?.title(it)} ${notificationModel.context}"
-                            }
-                            reason = notificationModel.reason
-
-                            onClick = {
-                                navigator.mediaScreen(
-                                    notificationModel.mediaId,
-                                    notificationModel.media?.type
-                                )
-                            }
-                        }
-
-                        is MediaMergeNotificationModel -> {
-                            MediaCoverImageType {
-                                image = notificationModel.media?.coverImage?.image(it)
-                            }
-                            MediaTitleType {
-                                text =
-                                    "${notificationModel.media?.title?.title(it)} ${notificationModel.context}"
-                            }
-                            reason = notificationModel.reason
-
-                            onClick = {
-                                navigator.mediaScreen(
-                                    notificationModel.mediaId,
-                                    notificationModel.media?.type
-                                )
-                            }
-                        }
-
-                        is MediaDeletionNotificationModel -> {
-                            text =
-                                "${notificationModel.deletedMediaTitle} ${notificationModel.context}"
-                            reason = notificationModel.reason
+                        onClick = {
+                            navigator.mediaScreen(
+                                notificationModel.animeId,
+                                notificationModel.media?.type
+                            )
                         }
                     }
 
-                    reason =
-                        "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                    is ActivityNotificationModel -> {
+                        image = notificationModel.user?.avatar?.image
+                        text = "${notificationModel.user?.name} ${notificationModel.context}"
 
-                    val notificationTitle = text.orEmpty()
-                    NotificationItem(
-                        notificationTitle = notificationTitle,
-                        image = image,
-                        reason = reason,
-                        isUnread = notificationModel.unreadNotificationCount >= index + 1,
-                        createdAt = createdAt,
-                        onImageClick = onImageClick,
-                        onTitleClick = {
-                            scope.launch {
-                                snackbarHostState.showSnackbar(
-                                    message = notificationTitle,
-                                    withDismissAction = true,
-                                    duration = SnackbarDuration.Short
-                                )
-                            }
-                        },
-                        showReasonClick = {
-                            scope.launch {
-                                snackbarHostState.showSnackbar(
-                                    message = reason!!,
-                                    withDismissAction = true,
-                                    duration = SnackbarDuration.Short
-                                )
-                            }
-                        },
-                        onClick = onClick
-                    )
+                        onImageClick = {
+                            navigator.push(UserScreen(notificationModel.userId))
+                        }
+                        onClick = {
+                            navigator.push(ActivityScreen(notificationModel.activityId))
+                        }
+                    }
+
+                    is FollowingNotificationModel -> {
+                        image = notificationModel.user?.avatar?.image
+                        text = "${notificationModel.user?.name} ${notificationModel.context}"
+
+                        onClick = {
+                            navigator.push(UserScreen(notificationModel.userId))
+                        }
+                    }
+
+                    is ThreadNotificationModel -> {
+                        image = notificationModel.user?.avatar?.image
+                        text =
+                            "${notificationModel.user?.name} ${notificationModel.context} ${notificationModel.thread?.title}"
+                        onImageClick = {
+                            navigator.push(UserScreen(notificationModel.userId))
+                        }
+                        onClick = {
+                            //todo: open thread link
+                        }
+                    }
+
+                    is RelatedMediaNotificationModel -> {
+                        MediaCoverImageType {
+                            image = notificationModel.media?.coverImage?.image(it)
+                        }
+                        MediaTitleType {
+                            text =
+                                "${notificationModel.media?.title?.title(it)} ${notificationModel.context}"
+                        }
+                        onClick = {
+                            navigator.mediaScreen(
+                                notificationModel.mediaId,
+                                notificationModel.media?.type
+                            )
+                        }
+                    }
+
+                    is MediaDataChangeNotificationModel -> {
+                        MediaCoverImageType {
+                            image = notificationModel.media?.coverImage?.image(it)
+                        }
+                        MediaTitleType {
+                            text =
+                                "${notificationModel.media?.title?.title(it)} ${notificationModel.context}"
+                        }
+                        reason = notificationModel.reason
+
+                        onClick = {
+                            navigator.mediaScreen(
+                                notificationModel.mediaId,
+                                notificationModel.media?.type
+                            )
+                        }
+                    }
+
+                    is MediaMergeNotificationModel -> {
+                        MediaCoverImageType {
+                            image = notificationModel.media?.coverImage?.image(it)
+                        }
+                        MediaTitleType {
+                            text =
+                                "${notificationModel.media?.title?.title(it)} ${notificationModel.context}"
+                        }
+                        reason = notificationModel.reason
+
+                        onClick = {
+                            navigator.mediaScreen(
+                                notificationModel.mediaId,
+                                notificationModel.media?.type
+                            )
+                        }
+                    }
+
+                    is MediaDeletionNotificationModel -> {
+                        text =
+                            "${notificationModel.deletedMediaTitle} ${notificationModel.context}"
+                        reason = notificationModel.reason
+                    }
                 }
-            )
-        }
+
+                reason =
+                    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+
+                val notificationTitle = text.orEmpty()
+                NotificationItem(
+                    notificationTitle = notificationTitle,
+                    image = image,
+                    reason = reason,
+                    isUnread = notificationModel.unreadNotificationCount >= index + 1,
+                    createdAt = createdAt,
+                    onImageClick = onImageClick,
+                    onTitleClick = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = notificationTitle,
+                                withDismissAction = true,
+                                duration = SnackbarDuration.Short
+                            )
+                        }
+                    },
+                    showReasonClick = {
+                        scope.launch {
+                            snackbarHostState.showSnackbar(
+                                message = reason!!,
+                                withDismissAction = true,
+                                duration = SnackbarDuration.Short
+                            )
+                        }
+                    },
+                    onClick = onClick
+                )
+            }
+        )
     }
 }
 
@@ -322,7 +310,7 @@ private fun NotificationItem(
                     reason?.let {
                         val showReason = stringResource(id = I18nR.string.show_reason)
                         val reasonState = remember { mutableStateOf(showReason) }
-                        LightText(
+                        SmallLightText(
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null

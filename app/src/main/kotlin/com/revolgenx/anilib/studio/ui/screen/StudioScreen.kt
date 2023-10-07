@@ -19,6 +19,9 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.mediaScreen
+import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.component.common.Header
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -48,47 +51,52 @@ private fun StudioScreenContent(studioId: Int, viewModel: StudioViewModel = koin
     viewModel.field.studioId = studioId
     val studio = stringResource(id = I18nR.string.studio)
     var studioName by remember { mutableStateOf<String?>(null) }
+    var studioSite by remember { mutableStateOf<String?>(null) }
     val navigator = localNavigator()
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val pagingItems = viewModel.collectAsLazyPagingItems()
 
     ScreenScaffold(
         title = studioName ?: studio,
-        actions = {},
-        scrollBehavior = scrollBehavior
+        actions = {
+            studioSite?.let { site ->
+                OverflowMenu {
+                    OpenInBrowserOverflowMenu(link = site)
+                    ShareOverflowMenu(text = site)
+                }
+            }
+        },
+        scrollBehavior = scrollBehavior,
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
-        ) {
-            LazyPagingList(
-                type = ListPagingListType.GRID,
-                pagingItems = pagingItems,
-                onRefresh = {
-                    viewModel.refresh()
-                },
-                span = { index ->
-                    val item = pagingItems[index]
-                    GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
-                },
-                gridOptions = GridOptions(GridCells.Adaptive(120.dp))
-            ) { baseModel ->
-                baseModel ?: return@LazyPagingList
+        LazyPagingList(
+            type = ListPagingListType.GRID,
+            pagingItems = pagingItems,
+            onRefresh = {
+                viewModel.refresh()
+            },
+            span = { index ->
+                val item = pagingItems[index]
+                GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
+            },
+            gridOptions = GridOptions(GridCells.Adaptive(120.dp))
+        ) { baseModel ->
+            baseModel ?: return@LazyPagingList
 
-                if (studioName == null && baseModel is MediaModel) {
-                    studioName = baseModel.studio?.name
+            if (studioName == null && baseModel is MediaModel) {
+                baseModel.studio?.let { s ->
+                    studioName = s.name
+                    studioSite = s.siteUrl
+                }
+            }
+
+            when (baseModel) {
+                is HeaderModel -> {
+                    Header(header = baseModel)
                 }
 
-                when (baseModel) {
-                    is HeaderModel -> {
-                        Header(header = baseModel)
-                    }
-
-                    is MediaModel -> {
-                        MediaCard(media = baseModel) { id, type->
-                            navigator.mediaScreen(id, type)
-                        }
+                is MediaModel -> {
+                    MediaCard(media = baseModel) { id, type ->
+                        navigator.mediaScreen(id, type)
                     }
                 }
             }

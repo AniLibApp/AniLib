@@ -23,7 +23,7 @@ import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowItemContentEnd
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
-import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnClickWithValue
@@ -90,7 +90,7 @@ fun StaffRowCard(
                 MediumText(text = staff.name?.full.naText())
 
                 role?.let {
-                    LightText(
+                    SmallLightText(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {

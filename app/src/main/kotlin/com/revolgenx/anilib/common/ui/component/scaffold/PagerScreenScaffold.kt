@@ -36,7 +36,6 @@ fun <T> PagerScreenScaffold(
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
-    onMoreClick: (() -> Unit)? = null,
     content: @Composable (page: Int) -> Unit
 ) {
 
@@ -55,7 +54,6 @@ fun <T> PagerScreenScaffold(
                     scrollBehavior = scrollBehavior,
                     pagerState = pagerState,
                     windowInsets = windowInsets,
-                    onMoreClick = onMoreClick,
                 ) { index ->
                     coroutineScope.launch {
                         pagerState.scrollToPage(index)

@@ -20,7 +20,7 @@ val md_theme_light_onSurfaceVariant = md_theme_light_onSurface.copy(SecondaryIte
 val md_theme_light_secondary = Color(0xFF51606F)
 val md_theme_light_onSecondary = Color(0xFFFFFFFF)
 val md_theme_light_secondaryContainer = colorAtElevation(md_theme_light_surface_container, md_theme_light_primary, ElevationTokens.Level3)
-val md_theme_light_onSecondaryContainer = colorAtElevation(md_theme_light_onSurface, md_theme_light_primary, ElevationTokens.Level3)
+val md_theme_light_onSecondaryContainer = colorAtElevation(md_theme_light_onSurfaceVariant, md_theme_light_primary, ElevationTokens.Level3)
 
 val md_theme_light_tertiary = Color(0xFF7C5800)
 val md_theme_light_onTertiary = Color(0xFFFFFFFF)

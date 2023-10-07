@@ -68,6 +68,7 @@ import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.component.text.LargeSemiBoldText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -107,7 +108,7 @@ private fun AiringScreenContent(
     viewModel: AiringScheduleViewModel = koinViewModel()
 ) {
 
-    val context = LocalContext.current
+    val context = localContext()
     val field = viewModel.field
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -197,47 +198,41 @@ private fun AiringScreenContent(
         scrollBehavior = scrollBehavior
     ) {
         val pagingItems = viewModel.collectAsLazyPagingItems()
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
-        ) {
-            LazyPagingList(
-                pagingItems = pagingItems,
-                onRefresh = {
-                    viewModel.refresh()
-                },
-                span = { index ->
-                    val item = pagingItems[index]
-                    GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
-                }
-            ) { model ->
-                model ?: return@LazyPagingList
-                when (model) {
-                    is HeaderModel -> {
-                        Header(header = model)
-                    }
 
-                    is AiringScheduleModel -> {
-                        AiringScheduleItem(airingScheduleModel = model) {
-                            navigator.mediaScreen(
-                                model.mediaId,
-                                model.media?.type
-                            )
-                        }
+        LazyPagingList(
+            pagingItems = pagingItems,
+            onRefresh = {
+                viewModel.refresh()
+            },
+            span = { index ->
+                val item = pagingItems[index]
+                GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
+            }
+        ) { model ->
+            model ?: return@LazyPagingList
+            when (model) {
+                is HeaderModel -> {
+                    Header(header = model)
+                }
+
+                is AiringScheduleModel -> {
+                    AiringScheduleItem(airingScheduleModel = model) {
+                        navigator.mediaScreen(
+                            model.mediaId,
+                            model.media?.type
+                        )
                     }
                 }
             }
         }
+    }
 
 
-        AiringScheduleFilterBottomSheet(
-            openBottomSheet = openBottomSheet,
-            bottomSheetState = bottomSheetState
-        ) { airingScheduleField ->
-            viewModel.updateField(airingScheduleField)
-        }
-
+    AiringScheduleFilterBottomSheet(
+        openBottomSheet = openBottomSheet,
+        bottomSheetState = bottomSheetState
+    ) { airingScheduleField ->
+        viewModel.updateField(airingScheduleField)
     }
 
 
@@ -288,7 +283,8 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(PaddingValues(horizontal = 8.dp, vertical = 4.dp)),
+                    .padding(horizontal = 8.dp)
+                    .padding(top = 8.dp, bottom = 4.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Column {
@@ -373,13 +369,9 @@ private fun AiringScheduleTimer(
     } else {
         airingScheduleTimer.timeLeft.value.formatString(context)
     }
-    Text(
+    LargeSemiBoldText(
         text = scheduleTimeText,
-        fontSize = 18.sp,
-        fontWeight = FontWeight.SemiBold,
-        lineHeight = 20.sp,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
-        letterSpacing = 0.2.sp
     )
 }
 

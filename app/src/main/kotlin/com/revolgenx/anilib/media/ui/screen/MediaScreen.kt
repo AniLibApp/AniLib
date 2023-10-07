@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.media.ui.screen
 
-import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -29,7 +28,6 @@ import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -54,8 +52,6 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
-import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
@@ -70,7 +66,7 @@ import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
+import com.revolgenx.anilib.common.ui.component.text.LargeSemiBoldText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
@@ -94,7 +90,6 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.type.MediaType
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
@@ -117,7 +112,6 @@ fun MediaScreenContent(
     mediaType: MediaType,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val context = localContext()
     val viewModel: MediaViewModel = koinViewModel()
     val recommendationViewModel: MediaRecommendationViewModel = koinViewModel()
     val statsViewModel: MediaStatsViewModel = koinViewModel()
@@ -153,14 +147,10 @@ fun MediaScreenContent(
     ScreenScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            val snackbarHostState = localSnackbarHostState()
             MediaScreenTopAppBar(
                 mediaType = mediaType,
                 mediaModel = viewModel.resource.value?.stateValue,
                 scrollBehavior = scrollBehavior,
-                context = context,
-                scope = coroutineScope,
-                snackbarHostState = snackbarHostState
             )
         },
         contentWindowInsets = emptyWindowInsets()
@@ -221,9 +211,6 @@ private fun MediaScreenTopAppBar(
     mediaType: MediaType,
     mediaModel: MediaModel?,
     scrollBehavior: TopAppBarScrollBehavior,
-    context: Context,
-    snackbarHostState: SnackbarHostState,
-    scope: CoroutineScope
 ) {
     val containerHeight = 320.dp
     CollapsingAppbar(
@@ -254,18 +241,8 @@ private fun MediaScreenTopAppBar(
                 OverflowMenu(
                     tonalButton = !isCollapsed
                 ) {
-                    OpenInBrowserOverflowMenu(
-                        link = site,
-                        context = context,
-                        scope = scope,
-                        snackbarHostState = snackbarHostState
-                    )
-                    ShareOverflowMenu(
-                        text = site,
-                        context = context,
-                        scope = scope,
-                        snackbarHostState = snackbarHostState
-                    )
+                    OpenInBrowserOverflowMenu(link = site)
+                    ShareOverflowMenu(text = site)
                 }
             }
         }
@@ -346,7 +323,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                             .align(Alignment.Bottom)
                     ) {
                         MediaTitleType {
-                            SemiBoldText(
+                            LargeSemiBoldText(
                                 text = media?.title?.title(it).naText(),
                                 fontSize = 20.sp,
                                 lineHeight = 22.sp,

@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.common.ui.icons
 
+import IcAiring
 import IcOpenInNew
 import IcShare
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -115,6 +116,7 @@ val AppIcons.AllIcons: ____KtList<ImageVector>
         }
         __AllIcons = listOf(
             IcAbout,
+            IcAiring,
             IcShare,
             IcOpenInNew,
             IcAnilib,

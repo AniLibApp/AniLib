@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -29,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.openLink
 import com.revolgenx.anilib.common.ext.shareText
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
@@ -167,12 +169,11 @@ fun NavigationIcon(
 }
 
 @Composable
-fun OpenInBrowserOverflowMenu(
-    link: String,
-    context: Context,
-    scope: CoroutineScope? = null,
-    snackbarHostState: SnackbarHostState? = null
-) {
+fun OpenInBrowserOverflowMenu(link: String) {
+    val context = localContext()
+    val snackbarHostState = localSnackbarHostState()
+    val scope = rememberCoroutineScope()
+
     OverflowMenuItem(
         textRes = I18nR.string.open_in_browser,
         icon = AppIcons.IcOpenInNew,
@@ -183,12 +184,10 @@ fun OpenInBrowserOverflowMenu(
 }
 
 @Composable
-fun ShareOverflowMenu(
-    text: String,
-    context: Context,
-    scope: CoroutineScope? = null,
-    snackbarHostState: SnackbarHostState? = null
-) {
+fun ShareOverflowMenu(text: String) {
+    val context = localContext()
+    val snackbarHostState = localSnackbarHostState()
+    val scope = rememberCoroutineScope()
     OverflowMenuItem(
         textRes = I18nR.string.share,
         icon = AppIcons.IcShare,

@@ -298,7 +298,11 @@
     <string name="q_mark" translatable="false">\?</string>
     <!--Others-->
 
+    <!--Explore Screen-->
+    <!--Explore Screen-->
+
     <!--Airing Schedule Screen-->
+    <string name="airing">Airing</string>
     <string name="select_date">Select Date</string>
     <string name="weekly">Weekly</string>
     <string name="ep_s_airing_in">Ep %1$d airing in</string>
@@ -416,5 +420,7 @@
 
     <string name="open_in_browser">Open in browser</string>
     <string name="share">Share</string>
+    <string name="popular">Popular</string>
+    <string name="newly_added">Newly Added</string>
 
 </resources>

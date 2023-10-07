@@ -16,6 +16,9 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
+import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcAbout
@@ -70,7 +73,15 @@ private fun CharacterScreenContent(characterId: Int) {
     PagerScreenScaffold(
         pages = pages,
         pagerState = pagerState,
-        scrollBehavior = scrollBehavior
+        scrollBehavior = scrollBehavior,
+        actions = {
+            aboutViewModel.resource.value?.stateValue?.siteUrl?.let {site->
+                OverflowMenu {
+                    OpenInBrowserOverflowMenu(link = site)
+                    ShareOverflowMenu(text = site)
+                }
+            }
+        }
     ) { page ->
         Box(
             modifier = Modifier

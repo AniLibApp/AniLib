@@ -25,6 +25,8 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -102,11 +104,12 @@ private fun MediaListEditScreenContent(
     val editTitle = stringResource(id = I18nR.string.edit)
     var title by remember { mutableStateOf(editTitle) }
     val openConfirmDialog = remember { mutableStateOf(false) }
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
     ScreenScaffold(
         title = title,
+        scrollBehavior = scrollBehavior,
         actions = {
-
             IconButton(onClick = { /*TODO*/ }) {
                 Icon(
                     imageVector = if (viewModel.isFavourite) AppIcons.IcHeart else AppIcons.IcHeartOutline,

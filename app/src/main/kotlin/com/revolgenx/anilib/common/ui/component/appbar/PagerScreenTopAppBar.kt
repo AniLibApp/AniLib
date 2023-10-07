@@ -37,7 +37,6 @@ fun <T> PagerScreenTopAppBar(
     navigationIcon: (@Composable () -> Unit)? = null,
     actions: (@Composable RowScope.() -> Unit)? = null,
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
-    onMoreClick: (() -> Unit)? = null,
     onPageClick: (index: Int) -> Unit,
 ) {
     AppBarLayout(
@@ -51,13 +50,7 @@ fun <T> PagerScreenTopAppBar(
             navigationIcon = navigationIcon ?: {
                 NavigationIcon()
             },
-            actions = actions ?: {
-                IconButton(onClick = {
-                    onMoreClick?.invoke()
-                }) {
-                    Icon(Icons.Filled.MoreVert, null)
-                }
-            }
+            actions = actions ?: {}
         )
     }
 }

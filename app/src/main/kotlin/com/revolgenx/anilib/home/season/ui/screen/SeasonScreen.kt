@@ -37,8 +37,9 @@ import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
-import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.text.SmallRegularText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -148,8 +149,9 @@ private fun SeasonItem(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(PaddingValues(horizontal = 8.dp, vertical = 4.dp)),
-                verticalArrangement = Arrangement.spacedBy(1.dp)
+                    .padding(horizontal = 8.dp)
+                    .padding(bottom = 4.dp, top = 8.dp),
+                verticalArrangement = Arrangement.spacedBy(3.dp)
             ) {
                 MediaTitleType { type ->
                     MediumText(
@@ -164,7 +166,7 @@ private fun SeasonItem(
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     media.genres?.take(4)?.map { genre ->
-                        LightText(
+                        SmallLightText(
                             text = genre,
                             fontSize = 10.sp,
                             color = MaterialTheme.colorScheme.primary,
@@ -172,31 +174,26 @@ private fun SeasonItem(
                     }
                 }
 
-                Text(
+                SmallRegularText(
                     stringResource(id = media.status.toStringRes()),
                     color = media.status.toColor(),
-                    fontSize = 12.sp,
                 )
 
-                Text(
+                SmallRegularText(
                     "${media.startDate?.toString().naText()} ~ ${
                         media.endDate?.toString().naText()
                     }",
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
-                Text(
+
+                SmallRegularText(
                     stringResource(id = I18nR.string.ep_d_s).format(
                         media.episodes.naText(),
                         media.duration.naText()
                     ),
-                    fontSize = 12.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
 
-                Text(
+                SmallRegularText(
                     stringResource(id = media.format.toStringRes()),
-                    fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.primary,
                 )
             }

@@ -1,16 +1,17 @@
 package com.revolgenx.anilib.common.ui.viewmodel
 
-import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
+import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
-import com.revolgenx.anilib.common.data.store.animeListFilterStoreFileName
-import com.revolgenx.anilib.common.data.store.mangaListFilterStoreFileName
-import com.revolgenx.anilib.common.data.store.seasonFilterStoreFileName
+import com.revolgenx.anilib.common.data.store.animeListFilterDataStore
+import com.revolgenx.anilib.common.data.store.mangaListFilterDataStore
+import com.revolgenx.anilib.common.data.store.seasonFilterDataStore
 import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.home.season.ui.screen.SeasonViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
@@ -41,16 +42,16 @@ import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.data.field.UserFavouriteType
-import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteContentViewModel
-import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeMediaType
-import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsOverviewViewModel
-import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsGenreViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsOverviewViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsStaffViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsStudioViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTagsViewModel
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeMediaType
+import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsVoiceActorsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
@@ -73,8 +74,8 @@ val viewModelModules = module {
     viewModel { MediaStatsViewModel(get()) }
 
     // season
-    viewModel { SeasonViewModel(get(), get(named(seasonFilterStoreFileName))) }
-    viewModel { MediaFilterBottomSheetViewModel(get(named(seasonFilterStoreFileName))) }
+    viewModel { SeasonViewModel(get(), get()) }
+    viewModel { MediaFilterBottomSheetViewModel(seasonFilterDataStore()) }
 
     //character
     viewModel { CharacterAboutViewModel(get()) }
@@ -173,8 +174,8 @@ val viewModelModules = module {
     viewModel { MediaListEntryEditorViewModel(get()) }
 
     //list
-    viewModel { AnimeListViewModel(get(), get(), get(named(animeListFilterStoreFileName))) }
-    viewModel { MangaListViewModel(get(), get(), get(named(mangaListFilterStoreFileName))) }
+    viewModel { AnimeListViewModel(get(), get(), animeListFilterDataStore()) }
+    viewModel { MangaListViewModel(get(), get(), mangaListFilterDataStore()) }
     viewModel { MediaListFilterViewModel() }
 
     //activity union
@@ -198,4 +199,8 @@ val viewModelModules = module {
     viewModel { MediaSettingsViewModel(get(), get(), get()) }
     viewModel { NotificationSettingsViewModel(get(), get()) }
 
+    //explore
+    viewModel { ExploreMediaViewModel.ExploreTrendingViewModel(get(), get()) }
+    viewModel { ExploreMediaViewModel.ExplorePopularViewModel(get(), get()) }
+    viewModel { ExploreMediaViewModel.ExploreNewlyAddedViewModel(get(), get()) }
 }

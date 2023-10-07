@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.review.ui.screen
 
-import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,14 +21,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,8 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.userScreen
@@ -58,7 +53,7 @@ import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -70,7 +65,6 @@ import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
 import com.revolgenx.anilib.type.ReviewRating
-import kotlinx.coroutines.CoroutineScope
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -88,9 +82,6 @@ class ReviewScreen(private val reviewId: Int) : AndroidScreen() {
 @Composable
 private fun ReviewScreenContent(viewModel: ReviewViewModel) {
 
-    val context = localContext()
-    val scope = rememberCoroutineScope()
-
     LaunchedEffect(viewModel) {
         viewModel.getResource()
     }
@@ -101,14 +92,9 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
 
     ScreenScaffold(
         topBar = {
-            val snackbarHostState = localSnackbarHostState()
-
             ReviewScreenTopAppBar(
                 reviewModel = viewModel.resource.value?.stateValue,
                 scrollBehavior = scrollBehavior,
-                context = context,
-                scope = scope,
-                snackbarHostState = snackbarHostState
             )
         }) {
         ResourceScreen(viewModel = viewModel) { review ->
@@ -152,7 +138,7 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
                         Text(text = stringResource(id = I18nR.string.score_d_100).format(review.score.orZero()))
                     }
 
-                    LightText(
+                    SmallLightText(
                         modifier = Modifier.weight(1f),
                         text = review.createdAtPrettyTime,
                         fontSize = 11.sp,
@@ -208,9 +194,6 @@ fun ReviewLikeDislikeButton(
 private fun ReviewScreenTopAppBar(
     reviewModel: ReviewModel?,
     scrollBehavior: TopAppBarScrollBehavior,
-    context: Context,
-    snackbarHostState: SnackbarHostState,
-    scope: CoroutineScope
 ) {
     val media = reviewModel?.media
     val containerHeight = 200.dp
@@ -281,18 +264,8 @@ private fun ReviewScreenTopAppBar(
                 OverflowMenu(
                     tonalButton = !isCollapsed
                 ) {
-                    OpenInBrowserOverflowMenu(
-                        link = site,
-                        context = context,
-                        scope = scope,
-                        snackbarHostState = snackbarHostState
-                    )
-                    ShareOverflowMenu(
-                        text = site,
-                        context = context,
-                        scope = scope,
-                        snackbarHostState = snackbarHostState
-                    )
+                    OpenInBrowserOverflowMenu(link = site)
+                    ShareOverflowMenu(text = site)
                 }
             }
         }

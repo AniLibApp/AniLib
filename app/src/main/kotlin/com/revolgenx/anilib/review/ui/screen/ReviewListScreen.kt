@@ -50,7 +50,7 @@ import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -243,7 +243,7 @@ fun ReviewListItem(
                     .padding(top = 2.dp, bottom = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                LightText(modifier = Modifier.weight(1f), text = model.createdAtPrettyTime)
+                SmallLightText(modifier = Modifier.weight(1f), text = model.createdAtPrettyTime)
                 Icon(
                     modifier = Modifier.size(12.dp),
                     imageVector = AppIcons.IcThumbUp,

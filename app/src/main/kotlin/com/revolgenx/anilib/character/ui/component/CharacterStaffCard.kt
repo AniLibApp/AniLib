@@ -22,7 +22,7 @@ import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowItemContentEnd
-import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.staff.ui.model.StaffModel
@@ -79,7 +79,7 @@ fun CharacterStaffCard(
                     characterRole?.let {
                         stringArrayResource(id = R.array.character_role).getOrNull(it.ordinal)
                             ?.let {
-                                LightText(
+                                SmallLightText(
                                     modifier = Modifier.fillMaxWidth(),
                                     text = it
                                 )

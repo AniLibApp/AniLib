@@ -89,7 +89,7 @@ class BrowseScreen : AndroidScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BrowseScreenContent() {
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val viewModel = koinViewModel<BrowseViewModel>()
     val navigator = localNavigator()
 
@@ -103,56 +103,48 @@ private fun BrowseScreenContent() {
     ) {
         val pagingItems = viewModel.collectAsLazyPagingItems()
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(scrollBehavior.nestedScrollConnection)
-        ) {
-            LazyPagingList(
-                pagingItems = pagingItems,
-                type = viewModel.listType.value,
-                onRefresh = {
-                    viewModel.refresh()
-                },
-                gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
-            ) { browseModel ->
-                when (browseModel) {
-                    is MediaModel -> {
-                        MediaCard(browseModel) { id, type ->
-                            navigator.mediaScreen(id, type)
-                        }
+        LazyPagingList(
+            pagingItems = pagingItems,
+            type = viewModel.listType.value,
+            onRefresh = {
+                viewModel.refresh()
+            },
+            gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
+        ) { browseModel ->
+            when (browseModel) {
+                is MediaModel -> {
+                    MediaCard(browseModel) { id, type ->
+                        navigator.mediaScreen(id, type)
                     }
+                }
 
-                    is CharacterModel -> {
-                        CharacterCard(browseModel) {
-                            navigator.characterScreen(it)
-                        }
+                is CharacterModel -> {
+                    CharacterCard(browseModel) {
+                        navigator.characterScreen(it)
                     }
+                }
 
-                    is StaffModel -> {
-                        StaffCard(browseModel) {
-                            navigator.staffScreen(it)
-                        }
+                is StaffModel -> {
+                    StaffCard(browseModel) {
+                        navigator.staffScreen(it)
                     }
+                }
 
-                    is StudioModel -> {
-                        StudioItem(browseModel, onMediaClick = { id, type ->
-                            navigator.mediaScreen(id, type)
-                        }, onClick = {
-                            navigator.studioScreen(it)
-                        })
-                    }
+                is StudioModel -> {
+                    StudioItem(browseModel, onMediaClick = { id, type ->
+                        navigator.mediaScreen(id, type)
+                    }, onClick = {
+                        navigator.studioScreen(it)
+                    })
+                }
 
-                    is UserModel -> {
-                        BrowseUserItem(browseModel) {
-                            navigator.userScreen(it)
-                        }
+                is UserModel -> {
+                    BrowseUserItem(browseModel) {
+                        navigator.userScreen(it)
                     }
                 }
             }
-
         }
-
     }
 }
 

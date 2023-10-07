@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.user.ui.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.store.AuthDataStore
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
@@ -31,7 +30,7 @@ class UserViewModel(
     ResourceViewModel<UserModel, UserField>() {
     override val field: UserField = UserField()
 
-    val isLoggedInUser = authDataStore.userId.map().map { it == field.userId }
+    val isLoggedInUser = authDataStore.userId.mapNullable().map { it == field.userId }
 
     val userId = mutableStateOf<Int?>(null)
 

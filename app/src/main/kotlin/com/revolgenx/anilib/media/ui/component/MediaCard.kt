@@ -29,15 +29,15 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.toStringResource
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
-import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.util.OnMediaClick
+import com.revolgenx.anilib.list.ui.model.toColor
+import com.revolgenx.anilib.list.ui.model.toImageVector
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
-import com.revolgenx.anilib.common.ui.component.image.ImageOptions
-import com.revolgenx.anilib.list.ui.model.toColor
-import com.revolgenx.anilib.list.ui.model.toImageVector
 import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,7 +45,8 @@ import anilib.i18n.R as I18nR
 fun MediaCard(
     media: MediaModel,
     width: Dp? = null,
-    bottomContent: @Composable (ColumnScope.() -> Unit)? = null,
+    height: Dp = 248.dp,
+    footerContent: @Composable (ColumnScope.() -> Unit)? = null,
     onMediaClick: OnMediaClick
 ) {
     Card(
@@ -57,55 +58,49 @@ fun MediaCard(
                     it.fillMaxWidth()
                 }
             }
-            .height(252.dp)
+            .height(height)
             .padding(4.dp),
         onClick = {
             onMediaClick(media.id, media.type)
         }
     ) {
         MediaCardContent(media) {
-            if (bottomContent != null) {
-                bottomContent()
+            Spacer(modifier = Modifier.weight(1f))
+            if (footerContent != null) {
+                footerContent()
             } else {
                 val format = media.format.toStringRes().toStringResource()
                 val status = media.status.toStringRes().toStringResource()
                 val statusColor = media.status.toColor()
                 val year = media.seasonYear.naText()
 
-                Spacer(modifier = Modifier.weight(1f))
-
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(bottom = 2.dp)
-                        .padding(horizontal = 4.dp)
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(4.dp)
-                    ) {
-                        LightText(
-                            text = status,
-                            color = statusColor,
-                            lineHeight = 11.sp
-                        )
-
-                        media.mediaListEntry?.let {
-                            Icon(
-                                modifier = Modifier.size(12.dp),
-                                imageVector = it.status.toImageVector(),
-                                tint = it.status.toColor(),
-                                contentDescription = null
-                            )
-                        }
-                    }
-
-                    LightText(
-                        text = stringResource(id = I18nR.string.s_dot_s).format(format, year),
+                    SmallLightText(
+                        text = status,
+                        color = statusColor,
                         lineHeight = 11.sp
                     )
+
+                    media.mediaListEntry?.let {
+                        Icon(
+                            modifier = Modifier.size(12.dp),
+                            imageVector = it.status.toImageVector(),
+                            tint = it.status.toColor(),
+                            contentDescription = null
+                        )
+                    }
                 }
+
+                SmallLightText(
+                    text = stringResource(id = I18nR.string.s_dot_s).format(format, year),
+                    lineHeight = 11.sp
+                )
+
             }
+            Spacer(modifier = Modifier.size(2.dp))
         }
     }
 }
@@ -129,16 +124,19 @@ fun ColumnScope.MediaCardContent(
         )
     }
 
-    MediaTitleType { type ->
-        MediumText(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 2.dp)
-                .padding(horizontal = 4.dp),
-            text = mediaModel.title?.title(type).naText()
-        )
+    Column(
+        modifier = Modifier.padding(horizontal = 4.dp)
+    ) {
+        MediaTitleType { type ->
+            MediumText(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 4.dp),
+                text = mediaModel.title?.title(type).naText()
+            )
+        }
+        footerContent()
     }
-    footerContent()
 }
 
 
@@ -197,7 +195,7 @@ fun MediaItemRowContent(
             val format = stringResource(id = media.format.toStringRes())
             val year = media.seasonYear.naText()
 
-            LightText(
+            SmallLightText(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = I18nR.string.s_dot_s).format(format, year),
             )
@@ -254,7 +252,7 @@ fun MediaRowItemContentEnd(
 
             val year = media.seasonYear.naText()
 
-            LightText(
+            SmallLightText(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = I18nR.string.s_dot_s).format(format, year),
                 textAlign = TextAlign.End,

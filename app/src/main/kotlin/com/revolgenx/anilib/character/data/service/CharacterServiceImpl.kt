@@ -8,6 +8,7 @@ import com.revolgenx.anilib.character.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
@@ -23,7 +24,7 @@ class CharacterServiceImpl(apolloRepository: ApolloRepository) : BaseService(apo
 
     override fun getCharacter(field: CharacterField): Flow<CharacterModel?> {
         return field.toQuery().map { it.dataAssertNoErrors.character?.toModel() }
-            .flowOn(Dispatchers.IO)
+            .onIO()
     }
 
     override fun getCharacterMedia(field: CharacterMediaField): Flow<PageModel<MediaModel>> {
@@ -38,7 +39,7 @@ class CharacterServiceImpl(apolloRepository: ApolloRepository) : BaseService(apo
 
             }
         }
-            .flowOn(Dispatchers.IO)
+            .onIO()
     }
 
     override fun getCharacterActor(field: CharacterActorField): Flow<List<StaffModel>?> {

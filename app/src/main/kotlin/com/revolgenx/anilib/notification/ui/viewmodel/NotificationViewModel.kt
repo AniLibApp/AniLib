@@ -7,7 +7,6 @@ import com.revolgenx.anilib.notification.data.field.NotificationField
 import com.revolgenx.anilib.notification.data.service.NotificationService
 import com.revolgenx.anilib.notification.data.source.NotificationPagingSource
 import com.revolgenx.anilib.notification.ui.model.NotificationModel
-import kotlinx.coroutines.flow.first
 
 class NotificationViewModel(
     private val notificationService: NotificationService,
@@ -19,7 +18,7 @@ class NotificationViewModel(
 
     init {
         launch {
-            authDataStore.userId.collect{ userId ->
+            authDataStore.userId.collectNullable{ userId ->
                 field.userId = userId
                 refresh()
             }

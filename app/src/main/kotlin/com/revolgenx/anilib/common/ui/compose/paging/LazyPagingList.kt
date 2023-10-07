@@ -2,9 +2,11 @@ package com.revolgenx.anilib.common.ui.compose.paging
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemScope
@@ -37,6 +39,7 @@ import kotlinx.coroutines.delay
 
 enum class ListPagingListType {
     COLUMN,
+    ROW,
     GRID
 }
 
@@ -72,6 +75,13 @@ fun <M : BaseModel> LazyPagingList(
     }) {
         when (type) {
             ListPagingListType.COLUMN -> LazyColumnLayout(
+                items = items,
+                pagingItems = pagingItems,
+                itemContent = itemContent,
+                itemContentIndex = itemContentIndex
+            )
+
+            ListPagingListType.ROW -> LazyRowLayout(
                 items = items,
                 pagingItems = pagingItems,
                 itemContent = itemContent,
@@ -132,10 +142,58 @@ private fun <M : BaseModel> LazyColumnLayout(
         }
 
         pagingItems?.let {
-            lazyListResourceState(items = items, pagingItems = pagingItems)
+            lazyListResourceState(items = items, pagingItems = pagingItems, type = ListPagingListType.COLUMN)
         }
     }
 }
+
+
+@Composable
+private fun <M : BaseModel> LazyRowLayout(
+    items: List<M>?,
+    pagingItems: LazyPagingItems<M>?,
+    itemContentIndex: (@Composable LazyItemScope.(index: Int, value: M?) -> Unit)? = null,
+    itemContent: (@Composable LazyItemScope.(value: M?) -> Unit)? = null
+) {
+    LazyRow(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        pagingItems?.let {
+            itemsIndexed(
+                items = pagingItems,
+                key = { i, _ -> i }
+            ) { index, item ->
+                if (itemContent != null) {
+                    itemContent(item)
+                }
+
+                if (itemContentIndex != null) {
+                    itemContentIndex(index, item)
+                }
+            }
+        }
+
+        items?.let {
+            itemsIndexed(
+                items = items,
+                key = { i, _ -> i }
+            ) { index, item ->
+                if (itemContent != null) {
+                    itemContent(item)
+                }
+
+                if (itemContentIndex != null) {
+                    itemContentIndex(index, item)
+                }
+            }
+        }
+
+        pagingItems?.let {
+            lazyListResourceState(items = items, pagingItems = pagingItems, type = ListPagingListType.ROW)
+        }
+    }
+}
+
 
 @Composable
 private fun <M : BaseModel> LazyGridLayout(
@@ -210,6 +268,7 @@ private fun <M : BaseModel> LazyGridLayout(
 private fun <M : BaseModel> LazyListScope.lazyListResourceState(
     items: List<M>?,
     pagingItems: LazyPagingItems<M>?,
+    type: ListPagingListType
 ) {
 
     if (items?.isEmpty() == true) {
@@ -256,7 +315,7 @@ private fun <M : BaseModel> LazyListScope.lazyListResourceState(
 
         LoadState.Loading -> {
             item {
-                LoadingSection()
+                LoadingSection(typeRow = type == ListPagingListType.ROW)
             }
         }
 

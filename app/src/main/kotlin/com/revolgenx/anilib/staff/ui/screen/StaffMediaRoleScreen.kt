@@ -31,7 +31,7 @@ import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConn
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.common.Header
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
@@ -129,7 +129,7 @@ private fun StaffMediaRoleItem(
             content = {
                 Box(modifier = Modifier.fillMaxHeight()) {
                     model.staffRole?.let {
-                        LightText(
+                        SmallLightText(
                             modifier = Modifier
                                 .align(Alignment.BottomStart)
                                 .clickable {

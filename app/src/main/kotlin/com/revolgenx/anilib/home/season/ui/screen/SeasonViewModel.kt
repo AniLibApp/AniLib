@@ -3,14 +3,12 @@ package com.revolgenx.anilib.home.season.ui.screen
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.datastore.core.DataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
-import com.revolgenx.anilib.home.season.data.store.SeasonFieldData
+import com.revolgenx.anilib.home.season.data.store.SeasonDataStore
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.media.data.source.MediaPagingSource
-import com.revolgenx.anilib.media.data.filter.MediaFilter
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.nextSeason
 import com.revolgenx.anilib.media.ui.model.previousSeason
@@ -19,15 +17,15 @@ import com.revolgenx.anilib.type.MediaSeason
 
 class SeasonViewModel(
     private val mediaService: MediaService,
-    private val seasonFilterStore: DataStore<MediaFilter>
+    private val seasonDataStore: SeasonDataStore
 ) :
     PagingViewModel<MediaModel, MediaField, MediaPagingSource>(initialize = false) {
 
-    override var field by mutableStateOf(SeasonFieldData.default().toField())
+    override var field by mutableStateOf(seasonDataStore.filter.get().toField())
 
     init {
         launch {
-            seasonFilterStore.data.collect {
+            seasonDataStore.filter.collect {
                 field = it.toField()
                 refresh()
             }
@@ -44,7 +42,7 @@ class SeasonViewModel(
             if (season == MediaSeason.WINTER) {
                 seasonYear = field.seasonYear!! + 1
             }
-            seasonFilterStore.updateData {
+            seasonDataStore.filter.update {
                 it.copy(
                     seasonYear = seasonYear,
                     season = season
@@ -60,7 +58,7 @@ class SeasonViewModel(
             if (season == MediaSeason.FALL) {
                 seasonYear = field.seasonYear!! - 1
             }
-            seasonFilterStore.updateData {
+            seasonDataStore.filter.update {
                 it.copy(
                     seasonYear = seasonYear,
                     season = season

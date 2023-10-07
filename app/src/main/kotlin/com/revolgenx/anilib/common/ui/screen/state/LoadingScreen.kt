@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.common.ui.screen.state
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -25,13 +26,17 @@ fun LazyItemScope.LoadingScreen() {
 @Composable
 fun LoadingSection(
     modifier: Modifier = Modifier,
+    typeRow: Boolean = false,
 ) {
-    LoadingLayout(modifier = modifier.fillMaxWidth())
+    LoadingLayout(modifier = if (typeRow) modifier.fillMaxHeight() else modifier.fillMaxWidth())
 }
+
 @Composable
-fun LinearLoadingSection(){
+fun LinearLoadingSection() {
     LinearProgressIndicator(
-        modifier = Modifier.fillMaxWidth().semantics(mergeDescendants = true) {}
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) {}
     )
 }
 
