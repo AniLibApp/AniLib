@@ -320,7 +320,8 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .align(Alignment.Bottom)
+                            .align(Alignment.Bottom),
+                        verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
                         MediaTitleType {
                             LargeSemiBoldText(
@@ -347,7 +348,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                             MediumText(
                                 text = media?.popularity.orZero().prettyNumberFormat(),
                                 fontSize = 14.sp,
-                                lineHeight = 15.sp,
+                                lineHeight = 17.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
 
@@ -360,7 +361,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                             MediumText(
                                 text = media?.favourites.orZero().prettyNumberFormat(),
                                 fontSize = 14.sp,
-                                lineHeight = 15.sp,
+                                lineHeight = 17.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
                         }
@@ -378,7 +379,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                     media?.seasonYear.naText()
                                 ),
                                 fontSize = 14.sp,
-                                lineHeight = 15.sp,
+                                lineHeight = 17.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
                         }
@@ -387,10 +388,10 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                             MediumText(
                                 text = stringResource(id = I18nR.string.episode_airing_date).format(
                                     it.episode,
-                                    it.airingAtModel?.airingDateTime.naText()
+                                    it.airingAtModel.airingDateTime.naText()
                                 ),
                                 fontSize = 15.sp,
-                                lineHeight = 16.sp,
+                                lineHeight = 17.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
                         }

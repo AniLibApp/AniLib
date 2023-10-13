@@ -10,6 +10,7 @@ import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.fragment.PageInfo
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import com.revolgenx.anilib.staff.data.field.StaffField
 import com.revolgenx.anilib.staff.data.field.StaffMediaCharacterField
 import com.revolgenx.anilib.staff.data.field.StaffMediaRoleField
@@ -20,8 +21,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 
-class StaffServiceImpl(apolloRepository: ApolloRepository) : StaffService,
-    BaseService(apolloRepository) {
+class StaffServiceImpl(
+    apolloRepository: ApolloRepository,
+    mediaSettingsDataStore: MediaSettingsDataStore
+) : StaffService,
+    BaseService(apolloRepository, mediaSettingsDataStore) {
     override fun getStaff(field: StaffField): Flow<StaffModel?> {
         return field.toQuery().map { it.dataAssertNoErrors.staff?.toModel() }
             .onIO()

@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.user.data.field
 
 import androidx.annotation.StringRes
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.UserFavouriteQuery
 import com.revolgenx.anilib.common.data.field.BaseSourceUserField
 import anilib.i18n.R as I18nR
@@ -19,7 +18,7 @@ data class UserFavouriteField(val type: UserFavouriteType): BaseSourceUserField<
     override fun toQueryOrMutation(): UserFavouriteQuery {
         return UserFavouriteQuery(
             id = nn(userId),
-            name = nn(userName),
+            name = nnString(userName),
             page = nn(page),
             perPage = nn(perPage),
             includeAnime = type == UserFavouriteType.FAVOURITE_ANIME,

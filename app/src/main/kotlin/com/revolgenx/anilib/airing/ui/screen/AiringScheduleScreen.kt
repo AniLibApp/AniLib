@@ -2,7 +2,6 @@ package com.revolgenx.anilib.airing.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -33,9 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -58,7 +55,7 @@ import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
-import com.revolgenx.anilib.common.ui.component.common.Header
+import com.revolgenx.anilib.common.ui.component.common.HeaderBox
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.date.CalendarBottomSheet
 import com.revolgenx.anilib.common.ui.component.date.CalendarRangeBottomSheet
@@ -212,7 +209,7 @@ private fun AiringScreenContent(
             model ?: return@LazyPagingList
             when (model) {
                 is HeaderModel -> {
-                    Header(header = model)
+                    HeaderBox(modifier = Modifier.padding(horizontal = 8.dp),header = model)
                 }
 
                 is AiringScheduleModel -> {

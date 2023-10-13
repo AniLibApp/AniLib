@@ -5,6 +5,7 @@ import android.text.Spanned
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.TypedValue
+import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -51,7 +52,7 @@ fun MarkdownText(
     color: Color = MaterialTheme.colorScheme.onSurface,
     fontSize: TextUnit = TextUnit.Unspecified,
     maxLines: Int = Int.MAX_VALUE,
-    overflow: TextOverflow = TextOverflow.Clip,
+    onLineCount: ((Int) -> Unit)? = null,
     onClick: OnClick? = null
 ) {
     val textSize = with(LocalDensity.current) {
@@ -65,32 +66,49 @@ fun MarkdownText(
     AndroidView(
         modifier = modifier.fillMaxWidth(),
         factory = { context ->
-            MarkdownTextView(context).also {
-                it.maxLines = maxLines
-                if (overflow == TextOverflow.Ellipsis) {
-                    it.ellipsize = TextUtils.TruncateAt.END
-                }
+            MarkdownTextView(context).also { textView ->
+                textView.maxLines = maxLines
+                textView.ellipsize = TextUtils.TruncateAt.END
                 onClick?.let { c ->
-                    it.setOnClickListener {
+                    textView.setOnClickListener {
                         c.invoke()
                     }
                 }
-                it.setTextColor(color.toArgb())
+                textView.setTextColor(color.toArgb())
 
-                it.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 if (text.isNullOrBlank().not()) {
-                    markdown.setMarkdown(it, text!!)
+                    markdown.setMarkdown(textView, text!!)
+                } else if (spanned.isNotNull()) {
+                    markdown.setParsedMarkdown(textView, spanned!!)
                 }
-                if (spanned.isNotNull()) {
-                    markdown.setParsedMarkdown(it, spanned!!)
+
+                onLineCount?.let {
+                    textView.addOnLayoutChangeListener(object : View.OnLayoutChangeListener {
+                        override fun onLayoutChange(
+                            v: View?,
+                            left: Int,
+                            top: Int,
+                            right: Int,
+                            bottom: Int,
+                            oldLeft: Int,
+                            oldTop: Int,
+                            oldRight: Int,
+                            oldBottom: Int
+                        ) {
+                            textView.removeOnLayoutChangeListener(this);
+                            onLineCount?.invoke(textView.lineCount);
+                        }
+                    })
                 }
             }
         },
         update = { textView ->
+            textView.maxLines = maxLines
+
             if (text.isNullOrBlank().not()) {
                 markdown.setMarkdown(textView, text!!)
-            }
-            if (spanned.isNotNull()) {
+            } else if (spanned.isNotNull()) {
                 markdown.setParsedMarkdown(textView, spanned!!)
             }
         }

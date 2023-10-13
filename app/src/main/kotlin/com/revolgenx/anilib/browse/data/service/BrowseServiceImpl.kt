@@ -1,30 +1,28 @@
 package com.revolgenx.anilib.browse.data.service
 
 import com.revolgenx.anilib.browse.data.field.BrowseField
-import com.revolgenx.anilib.character.ui.model.CharacterModel
-import com.revolgenx.anilib.character.ui.model.CharacterNameModel
 import com.revolgenx.anilib.character.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.PageInfo
-import com.revolgenx.anilib.media.ui.model.MediaConnectionModel
 import com.revolgenx.anilib.media.ui.model.toModel
-import com.revolgenx.anilib.staff.ui.model.StaffModel
-import com.revolgenx.anilib.staff.ui.model.StaffNameModel
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import com.revolgenx.anilib.staff.ui.model.toModel
-import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.studio.ui.model.toModel
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class BrowseServiceImpl(repository: ApolloRepository) : BaseService(repository), BrowseService {
+class BrowseServiceImpl(
+    apolloRepository: ApolloRepository,
+    mediaSettingsDataStore: MediaSettingsDataStore
+) : BaseService(apolloRepository, mediaSettingsDataStore), BrowseService {
     override fun browse(browseField: BrowseField): Flow<PageModel<BaseModel>> {
         return browseField.toQuery().map {
-            var data:List<BaseModel>? = null
+            var data: List<BaseModel>? = null
             var pageInfo: PageInfo? = null
             it.dataAssertNoErrors.apply {
                 when {
@@ -52,7 +50,7 @@ class BrowseServiceImpl(repository: ApolloRepository) : BaseService(repository),
                     studioPage != null -> {
                         pageInfo = studioPage.pageInfo.pageInfo
                         data = studioPage.studios?.mapNotNull { map ->
-                            map?.studio?.toModel()
+                            map?.studio?.toModel(field = browseField)
                         }
                     }
 

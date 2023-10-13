@@ -7,11 +7,15 @@ import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.notification.data.field.NotificationField
 import com.revolgenx.anilib.notification.ui.model.NotificationModel
 import com.revolgenx.anilib.notification.ui.model.toModel
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class NotificationServiceImpl(apolloRepository: ApolloRepository) :
-    NotificationService, BaseService(apolloRepository) {
+class NotificationServiceImpl(
+    apolloRepository: ApolloRepository,
+    mediaSettingsDataStore: MediaSettingsDataStore
+) :
+    NotificationService, BaseService(apolloRepository, mediaSettingsDataStore) {
 
     override fun getNotificationList(field: NotificationField): Flow<PageModel<NotificationModel>> {
         if (field.page == 1) {

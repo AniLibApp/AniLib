@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.notification.data.field
 
 import com.revolgenx.anilib.NotificationQuery
-import com.revolgenx.anilib.common.data.field.BaseSourceField
 import com.revolgenx.anilib.common.data.field.BaseSourceUserField
 
 data class NotificationField(

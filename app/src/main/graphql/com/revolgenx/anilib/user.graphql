@@ -46,6 +46,13 @@ query UserQuery(
         isFollower
         isBlocked
         siteUrl
+        stats {
+            activityHistory {
+                date
+                amount
+                level
+            }
+        }
         statistics{
             anime{
                 ... userMediaStatistics
@@ -236,9 +243,14 @@ fragment userAvatar on UserAvatar{
 
 fragment userMediaStatistics on UserStatistics{
     count
-    minutesWatched
     meanScore
+
+    minutesWatched
     episodesWatched
+
+    chaptersRead
+    volumesRead
+
     genres{
         count
         genre

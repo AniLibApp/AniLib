@@ -8,7 +8,7 @@ class MediaListCollectionField(var type: MediaType) : BaseUserField<MediaListCol
     override fun toQueryOrMutation(): MediaListCollectionQuery {
         return MediaListCollectionQuery(
             userId = nn(userId),
-            userName = nn(userName),
+            userName = nnString(userName),
             type = nn(type),
             isAnime = type == MediaType.ANIME
         )

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.user.ui.model.stats
+package com.revolgenx.anilib.user.ui.model.statistics
 
 import com.patrykandpatrick.vico.core.entry.entryOf
 import com.revolgenx.anilib.common.ext.getOrEmpty

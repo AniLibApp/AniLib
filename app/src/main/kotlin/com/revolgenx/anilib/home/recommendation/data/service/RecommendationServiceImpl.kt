@@ -6,10 +6,14 @@ import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.home.recommendation.data.field.RecommendationField
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.model.toModel
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class RecommendationServiceImpl(repository: ApolloRepository) : BaseService(repository),
+class RecommendationServiceImpl(
+    apolloRepository: ApolloRepository,
+    mediaSettingsDataStore: MediaSettingsDataStore
+) : BaseService(apolloRepository, mediaSettingsDataStore),
     RecommendationService {
     override fun getRecommendationList(field: RecommendationField): Flow<PageModel<RecommendationModel>> {
         return field.toQuery().map {
@@ -18,10 +22,8 @@ class RecommendationServiceImpl(repository: ApolloRepository) : BaseService(repo
                     pageInfo = page.pageInfo.pageInfo,
                     data = page.recommendations?.mapNotNull { recommendation ->
                         recommendation?.takeIf {
-                            /*    if (field.canShowAdult) true else ((it.media?.mediaContent?.isAdult == false)
-                                and (it.mediaRecommendation?.mediaContent?.isAdult == false))*/
-                            /*todo filter 18 media */
-                            true
+                            if (field.canShowAdult) true else ((it.media?.media?.isAdult == false)
+                                    and (it.recommendationFragment.mediaRecommendation?.media?.isAdult == false))
                         }?.toModel()
                     }
                 )

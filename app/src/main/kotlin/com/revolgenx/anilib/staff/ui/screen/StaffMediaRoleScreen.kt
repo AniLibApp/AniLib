@@ -29,7 +29,7 @@ import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
-import com.revolgenx.anilib.common.ui.component.common.Header
+import com.revolgenx.anilib.common.ui.component.common.HeaderBox
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
@@ -86,7 +86,7 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
             ) { model ->
                 when (model) {
                     is HeaderModel -> {
-                        Header(header = model)
+                        HeaderBox(header = model)
                     }
 
                     is MediaModel -> {

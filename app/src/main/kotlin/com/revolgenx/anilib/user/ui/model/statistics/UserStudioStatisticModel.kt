@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.user.ui.model.stats
+package com.revolgenx.anilib.user.ui.model.statistics
 
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 

@@ -8,7 +8,7 @@ data class UserStatsOverviewField(var type: MediaType) : BaseUserField<UserStati
     override fun toQueryOrMutation(): UserStatisticOverviewQuery {
         return UserStatisticOverviewQuery(
             id = nn(userId),
-            name = nn(userName),
+            name = nnString(userName),
             includeAnime = type == MediaType.ANIME
         )
     }

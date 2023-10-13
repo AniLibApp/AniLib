@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.list.ui.model
 
 import com.revolgenx.anilib.MediaListCollectionQuery
+import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
 import com.revolgenx.anilib.user.ui.model.MediaListOptionTypeModel
@@ -13,7 +14,7 @@ data class MediaListCollectionModel(
     val user: UserModel? = null
 )
 
-fun MediaListCollectionQuery.Data.toModel(): MediaListCollectionModel {
+fun MediaListCollectionQuery.Data.toModel(field: MediaListCollectionField): MediaListCollectionModel {
 
     val userModel = mediaListCollection?.user?.run {
         UserModel(
@@ -46,7 +47,7 @@ fun MediaListCollectionQuery.Data.toModel(): MediaListCollectionModel {
                     order = sectionOrder?.indexOf(groupName)?.plus(1) ?: 1,
                     entries = group.entries?.mapNotNull { entry ->
                         entry
-                            ?.takeIf { if (true /*field.canShowAdult*/) true else it.media?.media?.isAdult == false }
+                            ?.takeIf { if (field.canShowAdult) true else it.media?.media?.isAdult == false }
                             ?.mediaListEntry?.toModel()
                             ?.let { entryModel ->
                                 entryModel.copy(

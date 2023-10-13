@@ -25,6 +25,7 @@ fun LargeSemiBoldText(
     lineHeight: TextUnit? = null,
     textAlign: TextAlign? = null,
     color: Color = Color.Unspecified,
+    letterSpacing: TextUnit? = null,
     style: TextStyle = LocalTextStyle.current
 ) {
     Text(
@@ -35,7 +36,7 @@ fun LargeSemiBoldText(
         lineHeight = lineHeight ?: 18.sp,
         overflow = TextOverflow.Ellipsis,
         fontWeight = FontWeight.SemiBold,
-        letterSpacing = 0.2.sp,
+        letterSpacing = letterSpacing ?: 0.2.sp,
         textAlign = textAlign,
         color = color,
         style = style

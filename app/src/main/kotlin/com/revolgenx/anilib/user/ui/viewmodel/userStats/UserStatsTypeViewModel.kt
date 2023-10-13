@@ -4,7 +4,7 @@ import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.service.UserService
-import com.revolgenx.anilib.user.ui.model.stats.BaseStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.BaseStatisticModel
 import kotlinx.coroutines.flow.Flow
 
 abstract class UserStatsTypeViewModel(

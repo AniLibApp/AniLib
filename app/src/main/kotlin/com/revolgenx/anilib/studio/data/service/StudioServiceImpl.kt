@@ -6,13 +6,14 @@ import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import com.revolgenx.anilib.studio.data.field.StudioField
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.studio.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class StudioServiceImpl(apolloRepository: ApolloRepository) : BaseService(apolloRepository),
+class StudioServiceImpl(apolloRepository: ApolloRepository, mediaSettingsDataStore: MediaSettingsDataStore) : BaseService(apolloRepository, mediaSettingsDataStore),
     StudioService {
     override fun getStudioMedia(field: StudioField): Flow<PageModel<MediaModel>> {
         return field.toQuery().map {

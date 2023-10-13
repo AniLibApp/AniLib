@@ -47,7 +47,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ext.localContext
@@ -63,9 +62,10 @@ import com.revolgenx.anilib.common.ext.toStringResource
 import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ui.component.button.SmallTextButton
 import com.revolgenx.anilib.common.ui.component.common.Grid
+import com.revolgenx.anilib.common.ui.component.common.HeaderText
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
-import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
+import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -271,13 +271,7 @@ fun MediaHeaderWithButton(
 
 @Composable
 fun MediaHeader(text: String) {
-    Text(
-        modifier = Modifier,
-        text = text,
-        fontSize = 18.sp,
-        color = MaterialTheme.colorScheme.onSurfaceVariant,
-        fontWeight = FontWeight.Medium
-    )
+    HeaderText(text = text)
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -392,15 +386,12 @@ fun MediaStats(media: MediaModel) {
                 ) {
                     Text(
                         text = item.title,
-                        fontSize = 15.sp,
-                        lineHeight = 16.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                         fontWeight = FontWeight.Medium
                     )
                     Text(
                         text = item.value,
-                        fontSize = 15.sp,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurface,
                     )
                 }
             }
@@ -488,7 +479,8 @@ private fun MediaTag(
         (if (showSpoilerTags.value) tags else tagsWithoutSpoiler).forEach { tag ->
             Surface(
                 modifier = Modifier,
-                shape = MaterialTheme.shapes.small
+                shape = MaterialTheme.shapes.small,
+                color = MaterialTheme.colorScheme.surfaceVariant
             ) {
                 Row(
                     modifier = Modifier
@@ -591,13 +583,12 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
             ) {
                 Text(
                     text = item.title,
-                    lineHeight = 16.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Medium
                 )
                 Text(
                     text = item.value,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurface,
                 )
             }
         }
@@ -639,17 +630,15 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
                 ) {
                     Text(
                         text = it.title,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        fontSize = 15.sp,
                         fontWeight = FontWeight.Medium
                     )
                     Spacer(modifier = Modifier.width(width = 22.dp))
                     SelectionContainer {
                         Text(
                             text = it.value,
-                            fontSize = 15.sp,
                             fontWeight = FontWeight.Medium,
-                            textAlign = TextAlign.End
+                            textAlign = TextAlign.End,
+                            color = MaterialTheme.colorScheme.onSurface,
                         )
                     }
                 }
@@ -662,6 +651,7 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
 @Composable
 private fun MediaDescription(media: MediaModel) {
     var showFullDesc by remember { mutableStateOf(false) }
+    var showMoreIcon by remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
             .animateContentSize(animationSpec = tween(100))
@@ -675,29 +665,44 @@ private fun MediaDescription(media: MediaModel) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
+            val noDescription =
+                stringResource(id = I18nR.string.no_description).takeIf { media.description.isNullOrBlank() }
             if (showFullDesc) {
                 MarkdownText(
-                    spanned = media.descriptionSpanned
+                    text = noDescription,
+                    spanned = media.descriptionSpanned,
+                    onLineCount = {
+                        showMoreIcon = it > 3
+                    }
                 ) {
-                    showFullDesc = !showFullDesc
+                    if (showMoreIcon) {
+                        showFullDesc = !showFullDesc
+                    }
                 }
             } else {
                 MarkdownText(
+                    text = noDescription,
                     spanned = media.descriptionSpanned,
                     maxLines = 3,
-                    overflow = TextOverflow.Ellipsis
+                    onLineCount = {
+                        showMoreIcon = it > 3
+                    }
                 ) {
-                    showFullDesc = !showFullDesc
+                    if (showMoreIcon) {
+                        showFullDesc = !showFullDesc
+                    }
                 }
             }
 
-            Icon(
-                modifier = Modifier
-                    .size(28.dp)
-                    .align(Alignment.CenterHorizontally),
-                imageVector = if (showFullDesc) AppIcons.IcArrowUp else AppIcons.IcArrowDown,
-                contentDescription = null
-            )
+            if (showMoreIcon) {
+                Icon(
+                    modifier = Modifier
+                        .size(28.dp)
+                        .align(Alignment.CenterHorizontally),
+                    imageVector = if (showFullDesc) AppIcons.IcArrowUp else AppIcons.IcArrowDown,
+                    contentDescription = null
+                )
+            }
         }
     }
 }
@@ -771,7 +776,8 @@ fun MediaTagDetailItem(title: String, value: String) {
 private fun MediaInfoChip(text: String, onClick: OnClick) {
     Surface(
         shape = MaterialTheme.shapes.small,
-        onClick = onClick
+        onClick = onClick,
+        color = MaterialTheme.colorScheme.surfaceVariant
     ) {
         Box(
             modifier = Modifier.padding(8.dp)

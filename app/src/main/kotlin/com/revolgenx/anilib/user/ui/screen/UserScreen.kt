@@ -82,7 +82,7 @@ import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
 class UserScreen(
-    private val id: Int? = null,
+    var id: Int? = null,
     private val userName: String? = null,
     private val isTab: Boolean = false
 ) : BaseTabScreen() {
@@ -216,7 +216,7 @@ private fun UserScreenTopAppbar(
     val navigator = localNavigator()
 
     val user = viewModel.resource.value?.stateValue
-    val containerHeight = 310.dp
+    val containerHeight = 280.dp
 
     CollapsingAppbar(
         scrollBehavior = scrollBehavior,

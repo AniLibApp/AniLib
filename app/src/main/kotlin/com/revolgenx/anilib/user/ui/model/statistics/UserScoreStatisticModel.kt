@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.user.ui.model.stats
+package com.revolgenx.anilib.user.ui.model.statistics
 
 data class UserScoreStatisticModel(
     val score: Int,

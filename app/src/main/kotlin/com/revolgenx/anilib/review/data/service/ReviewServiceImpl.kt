@@ -8,17 +8,18 @@ import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.field.ReviewListField
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.model.toModel
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ReviewServiceImpl(repository: ApolloRepository) : BaseService(repository), ReviewService {
+class ReviewServiceImpl(apolloRepository: ApolloRepository, mediaSettingsDataStore: MediaSettingsDataStore) : BaseService(apolloRepository, mediaSettingsDataStore), ReviewService {
     override fun getReviewList(field: ReviewListField): Flow<PageModel<ReviewModel>> {
         return field.toQuery().map {
             it.dataAssertNoErrors.page.let { page ->
                 PageModel(
                     pageInfo = page.pageInfo.pageInfo,
                     data = page.reviews?.mapNotNull { review ->
-                        review.takeIf { true/*if (field.canShowAdult) true else review.media?.isAdult == false*/ /*todo filter 18 media*/ }
+                        review.takeIf { if (field.canShowAdult) true else review?.reviewFragment?.media?.isAdult == false}
                             ?.toModel()
                     }
                 )

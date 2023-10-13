@@ -10,8 +10,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,18 +24,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ui.component.common.HeaderText
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.user.ui.model.stats.BaseStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserGenreStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserStaffStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserStudioStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserTagStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserVoiceActorStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.BaseStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserGenreStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserStaffStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserStudioStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserTagStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserVoiceActorStatisticModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeViewModel
 import anilib.i18n.R as I18nR
 
@@ -75,7 +76,7 @@ private fun UserStatsTypeItem(isAnime: Boolean, model: BaseStatisticModel) {
         else -> null
     }
 
-    Card(
+    OutlinedCard(
         modifier = Modifier
             .padding(8.dp)
     ) {
@@ -97,7 +98,7 @@ private fun UserStatsTypeItem(isAnime: Boolean, model: BaseStatisticModel) {
                 modifier = Modifier.padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                HeaderText(text = header)
+                StatsHeaderText(text = header)
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
@@ -138,13 +139,7 @@ fun StatsTypeCardItem(@StringRes labelId: Int, text: String) {
 }
 
 @Composable
-private fun HeaderText(text: String?) {
+private fun StatsHeaderText(text: String?) {
     text ?: return
-    Text(
-        text = text,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.SemiBold,
-        letterSpacing = 0.1.sp,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
+    HeaderText(text = text)
 }

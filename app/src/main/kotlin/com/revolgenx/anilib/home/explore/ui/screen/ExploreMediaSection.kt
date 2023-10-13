@@ -76,5 +76,13 @@ private fun ExploreMediaHeader(type: ExploreMediaSectionType) {
         ExploreMediaSectionType.NEWLY_ADDED -> I18nR.string.newly_added
     }
 
-    ExploreScreenHeader(text = stringResource(id = titleRes))
+    ExploreScreenHeader(
+        text = stringResource(id = titleRes),
+        onFilter = {
+
+        },
+        onMore = {
+
+        }
+    )
 }

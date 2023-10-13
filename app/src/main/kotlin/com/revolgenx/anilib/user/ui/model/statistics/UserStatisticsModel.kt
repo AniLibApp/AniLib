@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.user.ui.model.stats
+package com.revolgenx.anilib.user.ui.model.statistics
 
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
 import com.revolgenx.anilib.fragment.UserMediaStatistics
@@ -57,6 +57,8 @@ fun UserMediaStatistics.toModel(): UserStatisticsModel {
         count = count,
         minutesWatched = minutesWatched,
         episodesWatched = episodesWatched,
+        chaptersRead = chaptersRead,
+        volumesRead = volumesRead,
         meanScore = meanScore,
         genres = genres?.mapNotNull { genre ->
             genre?.let { g ->

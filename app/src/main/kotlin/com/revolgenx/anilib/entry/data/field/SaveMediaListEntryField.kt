@@ -47,7 +47,7 @@ class SaveMediaListEntryField() : BaseField<SaveMediaListEntryMutation>() {
             progressVolumes = nn(progressVolumes),
             private_ = nn(private),
             repeat = nn(repeat),
-            notes = nn(notes),
+            notes = nnString(notes),
             startedAt = startedAt,
             completedAt = completedAt,
             hiddenFromStatusLists = nn(hiddenFromStatusLists),

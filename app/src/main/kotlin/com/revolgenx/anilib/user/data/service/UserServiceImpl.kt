@@ -13,6 +13,7 @@ import com.revolgenx.anilib.fragment.PageInfo
 import com.revolgenx.anilib.media.ui.model.MediaTagModel
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.relation.data.field.UserRelationField
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import com.revolgenx.anilib.staff.ui.model.toModel
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.studio.ui.model.toModel
@@ -22,21 +23,24 @@ import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.field.UserStatsOverviewField
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
 import com.revolgenx.anilib.user.ui.model.UserModel
-import com.revolgenx.anilib.user.ui.model.stats.BaseStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserGenreStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserStaffStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserStatisticTypesModel
-import com.revolgenx.anilib.user.ui.model.stats.UserStudioStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserTagStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.UserVoiceActorStatisticModel
-import com.revolgenx.anilib.user.ui.model.stats.toModel
+import com.revolgenx.anilib.user.ui.model.statistics.BaseStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserGenreStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserStaffStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserStatisticTypesModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserStudioStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserTagStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserVoiceActorStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.toModel
 import com.revolgenx.anilib.user.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import org.jetbrains.annotations.Nullable
 
-class UserServiceImpl(apolloRepository: ApolloRepository) :
-    UserService, BaseService(apolloRepository) {
+class UserServiceImpl(
+    apolloRepository: ApolloRepository,
+    mediaSettingsDataStore: MediaSettingsDataStore
+) :
+    UserService, BaseService(apolloRepository, mediaSettingsDataStore) {
     override fun getUser(field: UserField): Flow<UserModel?> {
         return field.toQuery().map {
             it.dataAssertNoErrors.let { data ->
@@ -108,7 +112,7 @@ class UserServiceImpl(apolloRepository: ApolloRepository) :
                 fav?.studios != null -> {
                     pageInfo = fav.studios.pageInfo.pageInfo
                     data = fav.studios.nodes?.mapNotNull {
-                        it?.onStudio?.studio?.toModel()
+                        it?.onStudio?.studio?.toModel(field)
                     }
                 }
             }

@@ -68,8 +68,8 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
 
             Column(
                 modifier = Modifier
-                    .padding(8.dp)
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    .padding(8.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 statsModel.rankings?.let {

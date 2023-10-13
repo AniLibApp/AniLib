@@ -2,6 +2,8 @@ package com.revolgenx.anilib.common.ui.screen.tab
 
 import androidx.compose.ui.graphics.vector.ImageVector
 import cafe.adriel.voyager.androidx.AndroidScreenLifecycleOwner
+import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
+import cafe.adriel.voyager.core.lifecycle.DefaultScreenLifecycleOwner
 import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleOwner
 import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleProvider
 import cafe.adriel.voyager.core.screen.ScreenKey
@@ -13,5 +15,6 @@ abstract class BaseTabScreen : Tab, ScreenLifecycleProvider {
     abstract val selectedIcon: ImageVector
 
     override val key: ScreenKey = uniqueScreenKey
-    override fun getLifecycleOwner(): ScreenLifecycleOwner = AndroidScreenLifecycleOwner.get(this)
+    @OptIn(InternalVoyagerApi::class)
+    override fun getLifecycleOwner(): ScreenLifecycleOwner = DefaultScreenLifecycleOwner
 }

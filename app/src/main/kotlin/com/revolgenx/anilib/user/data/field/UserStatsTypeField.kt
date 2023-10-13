@@ -17,7 +17,7 @@ data class UserStatsTypeField(val mediaType: MediaType, val statsType: UserStats
         }
 
         return UserStatsQuery(
-            id = nn(userId), name = nn(userName), sort = nn(mSort),
+            id = nn(userId), name = nnString(userName), sort = nn(mSort),
             includeAnime = mediaType.isAnime,
             includeManga = mediaType.isManga,
             includeTag = statsType == UserStatsType.TAGS,

@@ -21,13 +21,17 @@ import com.revolgenx.anilib.media.ui.model.MediaStatsModel
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.model.toModel
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
 import com.revolgenx.anilib.staff.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class MediaServiceImpl(apolloRepository: ApolloRepository) :
-    MediaService, BaseService(apolloRepository) {
+class MediaServiceImpl(
+    apolloRepository: ApolloRepository,
+    mediaSettingsDataStore: MediaSettingsDataStore
+) :
+    MediaService, BaseService(apolloRepository, mediaSettingsDataStore) {
     override fun getMediaList(field: MediaField): Flow<PageModel<MediaModel>> =
         field.toQuery().map {
             it.dataAssertNoErrors.page.let {

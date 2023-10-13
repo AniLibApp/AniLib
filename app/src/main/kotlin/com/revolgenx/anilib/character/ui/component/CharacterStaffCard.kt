@@ -73,7 +73,7 @@ fun CharacterStaffCard(
                 Column(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .padding(vertical = 2.dp)
+                        .padding(vertical = 4.dp)
                 ) {
                     MediumText(text = character.name?.full.naText())
                     characterRole?.let {

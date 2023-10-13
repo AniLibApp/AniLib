@@ -9,15 +9,17 @@ import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.list.data.field.MediaListCollectionIdField
 import com.revolgenx.anilib.list.data.service.MediaListService
+import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.transform
 
 class AiringScheduleServiceImpl(
     apolloRepository: ApolloRepository,
-    private val mediaListService: MediaListService
+    mediaSettingsDataStore: MediaSettingsDataStore,
+    private val mediaListService: MediaListService,
 ) : AiringScheduleService,
-    BaseService(apolloRepository) {
+    BaseService(apolloRepository, mediaSettingsDataStore) {
 
     override fun getAiringSchedule(field: AiringScheduleField): Flow<PageModel<AiringScheduleModel>> {
         val airingFlow = if (field.needMediaListData) {

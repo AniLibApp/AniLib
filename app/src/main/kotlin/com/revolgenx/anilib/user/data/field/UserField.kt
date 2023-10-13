@@ -7,7 +7,7 @@ class UserField : BaseUserField<UserQuery>() {
     override fun toQueryOrMutation(): UserQuery {
         return UserQuery(
             id = nn(userId),
-            name = nn(userName),
+            name = nnString(userName),
             userId = userId ?: -1
         )
     }

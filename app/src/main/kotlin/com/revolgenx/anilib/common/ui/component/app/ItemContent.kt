@@ -44,7 +44,7 @@ fun CharacterOrStaffRowItemContentEnd(
             modifier = Modifier
                 .weight(1f)
                 .fillMaxHeight()
-                .padding(vertical = 2.dp),
+                .padding(vertical = 4.dp),
             verticalArrangement = Arrangement.Bottom,
             horizontalAlignment = Alignment.End
         ) {

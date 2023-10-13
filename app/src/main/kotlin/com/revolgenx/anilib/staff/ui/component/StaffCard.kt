@@ -84,7 +84,7 @@ fun StaffRowCard(
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(vertical = 2.dp),
+                    .padding(vertical = 4.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 MediumText(text = staff.name?.full.naText())

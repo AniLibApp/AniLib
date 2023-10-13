@@ -423,4 +423,11 @@
     <string name="popular">Popular</string>
     <string name="newly_added">Newly Added</string>
 
+    <!--User Overview-->
+    <string name="show_description">Show Description</string>
+    <string name="activity_history">Activity History\t</string>
+    <string name="amount">Amount: %1$s</string>
+    <string name="total_episodes">Total Episodes</string>
+    <!--User Overview-->
+
 </resources>

@@ -171,6 +171,7 @@ dependencies {
     //coil
     implementation("io.coil-kt:coil-compose:${Libs.coil}")
     implementation("io.coil-kt:coil-gif:${Libs.coil}")
+    implementation("io.coil-kt:coil-svg:${Libs.coil}")
 
     //kotlin-serialization
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")

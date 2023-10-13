@@ -1,11 +1,9 @@
 package com.revolgenx.anilib.browse.data.field
 
-import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.BrowseQuery
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.browse.ui.model.FuzzyDateIntModel
 import com.revolgenx.anilib.common.data.field.BaseSourceField
 import com.revolgenx.anilib.common.ext.isNull
@@ -69,7 +67,7 @@ data class BrowseField(
             page = nn(page),
             perPage = nn(perPage),
             type = nn(mediaType),
-            search = nn(search),
+            search = nnString(search),
             genre = nn(genreIn),
             genreNotIn = nn(genreNotIn),
             tag = nn(tagsIn),
@@ -95,10 +93,10 @@ data class BrowseField(
 
             season = nn(season?.takeIf { mediaType.isAnime }),
             seasonYear = nn(season?.let { year }?.takeIf { mediaType.isAnime }),
-            year = nn(year?.takeIf { mediaType.isManga || season.isNull() }?.let { "$it%" }),
+            year = nnString(year?.takeIf { mediaType.isManga || season.isNull() }?.let { "$it%" }),
 
             status = nn(status),
-            country = nn(countryOfOrigin?.let { countryOfOrigins[it] }),
+            country = nnString(countryOfOrigin?.let { countryOfOrigins[it] }),
             sort = nn(sort?.let { listOf(it) }),
             source = nn(source),
             minimumTagRank = nn(minimumTagRank),

@@ -13,7 +13,7 @@ data class MediaListCollectionIdField(
     override fun toQueryOrMutation(): MediaListCollectionIdQuery {
         return MediaListCollectionIdQuery(
             userId = nn(userId),
-            userName = nn(userName),
+            userName = nnString(userName),
             type = nn(type),
             status_in = nn(mediaListStatus)
         )

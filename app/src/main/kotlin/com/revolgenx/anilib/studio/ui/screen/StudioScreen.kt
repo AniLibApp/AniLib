@@ -1,7 +1,5 @@
 package com.revolgenx.anilib.studio.ui.screen
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -12,18 +10,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.component.common.Header
+import com.revolgenx.anilib.common.ui.component.common.HeaderBox
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -91,7 +86,7 @@ private fun StudioScreenContent(studioId: Int, viewModel: StudioViewModel = koin
 
             when (baseModel) {
                 is HeaderModel -> {
-                    Header(header = baseModel)
+                    HeaderBox(header = baseModel)
                 }
 
                 is MediaModel -> {

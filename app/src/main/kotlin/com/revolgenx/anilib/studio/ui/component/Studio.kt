@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.button.SmallTextButton
+import com.revolgenx.anilib.common.ui.component.common.HeaderText
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.component.MediaCard
@@ -35,21 +36,14 @@ fun StudioItem(studio: StudioModel, onMediaClick: OnMediaClick, onClick: OnClick
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(8.dp)
+                .clickable {
+                    onClick(studio.id)
+                },
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
-                modifier = Modifier
-                    .weight(1f)
-                    .clickable {
-                        onClick(studio.id)
-                    },
-                text = studio.name.naText(),
-                fontSize = 15.sp,
-                maxLines = 1,
-                fontWeight = FontWeight.Medium,
-                overflow = TextOverflow.Ellipsis
-            )
+
+            HeaderText(text = studio.name.naText())
 
             SmallTextButton(
                 text = stringResource(id = I18nR.string.view_all)

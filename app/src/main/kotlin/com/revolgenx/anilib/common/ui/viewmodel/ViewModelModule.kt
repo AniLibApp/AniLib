@@ -11,6 +11,7 @@ import com.revolgenx.anilib.common.data.store.animeListFilterDataStore
 import com.revolgenx.anilib.common.data.store.mangaListFilterDataStore
 import com.revolgenx.anilib.common.data.store.seasonFilterDataStore
 import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.home.season.ui.screen.SeasonViewModel
@@ -54,6 +55,7 @@ import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeMediaType
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsVoiceActorsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -200,6 +202,7 @@ val viewModelModules = module {
     viewModel { NotificationSettingsViewModel(get(), get()) }
 
     //explore
+    viewModelOf(::ExploreAiringViewModel)
     viewModel { ExploreMediaViewModel.ExploreTrendingViewModel(get(), get()) }
     viewModel { ExploreMediaViewModel.ExplorePopularViewModel(get(), get()) }
     viewModel { ExploreMediaViewModel.ExploreNewlyAddedViewModel(get(), get()) }

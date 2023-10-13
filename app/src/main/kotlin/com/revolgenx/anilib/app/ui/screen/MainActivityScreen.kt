@@ -13,25 +13,28 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import anilib.i18n.R
+import cafe.adriel.voyager.androidx.AndroidScreenLifecycleOwner
+import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.revolgenx.anilib.common.ext.componentActivity
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.toStringResource
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.LocalMainTabNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
@@ -49,12 +52,35 @@ object MainActivityScreen : Screen {
     }
 }
 
-private var userScreen: UserScreen? = null
+private var userScreen: UserScreen = UserScreen(isTab = true)
 
+@OptIn(ExperimentalVoyagerApi::class)
 @Composable
 private fun MainActivityScreenContent() {
     val snackbarHostState = remember { SnackbarHostState() }
-    TabNavigator(tab = HomeScreen) { tabNavigator ->
+    val navigator = localNavigator()
+    val backPressed = remember {
+        mutableStateOf(false)
+    }
+
+    TabNavigator(
+        tab = HomeScreen,
+        tabDisposable = {
+//            if (backPressed.value) {
+//                TabDisposable(
+//                    navigator = it,
+//                    tabs = listOf(
+//                        HomeScreen,
+//                        AnimeListScreen,
+//                        MangaListScreen,
+//                        ActivityUnionScreen,
+//                        SettingScreen,
+//                        userScreen
+//                    )
+//                )
+//            }
+        }
+    ) { tabNavigator ->
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) },
             bottomBar = {
@@ -71,8 +97,7 @@ private fun MainActivityScreenContent() {
                             TabNavigationItem(tab = SettingScreen)
                         },
                         content = { userId ->
-                            userScreen = userScreen ?: UserScreen(userId, isTab = true)
-                            TabNavigationItem(tab = userScreen!!)
+                            TabNavigationItem(tab = userScreen.also { it.id = userId })
                         }
                     )
                 }
@@ -86,7 +111,7 @@ private fun MainActivityScreenContent() {
                 ) {
                     CurrentTab()
                 }
-                BackPress(snackbarHostState)
+                BackPress(navigator = navigator, snackbarHostState, backPressed)
             }
         }
     }
@@ -110,23 +135,29 @@ private fun RowScope.TabNavigationItem(tab: BaseTabScreen) {
 }
 
 @Composable
-private fun BackPress(snackbarHostState: SnackbarHostState) {
-    var exit by remember { mutableStateOf(false) }
+private fun BackPress(
+    navigator: Navigator,
+    snackbarHostState: SnackbarHostState,
+    backPressed: MutableState<Boolean>
+) {
     val scope = rememberCoroutineScope()
     val context = localContext()
-    LaunchedEffect(key1 = exit) {
-        if (exit) {
+    LaunchedEffect(key1 = backPressed) {
+        if (backPressed.value) {
             delay(2000)
-            exit = false
+            backPressed.value = false
         }
     }
 
-    val msg = R.string.press_again_to_exit.toStringResource()
+    val msg = stringResource(id = R.string.press_again_to_exit)
     BackHandler {
-        if (exit) {
+        if (backPressed.value) {
+            for (screen in navigator.items) {
+                AndroidScreenLifecycleOwner.get(screen).onDispose(screen)
+            }
             context.componentActivity()?.finish()
         } else {
-            exit = true
+            backPressed.value = true
             scope.launch {
                 snackbarHostState.showSnackbar(
                     message = msg,

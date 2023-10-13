@@ -32,7 +32,7 @@ class MainActivity : BaseActivity() {
             AppTheme() {
                 Navigator(
                     screen = MainActivityScreen,
-                    disposeBehavior = NavigatorDisposeBehavior(false, false)
+                    disposeBehavior = NavigatorDisposeBehavior(false)
                 ) { navigator ->
                     this@MainActivity.navigator = navigator
                     CompositionLocalProvider(

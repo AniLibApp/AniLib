@@ -5,13 +5,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -36,6 +38,8 @@ import com.revolgenx.anilib.common.ui.component.chart.ColumnChart
 import com.revolgenx.anilib.common.ui.component.chart.LineChart
 import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
 import com.revolgenx.anilib.common.ui.component.common.Grid
+import com.revolgenx.anilib.common.ui.component.common.HeaderBox
+import com.revolgenx.anilib.common.ui.component.common.HeaderText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBook
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBookmark
@@ -51,7 +55,7 @@ import com.revolgenx.anilib.list.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.user.ui.model.stats.BaseStatisticModel
+import com.revolgenx.anilib.user.ui.model.statistics.BaseStatisticModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsOverviewViewModel
 import anilib.i18n.R as I18nR
 
@@ -73,8 +77,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
             Column(
                 modifier = Modifier
                     .padding(8.dp)
-                    .verticalScroll(rememberScrollState()),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                    .verticalScroll(rememberScrollState())
             ) {
                 val isAnime = mediaType.isAnime
 
@@ -129,12 +132,14 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                         )
                     )
                 }
-                Card(
+                OutlinedCard(
                     modifier = Modifier
-                        .padding(8.dp)
                         .fillMaxWidth()
                 ) {
-                    Grid(items = items) {
+                    Grid(
+                        modifier = Modifier.padding(8.dp),
+                        items = items
+                    ) {
                         StatsNumberText(
                             icon = it.icon,
                             label = it.label,
@@ -143,30 +148,36 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                     }
                 }
 
-                HeaderText(text = stringResource(id = I18nR.string.score))
+                UserStatsHeader(text = stringResource(id = I18nR.string.score))
                 SegmentedButton(
                     items = stringArrayResource(id = if (isAnime) R.array.anime_stats_score_menu else R.array.manga_stats_score_menu),
                     selectedPosition = viewModel.statsScoreType.intValue
                 ) {
                     viewModel.statsScoreType.intValue = it
                 }
+                Spacer(modifier = Modifier.size(12.dp))
                 when (viewModel.statsScoreType.intValue) {
                     0 -> stats.scoresTitleEntry
                     else -> stats.scoresHourEntry
                 }?.let { entryModel ->
-                    ColumnChart(
-                        marker = marker,
-                        model = entryModel
-                    )
+
+                    OutlinedCard() {
+                        ColumnChart(
+                            marker = marker,
+                            model = entryModel
+                        )
+                    }
                 }
 
-                HeaderText(text = stringResource(id = if (isAnime) I18nR.string.episode_count else I18nR.string.chapter_count))
+                UserStatsHeader(text = stringResource(id = if (isAnime) I18nR.string.episode_count else I18nR.string.chapter_count))
                 SegmentedButton(
                     items = stringArrayResource(id = if (isAnime) R.array.anime_stats_menu else R.array.manga_stats_score_menu),
                     selectedPosition = viewModel.statsLengthType.intValue
                 ) {
                     viewModel.statsLengthType.intValue = it
                 }
+                Spacer(modifier = Modifier.size(12.dp))
+
 
                 when (viewModel.statsLengthType.intValue) {
                     0 -> stats.lengthsTitleEntry
@@ -174,20 +185,21 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                     else -> stats.lengthsMeanScoreEntry
                 }?.let { entryModel ->
                     val unknown = stringResource(id = I18nR.string.unknown)
-                    ColumnChart(
-                        marker = marker,
-                        model = entryModel,
-                        bottomAxis = bottomAxis(
-                            valueFormatter = { value, _ ->
-                                stats.lengths?.get(value.toInt())?.length ?: unknown
-                            }
+                    OutlinedCard() {
+                        ColumnChart(
+                            marker = marker,
+                            model = entryModel,
+                            bottomAxis = bottomAxis(
+                                valueFormatter = { value, _ ->
+                                    stats.lengths?.get(value.toInt())?.length ?: unknown
+                                }
+                            )
                         )
-                    )
+                    }
                 }
 
                 stats.formats?.let { formatDistribution ->
-
-                    HeaderText(text = stringResource(id = I18nR.string.format_distribution))
+                    UserStatsHeader(text = stringResource(id = I18nR.string.format_distribution))
                     StatisticModelItemCard(
                         modelDistribution = formatDistribution,
                         isAnime
@@ -198,7 +210,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
 
 
                 stats.statuses?.let { statusDistribution ->
-                    HeaderText(text = stringResource(id = I18nR.string.status_distribution))
+                    UserStatsHeader(text = stringResource(id = I18nR.string.status_distribution))
                     StatisticModelItemCard(
                         modelDistribution = statusDistribution,
                         isAnime
@@ -209,7 +221,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
 
 
                 stats.countries?.let { countryDistribution ->
-                    HeaderText(text = stringResource(id = I18nR.string.country_distribution))
+                    UserStatsHeader(text = stringResource(id = I18nR.string.country_distribution))
                     StatisticModelItemCard(
                         modelDistribution = countryDistribution,
                         isAnime
@@ -220,13 +232,14 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
 
 
 
-                HeaderText(text = stringResource(id = I18nR.string.release_year))
+                UserStatsHeader(text = stringResource(id = I18nR.string.release_year))
                 SegmentedButton(
                     items = stringArrayResource(id = if (isAnime) R.array.anime_stats_menu else R.array.manga_stats_score_menu),
                     selectedPosition = viewModel.statsReleaseYearType.intValue
                 ) {
                     viewModel.statsReleaseYearType.intValue = it
                 }
+                Spacer(modifier = Modifier.size(12.dp))
 
 
                 when (viewModel.statsReleaseYearType.intValue) {
@@ -234,16 +247,18 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                     1 -> stats.releaseYearsHourEntry
                     else -> stats.releaseYearsMeanScoreEntry
                 }?.let { entryModel ->
-                    LineChart(
-                        marker = marker,
-                        model = entryModel,
-                        spacing = 50.dp,
-                        initialScroll = InitialScroll.End
-                    )
+                    OutlinedCard {
+                        LineChart(
+                            marker = marker,
+                            model = entryModel,
+                            spacing = 50.dp,
+                            initialScroll = InitialScroll.End
+                        )
+                    }
                 }
 
 
-                HeaderText(text = stringResource(id = if (isAnime) I18nR.string.watch_year else I18nR.string.read_year))
+                UserStatsHeader(text = stringResource(id = if (isAnime) I18nR.string.watch_year else I18nR.string.read_year))
                 SegmentedButton(
                     items = stringArrayResource(id = if (isAnime) R.array.anime_stats_menu else R.array.manga_stats_score_menu),
                     selectedPosition = viewModel.statsStartYearType.intValue
@@ -251,18 +266,21 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
                     viewModel.statsStartYearType.intValue = it
                 }
 
+                Spacer(modifier = Modifier.size(12.dp))
 
                 when (viewModel.statsStartYearType.intValue) {
                     0 -> stats.startYearsTitleEntry
                     1 -> stats.startYearsHourEntry
                     else -> stats.startYearsMeanScoreEntry
                 }?.let { entryModel ->
-                    LineChart(
-                        marker = marker,
-                        model = entryModel,
-                        spacing = 50.dp,
-                        initialScroll = InitialScroll.End
-                    )
+                    OutlinedCard {
+                        LineChart(
+                            marker = marker,
+                            model = entryModel,
+                            spacing = 50.dp,
+                            initialScroll = InitialScroll.End
+                        )
+                    }
                 }
 
             }
@@ -318,14 +336,17 @@ private fun StatsNumberText(icon: ImageVector, label: String, value: String) {
 }
 
 @Composable
-private fun HeaderText(text: String) {
-    Text(
-        text = text,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.SemiBold,
-        letterSpacing = 0.1.sp,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
-    )
+private fun UserStatsHeader(text: String) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp)
+            .padding(top = 16.dp, bottom = 8.dp)
+    ) {
+        HeaderText(
+            text = text
+        )
+    }
 }
 
 @Composable
@@ -334,7 +355,7 @@ private fun <M : BaseStatisticModel> StatisticModelItemCard(
     isAnime: Boolean,
     header: @Composable (model: M) -> Unit
 ) {
-    Card(
+    OutlinedCard(
         modifier = Modifier
             .fillMaxWidth()
     ) {
