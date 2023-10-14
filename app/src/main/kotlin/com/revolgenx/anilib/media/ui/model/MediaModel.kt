@@ -4,16 +4,15 @@ import android.text.Spanned
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
 import com.revolgenx.anilib.MediaOverviewQuery
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.ui.model.AiringAtModel
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
 import com.revolgenx.anilib.airing.ui.model.TimeUntilAiringModel
-import com.revolgenx.anilib.browse.data.field.countryOfOrigins
 import com.revolgenx.anilib.character.ui.model.CharacterConnectionModel
 import com.revolgenx.anilib.character.ui.model.CharacterEdgeModel
 import com.revolgenx.anilib.character.ui.model.CharacterImageModel
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.character.ui.model.CharacterNameModel
+import com.revolgenx.anilib.common.ext.nullIfEmpty
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
@@ -25,7 +24,6 @@ import com.revolgenx.anilib.common.ui.theme.status_releasing
 import com.revolgenx.anilib.common.ui.theme.status_unknown
 import com.revolgenx.anilib.fragment.Media
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
-import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.model.toModel
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 import com.revolgenx.anilib.social.factory.markdown
@@ -259,7 +257,7 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
                 }
             )
         },
-
+        
         externalLinks = externalLinks?.mapNotNull { linkData ->
             linkData?.let {
                 MediaExternalLinkModel(
@@ -269,7 +267,7 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
                     it.icon,
                     it.color?.let { Color(android.graphics.Color.parseColor(it)) })
             }
-        },
+        }?.nullIfEmpty(),
 
         tags = mediaTags,
 

@@ -2,16 +2,14 @@ package com.revolgenx.anilib.relation.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,12 +17,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.userScreen
+import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
@@ -90,21 +92,19 @@ fun UserRelationItem(user: UserModel) {
         }
 
         if (user.isMutual) {
-            Surface(
+            Card(
                 modifier = Modifier
                     .padding(horizontal = 8.dp)
                     .height(32.dp),
-                color = MaterialTheme.colorScheme.secondaryContainer,
-                shape = ButtonDefaults.shape,
             ) {
-                Box() {
-                    Text(
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(horizontal = 10.dp),
-                        text = stringResource(id = I18nR.string.mutual)
-                    )
-                }
+                LargeBodyMediumText(
+                    modifier = Modifier
+                        .fillMaxHeight()
+                        .align(Alignment.CenterHorizontally)
+                        .padding(horizontal = 10.dp),
+                    text = stringResource(id = I18nR.string.mutual),
+                    textAlign = TextAlign.Center
+                )
             }
         }
     }

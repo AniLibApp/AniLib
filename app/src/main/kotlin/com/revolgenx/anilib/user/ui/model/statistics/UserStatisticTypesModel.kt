@@ -1,17 +1,18 @@
 package com.revolgenx.anilib.user.ui.model.statistics
 
 import com.patrykandpatrick.vico.core.entry.entryOf
-import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.fragment.UserStatisticsOverview
 import com.patrykandpatrick.vico.core.entry.entryModelOf
+import com.revolgenx.anilib.common.ext.nullIfEmpty
 
 
 data class UserStatisticTypesModel(
     val anime: UserStatisticsModel? = null,
-    val manga: UserStatisticsModel? = null
+    val manga: UserStatisticsModel? = null,
+    val media: UserStatisticsModel? = null
 )
 
-fun UserStatisticsOverview.toModel(): UserStatisticsModel {
+fun UserStatisticsOverview.toModel(isAnime: Boolean): UserStatisticsModel {
 
     val scores = scores?.mapNotNull { scrData ->
         scrData?.let { scr ->
@@ -23,9 +24,10 @@ fun UserStatisticsOverview.toModel(): UserStatisticsModel {
                 score = scr.score ?: 0
             )
         }
-    }
-    val scoresTitleEntry = scores?.map { entryOf(it.score, it.count) }.getOrEmpty()
-    val scoresHourEntry = scores?.map { entryOf(it.score, it.hoursWatched) }.getOrEmpty()
+    }?.nullIfEmpty()
+
+    val scoresTitleEntry = scores?.map { entryOf(it.score, it.count) }
+    val scoresHourEntry = scores?.map { entryOf(it.score, it.hoursWatched) }
 
     val lengths = lengths?.mapNotNull { length ->
         length?.let { len ->
@@ -41,13 +43,13 @@ fun UserStatisticsOverview.toModel(): UserStatisticsModel {
         it.length?.let {
             "^(\\d+)".toRegex().find(it)?.value?.toInt()
         }
-    })
+    })?.nullIfEmpty()
     val lengthsTitleEntry =
-        lengths?.mapIndexed { index, it -> entryOf(index, it.count) }.getOrEmpty()
+        lengths?.mapIndexed { index, it -> entryOf(index, it.count) }
     val lengthsHourEntry =
-        lengths?.mapIndexed { index, it -> entryOf(index, it.hoursWatched) }.getOrEmpty()
+        lengths?.mapIndexed { index, it -> entryOf(index, if(isAnime) it.hoursWatched else it.chaptersRead) }
     val lengthsMeanScoreEntry =
-        lengths?.mapIndexed { index, it -> entryOf(index, it.meanScore) }.getOrEmpty()
+        lengths?.mapIndexed { index, it -> entryOf(index, it.meanScore) }
 
     val releaseYears = releaseYears?.mapNotNull { yrData ->
         yrData?.let { yr ->
@@ -59,14 +61,14 @@ fun UserStatisticsOverview.toModel(): UserStatisticsModel {
                 releaseYear = yr.releaseYear ?: 0
             )
         }
-    }?.sortedWith(compareBy { it.releaseYear })
+    }?.sortedWith(compareBy { it.releaseYear })?.nullIfEmpty()
 
     val releaseYearsTitleEntry =
-        releaseYears?.map { entryOf(it.releaseYear, it.count) }.getOrEmpty()
+        releaseYears?.map { entryOf(it.releaseYear, it.count) }
     val releaseYearsHourEntry =
-        releaseYears?.map { entryOf(it.releaseYear, it.hoursWatched) }.getOrEmpty()
+        releaseYears?.map { entryOf(it.releaseYear, if(isAnime) it.hoursWatched else it.chaptersRead) }
     val releaseYearsMeanScoreEntry =
-        releaseYears?.map { entryOf(it.releaseYear, it.meanScore) }.getOrEmpty()
+        releaseYears?.map { entryOf(it.releaseYear, it.meanScore) }
 
     val startYears = startYears?.mapNotNull { yrData ->
         yrData?.let { yr ->
@@ -78,14 +80,14 @@ fun UserStatisticsOverview.toModel(): UserStatisticsModel {
                 startYear = yr.startYear ?: 0
             )
         }
-    }?.sortedWith(compareBy { it.startYear })
+    }?.sortedWith(compareBy { it.startYear })?.nullIfEmpty()
 
     val startYearsTitleEntry =
-        startYears?.map { entryOf(it.startYear, it.count) }.getOrEmpty()
+        startYears?.map { entryOf(it.startYear, it.count) }
     val startYearsHourEntry =
-        startYears?.map { entryOf(it.startYear, it.hoursWatched) }.getOrEmpty()
+        startYears?.map { entryOf(it.startYear, if(isAnime) it.hoursWatched else it.chaptersRead) }
     val startYearsMeanScoreEntry =
-        startYears?.map { entryOf(it.startYear, it.meanScore) }.getOrEmpty()
+        startYears?.map { entryOf(it.startYear, it.meanScore) }
 
     return UserStatisticsModel(
         count = count,
@@ -96,8 +98,8 @@ fun UserStatisticsOverview.toModel(): UserStatisticsModel {
         chaptersRead = chaptersRead,
         volumesRead = volumesRead,
         scores = scores,
-        scoresTitleEntry = entryModelOf(scoresTitleEntry),
-        scoresHourEntry = entryModelOf(scoresHourEntry),
+        scoresTitleEntry = scoresTitleEntry?.let { entryModelOf(it) },
+        scoresHourEntry = scoresHourEntry?.let { entryModelOf(it) },
 
         statuses = statuses?.mapNotNull { statData ->
             statData?.let { stat ->
@@ -109,22 +111,22 @@ fun UserStatisticsOverview.toModel(): UserStatisticsModel {
                     status = stat.status
                 )
             }
-        },
+        }?.nullIfEmpty(),
 
         lengths = lengths,
-        lengthsTitleEntry = entryModelOf(lengthsTitleEntry),
-        lengthsHourEntry = entryModelOf(lengthsHourEntry),
-        lengthsMeanScoreEntry = entryModelOf(lengthsMeanScoreEntry),
+        lengthsTitleEntry = lengthsTitleEntry?.let{ entryModelOf(it) },
+        lengthsHourEntry = lengthsHourEntry?.let{ entryModelOf(it) },
+        lengthsMeanScoreEntry = lengthsMeanScoreEntry?.let{ entryModelOf(it) },
 
         releaseYears = releaseYears,
-        releaseYearsTitleEntry = entryModelOf(releaseYearsTitleEntry),
-        releaseYearsHourEntry = entryModelOf(releaseYearsHourEntry),
-        releaseYearsMeanScoreEntry = entryModelOf(releaseYearsMeanScoreEntry),
+        releaseYearsTitleEntry = releaseYearsTitleEntry?.let{ entryModelOf(it) },
+        releaseYearsHourEntry = releaseYearsHourEntry?.let{ entryModelOf(it) },
+        releaseYearsMeanScoreEntry = releaseYearsMeanScoreEntry?.let{ entryModelOf(it) },
 
         startYears = startYears,
-        startYearsTitleEntry = entryModelOf(startYearsTitleEntry),
-        startYearsHourEntry = entryModelOf(startYearsHourEntry),
-        startYearsMeanScoreEntry = entryModelOf(startYearsMeanScoreEntry),
+        startYearsTitleEntry = startYearsTitleEntry?.let{ entryModelOf(it) },
+        startYearsHourEntry = startYearsHourEntry?.let{ entryModelOf(it) },
+        startYearsMeanScoreEntry = startYearsMeanScoreEntry?.let{ entryModelOf(it) },
 
         formats = formats?.mapNotNull { fmtData ->
             fmtData?.let { fmt ->
@@ -136,7 +138,7 @@ fun UserStatisticsOverview.toModel(): UserStatisticsModel {
                     format = fmt.format
                 )
             }
-        },
+        }?.nullIfEmpty(),
         countries = countries?.mapNotNull { cntData ->
             cntData?.let { cnt ->
                 UserCountryStatisticModel(
@@ -147,6 +149,6 @@ fun UserStatisticsOverview.toModel(): UserStatisticsModel {
                     country = cnt.country?.toString()
                 )
             }
-        }
+        }?.nullIfEmpty()
     )
 }

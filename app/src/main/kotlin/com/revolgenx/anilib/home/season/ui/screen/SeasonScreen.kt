@@ -12,10 +12,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Card as MCard
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -35,8 +35,10 @@ import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
+import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
 import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.SmallRegularText
@@ -154,10 +156,8 @@ private fun SeasonItem(
                 verticalArrangement = Arrangement.spacedBy(3.dp)
             ) {
                 MediaTitleType { type ->
-                    MediumText(
-                        text = media.title?.title(type).naText(),
-                        fontSize = 16.sp,
-                        lineHeight = 18.sp
+                    LargeBodyMediumText(
+                        text = media.title?.title(type).naText()
                     )
                 }
 
@@ -208,11 +208,11 @@ private fun SeasonFilter(
     onPrevious: OnClick,
     onFilter: OnClick
 ) {
-    Card(
+    MCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        elevation = CardDefaults.cardElevation(1.dp)
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
     ) {
         val iconSize = 28.dp
         Row(

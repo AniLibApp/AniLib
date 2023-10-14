@@ -20,7 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
+import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -65,8 +65,9 @@ import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.ui.component.text.LargeSemiBoldText
+import com.revolgenx.anilib.common.ui.component.text.LargeBodySemiBoldText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
@@ -324,7 +325,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                         verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
                         MediaTitleType {
-                            LargeSemiBoldText(
+                            LargeBodySemiBoldText(
                                 text = media?.title?.title(it).naText(),
                                 fontSize = 20.sp,
                                 lineHeight = 22.sp,
@@ -385,13 +386,11 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                         }
 
                         media?.nextAiringEpisode?.let {
-                            MediumText(
+                            LargeBodyMediumText(
                                 text = stringResource(id = I18nR.string.episode_airing_date).format(
                                     it.episode,
                                     it.airingAtModel.airingDateTime.naText()
                                 ),
-                                fontSize = 15.sp,
-                                lineHeight = 17.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
                         }

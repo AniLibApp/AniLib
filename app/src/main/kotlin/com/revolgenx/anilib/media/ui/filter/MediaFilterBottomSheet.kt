@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
-import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
@@ -74,7 +73,7 @@ private fun MediaFilterBottomSheetContent(
                 .padding(vertical = 8.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            val selectedFormats = field.formatsIn?.map { it.ordinal }.getOrEmpty()
+            val selectedFormats = field.formatsIn?.map { it.ordinal }.orEmpty()
             val formats = stringArrayResource(id = R.array.media_format)
             MultiSelectMenu(
                 label = stringResource(id = I18nR.string.format),

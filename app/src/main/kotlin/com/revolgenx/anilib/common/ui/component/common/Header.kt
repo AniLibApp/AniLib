@@ -4,15 +4,12 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.revolgenx.anilib.common.ui.component.text.LargeSemiBoldText
+import com.revolgenx.anilib.common.ui.component.text.LargeBodySemiBoldText
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 
 @Composable
@@ -21,20 +18,30 @@ fun HeaderBox(
     header: HeaderModel
 ) {
     HeaderBox(
-        modifier = modifier,
+        modifier = modifier
+            .padding(top = 22.dp, bottom = 14.dp),
         text = header.title ?: stringResource(id = header.titleRes!!)
     )
 }
 
 @Composable
+fun HeaderBox(text: String) {
+    HeaderBox(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 4.dp)
+            .padding(top = 22.dp, bottom = 14.dp),
+        text = text
+    )
+}
+
+@Composable
 fun HeaderBox(
-    modifier: Modifier = Modifier,
+    modifier: Modifier,
     text: String
 ) {
     Box(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp, vertical = 14.dp)
     ) {
         HeaderText(
             text = text
@@ -48,7 +55,7 @@ fun HeaderText(
     modifier: Modifier = Modifier,
     text: String
 ) {
-    LargeSemiBoldText(
+    LargeBodySemiBoldText(
         modifier = modifier,
         text = text,
         fontSize = 18.sp,

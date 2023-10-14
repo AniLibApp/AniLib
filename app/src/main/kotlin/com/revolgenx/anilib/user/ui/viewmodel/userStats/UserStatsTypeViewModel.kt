@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 abstract class UserStatsTypeViewModel(
     mediaType: MediaType,
-    val userStatsType: UserStatsType,
+    userStatsType: UserStatsType,
     private val userService: UserService
 ) : ResourceViewModel<List<BaseStatisticModel>, UserStatsTypeField>() {
     override val field: UserStatsTypeField = UserStatsTypeField(mediaType, userStatsType)

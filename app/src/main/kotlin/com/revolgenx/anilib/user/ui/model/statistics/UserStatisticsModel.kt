@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.user.ui.model.statistics
 
 import com.patrykandpatrick.vico.core.entry.ChartEntryModel
+import com.revolgenx.anilib.common.ext.nullIfEmpty
 import com.revolgenx.anilib.fragment.UserMediaStatistics
 import com.revolgenx.anilib.type.MediaListStatus
 
@@ -67,6 +68,6 @@ fun UserMediaStatistics.toModel(): UserStatisticsModel {
                     count = g.count
                 )
             }
-        }
+        }?.nullIfEmpty()
     )
 }

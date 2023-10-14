@@ -5,7 +5,6 @@ import com.revolgenx.anilib.character.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
-import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.common.ui.model.BaseModel
@@ -137,8 +136,8 @@ class UserServiceImpl(
                     },
                     statistics = user.statistics?.let { stats ->
                         UserStatisticTypesModel(
-                            anime = stats.anime?.userStatisticsOverview?.toModel(),
-                            manga = stats.manga?.userStatisticsOverview?.toModel()
+                            anime = stats.anime?.userStatisticsOverview?.toModel(true),
+                            manga = stats.manga?.userStatisticsOverview?.toModel(false)
                         )
                     }
                 )
@@ -198,7 +197,7 @@ class UserServiceImpl(
                         emptyList()
                     }
                 }
-            }.getOrEmpty()
+            }.orEmpty()
         }.onIO()
     }
 

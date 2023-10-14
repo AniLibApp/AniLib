@@ -9,7 +9,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.revolgenx.anilib.common.data.store.AuthDataStore
 import com.revolgenx.anilib.list.data.store.MediaListFilterDataStore
-import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ext.launchIO
 import com.revolgenx.anilib.common.ext.naText
@@ -117,7 +116,7 @@ abstract class MediaListViewModel(
                         }
                         null
                     }
-            val mediaListEntries = mediaList?.entries.getOrEmpty()
+            val mediaListEntries = mediaList?.entries.orEmpty()
             val filteredList = getFilteredList(mediaListEntries)
             mediaListCollection.clear()
             mediaListCollection.addAll(filteredList)

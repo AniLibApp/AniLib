@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.view.Window
 import androidx.activity.ComponentActivity
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
@@ -18,7 +17,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.window.DialogWindowProvider
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -119,7 +117,7 @@ fun CoroutineScope.hideBottomSheet(state: SheetState, openBottomSheet: MutableSt
     }
 }
 
-fun <T> List<T>?.getOrEmpty() = this ?: emptyList()
+fun <T> List<T>.nullIfEmpty() = this.takeIf { it.isNotEmpty() }
 
 internal fun Context.componentActivity(): ComponentActivity? {
     var context = this

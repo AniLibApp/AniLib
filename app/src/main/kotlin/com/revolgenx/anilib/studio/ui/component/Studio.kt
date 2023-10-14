@@ -7,16 +7,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import com.revolgenx.anilib.common.ext.getOrEmpty
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.button.SmallTextButton
 import com.revolgenx.anilib.common.ui.component.common.HeaderText
@@ -29,7 +24,7 @@ import anilib.i18n.R as I18nR
 
 @Composable
 fun StudioItem(studio: StudioModel, onMediaClick: OnMediaClick, onClick: OnClickWithId) {
-    val medias = studio.media?.nodes.getOrEmpty()
+    val medias = studio.media?.nodes.orEmpty()
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {

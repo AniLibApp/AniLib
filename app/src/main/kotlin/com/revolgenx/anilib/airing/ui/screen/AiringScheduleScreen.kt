@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
+import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -65,8 +65,8 @@ import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.LargeSemiBoldText
-import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
+import com.revolgenx.anilib.common.ui.component.text.LargeBodySemiBoldText
 import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -209,7 +209,7 @@ private fun AiringScreenContent(
             model ?: return@LazyPagingList
             when (model) {
                 is HeaderModel -> {
-                    HeaderBox(modifier = Modifier.padding(horizontal = 8.dp),header = model)
+                    HeaderBox(modifier = Modifier.padding(horizontal = 16.dp), header = model)
                 }
 
                 is AiringScheduleModel -> {
@@ -286,10 +286,8 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
             ) {
                 Column {
                     MediaTitleType { type ->
-                        MediumText(
-                            text = media.title?.title(type).naText(),
-                            fontSize = 16.sp,
-                            lineHeight = 18.sp
+                        LargeBodyMediumText(
+                            text = media.title?.title(type).naText()
                         )
                     }
                     Row(
@@ -366,7 +364,7 @@ private fun AiringScheduleTimer(
     } else {
         airingScheduleTimer.timeLeft.value.formatString(context)
     }
-    LargeSemiBoldText(
+    LargeBodySemiBoldText(
         text = scheduleTimeText,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )

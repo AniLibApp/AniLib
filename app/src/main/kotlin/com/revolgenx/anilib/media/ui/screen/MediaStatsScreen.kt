@@ -13,8 +13,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
+import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -24,12 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
+import com.patrykandpatrick.vico.core.marker.Marker
 import com.patrykandpatrick.vico.core.scroll.InitialScroll
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
@@ -37,6 +38,8 @@ import com.revolgenx.anilib.common.ui.component.chart.ColumnChart
 import com.revolgenx.anilib.common.ui.component.chart.LineChart
 import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
 import com.revolgenx.anilib.common.ui.component.common.Grid
+import com.revolgenx.anilib.common.ui.component.common.HeaderBox
+import com.revolgenx.anilib.common.ui.component.common.HeaderText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
@@ -46,6 +49,7 @@ import com.revolgenx.anilib.common.ui.theme.rank_type_popular
 import com.revolgenx.anilib.common.ui.theme.rank_type_rated
 import com.revolgenx.anilib.list.ui.model.toColor
 import com.revolgenx.anilib.list.ui.model.toStringRes
+import com.revolgenx.anilib.media.ui.model.MediaStatsModel
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.type.MediaRankType
@@ -69,150 +73,195 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
-                    .padding(8.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
+                    .padding(8.dp)
             ) {
-                statsModel.rankings?.let {
-                    HeaderText(text = stringResource(id = I18nR.string.rankings))
-                    Grid(items = it) { rank ->
-                        Card(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(66.dp)
-                                .padding(3.dp)
-                        ) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(horizontal = 4.dp, vertical = 7.dp),
-                                horizontalArrangement = Arrangement.spacedBy(2.dp),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                val rankImage =
-                                    if (rank.rankType == MediaRankType.POPULAR) AppIcons.IcHeart else AppIcons.IcStar
-                                val rankColor =
-                                    if (rank.rankType == MediaRankType.RATED) rank_type_popular else rank_type_rated
-                                Icon(
-                                    modifier = Modifier.size(20.dp),
-                                    imageVector = rankImage,
-                                    contentDescription = null,
-                                    tint = rankColor
-                                )
-                                val seasons = stringArrayResource(id = R.array.media_season)
-                                val rankText = remember {
-                                    (rank.rank?.let { "#$it " } ?: "") +
-                                            (rank.context?.trim()?.split(" ")
-                                                ?.joinToString(separator = " ") { it.replaceFirstChar { it.uppercase() } }
-                                                    + " ") +
-                                            (rank.season?.let { seasons[it.ordinal] + " " } ?: "") +
-                                            (rank.year ?: "")
-                                }
-
-                                Text(
-                                    text = rankText,
-                                    fontSize = 14.sp,
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        }
-                    }
-
-                    HeaderText(text = stringResource(id = I18nR.string.recent_activity_per_day))
-                    LineChart(marker = marker, model = statsModel.trendsEntries)
-
-                    statsModel.airingScoreProgressionEntries?.let {
-                        HeaderText(text = stringResource(id = I18nR.string.airing_score_progression))
-                        LineChart(
-                            marker = marker,
-                            model = it,
-                            spacing = 50.dp,
-                            initialScroll = InitialScroll.End
-                        )
-                    }
-
-
-                    statsModel.airingWatchersProgressionEntries?.let {
-                        HeaderText(text = stringResource(id = I18nR.string.airing_watchers_progression))
-                        LineChart(
-                            marker = marker,
-                            model = it,
-                            spacing = 50.dp,
-                            initialScroll = InitialScroll.End
-                        )
-                    }
-
-                    statsModel.statusDistribution?.let { statusDistribution ->
-                        HeaderText(text = stringResource(id = I18nR.string.status_distribution))
-                        Grid(
-                            items = statusDistribution,
-                            columnSpacing = 3.dp,
-                            rowSpacing = 3.dp
-                        ) { item ->
-                            val statusColor =
-                                item.status.toColor()
-                            val listStatus = item.status.toStringRes(mediaType)
-                                .let { str -> stringResource(id = str) }
-                            Box(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .height(50.dp)
-                                    .background(color = statusColor)
-                                    .padding(horizontal = 8.dp, vertical = 2.dp)
-                            ) {
-                                Text(
-                                    modifier = Modifier.align(Alignment.CenterStart),
-                                    text = stringResource(id = I18nR.string.status_distribution_string).format(
-                                        item.amount.prettyNumberFormat(),
-                                        listStatus
-                                    ),
-                                    color = Color.White,
-                                    maxLines = 2,
-                                    overflow = TextOverflow.Ellipsis
-                                )
-                            }
-                        }
-
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(10.dp)
-                        ) {
-                            val statusTotalAmount = remember {
-                                statusDistribution.sumOf(StatusDistributionModel::amount).toFloat()
-                            }
-                            statusDistribution.forEach { item ->
-                                val weight = item.amount.div(statusTotalAmount).times(100f)
-                                Box(
-                                    modifier = Modifier
-                                        .weight(weight)
-                                        .fillMaxHeight()
-                                        .background(
-                                            color = item.status
-                                                .toColor()
-                                        )
-                                )
-
-                            }
-                        }
-                    }
-
-
-                    HeaderText(text = stringResource(id = I18nR.string.score_distribution))
-                    ColumnChart(marker = marker, model = statsModel.scoreDistributionEntry)
-                }
+                StatsRankingSection(statsModel)
+                StatsRecentActivityPerDaySection(statsModel, marker)
+                StatsAiringScoreProgressionSection(statsModel, marker)
+                StatsAiringWatcherProgressionSection(statsModel, marker)
+                StatsStatusDistributionSection(statsModel, mediaType)
+                StatsScoreDistributionSection(statsModel, marker)
             }
         }
     }
 }
 
 @Composable
-private fun HeaderText(text: String) {
-    Text(
-        text = text,
-        fontSize = 20.sp,
-        fontWeight = FontWeight.SemiBold,
-        letterSpacing = 0.1.sp
+private fun StatsRankingSection(statsModel: MediaStatsModel) {
+    val rankings = statsModel.rankings ?: return
+    HeaderBox(
+        modifier = Modifier.padding(vertical = 14.dp, horizontal = 4.dp),
+        text = stringResource(id = I18nR.string.rankings)
+    )
+    Grid(items = rankings) { rank ->
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(66.dp)
+                .padding(3.dp)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 4.dp, vertical = 7.dp),
+                horizontalArrangement = Arrangement.spacedBy(2.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                val rankImage =
+                    if (rank.rankType == MediaRankType.POPULAR) AppIcons.IcHeart else AppIcons.IcStar
+                val rankColor =
+                    if (rank.rankType == MediaRankType.RATED) rank_type_popular else rank_type_rated
+                Icon(
+                    modifier = Modifier.size(20.dp),
+                    imageVector = rankImage,
+                    contentDescription = null,
+                    tint = rankColor
+                )
+                val seasons = stringArrayResource(id = R.array.media_season)
+                val rankText = remember {
+                    (rank.rank?.let { "#$it " } ?: "") +
+                            (rank.context?.trim()?.split(" ")
+                                ?.joinToString(separator = " ") { it.replaceFirstChar { it.uppercase() } }
+                                    + " ") +
+                            (rank.season?.let { seasons[it.ordinal] + " " } ?: "") +
+                            (rank.year ?: "")
+                }
+
+                Text(
+                    text = rankText,
+                    fontSize = 14.sp,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun StatsScoreDistributionSection(
+    statsModel: MediaStatsModel,
+    marker: Marker
+) {
+    val scoreDistributionEntry = statsModel.scoreDistributionEntry ?: return
+    MediaStatsHeaderText(text = stringResource(id = I18nR.string.score_distribution))
+    OutlinedCard {
+        ColumnChart(marker = marker, model = scoreDistributionEntry)
+    }
+}
+
+@Composable
+private fun StatsStatusDistributionSection(
+    statsModel: MediaStatsModel,
+    mediaType: MediaType
+) {
+    val statusDistribution = statsModel.statusDistribution ?: return
+    MediaStatsHeaderText(text = stringResource(id = I18nR.string.status_distribution))
+    Grid(
+        items = statusDistribution,
+        columnSpacing = 3.dp,
+        rowSpacing = 3.dp
+    ) { item ->
+        val statusColor =
+            item.status.toColor()
+        val listStatus = item.status.toStringRes(mediaType)
+            .let { str -> stringResource(id = str) }
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(50.dp)
+                .background(color = statusColor)
+                .padding(horizontal = 8.dp, vertical = 2.dp)
+        ) {
+            Text(
+                modifier = Modifier.align(Alignment.CenterStart),
+                text = stringResource(id = I18nR.string.status_distribution_string).format(
+                    item.amount.prettyNumberFormat(),
+                    listStatus
+                ),
+                color = Color.White,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis
+            )
+        }
+    }
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(10.dp)
+    ) {
+        val statusTotalAmount = remember {
+            statusDistribution.sumOf(StatusDistributionModel::amount).toFloat()
+        }
+        statusDistribution.forEach { item ->
+            val weight = item.amount.div(statusTotalAmount).times(100f)
+            Box(
+                modifier = Modifier
+                    .weight(weight)
+                    .fillMaxHeight()
+                    .background(
+                        color = item.status
+                            .toColor()
+                    )
+            )
+
+        }
+    }
+}
+
+@Composable
+private fun StatsAiringWatcherProgressionSection(
+    statsModel: MediaStatsModel,
+    marker: Marker
+) {
+    val airingWatchersProgressionEntries = statsModel.airingWatchersProgressionEntries ?: return
+    MediaStatsHeaderText(text = stringResource(id = I18nR.string.airing_watchers_progression))
+    OutlinedCard {
+        LineChart(
+            marker = marker,
+            model = airingWatchersProgressionEntries,
+            spacing = 50.dp,
+            initialScroll = InitialScroll.End
+        )
+    }
+}
+
+@Composable
+private fun StatsAiringScoreProgressionSection(
+    statsModel: MediaStatsModel,
+    marker: Marker
+) {
+    val airingScoreProgressionEntries = statsModel.airingScoreProgressionEntries ?: return
+    MediaStatsHeaderText(text = stringResource(id = I18nR.string.airing_score_progression))
+
+    OutlinedCard {
+        LineChart(
+            marker = marker,
+            model = airingScoreProgressionEntries,
+            spacing = 50.dp,
+            initialScroll = InitialScroll.End
+        )
+    }
+}
+
+@Composable
+private fun StatsRecentActivityPerDaySection(
+    statsModel: MediaStatsModel,
+    marker: Marker
+) {
+    val trendEntries = statsModel.trendsEntries ?: return
+    MediaStatsHeaderText(text = stringResource(id = I18nR.string.recent_activity_per_day))
+
+    OutlinedCard {
+        LineChart(marker = marker, model = trendEntries)
+    }
+}
+
+@Composable
+private fun MediaStatsHeaderText(text: String) {
+    HeaderBox(
+        text = text
     )
 }
 

@@ -4,9 +4,8 @@ import com.patrykandpatrick.vico.core.entry.ChartEntryModel
 import com.patrykandpatrick.vico.core.entry.FloatEntry
 import com.patrykandpatrick.vico.core.entry.entryModelOf
 import com.patrykandpatrick.vico.core.entry.entryOf
-import com.patrykandpatrick.vico.core.marker.Marker
 import com.revolgenx.anilib.MediaStatsQuery
-import com.revolgenx.anilib.common.ext.getOrEmpty
+import com.revolgenx.anilib.common.ext.nullIfEmpty
 import com.revolgenx.anilib.common.ui.model.stats.ScoreDistributionModel
 import com.revolgenx.anilib.common.ui.model.stats.StatusDistributionModel
 import com.revolgenx.anilib.type.MediaListStatus
@@ -22,8 +21,8 @@ data class MediaStatsModel(
     var trends: List<MediaTrendModel>?,
     var statusDistribution: List<StatusDistributionModel>?,
     var scoreDistribution: List<ScoreDistributionModel>?,
-    var scoreDistributionEntry: ChartEntryModel,
-    var trendsEntries: ChartEntryModel,
+    var scoreDistributionEntry: ChartEntryModel?,
+    var trendsEntries: ChartEntryModel?,
     var airingTrends: List<AiringTrendsModel>?,
     var airingWatchersProgressionEntries: ChartEntryModel?,
     var airingScoreProgressionEntries: ChartEntryModel?
@@ -71,7 +70,7 @@ fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
                 rankType = rank.type,
             )
         }
-    }
+    }?.nullIfEmpty()
 
 
     val trends = trends?.nodes?.mapNotNull { nodeData ->
@@ -81,7 +80,7 @@ fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
                 trending = node.trending
             )
         }
-    }
+    }?.nullIfEmpty()
 
     val trendsEntries = trends?.map {
         val date = LocalDateTime.ofInstant(
@@ -89,7 +88,7 @@ fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
             ZoneId.systemDefault()
         ).dayOfMonth
         entryOf(date, it.trending)
-    }.getOrEmpty()
+    }?.nullIfEmpty()
 
     val statusDistribution = stats?.statusDistribution?.mapNotNull { statusData ->
         statusData?.let { status ->
@@ -111,7 +110,7 @@ fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
 
     val scoreDistributionEntry = scoreDistribution?.map {
         entryOf(it.score, it.amount)
-    }.getOrEmpty()
+    }?.nullIfEmpty()
 
 
     var airingWatchersProgressionEntries: MutableList<FloatEntry>? = null
@@ -140,8 +139,8 @@ fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
         trends = trends,
         statusDistribution = statusDistribution,
         scoreDistribution = scoreDistribution,
-        scoreDistributionEntry = entryModelOf(scoreDistributionEntry),
-        trendsEntries = entryModelOf(trendsEntries),
+        scoreDistributionEntry = scoreDistributionEntry?.let { entryModelOf(it) },
+        trendsEntries = trendsEntries?.let { entryModelOf(it) },
         airingTrends = airingTrends,
         airingWatchersProgressionEntries = airingWatchersProgressionEntries?.let { entryModelOf(it) },
         airingScoreProgressionEntries = airingScoreProgressionEntries?.let { entryModelOf(it) })

@@ -23,7 +23,8 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
@@ -62,6 +63,7 @@ import com.revolgenx.anilib.common.ext.toStringResource
 import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ui.component.button.SmallTextButton
 import com.revolgenx.anilib.common.ui.component.common.Grid
+import com.revolgenx.anilib.common.ui.component.common.HeaderBox
 import com.revolgenx.anilib.common.ui.component.common.HeaderText
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
@@ -132,10 +134,8 @@ private fun MediaOverview(
     Column(
         modifier = Modifier
             .padding(horizontal = 8.dp)
-            .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .verticalScroll(rememberScrollState())
     ) {
-        Spacer(modifier = Modifier.height(8.dp))
         MediaDescription(media)
         MediaInfo(media, isAnime)
         MediaGenre(media.genres) {
@@ -271,7 +271,7 @@ fun MediaHeaderWithButton(
 
 @Composable
 fun MediaHeader(text: String) {
-    HeaderText(text = text)
+    HeaderBox(modifier = Modifier.padding(horizontal = 4.dp).padding(top = 20.dp, bottom = 12.dp), text = text)
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -405,13 +405,15 @@ fun MediaExternalLink(
     externalLinks: List<MediaExternalLinkModel>?,
     onClick: OnClickWithValue<MediaExternalLinkModel>
 ) {
+    externalLinks ?: return
     MediaHeader(text = I18nR.string.links.toStringResource())
 
     MediaFlowRow {
-        externalLinks?.forEach { link ->
-            Surface(
-                shape = MaterialTheme.shapes.small,
-                color = link.color ?: MaterialTheme.colorScheme.surfaceContainerLowest
+        externalLinks.forEach { link ->
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = link.color ?: MaterialTheme.colorScheme.surfaceContainerLowest
+                )
             ) {
                 Row(
                     modifier = Modifier
@@ -477,11 +479,7 @@ private fun MediaTag(
 
     MediaFlowRow {
         (if (showSpoilerTags.value) tags else tagsWithoutSpoiler).forEach { tag ->
-            Surface(
-                modifier = Modifier,
-                shape = MaterialTheme.shapes.small,
-                color = MaterialTheme.colorScheme.surfaceVariant
-            ) {
+            Card(modifier = Modifier) {
                 Row(
                     modifier = Modifier
                         .clickable {
@@ -524,7 +522,6 @@ private fun MediaTag(
 @Composable
 private fun MediaGenre(genres: List<String>?, onClick: OnClickWithValue<String>) {
     MediaHeader(text = I18nR.string.genre.toStringResource())
-
     MediaFlowRow {
         genres?.forEach { genre ->
             MediaInfoChip(text = genre) {
@@ -536,6 +533,7 @@ private fun MediaGenre(genres: List<String>?, onClick: OnClickWithValue<String>)
 
 @Composable
 private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
+    SectionSpacer()
     Grid(
         items = listOf(
             MediaInfoItem(
@@ -594,6 +592,8 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
         }
     }
 
+    SectionSpacer()
+
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -650,6 +650,7 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
 
 @Composable
 private fun MediaDescription(media: MediaModel) {
+    SectionSpacer()
     var showFullDesc by remember { mutableStateOf(false) }
     var showMoreIcon by remember { mutableStateOf(false) }
     Card(
@@ -774,11 +775,7 @@ fun MediaTagDetailItem(title: String, value: String) {
 
 @Composable
 private fun MediaInfoChip(text: String, onClick: OnClick) {
-    Surface(
-        shape = MaterialTheme.shapes.small,
-        onClick = onClick,
-        color = MaterialTheme.colorScheme.surfaceVariant
-    ) {
+    Card(onClick = onClick) {
         Box(
             modifier = Modifier.padding(8.dp)
         ) {
@@ -795,6 +792,11 @@ fun MediaFlowRow(content: @Composable FlowRowScope.() -> Unit) {
         verticalArrangement = Arrangement.spacedBy(8.dp),
         content = content
     )
+}
+
+@Composable
+fun SectionSpacer() {
+    Spacer(modifier = Modifier.size(12.dp))
 }
 
 data class MediaInfoItem(val title: String, val value: String)

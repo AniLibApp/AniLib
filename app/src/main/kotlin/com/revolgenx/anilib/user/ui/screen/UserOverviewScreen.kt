@@ -14,14 +14,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
+import androidx.compose.material3.Button
+import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -41,10 +44,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.common.HeaderBox
 import com.revolgenx.anilib.common.ui.component.scroll.ScrollBarConfig
 import com.revolgenx.anilib.common.ui.component.scroll.verticalScrollWithScrollbar
+import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
@@ -65,11 +70,40 @@ fun UserOverviewScreen(viewModel: UserViewModel) {
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(8.dp)
+                .padding(8.dp),
         ) {
             UserDescriptionSection(userModel)
             UserActivityHistorySection(userModel, scope)
             UserStatisticSection(userModel, context)
+            UserGenreOverviewSection(userModel)
+        }
+    }
+}
+
+@Composable
+private fun UserGenreOverviewSection(userModel: UserModel) {
+    userModel.statistics?.media?.genres?.let {
+        UserOverviewHeader(stringResource(id = I18nR.string.genre_overview))
+
+        Card {
+            LazyRow {
+                items(it) {
+                    Column(
+                        modifier = Modifier.padding(12.dp),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.spacedBy(4.dp)
+                    ) {
+                        LargeBodyMediumText(
+                            text = it.genre.orEmpty(),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
+                        LargeBodyMediumText(
+                            text = it.count.toString(),
+                            color = MaterialTheme.colorScheme.primary
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -166,10 +200,8 @@ private fun UserStatisticsTextItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        MediumText(
+        LargeBodyMediumText(
             text = title,
-            fontSize = 16.sp,
-            lineHeight = 20.sp,
             maxLines = 1,
             color = MaterialTheme.colorScheme.primary
         )
@@ -223,7 +255,7 @@ private fun UserActivityHistorySection(userModel: UserModel, scope: CoroutineSco
 @OptIn(ExperimentalMaterial3Api::class)
 
 @Composable
-fun UserActivityHistoryToolTip(
+private fun UserActivityHistoryToolTip(
     activityHistory: UserActivityHistoryModel,
     scope: CoroutineScope,
     content: @Composable () -> Unit
@@ -284,46 +316,39 @@ fun UserActivityHistoryToolTip(
 
 
 @Composable
-fun UserOverviewHeader(text: String) {
+private fun UserOverviewHeader(text: String) {
     HeaderBox(text = text)
 }
-
 
 @Composable
 private fun UserDescriptionSection(userModel: UserModel) {
     val showUserDescription = remember { mutableStateOf(false) }
     val hasDescription = userModel.about.isNullOrBlank().not()
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.onSurface)
-    ) {
-        Column(
-            modifier = Modifier
-                .heightIn(max = 600.dp)
-                .verticalScrollWithScrollbar(
-                    state = rememberScrollState(),
-                    scrollbarConfig = remember {
-                        ScrollBarConfig()
-                    }
-                )
-                .padding(8.dp)
+    if (hasDescription && showUserDescription.value.not()) {
+        Button(onClick = { showUserDescription.value = true }) {
+            Text(
+                text = stringResource(id = I18nR.string.show_description)
+            )
+        }
+    } else {
+        Card(
+            modifier = Modifier.fillMaxWidth(),
+            colors = CardDefaults.cardColors(contentColor = MaterialTheme.colorScheme.onSurface)
         ) {
-            val noDescriptionText =
-                stringResource(id = I18nR.string.no_description).takeIf { !hasDescription }
-
-            if (hasDescription && showUserDescription.value.not()) {
-                Box(
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .clickable {
-                            showUserDescription.value = true
-                        },
-                ) {
-                    Text(
-                        text = stringResource(id = I18nR.string.show_description)
+            Column(
+                modifier = Modifier
+                    .heightIn(max = 600.dp)
+                    .verticalScrollWithScrollbar(
+                        state = rememberScrollState(),
+                        scrollbarConfig = remember {
+                            ScrollBarConfig()
+                        }
                     )
-                }
-            } else {
+                    .padding(8.dp)
+            ) {
+                val noDescriptionText =
+                    stringResource(id = I18nR.string.no_description).takeIf { !hasDescription }
+
                 MarkdownText(
                     text = noDescriptionText,
                     spanned = userModel.aboutSpanned

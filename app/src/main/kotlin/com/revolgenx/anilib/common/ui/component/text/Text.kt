@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun LargeSemiBoldText(
+fun LargeBodySemiBoldText(
     text: String,
     modifier: Modifier = Modifier,
     fontSize: TextUnit? = null,
@@ -40,6 +40,27 @@ fun LargeSemiBoldText(
         textAlign = textAlign,
         color = color,
         style = style
+    )
+}
+
+@Composable
+fun LargeBodyMediumText(
+    text: String,
+    modifier: Modifier = Modifier,
+    maxLines: Int? = null,
+    color: Color = Color.Unspecified,
+    textAlign: TextAlign? = null,
+    style: TextStyle = LocalTextStyle.current,
+) {
+    MediumText(
+        text = text,
+        modifier = modifier,
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
+        maxLines = maxLines,
+        style = style,
+        color = color,
+        textAlign = textAlign
     )
 }
 

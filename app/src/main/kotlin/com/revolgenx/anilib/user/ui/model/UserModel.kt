@@ -2,12 +2,15 @@ package com.revolgenx.anilib.user.ui.model
 
 import android.text.Spanned
 import com.revolgenx.anilib.UserQuery
+import com.revolgenx.anilib.common.ext.nullIfEmpty
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.DateModel
 import com.revolgenx.anilib.fragment.UserRelation
 import com.revolgenx.anilib.social.factory.markdown
 import com.revolgenx.anilib.social.markdown.anilify
+import com.revolgenx.anilib.user.ui.model.statistics.UserGenreStatisticModel
 import com.revolgenx.anilib.user.ui.model.statistics.UserStatisticTypesModel
+import com.revolgenx.anilib.user.ui.model.statistics.UserStatisticsModel
 import com.revolgenx.anilib.user.ui.model.statistics.toModel
 import com.revolgenx.anilib.user.ui.model.stats.UserActivityHistoryModel
 import com.revolgenx.anilib.user.ui.model.stats.UserStatsModel
@@ -47,7 +50,7 @@ fun UserQuery.User.toModel(): UserModel {
     val avatar = avatar?.userAvatar?.toModel()
     val anilifiedAbout = anilify(about)
 
-    val userActivityHistory = stats?.activityHistory.takeIf { it.isNullOrEmpty().not() }?.let {
+    val userActivityHistory = stats?.activityHistory?.nullIfEmpty()?.let {
         val currentDate = LocalDate.now()
         val dateWithStartOfWeek =
             currentDate.with(WeekFields.of(Locale.getDefault()).firstDayOfWeek)
@@ -89,7 +92,6 @@ fun UserQuery.User.toModel(): UserModel {
     }
 
 
-
     return UserModel(
         id = id,
         name = name,
@@ -107,9 +109,32 @@ fun UserQuery.User.toModel(): UserModel {
             )
         },
         statistics = statistics?.let { stats ->
+            val animeStats = stats.anime?.userMediaStatistics?.toModel()
+            val mangaStats = stats.manga?.userMediaStatistics?.toModel()
+            val mediaGenres = animeStats?.genres?.toMutableList()?.let { mediaGenres ->
+                mangaStats?.genres?.let { m ->
+                    mediaGenres.addAll(m)
+                }
+                mediaGenres
+            }
+
+            val mediaStats =
+                mediaGenres?.fold(mutableListOf<UserGenreStatisticModel>()) { acc, userGenreStatisticModel ->
+                    acc.also {
+                        it.find { it.genre == userGenreStatisticModel.genre }
+                            ?.let { it.count = it.count + userGenreStatisticModel.count } ?: it.add(
+                            userGenreStatisticModel
+                        )
+                    }
+                }?.sortedByDescending { it.count }?.let {
+                    UserStatisticsModel(
+                        genres = it
+                    )
+                }
             UserStatisticTypesModel(
-                anime = stats.anime?.userMediaStatistics?.toModel(),
-                manga = stats.manga?.userMediaStatistics?.toModel()
+                anime = animeStats,
+                manga = mangaStats,
+                media = mediaStats
             )
         }
     )
