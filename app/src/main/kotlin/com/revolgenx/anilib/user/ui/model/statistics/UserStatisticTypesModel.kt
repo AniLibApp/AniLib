@@ -27,7 +27,7 @@ fun UserStatisticsOverview.toModel(isAnime: Boolean): UserStatisticsModel {
     }?.nullIfEmpty()
 
     val scoresTitleEntry = scores?.map { entryOf(it.score, it.count) }
-    val scoresHourEntry = scores?.map { entryOf(it.score, it.hoursWatched) }
+    val scoresHourEntry = scores?.map { entryOf(it.score,  if(isAnime) it.hoursWatched else it.chaptersRead) }
 
     val lengths = lengths?.mapNotNull { length ->
         length?.let { len ->
