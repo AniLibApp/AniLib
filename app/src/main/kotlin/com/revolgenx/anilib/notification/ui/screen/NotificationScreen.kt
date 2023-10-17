@@ -212,9 +212,6 @@ private fun NotificationScreenContent(
                     }
                 }
 
-                reason =
-                    "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
-
                 val notificationTitle = text.orEmpty()
                 NotificationItem(
                     notificationTitle = notificationTitle,
@@ -290,8 +287,7 @@ private fun NotificationItem(
                     .clickable {
                         onClick()
                     }
-                    .padding(horizontal = 8.dp)
-                    .padding(bottom = 8.dp),
+                    .padding(8.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 MediumText(
