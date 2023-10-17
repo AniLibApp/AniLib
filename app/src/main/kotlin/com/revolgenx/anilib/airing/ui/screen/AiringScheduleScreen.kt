@@ -65,8 +65,8 @@ import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
-import com.revolgenx.anilib.common.ui.component.text.LargeBodySemiBoldText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -286,8 +286,10 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
             ) {
                 Column {
                     MediaTitleType { type ->
-                        LargeBodyMediumText(
-                            text = media.title?.title(type).naText()
+                        MediumText(
+                            text = media.title?.title(type).naText(),
+                            fontSize = 16.sp,
+                            lineHeight = 20.sp,
                         )
                     }
                     Row(
@@ -364,7 +366,7 @@ private fun AiringScheduleTimer(
     } else {
         airingScheduleTimer.timeLeft.value.formatString(context)
     }
-    LargeBodySemiBoldText(
+    SemiBoldText(
         text = scheduleTimeText,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )

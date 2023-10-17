@@ -90,7 +90,9 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
 private fun StatsRankingSection(statsModel: MediaStatsModel) {
     val rankings = statsModel.rankings ?: return
     HeaderBox(
-        modifier = Modifier.padding(vertical = 14.dp, horizontal = 4.dp),
+        modifier = Modifier
+            .padding(horizontal = 4.dp)
+            .padding(bottom = 12.dp, top = 8.dp),
         text = stringResource(id = I18nR.string.rankings)
     )
     Grid(items = rankings) { rank ->
@@ -195,16 +197,18 @@ private fun StatsStatusDistributionSection(
             statusDistribution.sumOf(StatusDistributionModel::amount).toFloat()
         }
         statusDistribution.forEach { item ->
-            val weight = item.amount.div(statusTotalAmount).times(100f)
-            Box(
-                modifier = Modifier
-                    .weight(weight)
-                    .fillMaxHeight()
-                    .background(
-                        color = item.status
-                            .toColor()
-                    )
-            )
+            val weight = item.amount / statusTotalAmount * 100f
+            if(weight > 0){
+                Box(
+                    modifier = Modifier
+                        .weight(weight)
+                        .fillMaxHeight()
+                        .background(
+                            color = item.status
+                                .toColor()
+                        )
+                )
+            }
 
         }
     }

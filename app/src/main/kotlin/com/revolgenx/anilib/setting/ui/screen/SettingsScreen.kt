@@ -34,7 +34,6 @@ import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.openLink
-import com.revolgenx.anilib.common.ext.toStringResource
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.common.ShowIfNotLoggedIn
@@ -160,16 +159,16 @@ fun SettingScreenContent(isTab: Boolean) {
             ShowIfNotLoggedIn {
                 TextPreferenceItem(
                     icon = AppIcons.IcLogin,
-                    title = I18nR.string.settings_login.toStringResource(),
-                    subtitle = I18nR.string.settings_log_into_anilist.toStringResource()
+                    title = stringResource(id = I18nR.string.settings_login),
+                    subtitle = stringResource(id = I18nR.string.settings_log_into_anilist)
                 ) {
                     openLoginDialog.value = true
                 }
 
                 TextPreferenceItem(
                     icon = AppIcons.IcPersonAdd,
-                    title = I18nR.string.settings_sign_up.toStringResource(),
-                    subtitle = I18nR.string.settings_sign_up_to_anilist.toStringResource()
+                    title = stringResource(I18nR.string.settings_sign_up),
+                    subtitle = stringResource(I18nR.string.settings_sign_up_to_anilist)
                 ) {
                     openRegisterDialog.value = true
                 }
@@ -179,8 +178,8 @@ fun SettingScreenContent(isTab: Boolean) {
 
             TextPreferenceItem(
                 icon = AppIcons.IcTune,
-                title = I18nR.string.settings_general.toStringResource(),
-                subtitle = I18nR.string.settings_general_desc.toStringResource()
+                title = stringResource(I18nR.string.settings_general),
+                subtitle = stringResource(I18nR.string.settings_general_desc)
             ) {
                 navigator.push(GeneralSettingsScreen)
 
@@ -188,16 +187,16 @@ fun SettingScreenContent(isTab: Boolean) {
 
             TextPreferenceItem(
                 icon = AppIcons.IcPalette,
-                title = I18nR.string.settings_appearance.toStringResource(),
-                subtitle = I18nR.string.settings_appearance_desc.toStringResource()
+                title = stringResource(I18nR.string.settings_appearance),
+                subtitle = stringResource(I18nR.string.settings_appearance_desc)
             ) {
                 navigator.push(AppearanceSettingsScreen)
             }
 
             TextPreferenceItem(
                 icon = AppIcons.IcMedia,
-                title = I18nR.string.settings_anime_and_manga.toStringResource(),
-                subtitle = I18nR.string.settings_anime_and_manga_desc.toStringResource()
+                title = stringResource(I18nR.string.settings_anime_and_manga),
+                subtitle = stringResource(I18nR.string.settings_anime_and_manga_desc)
             ) {
                 navigator.push(MediaSettingsScreen())
             }
@@ -205,14 +204,14 @@ fun SettingScreenContent(isTab: Boolean) {
             ShowIfLoggedIn {
                 TextPreferenceItem(
                     icon = AppIcons.IcList,
-                    title = I18nR.string.settings_lists.toStringResource(),
-                    subtitle = I18nR.string.settings_list_desc.toStringResource()
+                    title = stringResource(I18nR.string.settings_lists),
+                    subtitle = stringResource(I18nR.string.settings_list_desc)
                 )
 
                 TextPreferenceItem(
                     icon = AppIcons.IcNotification,
-                    title = I18nR.string.notifications.toStringResource(),
-                    subtitle = I18nR.string.settings_notifications_desc.toStringResource()
+                    title = stringResource(I18nR.string.notifications),
+                    subtitle = stringResource(I18nR.string.settings_notifications_desc)
                 ) {
                     navigator.push(NotificationSettingsScreen())
                 }
@@ -220,30 +219,30 @@ fun SettingScreenContent(isTab: Boolean) {
 
             TextPreferenceItem(
                 icon = AppIcons.IcFilter,
-                title = I18nR.string.filter.toStringResource(),
-                subtitle = I18nR.string.settings_filter_desc.toStringResource()
+                title = stringResource(I18nR.string.filter),
+                subtitle = stringResource(I18nR.string.settings_filter_desc)
             )
 
 
             TextPreferenceItem(
                 icon = AppIcons.IcHeart,
-                title = I18nR.string.settings_support.toStringResource(),
-                subtitle = I18nR.string.settings_support_desc.toStringResource()
+                title = stringResource(I18nR.string.settings_support),
+                subtitle = stringResource(I18nR.string.settings_support_desc)
                     .format(versionName),
                 iconTint = support_color
             )
 
             TextPreferenceItem(
                 icon = AppIcons.IcInfoOutline,
-                title = I18nR.string.about.toStringResource(),
-                subtitle = I18nR.string.settings_about_desc.toStringResource()
+                title = stringResource(I18nR.string.about),
+                subtitle = stringResource(I18nR.string.settings_about_desc)
                     .format(versionName)
             )
 
             ShowIfLoggedIn {
                 TextPreferenceItem(
                     icon = AppIcons.IcLogout,
-                    title = I18nR.string.logout.toStringResource(),
+                    title = stringResource(I18nR.string.logout),
                     iconTint = logout_color
                 ) {
                     openLogoutDialog.value = true

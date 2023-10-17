@@ -44,14 +44,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.common.HeaderBox
 import com.revolgenx.anilib.common.ui.component.scroll.ScrollBarConfig
 import com.revolgenx.anilib.common.ui.component.scroll.verticalScrollWithScrollbar
-import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
-import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.model.stats.UserActivityHistoryModel
@@ -93,13 +91,17 @@ private fun UserGenreOverviewSection(userModel: UserModel) {
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        LargeBodyMediumText(
+                        MediumText(
                             text = it.genre.orEmpty(),
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 16.sp,
+                            lineHeight = 20.sp,
                         )
-                        LargeBodyMediumText(
+                        MediumText(
                             text = it.count.toString(),
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = 16.sp,
+                            lineHeight = 20.sp,
                         )
                     }
                 }
@@ -200,10 +202,12 @@ private fun UserStatisticsTextItem(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        LargeBodyMediumText(
+        MediumText(
             text = title,
             maxLines = 1,
-            color = MaterialTheme.colorScheme.primary
+            color = MaterialTheme.colorScheme.primary,
+            fontSize = 16.sp,
+            lineHeight = 20.sp,
         )
         MediumText(
             text = subtitle,
@@ -320,6 +324,8 @@ private fun UserOverviewHeader(text: String) {
     HeaderBox(text = text)
 }
 
+
+/*todo: add scroll handler*/
 @Composable
 private fun UserDescriptionSection(userModel: UserModel) {
     val showUserDescription = remember { mutableStateOf(false) }

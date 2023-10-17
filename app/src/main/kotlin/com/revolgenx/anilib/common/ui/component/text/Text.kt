@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.sp
 
 
 @Composable
-fun LargeBodySemiBoldText(
+fun SemiBoldText(
     text: String,
     modifier: Modifier = Modifier,
     fontSize: TextUnit? = null,
@@ -44,27 +44,6 @@ fun LargeBodySemiBoldText(
 }
 
 @Composable
-fun LargeBodyMediumText(
-    text: String,
-    modifier: Modifier = Modifier,
-    maxLines: Int? = null,
-    color: Color = Color.Unspecified,
-    textAlign: TextAlign? = null,
-    style: TextStyle = LocalTextStyle.current,
-) {
-    MediumText(
-        text = text,
-        modifier = modifier,
-        fontSize = 16.sp,
-        lineHeight = 20.sp,
-        maxLines = maxLines,
-        style = style,
-        color = color,
-        textAlign = textAlign
-    )
-}
-
-@Composable
 fun MediumText(
     text: String,
     modifier: Modifier = Modifier,
@@ -79,7 +58,7 @@ fun MediumText(
         modifier = modifier,
         text = text,
         maxLines = maxLines ?: 2,
-        fontSize = fontSize ?: 13.sp,
+        fontSize = fontSize ?: 14.sp,
         lineHeight = lineHeight ?: 16.sp,
         overflow = TextOverflow.Ellipsis,
         fontWeight = FontWeight.Medium,
@@ -92,7 +71,7 @@ fun MediumText(
 
 
 @Composable
-fun SmallRegularText(
+fun RegularText(
     text: String,
     modifier: Modifier = Modifier,
     fontSize: TextUnit? = null,
@@ -106,8 +85,8 @@ fun SmallRegularText(
         modifier = modifier,
         text = text,
         maxLines = maxLines ?: 2,
-        fontSize = fontSize ?: 12.sp,
-        lineHeight = lineHeight ?: 13.sp,
+        fontSize = fontSize ?: 14.sp,
+        lineHeight = lineHeight ?: 16.sp,
         overflow = TextOverflow.Ellipsis,
         letterSpacing = 0.2.sp,
         textAlign = textAlign,
@@ -118,7 +97,7 @@ fun SmallRegularText(
 
 
 @Composable
-fun SmallLightText(
+fun LightText(
     text: String,
     modifier: Modifier = Modifier,
     fontSize: TextUnit? = null,

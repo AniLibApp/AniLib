@@ -4,7 +4,6 @@ import androidx.compose.material3.Typography
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
 
@@ -38,10 +37,12 @@ val Typography = Typography(
         fontFamily = overpassFonts
     ),
     bodyLarge = defaultTypography.bodyLarge.copy(
-        fontFamily = overpassFonts
+        fontFamily = overpassFonts,
+        lineHeight = 20.sp
     ),
     bodyMedium = defaultTypography.bodyMedium.copy(
-        fontFamily = overpassFonts
+        fontFamily = overpassFonts,
+        lineHeight = 18.sp
     ),
     labelLarge = defaultTypography.labelLarge.copy(
         fontFamily = overpassFonts,

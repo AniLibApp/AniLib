@@ -40,7 +40,7 @@ import com.revolgenx.anilib.common.ui.component.chart.LineChart
 import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.common.HeaderBox
-import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBook
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBookmark
@@ -78,8 +78,8 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
 
             Column(
                 modifier = Modifier
-                    .padding(8.dp)
                     .verticalScroll(rememberScrollState())
+                    .padding(8.dp)
             ) {
                 val isAnime = mediaType.isAnime
 
@@ -450,8 +450,10 @@ private fun StatisticModelItem(
 
 @Composable
 private fun StatisticModelItemHeader(header: String) {
-    LargeBodyMediumText(
+    MediumText(
         text = header,
-        color = MaterialTheme.colorScheme.primary
+        color = MaterialTheme.colorScheme.primary,
+        fontSize = 16.sp,
+        lineHeight = 20.sp,
     )
 }

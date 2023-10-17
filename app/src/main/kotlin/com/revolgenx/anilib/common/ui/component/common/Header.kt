@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.revolgenx.anilib.common.ui.component.text.LargeBodySemiBoldText
+import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 
 @Composable
@@ -19,6 +19,7 @@ fun HeaderBox(
 ) {
     HeaderBox(
         modifier = modifier
+            .padding(horizontal = 8.dp)
             .padding(top = 22.dp, bottom = 14.dp),
         text = header.title ?: stringResource(id = header.titleRes!!)
     )
@@ -55,7 +56,7 @@ fun HeaderText(
     modifier: Modifier = Modifier,
     text: String
 ) {
-    LargeBodySemiBoldText(
+    SemiBoldText(
         modifier = modifier,
         text = text,
         fontSize = 18.sp,

@@ -23,13 +23,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.component.CharacterCard
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.hideBottomSheet
-import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
@@ -44,6 +42,7 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.component.StaffCard
 import com.revolgenx.anilib.staff.ui.model.StaffModel
@@ -143,6 +142,7 @@ fun UserFavouritesScreen(
 private fun UserFavouritePageScreen(viewModel: UserFavouriteContentViewModel) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
     val navigator = localNavigator()
+    val mediaComponentState = rememberMediaComponentState(navigator = navigator)
 
     LazyPagingList(
         pagingItems = pagingItems,
@@ -154,9 +154,7 @@ private fun UserFavouritePageScreen(viewModel: UserFavouriteContentViewModel) {
     ) { favModel ->
         when (favModel) {
             is MediaModel -> {
-                MediaCard(favModel) { id, type ->
-                    navigator.mediaScreen(id, type)
-                }
+                MediaCard(favModel, mediaComponentState = mediaComponentState)
             }
 
             is CharacterModel -> {
@@ -172,11 +170,9 @@ private fun UserFavouritePageScreen(viewModel: UserFavouriteContentViewModel) {
             }
 
             is StudioModel -> {
-                StudioItem(favModel, onMediaClick = { id, type ->
-                    navigator.mediaScreen(id, type)
-                }, onClick = {
+                StudioItem(favModel) {
                     navigator.studioScreen(it)
-                })
+                }
             }
         }
     }

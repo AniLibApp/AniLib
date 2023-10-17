@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -19,8 +18,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
@@ -39,6 +36,8 @@ import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.model.StreamingEpisodeModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 
 @Composable
@@ -108,25 +107,19 @@ private fun MediaWatchItem(
                         .align(Alignment.BottomStart)
                         .padding(6.dp),
                 ) {
-                    Text(
+                    SemiBoldText(
                         text = streamingEpisode.title.naText(),
-                        fontWeight = FontWeight.SemiBold,
-                        letterSpacing = 0.2.sp,
                         color = Color.White,
                         fontSize = 13.sp,
                         maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
                         style = LocalTextStyle.current.shadow()
                     )
                     streamingEpisode.site?.let {
-                        Text(
+                        MediumText(
                             text = it,
-                            fontWeight = FontWeight.Medium,
-                            letterSpacing = 0.2.sp,
                             color = Color.White,
                             fontSize = 11.sp,
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
                             style = LocalTextStyle.current.shadow()
                         )
                     }

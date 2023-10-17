@@ -2,6 +2,7 @@ package com.revolgenx.anilib.home.season.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
-import androidx.compose.material3.Card as MCard
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,15 +33,14 @@ import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ext.toStringResourceOrNa
+import com.revolgenx.anilib.common.ext.orNa
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
 import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
-import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
-import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.ui.component.text.SmallRegularText
+import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.RegularText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -52,8 +51,12 @@ import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.data.field.MediaField
+import com.revolgenx.anilib.media.ui.component.DetailedListMediaCard
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.component.MediaScore
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
+import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -63,6 +66,7 @@ import com.revolgenx.anilib.media.ui.model.toImageVector
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.type.MediaStatus
 import org.koin.androidx.compose.koinViewModel
+import androidx.compose.material3.Card as MCard
 import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -74,6 +78,8 @@ fun SeasonScreen() {
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
+
+    val mediaComponentState = rememberMediaComponentState(navigator = navigator)
 
     BottomBarLayout(bottomBar = {
         val filter = viewModel.field
@@ -99,7 +105,7 @@ fun SeasonScreen() {
             }
         ) { media ->
             media ?: return@LazyPagingList
-            SeasonItem(media, navigator)
+            SeasonItem(media = media, mediaComponentState = mediaComponentState)
         }
     }
 
@@ -109,96 +115,10 @@ fun SeasonScreen() {
 
 @Composable
 private fun SeasonItem(
-    media: MediaModel = MediaModel(
-        title = MediaTitleModel(romaji = "Cowboy Bebop: Tengoku no Tobira"),
-        coverImage = MediaCoverImageModel(
-            large = "https://s4.anilist.co/file/anilistcdn/media/anime/cover/medium/bx5-NozHwXWdNLCz.jpg",
-            medium = null,
-            extraLarge = null
-        ),
-        genres = listOf("Action", "Comedy"),
-        status = MediaStatus.FINISHED,
-        startDate = FuzzyDateModel(1, 12, 2022),
-        episodes = 33,
-        duration = 24,
-    ),
-    navigator: Navigator
+    media: MediaModel,
+    mediaComponentState: MediaComponentState
 ) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(180.dp)
-            .padding(8.dp)
-    ) {
-        Row(
-            modifier = Modifier.clickable {
-                navigator.mediaScreen(media.id, media.type)
-            }
-        ) {
-            MediaCoverImageType { type ->
-                ImageAsync(
-                    modifier = Modifier
-                        .fillMaxHeight()
-                        .width(104.dp),
-                    imageUrl = media.coverImage?.image(type),
-                    imageOptions = ImageOptions(
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    ),
-                    previewPlaceholder = R.drawable.bleach
-                )
-            }
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = 8.dp)
-                    .padding(bottom = 4.dp, top = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(3.dp)
-            ) {
-                MediaTitleType { type ->
-                    LargeBodyMediumText(
-                        text = media.title?.title(type).naText()
-                    )
-                }
-
-                Row(
-                    modifier = Modifier.padding(PaddingValues(vertical = 2.dp)),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
-                ) {
-                    media.genres?.take(4)?.map { genre ->
-                        SmallLightText(
-                            text = genre,
-                            fontSize = 10.sp,
-                            color = MaterialTheme.colorScheme.primary,
-                        )
-                    }
-                }
-
-                SmallRegularText(
-                    stringResource(id = media.status.toStringRes()),
-                    color = media.status.toColor(),
-                )
-
-                SmallRegularText(
-                    "${media.startDate?.toString().naText()} ~ ${
-                        media.endDate?.toString().naText()
-                    }",
-                )
-
-                SmallRegularText(
-                    stringResource(id = I18nR.string.ep_d_s).format(
-                        media.episodes.naText(),
-                        media.duration.naText()
-                    ),
-                )
-
-                SmallRegularText(
-                    stringResource(id = media.format.toStringRes()),
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
-        }
-    }
+    DetailedListMediaCard(media = media, mediaComponentState = mediaComponentState)
 }
 
 @Composable
@@ -226,7 +146,7 @@ private fun SeasonFilter(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                val season = filter.season?.toStringRes().toStringResourceOrNa()
+                val season = stringResource(id = filter.season?.toStringRes().orNa())
                 filter.season?.toImageVector()?.let {
                     Icon(
                         modifier = Modifier.size(28.dp),

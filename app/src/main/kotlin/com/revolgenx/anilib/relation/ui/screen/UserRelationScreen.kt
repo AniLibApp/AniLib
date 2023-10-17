@@ -3,8 +3,6 @@ package com.revolgenx.anilib.relation.ui.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
@@ -25,7 +22,6 @@ import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
-import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -92,18 +88,13 @@ fun UserRelationItem(user: UserModel) {
         }
 
         if (user.isMutual) {
-            Card(
-                modifier = Modifier
-                    .padding(horizontal = 8.dp)
-                    .height(32.dp),
-            ) {
-                LargeBodyMediumText(
+            Card {
+                MediumText(
                     modifier = Modifier
-                        .fillMaxHeight()
-                        .align(Alignment.CenterHorizontally)
-                        .padding(horizontal = 10.dp),
+                        .padding(horizontal = 10.dp, vertical = 6.dp),
                     text = stringResource(id = I18nR.string.mutual),
-                    textAlign = TextAlign.Center
+                    fontSize = 16.sp,
+                    lineHeight = 20.sp,
                 )
             }
         }

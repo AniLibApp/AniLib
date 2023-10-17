@@ -305,6 +305,7 @@
     <string name="airing">Airing</string>
     <string name="select_date">Select Date</string>
     <string name="weekly">Weekly</string>
+    <string name="ep_s_s">E: %1$s · %2$s</string>
     <string name="ep_s_airing_in">Ep %1$d airing in</string>
     <string name="ep_s_aired_on">Ep %1$d aired on</string>
     <string name="ep_s_of_s_airing_in">Ep %1$d of %2$d airing in</string>
@@ -429,6 +430,12 @@
     <string name="amount">Amount: %1$s</string>
     <string name="total_episodes">Total Episodes</string>
     <string name="genre_overview">Genre Overview</string>
+    <string name="please_log_in">Please log in.</string>
     <!--User Overview-->
+
+    <plurals name="s_episodes_behind">
+        <item quantity="one">%1$s episode behind</item>
+        <item quantity="other">%1$s episodes behind</item>
+    </plurals>
 
 </resources>

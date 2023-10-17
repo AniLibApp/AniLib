@@ -18,7 +18,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
-import com.revolgenx.anilib.common.ui.component.text.SmallLightText
+import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithId
@@ -78,7 +78,7 @@ fun CharacterOrStaffCard(
             ) {
                 MediumText(text = title)
                 subTitle?.let {
-                    SmallLightText(text = it)
+                    LightText(text = it)
                 }
             }
         }

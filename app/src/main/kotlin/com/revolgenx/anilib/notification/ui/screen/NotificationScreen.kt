@@ -38,9 +38,8 @@ import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
-import com.revolgenx.anilib.common.ui.component.text.SmallLightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
@@ -295,7 +294,7 @@ private fun NotificationItem(
                     .padding(bottom = 8.dp),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
-                LargeBodyMediumText(
+                MediumText(
                     modifier = Modifier.clickable(
                         interactionSource = remember { MutableInteractionSource() },
                         indication = null
@@ -303,13 +302,15 @@ private fun NotificationItem(
                         onTitleClick()
                     },
                     text = notificationTitle,
-                    maxLines = 3
+                    maxLines = 3,
+                    fontSize = 16.sp,
+                    lineHeight = 20.sp,
                 )
                 Column {
                     reason?.let {
                         val showReason = stringResource(id = I18nR.string.show_reason)
                         val reasonState = remember { mutableStateOf(showReason) }
-                        SmallLightText(
+                        LightText(
                             modifier = Modifier.clickable(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = null

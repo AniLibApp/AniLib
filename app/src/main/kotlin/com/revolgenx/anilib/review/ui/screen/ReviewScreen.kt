@@ -53,7 +53,7 @@ import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.SmallLightText
+import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -138,7 +138,7 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
                         Text(text = stringResource(id = I18nR.string.score_d_100).format(review.score.orZero()))
                     }
 
-                    SmallLightText(
+                    LightText(
                         modifier = Modifier.weight(1f),
                         text = review.createdAtPrettyTime,
                         fontSize = 11.sp,

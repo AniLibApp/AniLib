@@ -23,7 +23,7 @@ import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.app.CharacterOrStaffRowItemContentEnd
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
-import com.revolgenx.anilib.common.ui.component.text.SmallLightText
+import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnClickWithValue
@@ -32,6 +32,7 @@ import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
 
 
 @Composable
@@ -90,7 +91,7 @@ fun StaffRowCard(
                 MediumText(text = staff.name?.full.naText())
 
                 role?.let {
-                    SmallLightText(
+                    LightText(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable {
@@ -110,8 +111,8 @@ fun StaffRowCard(
 fun StaffMediaCharacterCard(
     mediaModel: MediaModel,
     character: CharacterModel?,
-    onMediaClick: OnMediaClick,
-    onCharacterClick: OnClickWithValue<Int>
+    onCharacterClick: OnClickWithValue<Int>,
+    mediaComponentState: MediaComponentState
 ) {
     Card(
         modifier = Modifier
@@ -129,9 +130,7 @@ fun StaffMediaCharacterCard(
                     .fillMaxWidth(),
 
                 ) {
-                MediaItemRowContent(media = mediaModel) { id, type ->
-                    onMediaClick(id, type)
-                }
+                MediaItemRowContent(media = mediaModel, mediaComponentState = mediaComponentState)
             }
 
             character ?: return@Row

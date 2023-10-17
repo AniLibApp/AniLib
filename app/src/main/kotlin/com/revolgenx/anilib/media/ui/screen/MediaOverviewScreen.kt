@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.media.ui.screen
 
+import android.content.Context
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
@@ -24,14 +25,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
-import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -52,22 +51,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
-import com.revolgenx.anilib.common.ext.mediaScreen
+import com.revolgenx.anilib.common.ext.naString
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.openLink
-import com.revolgenx.anilib.common.ext.orNaString
+import com.revolgenx.anilib.common.ext.orNa
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.orZeroString
 import com.revolgenx.anilib.common.ext.studioScreen
-import com.revolgenx.anilib.common.ext.toStringResource
-import com.revolgenx.anilib.common.ext.toStringResourceOrNa
 import com.revolgenx.anilib.common.ui.component.button.SmallTextButton
+import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.common.HeaderBox
-import com.revolgenx.anilib.common.ui.component.common.HeaderText
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
-import com.revolgenx.anilib.common.ui.component.text.SmallLightText
+import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -80,9 +77,10 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcPlay
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithValue
-import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
 import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
+import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaConnectionModel
 import com.revolgenx.anilib.media.ui.model.MediaEdgeModel
 import com.revolgenx.anilib.media.ui.model.MediaExternalLinkModel
@@ -123,6 +121,9 @@ private fun MediaOverview(
     val scope = rememberCoroutineScope()
     val navigator = localNavigator()
 
+    val mediaComponentState = rememberMediaComponentState(navigator = navigator)
+
+
     fun openLink(url: String?) {
         context.openLink(
             url = url,
@@ -137,7 +138,7 @@ private fun MediaOverview(
             .verticalScroll(rememberScrollState())
     ) {
         MediaDescription(media)
-        MediaInfo(media, isAnime)
+        MediaInfo(media, isAnime, context)
         MediaGenre(media.genres) {
             // todo open genre
         }
@@ -146,21 +147,18 @@ private fun MediaOverview(
                 openLink(it.url)
             }
         }
-        MediaStats(media)
+        MediaStats(media, context)
         MediaStudio(media.studios) {
             navigator.studioScreen(it.id)
         }
-        MediaRelation(media.relations) { id, type ->
-            navigator.mediaScreen(id, type)
-        }
+        MediaRelation(media.relations, mediaComponentState = mediaComponentState)
         MediaRecommendation(
             media.recommendations,
             viewAll = {
                 recommendationScreen.invoke()
-            }
-        ) { id, type ->
-            navigator.mediaScreen(id, type)
-        }
+            },
+            mediaComponentState = mediaComponentState
+        )
         MediaTag(media.tags, media.tagsWithoutSpoiler ?: emptyList())
         MediaExternalLink(media.externalLinks) {
             openLink(it.url)
@@ -174,7 +172,7 @@ private fun MediaOverview(
 fun MediaRecommendation(
     recommendations: RecommendationConnectionModel?,
     viewAll: OnClick,
-    onMediaClick: OnMediaClick
+    mediaComponentState: MediaComponentState
 ) {
     val medias = recommendations?.nodes ?: return
     if (medias.isEmpty()) return
@@ -184,8 +182,8 @@ fun MediaRecommendation(
     }
 
     MediaHeaderWithButton(
-        header = I18nR.string.recommendations.toStringResource(),
-        buttonText = I18nR.string.view_all.toStringResource(),
+        header = stringResource(id = I18nR.string.recommendations),
+        buttonText = stringResource(id = I18nR.string.view_all),
         showButton = showViewAll,
         onClick = viewAll
     )
@@ -193,21 +191,21 @@ fun MediaRecommendation(
     LazyRow {
         items(items = medias) {
             val media = it.mediaRecommendation ?: return@items
-            MediaCard(width = 140.dp, media = media, onMediaClick = onMediaClick)
+            MediaCard(width = 140.dp, media = media, mediaComponentState = mediaComponentState)
         }
     }
 }
 
 @Composable
-fun MediaRelation(relations: MediaConnectionModel?, onMediaClick: OnMediaClick) {
+fun MediaRelation(relations: MediaConnectionModel?, mediaComponentState: MediaComponentState) {
     if (relations?.edges.isNullOrEmpty()) return
 
-    MediaHeader(text = I18nR.string.relations.toStringResource())
+    MediaHeader(text = stringResource(id = I18nR.string.relations))
     LazyRow(
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(relations!!.edges!!) {
-            MediaRelationCard(mediaEdgeModel = it, onMediaClick = onMediaClick)
+            MediaRelationCard(mediaEdgeModel = it, mediaCardState = mediaComponentState)
         }
     }
 }
@@ -215,7 +213,7 @@ fun MediaRelation(relations: MediaConnectionModel?, onMediaClick: OnMediaClick) 
 @Composable
 fun MediaRelationCard(
     mediaEdgeModel: MediaEdgeModel,
-    onMediaClick: OnMediaClick
+    mediaCardState: MediaComponentState,
 ) {
     val media = mediaEdgeModel.node ?: return
 
@@ -223,25 +221,25 @@ fun MediaRelationCard(
         media = media,
         width = 140.dp,
         footerContent = {
-            val format = media.format.toStringRes().toStringResource()
-            val status = media.status.toStringRes().toStringResource()
-            val source = mediaEdgeModel.relationType.toStringRes().toStringResource()
+            val format = stringResource(id = media.format.toStringRes())
+            val status = stringResource(id = media.status.toStringRes())
+            val source = stringResource(id = mediaEdgeModel.relationType.toStringRes())
             val seasonYear = media.seasonYear.naText()
             val sourceYearText = if (media.isAnime) {
                 stringResource(id = I18nR.string.s_dot_s).format(source, seasonYear)
             } else {
                 source
             }
-            SmallLightText(
+            LightText(
                 text = sourceYearText,
                 lineHeight = 11.sp
             )
-            SmallLightText(
+            LightText(
                 text = stringResource(id = I18nR.string.s_dot_s).format(format, status),
                 lineHeight = 11.sp
             )
         },
-        onMediaClick = onMediaClick
+        mediaComponentState = mediaCardState
     )
 }
 
@@ -271,7 +269,11 @@ fun MediaHeaderWithButton(
 
 @Composable
 fun MediaHeader(text: String) {
-    HeaderBox(modifier = Modifier.padding(horizontal = 4.dp).padding(top = 20.dp, bottom = 12.dp), text = text)
+    HeaderBox(
+        modifier = Modifier
+            .padding(horizontal = 4.dp)
+            .padding(top = 20.dp, bottom = 12.dp), text = text
+    )
 }
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -288,7 +290,7 @@ fun MediaStudio(studioConnection: StudioConnectionModel?, onClick: OnClickWithVa
     }
 
     if (studios.isNullOrEmpty().not()) {
-        MediaHeader(text = I18nR.string.studios.toStringResource())
+        MediaHeader(text = stringResource(I18nR.string.studios))
         MediaFlowRow {
             studios!!.forEach {
                 MediaInfoChip(text = it.node?.name.orEmpty()) {
@@ -299,7 +301,7 @@ fun MediaStudio(studioConnection: StudioConnectionModel?, onClick: OnClickWithVa
     }
 
     if (producers.isNullOrEmpty().not()) {
-        MediaHeader(text = I18nR.string.producers.toStringResource())
+        MediaHeader(text = stringResource(I18nR.string.producers))
         MediaFlowRow {
             producers!!.forEach {
                 MediaInfoChip(text = it.node?.name.orEmpty()) {
@@ -317,7 +319,7 @@ fun MediaTrailer(
 ) {
     trailer ?: return
 
-    MediaHeader(text = I18nR.string.trailer.toStringResource())
+    MediaHeader(text = stringResource(I18nR.string.trailer))
     Box(
         modifier = Modifier
             .fillMaxWidth()
@@ -348,33 +350,36 @@ fun MediaTrailer(
 }
 
 @Composable
-fun MediaStats(media: MediaModel) {
-    MediaHeader(text = I18nR.string.stats.toStringResource())
+fun MediaStats(media: MediaModel, context: Context) {
+    MediaHeader(text = stringResource(I18nR.string.stats))
 
     Column(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Grid(
-            items = listOf(
+        val stats = remember {
+            listOf(
                 MediaInfoItem(
-                    title = I18nR.string.average_score.toStringResource(),
-                    value = I18nR.string.s_percent.toStringResource()
+                    title = context.getString(I18nR.string.average_score),
+                    value = context.getString(I18nR.string.s_percent)
                         .format(media.averageScore.orZero())
                 ),
                 MediaInfoItem(
-                    title = I18nR.string.mean_score.toStringResource(),
-                    value = I18nR.string.s_percent.toStringResource()
+                    title = context.getString(I18nR.string.mean_score),
+                    value = context.getString(I18nR.string.s_percent)
                         .format(media.meanScore.orZero())
                 ),
                 MediaInfoItem(
-                    title = I18nR.string.popularity.toStringResource(),
+                    title = context.getString(I18nR.string.popularity),
                     value = media.popularity.orZeroString()
                 ),
                 MediaInfoItem(
-                    title = I18nR.string.favourites.toStringResource(),
+                    title = context.getString(I18nR.string.favourites),
                     value = media.popularity.orZeroString()
                 ),
-            ),
+            )
+        }
+        Grid(
+            items = stats,
             rowSpacing = 8.dp,
             columnSpacing = 12.dp
         ) { item ->
@@ -386,12 +391,12 @@ fun MediaStats(media: MediaModel) {
                 ) {
                     Text(
                         text = item.title,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Text(
                         text = item.value,
-                        fontWeight = FontWeight.Medium,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        fontWeight = FontWeight.Medium
                     )
                 }
             }
@@ -406,7 +411,7 @@ fun MediaExternalLink(
     onClick: OnClickWithValue<MediaExternalLinkModel>
 ) {
     externalLinks ?: return
-    MediaHeader(text = I18nR.string.links.toStringResource())
+    MediaHeader(text = stringResource(I18nR.string.links))
 
     MediaFlowRow {
         externalLinks.forEach { link ->
@@ -459,9 +464,9 @@ private fun MediaTag(
     }
 
     MediaHeaderWithButton(
-        header = I18nR.string.tags.toStringResource(),
+        header = stringResource(id = I18nR.string.tags),
         showButton = showMoreButton,
-        buttonText = (if (!showSpoilerTags.value) I18nR.string.show_spoilers else I18nR.string.hide_spoilers).toStringResource()
+        buttonText = stringResource(id = (if (!showSpoilerTags.value) I18nR.string.show_spoilers else I18nR.string.hide_spoilers))
     ) {
         showSpoilerTags.value = !showSpoilerTags.value
     }
@@ -493,17 +498,17 @@ private fun MediaTag(
                         Icon(
                             imageVector = AppIcons.IcHide,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.secondary
+                            tint = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     }
                     Text(
-                        text = I18nR.string.tag_name_percent.toStringResource()
+                        text = stringResource(I18nR.string.tag_name_percent)
                             .format(tag.name, tag.rank.orZero())
                     )
                     Icon(
                         imageVector = AppIcons.IcInfo,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.secondary
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
             }
@@ -521,7 +526,7 @@ private fun MediaTag(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MediaGenre(genres: List<String>?, onClick: OnClickWithValue<String>) {
-    MediaHeader(text = I18nR.string.genre.toStringResource())
+    MediaHeader(text = stringResource(I18nR.string.genre))
     MediaFlowRow {
         genres?.forEach { genre ->
             MediaInfoChip(text = genre) {
@@ -532,44 +537,54 @@ private fun MediaGenre(genres: List<String>?, onClick: OnClickWithValue<String>)
 }
 
 @Composable
-private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
+private fun MediaInfo(media: MediaModel, isAnime: Boolean, context: Context) {
     SectionSpacer()
+    val naString = naString()
+    val mediaInfo = remember {
+        listOf(
+            MediaInfoItem(
+                title = context.getString(I18nR.string.format),
+                value = context.getString(media.format?.toStringRes().orNa())
+            ),
+            MediaInfoItem(
+                title = context.getString(I18nR.string.source),
+                value = context.getString(media.source?.toStringRes().orNa())
+            ),
+            MediaInfoItem(
+                title = if (isAnime) context.getString(I18nR.string.episodes) else context.getString(
+                    I18nR.string.chapters
+                ),
+                value = (if (isAnime) media.episodes else media.chapters)?.toString() ?: naString
+            ),
+            MediaInfoItem(
+                title = if (isAnime) context.getString(I18nR.string.duration) else context.getString(
+                    I18nR.string.volumes
+                ),
+                value = if (isAnime) context.getString(I18nR.string.min_s)
+                    .format(media.duration?.toString() ?: naString) else media.volumes?.toString()
+                    ?: naString
+            ),
+            MediaInfoItem(
+                title = context.getString(I18nR.string.status),
+                value = context.getString(media.status?.toStringRes().orNa())
+            ),
+            MediaInfoItem(
+                title = context.getString(I18nR.string.country),
+                value = media.countryOfOrigin ?: naString
+            ),
+            MediaInfoItem(
+                title = context.getString(I18nR.string.start_date),
+                value = media.startDate?.shortDate ?: naString
+            ),
+            MediaInfoItem(
+                title = context.getString(I18nR.string.end_date),
+                value = media.endDate?.shortDate ?: naString
+            ),
+        )
+    }
+
     Grid(
-        items = listOf(
-            MediaInfoItem(
-                title = I18nR.string.format.toStringResource(),
-                value = media.format?.toStringRes().toStringResourceOrNa()
-            ),
-            MediaInfoItem(
-                title = I18nR.string.source.toStringResource(),
-                value = media.source?.toStringRes().toStringResourceOrNa()
-            ),
-            MediaInfoItem(
-                title = if (isAnime) I18nR.string.episodes.toStringResource() else I18nR.string.chapters.toStringResource(),
-                value = if (isAnime) media.episodes.orNaString() else media.chapters.orNaString()
-            ),
-            MediaInfoItem(
-                title = if (isAnime) I18nR.string.duration.toStringResource() else I18nR.string.volumes.toStringResource(),
-                value = if (isAnime) I18nR.string.min_s.toStringResource()
-                    .format(media.duration.orNaString()) else media.volumes.orNaString()
-            ),
-            MediaInfoItem(
-                title = I18nR.string.status.toStringResource(),
-                value = media.status?.toStringRes().toStringResourceOrNa()
-            ),
-            MediaInfoItem(
-                title = I18nR.string.country.toStringResource(),
-                value = media.countryOfOrigin.orNaString()
-            ),
-            MediaInfoItem(
-                title = I18nR.string.start_date.toStringResource(),
-                value = media.startDate?.shortDate.orNaString()
-            ),
-            MediaInfoItem(
-                title = I18nR.string.end_date.toStringResource(),
-                value = media.endDate?.shortDate.orNaString()
-            ),
-        ),
+        items = mediaInfo,
         rowSpacing = 8.dp,
         columnSpacing = 12.dp
     ) { item ->
@@ -581,12 +596,12 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
             ) {
                 Text(
                     text = item.title,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Medium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
                     text = item.value,
-                    fontWeight = FontWeight.Medium,
-                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Medium
                 )
             }
         }
@@ -601,48 +616,52 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean) {
             modifier = Modifier
                 .padding(horizontal = 10.dp, vertical = 6.dp),
         ) {
-            listOf(
-                MediaInfoItem(
-                    title = I18nR.string.romaji.toStringResource(),
-                    value = media.title?.romaji.orNaString()
-                ),
-                MediaInfoItem(
-                    title = I18nR.string.english.toStringResource(),
-                    value = media.title?.english.orNaString()
-                ),
-                MediaInfoItem(
-                    title = I18nR.string._native.toStringResource(),
-                    value = media.title?.native.orNaString()
-                ),
-                MediaInfoItem(
-                    title = I18nR.string.hashtag.toStringResource(),
-                    value = media.hashtag.orNaString()
-                ),
-                MediaInfoItem(
-                    title = I18nR.string.synonyms.toStringResource(),
-                    value = media.synonymsString.orNaString()
-                ),
+            val titles = remember {
+                listOf(
+                    MediaInfoItem(
+                        title = context.getString(I18nR.string.romaji),
+                        value = media.title?.romaji ?: naString
+                    ),
+                    MediaInfoItem(
+                        title = context.getString(I18nR.string.english),
+                        value = media.title?.english ?: naString
+                    ),
+                    MediaInfoItem(
+                        title = context.getString(I18nR.string._native),
+                        value = media.title?.native ?: naString
+                    ),
+                    MediaInfoItem(
+                        title = context.getString(I18nR.string.hashtag),
+                        value = media.hashtag ?: naString
+                    ),
+                    MediaInfoItem(
+                        title = context.getString(I18nR.string.synonyms),
+                        value = media.synonymsString ?: naString
+                    )
+                )
+            }
 
-                ).forEach {
+            titles.forEach {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
                         text = it.title,
-                        fontWeight = FontWeight.Medium
+                        fontWeight = FontWeight.Medium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.width(width = 22.dp))
                     SelectionContainer {
                         Text(
                             text = it.value,
                             fontWeight = FontWeight.Medium,
-                            textAlign = TextAlign.End,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            textAlign = TextAlign.End
                         )
                     }
                 }
             }
+
         }
     }
 
@@ -717,6 +736,7 @@ fun MediaTagDetailBottomSheet(
 ) {
     val tag = tagState.value
     if (openBottomSheet.value && tag != null) {
+        val naString = naString()
         ModalBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState
@@ -732,15 +752,18 @@ fun MediaTagDetailBottomSheet(
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-                MediaTagDetailItem(I18nR.string.name.toStringResource(), tag.name)
+                MediaTagDetailItem(stringResource(I18nR.string.name), tag.name)
                 MediaTagDetailItem(
-                    I18nR.string.category.toStringResource(),
-                    tag.category.orNaString()
+                    stringResource(I18nR.string.category),
+                    tag.category ?: naString
                 )
-                MediaTagDetailItem(I18nR.string.rank.toStringResource(), tag.rank.orNaString())
                 MediaTagDetailItem(
-                    I18nR.string.description.toStringResource(),
-                    tag.description.orNaString()
+                    stringResource(I18nR.string.rank),
+                    tag.rank?.toString() ?: naString
+                )
+                MediaTagDetailItem(
+                    stringResource(I18nR.string.description),
+                    tag.description ?: naString
                 )
             }
 

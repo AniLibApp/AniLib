@@ -128,7 +128,7 @@ fun Media.toModel(): MediaModel {
         volumes = volumes,
         status = status,
         coverImage = coverImage,
-        genres = genres?.filterNotNull(),
+        genres = genres?.filterNotNull()?.nullIfEmpty(),
         averageScore = averageScore,
         season = season,
         seasonYear = seasonYear,

@@ -50,7 +50,7 @@ import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.SmallLightText
+import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -63,6 +63,7 @@ import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
@@ -190,7 +191,7 @@ fun ReviewListItem(
 
                         Column {
                             MediaTitleType {
-                                Text(
+                                SemiBoldText(
                                     modifier = Modifier
                                         .clickable {
                                             onMediaClick(model.mediaId, model.media?.type)
@@ -199,27 +200,18 @@ fun ReviewListItem(
                                         model.media?.title?.title(it),
                                         model.user?.name.naText()
                                     ),
-                                    fontWeight = FontWeight.SemiBold,
-                                    letterSpacing = 0.2.sp,
                                     color = Color.White,
                                     fontSize = 14.sp,
-                                    style = LocalTextStyle.current.copy(
-                                        shadow = Shadow(
-                                            color = Color.Black,
-                                            offset = Offset(2.0f, 2.0f),
-                                            blurRadius = 1f
-                                        )
-                                    )
+                                    style = LocalTextStyle.current.shadow()
                                 )
                             }
-                            Text(
+                            MediumText(
                                 text = stringResource(id = I18nR.string.review_score_format).format(
                                     model.score,
                                 ),
-                                fontWeight = FontWeight.SemiBold,
-                                fontSize = 12.sp,
-                                letterSpacing = 0.2.sp,
-                                color = Color.White, style = LocalTextStyle.current.shadow()
+                                fontSize = 14.sp,
+                                color = Color.White,
+                                style = LocalTextStyle.current.shadow()
                             )
                         }
                     }
@@ -243,7 +235,7 @@ fun ReviewListItem(
                     .padding(top = 2.dp, bottom = 4.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SmallLightText(modifier = Modifier.weight(1f), text = model.createdAtPrettyTime)
+                LightText(modifier = Modifier.weight(1f), text = model.createdAtPrettyTime)
                 Icon(
                     modifier = Modifier.size(12.dp),
                     imageVector = AppIcons.IcThumbUp,

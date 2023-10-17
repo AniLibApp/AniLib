@@ -5,14 +5,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
-import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.CoverMediaCard
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
+import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
@@ -39,6 +39,8 @@ private fun ExploreMediaContent(type: ExploreMediaSectionType) {
 
     val pagingItems = viewModel.collectAsLazyPagingItems()
     val navigator = localNavigator()
+    val mediaComponentState = rememberMediaComponentState(navigator = navigator)
+
 
     Box(
         modifier = Modifier.height(ExploreMediaCardHeight)
@@ -51,18 +53,19 @@ private fun ExploreMediaContent(type: ExploreMediaSectionType) {
             }
         ) { model ->
             model ?: return@LazyPagingList
-            ExploreMediaItem(mediaModel = model) { id, type ->
-                navigator.mediaScreen(id, type)
-            }
+            ExploreMediaItem(media = model, mediaComponentState = mediaComponentState)
         }
     }
 }
 
 @Composable
-private fun ExploreMediaItem(mediaModel: MediaModel, onClick: OnMediaClick) {
-    MediaCard(
-        media = mediaModel,
-        onMediaClick = onClick,
+private fun ExploreMediaItem(
+    media: MediaModel,
+    mediaComponentState: MediaComponentState
+) {
+    CoverMediaCard(
+        media = media,
+        mediaComponentState = mediaComponentState,
         width = ExploreMediaCardWidth,
         height = ExploreMediaCardHeight,
     )

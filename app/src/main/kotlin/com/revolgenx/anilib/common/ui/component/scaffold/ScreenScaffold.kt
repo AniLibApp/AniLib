@@ -7,11 +7,7 @@ import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
@@ -26,7 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.style.TextOverflow
 import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarColors
@@ -35,7 +31,7 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutColors
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
-import com.revolgenx.anilib.common.ui.component.text.SmallLightText
+import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 
 
@@ -57,7 +53,7 @@ fun ScreenScaffold(
     appBarColors: AppBarColors = AppBarDefaults.transparentColor(),
     actions: (@Composable RowScope.() -> Unit)? = null,
     contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
-    content: @Composable BoxScope.() -> Unit
+    content: @Composable BoxScope.(snackbarHostState: SnackbarHostState) -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     CompositionLocalProvider(LocalSnackbarHostState provides snackbarHostState) {
@@ -97,7 +93,7 @@ fun ScreenScaffold(
                         }
                     }
             ) {
-                content()
+                content(snackbarHostState)
             }
         }
     }
@@ -127,10 +123,13 @@ fun ScreenTopAppbar(
                 Column {
                     Text(
                         text = title,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     subTitle?.let {
-                        SmallLightText(
-                            text = it
+                        LightText(
+                            text = it,
+                            maxLines = 1,
                         )
                     }
                 }

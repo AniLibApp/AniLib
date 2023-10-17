@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -36,18 +35,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
+import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.component.CharacterCard
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.characterScreen
-import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
@@ -70,6 +68,8 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
+import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.component.StaffCard
 import com.revolgenx.anilib.staff.ui.model.StaffModel
@@ -101,47 +101,56 @@ private fun BrowseScreenContent() {
             )
         }
     ) {
-        val pagingItems = viewModel.collectAsLazyPagingItems()
+        val mediaComponentState = rememberMediaComponentState(navigator = navigator)
+        BrowsePagingContent(viewModel, mediaComponentState, navigator)
+    }
+}
 
-        LazyPagingList(
-            pagingItems = pagingItems,
-            type = viewModel.listType.value,
-            onRefresh = {
-                viewModel.refresh()
-            },
-            gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
-        ) { browseModel ->
-            when (browseModel) {
-                is MediaModel -> {
-                    MediaCard(browseModel) { id, type ->
-                        navigator.mediaScreen(id, type)
-                    }
+@Composable
+private fun BrowsePagingContent(
+    viewModel: BrowseViewModel,
+    mediaComponentState: MediaComponentState,
+    navigator: Navigator
+) {
+    val pagingItems = viewModel.collectAsLazyPagingItems()
+
+    LazyPagingList(
+        pagingItems = pagingItems,
+        type = viewModel.listType.value,
+        onRefresh = {
+            viewModel.refresh()
+        },
+        gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
+    ) { browseModel ->
+        when (browseModel) {
+            is MediaModel -> {
+                MediaCard(
+                    media = browseModel,
+                    mediaComponentState = mediaComponentState
+                )
+            }
+
+            is CharacterModel -> {
+                CharacterCard(browseModel) {
+                    navigator.characterScreen(it)
                 }
+            }
 
-                is CharacterModel -> {
-                    CharacterCard(browseModel) {
-                        navigator.characterScreen(it)
-                    }
+            is StaffModel -> {
+                StaffCard(browseModel) {
+                    navigator.staffScreen(it)
                 }
+            }
 
-                is StaffModel -> {
-                    StaffCard(browseModel) {
-                        navigator.staffScreen(it)
-                    }
+            is StudioModel -> {
+                StudioItem(browseModel) {
+                    navigator.studioScreen(it)
                 }
+            }
 
-                is StudioModel -> {
-                    StudioItem(browseModel, onMediaClick = { id, type ->
-                        navigator.mediaScreen(id, type)
-                    }, onClick = {
-                        navigator.studioScreen(it)
-                    })
-                }
-
-                is UserModel -> {
-                    BrowseUserItem(browseModel) {
-                        navigator.userScreen(it)
-                    }
+            is UserModel -> {
+                BrowseUserItem(browseModel) {
+                    navigator.userScreen(it)
                 }
             }
         }

@@ -6,14 +6,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.androidx.AndroidScreen
-import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
@@ -26,6 +24,8 @@ import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
+import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import org.koin.androidx.compose.koinViewModel
@@ -45,16 +45,15 @@ class StudioScreen(private val studioId: Int) : AndroidScreen() {
 private fun StudioScreenContent(studioId: Int, viewModel: StudioViewModel = koinViewModel()) {
     viewModel.field.studioId = studioId
     val studio = stringResource(id = I18nR.string.studio)
-    var studioName by remember { mutableStateOf<String?>(null) }
-    var studioSite by remember { mutableStateOf<String?>(null) }
+    val studioName = remember { mutableStateOf<String?>(null) }
+    val studioSite = remember { mutableStateOf<String?>(null) }
     val navigator = localNavigator()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val pagingItems = viewModel.collectAsLazyPagingItems()
 
     ScreenScaffold(
-        title = studioName ?: studio,
+        title = studioName.value ?: studio,
         actions = {
-            studioSite?.let { site ->
+            studioSite.value?.let { site ->
                 OverflowMenu {
                     OpenInBrowserOverflowMenu(link = site)
                     ShareOverflowMenu(text = site)
@@ -63,37 +62,47 @@ private fun StudioScreenContent(studioId: Int, viewModel: StudioViewModel = koin
         },
         scrollBehavior = scrollBehavior,
     ) {
-        LazyPagingList(
-            type = ListPagingListType.GRID,
-            pagingItems = pagingItems,
-            onRefresh = {
-                viewModel.refresh()
-            },
-            span = { index ->
-                val item = pagingItems[index]
-                GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
-            },
-            gridOptions = GridOptions(GridCells.Adaptive(120.dp))
-        ) { baseModel ->
-            baseModel ?: return@LazyPagingList
+        val mediaComponentState = rememberMediaComponentState(navigator = navigator)
+        StudioPagingContent(viewModel, studioName, studioSite, mediaComponentState)
+    }
+}
 
-            if (studioName == null && baseModel is MediaModel) {
-                baseModel.studio?.let { s ->
-                    studioName = s.name
-                    studioSite = s.siteUrl
-                }
+@Composable
+private fun StudioPagingContent(
+    viewModel: StudioViewModel,
+    studioName: MutableState<String?>,
+    studioSite: MutableState<String?>,
+    mediaCardState: MediaComponentState
+) {
+    val pagingItems = viewModel.collectAsLazyPagingItems()
+    LazyPagingList(
+        type = ListPagingListType.GRID,
+        pagingItems = pagingItems,
+        onRefresh = {
+            viewModel.refresh()
+        },
+        span = { index ->
+            val item = pagingItems[index]
+            GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
+        },
+        gridOptions = GridOptions(GridCells.Adaptive(120.dp))
+    ) { baseModel ->
+        baseModel ?: return@LazyPagingList
+
+        if (studioName.value == null && baseModel is MediaModel) {
+            baseModel.studio?.let { s ->
+                studioName.value = s.name
+                studioSite.value = s.siteUrl
+            }
+        }
+
+        when (baseModel) {
+            is HeaderModel -> {
+                HeaderBox(header = baseModel)
             }
 
-            when (baseModel) {
-                is HeaderModel -> {
-                    HeaderBox(header = baseModel)
-                }
-
-                is MediaModel -> {
-                    MediaCard(media = baseModel) { id, type ->
-                        navigator.mediaScreen(id, type)
-                    }
-                }
+            is MediaModel -> {
+                MediaCard(media = baseModel, mediaComponentState = mediaCardState)
             }
         }
     }

@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import anilib.i18n.R
+import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.airingScheduleScreen
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
@@ -44,15 +45,16 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
 import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringViewModel
 import com.revolgenx.anilib.social.markdown.anilify
 import com.revolgenx.anilib.type.MediaType
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen() {
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
-
         ExploreAiringScheduleSection()
         ExploreMediaSection(ExploreMediaSectionType.TRENDING)
         ExploreMediaSection(ExploreMediaSectionType.POPULAR)

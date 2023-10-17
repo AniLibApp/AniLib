@@ -21,7 +21,7 @@ fun Card(
     onClick: OnClick? = null,
     onLongClick: OnLongClick? = null,
     colors: CardColors = CardDefaults.cardColors(
-        contentColor = contentColorFor(MaterialTheme.colorScheme.onSurface)
+        contentColor = MaterialTheme.colorScheme.onSurface
     ),
     content: @Composable ColumnScope.() -> Unit
 ) {

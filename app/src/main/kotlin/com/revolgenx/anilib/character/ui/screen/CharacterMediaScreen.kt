@@ -14,9 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
-import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
@@ -29,6 +27,8 @@ import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
+import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,25 +47,33 @@ fun CharacterMediaScreen(viewModel: CharacterMediaViewModel) {
         },
         contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
-        val pagingItems = viewModel.collectAsLazyPagingItems()
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(bottomScrollConnection)
-        ) {
-            LazyPagingList(
-                pagingItems = pagingItems,
-                type = ListPagingListType.GRID,
-                onRefresh = {
-                    viewModel.refresh()
-                },
-                gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
-            ) { model ->
-                model ?: return@LazyPagingList
-                MediaCard(media = model) { id, type->
-                    navigator.mediaScreen(id, type)
-                }
-            }
+        val mediaComponentState = rememberMediaComponentState(navigator = navigator)
+        CharacterMediaPagingContent(viewModel, bottomScrollConnection, mediaComponentState)
+    }
+}
+
+@Composable
+private fun CharacterMediaPagingContent(
+    viewModel: CharacterMediaViewModel,
+    bottomScrollConnection: BottomNestedScrollConnection,
+    mediaComponentState: MediaComponentState
+) {
+    val pagingItems = viewModel.collectAsLazyPagingItems()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(bottomScrollConnection)
+    ) {
+        LazyPagingList(
+            pagingItems = pagingItems,
+            type = ListPagingListType.GRID,
+            onRefresh = {
+                viewModel.refresh()
+            },
+            gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
+        ) { model ->
+            model ?: return@LazyPagingList
+            MediaCard(media = model, mediaComponentState = mediaComponentState)
         }
     }
 }

@@ -12,11 +12,11 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.shape.CircleShape
 import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ShapeDefaults
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +26,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
@@ -39,11 +38,12 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationViewModel
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
 import com.revolgenx.anilib.media.ui.component.MediaRowItemContentEnd
+import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.type.RecommendationRating
 import org.koin.androidx.compose.koinViewModel
 
@@ -64,30 +64,42 @@ fun RecommendationScreen(viewModel: RecommendationViewModel = koinViewModel()) {
         },
         contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
-        val pagingItems = viewModel.collectAsLazyPagingItems()
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(bottomScrollConnection)
-        ) {
-            LazyPagingList(
-                pagingItems = pagingItems,
-                onRefresh = {
-                    viewModel.refresh()
-                },
-            ) { model ->
-                model ?: return@LazyPagingList
-                RecommendationItem(model = model) {id, type->
-                    navigator.mediaScreen(id, type)
-                }
-            }
+        val mediaComponentState = rememberMediaComponentState(navigator = navigator)
+
+        RecommendationPagingContent(viewModel, bottomScrollConnection, mediaComponentState)
+    }
+}
+
+@Composable
+private fun RecommendationPagingContent(
+    viewModel: RecommendationViewModel,
+    bottomScrollConnection: BottomNestedScrollConnection,
+    mediaComponentState: MediaComponentState
+) {
+    val pagingItems = viewModel.collectAsLazyPagingItems()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(bottomScrollConnection)
+    ) {
+        LazyPagingList(
+            pagingItems = pagingItems,
+            onRefresh = {
+                viewModel.refresh()
+            },
+        ) { model ->
+            model ?: return@LazyPagingList
+            RecommendationItem(model = model, mediaComponentState = mediaComponentState)
         }
     }
 }
 
 
 @Composable
-fun RecommendationItem(model: RecommendationModel, onMediaClick: OnMediaClick) {
+fun RecommendationItem(
+    model: RecommendationModel,
+    mediaComponentState: MediaComponentState
+) {
     Card(
         modifier = Modifier
             .padding(6.dp)
@@ -99,7 +111,7 @@ fun RecommendationItem(model: RecommendationModel, onMediaClick: OnMediaClick) {
                     modifier = Modifier.weight(1f)
                 ) {
                     model.media?.let {
-                        MediaItemRowContent(media = it, onMediaClick = onMediaClick)
+                        MediaItemRowContent(media = it, mediaComponentState = mediaComponentState)
                     }
                 }
 
@@ -107,13 +119,14 @@ fun RecommendationItem(model: RecommendationModel, onMediaClick: OnMediaClick) {
                     modifier = Modifier.weight(1f)
                 ) {
                     model.mediaRecommendation?.let {
-                        MediaRowItemContentEnd(media = it, onMediaClick = onMediaClick)
+                        MediaRowItemContentEnd(media = it, mediaComponentState = mediaComponentState)
                     }
                 }
             }
 
             Box(
-                modifier = Modifier.align(Alignment.BottomCenter)
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
                     .padding(bottom = 4.dp)
             ) {
                 RecommendationButton(model = model)
@@ -127,8 +140,8 @@ private fun RecommendationButton(
     model: RecommendationModel
 ) {
     Surface(
-        shape = ShapeDefaults.ExtraLarge,
-        tonalElevation = 2.dp,
+        shape = CircleShape,
+        tonalElevation = 3.dp
     ) {
         Row(
             modifier = Modifier.padding(horizontal = 4.dp),
@@ -152,7 +165,7 @@ private fun RecommendationButton(
 
             Box(
                 modifier = Modifier.clickable {
-                        /*todo filter*/
+                    /*todo filter*/
                 }
             ) {
                 Icon(
@@ -165,7 +178,11 @@ private fun RecommendationButton(
                 )
             }
 
-            MediumText(modifier = Modifier.padding(end = 4.dp), text = model.rating.toString(), fontSize = 11.sp)
+            MediumText(
+                modifier = Modifier.padding(end = 4.dp),
+                text = model.rating.toString(),
+                fontSize = 11.sp
+            )
         }
     }
 }

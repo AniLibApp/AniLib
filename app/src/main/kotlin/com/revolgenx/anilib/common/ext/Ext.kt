@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.view.Window
 import androidx.activity.ComponentActivity
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogWindowProvider
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import kotlinx.coroutines.CoroutineScope
@@ -37,19 +39,9 @@ fun Int?.orZeroString() = this.orZero().toString()
 fun Double?.orZero() = this ?: 0.0
 
 @Composable
-fun Int?.orNaString() = this?.toString() ?: I18nR.string.na.toStringResource()
-
-@Composable
-fun String?.orNaString(): String = this ?: I18nR.string.na.toStringResource()
-
-@Composable
-fun Int?.toStringResourceOrNa(): String = this?.toStringResource() ?: I18nR.string.na.toStringResource()
-
-@Composable
-fun Int.toStringResource() = androidx.compose.ui.res.stringResource(id = this)
-
-@Composable
-fun Int.toPainterResource() = painterResource(id = this)
+fun naString() = stringResource(id = I18nR.string.na)
+@StringRes
+fun Int?.orNa() = this ?: I18nR.string.na
 
 @Composable
 fun localSnackbarHostState() = LocalSnackbarHostState.current!!
@@ -132,6 +124,7 @@ internal fun Context.componentActivity(): ComponentActivity? {
 fun window(): Window? =
     (LocalView.current.parent as? DialogWindowProvider)?.window
         ?: LocalView.current.context.findWindow()
+
 private tailrec fun Context.findWindow(): Window? =
     when (this) {
         is Activity -> window

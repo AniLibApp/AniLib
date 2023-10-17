@@ -38,7 +38,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.androidx.AndroidScreen
@@ -50,7 +49,6 @@ import com.revolgenx.anilib.common.ui.component.date.CalendarBottomSheet
 import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -487,10 +485,12 @@ private fun TextHeaderContent(
     content: @Composable () -> Unit
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
-        LargeBodyMediumText(
+        MediumText(
             modifier = Modifier.padding(start = 5.dp, bottom = 3.dp),
             text = heading,
-            maxLines = 1
+            maxLines = 1,
+            fontSize = 16.sp,
+            lineHeight = 20.sp,
         )
         content()
     }

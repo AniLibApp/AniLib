@@ -65,9 +65,8 @@ import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.LargeBodyMediumText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.ui.component.text.LargeBodySemiBoldText
+import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
@@ -325,7 +324,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                         verticalArrangement = Arrangement.spacedBy(2.dp)
                     ) {
                         MediaTitleType {
-                            LargeBodySemiBoldText(
+                            SemiBoldText(
                                 text = media?.title?.title(it).naText(),
                                 fontSize = 20.sp,
                                 lineHeight = 22.sp,
@@ -386,12 +385,14 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                         }
 
                         media?.nextAiringEpisode?.let {
-                            LargeBodyMediumText(
+                            MediumText(
                                 text = stringResource(id = I18nR.string.episode_airing_date).format(
                                     it.episode,
                                     it.airingAtModel.airingDateTime.naText()
                                 ),
-                                style = LocalTextStyle.current.shadow(surfaceContainerLowest)
+                                style = LocalTextStyle.current.shadow(surfaceContainerLowest),
+                                fontSize = 16.sp,
+                                lineHeight = 20.sp,
                             )
                         }
 

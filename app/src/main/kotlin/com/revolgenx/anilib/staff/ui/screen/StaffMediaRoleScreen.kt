@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,13 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
-import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.common.HeaderBox
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.SmallLightText
+import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
@@ -41,10 +41,12 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
-import com.revolgenx.anilib.common.util.OnMediaClick
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
+import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,46 +67,58 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
         },
         contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
-        val pagingItems = viewModel.collectAsLazyPagingItems()
         val snackbar = localSnackbarHostState()
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(bottomScrollConnection)
-        ) {
-            LazyPagingList(
-                type = ListPagingListType.GRID,
-                gridOptions = GridOptions(GridCells.Adaptive(168.dp)),
-                pagingItems = pagingItems,
-                onRefresh = {
-                    viewModel.refresh()
-                },
-                span = { index ->
-                    val item = pagingItems[index]
-                    GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
-                }
-            ) { model ->
-                when (model) {
-                    is HeaderModel -> {
-                        HeaderBox(header = model)
-                    }
+        val mediaComponentState = rememberMediaComponentState(navigator = navigator, snackbarHostState = snackbar)
 
-                    is MediaModel -> {
-                        StaffMediaRoleItem(
-                            model = model,
-                            onRoleClick = {
-                                scope.launch {
-                                    snackbar.showSnackbar(
-                                        it,
-                                        withDismissAction = true,
-                                        duration = SnackbarDuration.Short
-                                    )
-                                }
-                            },
-                            onMediaClick = { id, type ->
-                                navigator.mediaScreen(id, type)
-                            })
-                    }
+        StaffMediaRolePagingContent(viewModel, bottomScrollConnection, scope, snackbar, mediaComponentState)
+    }
+}
+
+@Composable
+private fun StaffMediaRolePagingContent(
+    viewModel: StaffMediaRoleViewModel,
+    bottomScrollConnection: BottomNestedScrollConnection,
+    scope: CoroutineScope,
+    snackbar: SnackbarHostState,
+    mediaComponentState: MediaComponentState
+) {
+    val pagingItems = viewModel.collectAsLazyPagingItems()
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .nestedScroll(bottomScrollConnection)
+    ) {
+        LazyPagingList(
+            type = ListPagingListType.GRID,
+            gridOptions = GridOptions(GridCells.Adaptive(168.dp)),
+            pagingItems = pagingItems,
+            onRefresh = {
+                viewModel.refresh()
+            },
+            span = { index ->
+                val item = pagingItems[index]
+                GridItemSpan(if (item is HeaderModel) maxLineSpan else 1)
+            }
+        ) { model ->
+            when (model) {
+                is HeaderModel -> {
+                    HeaderBox(header = model)
+                }
+
+                is MediaModel -> {
+                    StaffMediaRoleItem(
+                        model = model,
+                        onRoleClick = {
+                            scope.launch {
+                                snackbar.showSnackbar(
+                                    it,
+                                    withDismissAction = true,
+                                    duration = SnackbarDuration.Short
+                                )
+                            }
+                        },
+                        mediaComponentState = mediaComponentState
+                    )
                 }
             }
         }
@@ -116,7 +130,7 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
 private fun StaffMediaRoleItem(
     model: MediaModel,
     onRoleClick: OnClickWithValue<String>,
-    onMediaClick: OnMediaClick
+    mediaComponentState: MediaComponentState
 ) {
     Card(
         modifier = Modifier
@@ -129,7 +143,7 @@ private fun StaffMediaRoleItem(
             content = {
                 Box(modifier = Modifier.fillMaxHeight()) {
                     model.staffRole?.let {
-                        SmallLightText(
+                        LightText(
                             modifier = Modifier
                                 .align(Alignment.BottomStart)
                                 .clickable {
@@ -141,7 +155,7 @@ private fun StaffMediaRoleItem(
                     }
                 }
             },
-            onMediaClick = onMediaClick
+            mediaComponentState = mediaComponentState
         )
     }
 }
