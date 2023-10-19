@@ -1,12 +1,15 @@
 package com.revolgenx.anilib.notification.service
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
 import android.os.Build
+import androidx.core.app.ActivityCompat
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
@@ -47,7 +50,7 @@ import kotlin.coroutines.suspendCoroutine
 
 
 class NotificationWorker(private val context: Context, params: WorkerParameters) :
-    Worker(context, params), KoinComponent {
+        Worker(context, params), KoinComponent {
 
     companion object {
         const val CHANNEL_ID = "com.revolgenx.anilib.notification.CHANNEL_ID"
@@ -64,9 +67,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
         it.perPage = 1
     }
 
-    private val notificationManagerCompat: NotificationManagerCompat by lazy {
-        NotificationManagerCompat.from(context)
-    }
+    private val notificationManagerCompat: NotificationManagerCompat = NotificationManagerCompat.from(context)
 
     private var pendingIntent: PendingIntent? = null
     private var notificationImage: String? = null
@@ -75,20 +76,19 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
         return runBlocking {
             if (loggedIn()) {
                 val suspendedQuery =
-                    suspendCoroutine<Resource<List<NotificationModel>>> { continuation ->
-                        notificationService.getNotifications(
-                            notificationField,
-                            compositeDisposable
-                        ) {
-                            continuation.resume(it)
+                        suspendCoroutine { continuation ->
+                            notificationService.getNotifications(
+                                    notificationField,
+                                    compositeDisposable
+                            ) {
+                                continuation.resume(it)
+                            }
                         }
-                    }
 
                 if (suspendedQuery is Resource.Success && suspendedQuery.data != null) {
                     val item = suspendedQuery.data
                     if (isNewNotification(item.firstOrNull())) {
                         setNewNotification(item.firstOrNull())
-                        createChannel()
                         showNotification(item.firstOrNull())
                     }
                 }
@@ -114,32 +114,32 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
             notificationBuilder.setContentIntent(it)
         }
         notificationBuilder.setSmallIcon(
-            R.drawable.ic_notification_filled
+                R.drawable.ic_notification_filled
         )
         notificationBuilder.setAutoCancel(true)
         notificationImage?.let {
             val dataSource = Fresco.getImagePipeline().fetchDecodedImage(
-                ImageRequestBuilder.newBuilderWithSource(it.toUri())
-                    .setImageDecodeOptions(
-                        ImageDecodeOptions.newBuilder()
-                            .setForceStaticImage(true).build()
-                    )
-                    .setLocalThumbnailPreviewsEnabled(true)
-                    .build(),
-                context
+                    ImageRequestBuilder.newBuilderWithSource(it.toUri())
+                            .setImageDecodeOptions(
+                                    ImageDecodeOptions.newBuilder()
+                                            .setForceStaticImage(true).build()
+                            )
+                            .setLocalThumbnailPreviewsEnabled(true)
+                            .build(),
+                    context
             )
             try {
                 val result =
-                    DataSources.waitForFinalResult<CloseableReference<CloseableImage>>(dataSource)
+                        DataSources.waitForFinalResult<CloseableReference<CloseableImage>>(dataSource)
                 notificationBuilder.setLargeIcon(
-                    if (result != null) {
-                        (result.get() as CloseableStaticBitmap).underlyingBitmap.copy(
-                            (result.get() as CloseableStaticBitmap).underlyingBitmap.config,
-                            true
-                        )
-                    } else {
-                        BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher)
-                    }
+                        if (result != null) {
+                            (result.get() as CloseableStaticBitmap).underlyingBitmap.copy(
+                                    (result.get() as CloseableStaticBitmap).underlyingBitmap.config,
+                                    true
+                            )
+                        } else {
+                            BitmapFactory.decodeResource(context.resources, R.mipmap.ic_launcher)
+                        }
                 )
             } finally {
                 dataSource.close()
@@ -147,7 +147,9 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
         }
 
         notificationBuilder.priority = NotificationCompat.PRIORITY_DEFAULT
-        notificationManagerCompat.notify(NOTIFICATION_ID, notificationBuilder.build())
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED) {
+            notificationManagerCompat.notify(NOTIFICATION_ID, notificationBuilder.build())
+        }
     }
 
     private fun getNotificationString(item: NotificationModel): String {
@@ -167,13 +169,13 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                 (item as AiringNotificationModel).let {
                     notificationImage = it.media?.coverImage?.image()
                     String.format(
-                        Locale.getDefault(),
-                        context.getString(R.string.episode_airing_notif),
-                        it.contexts!![0],
-                        it.episode,
-                        it.contexts!![1],
-                        it.media?.title?.title(),
-                        it.contexts!![2]
+                            Locale.getDefault(),
+                            context.getString(R.string.episode_airing_notif),
+                            it.contexts!![0],
+                            it.episode,
+                            it.contexts!![1],
+                            it.media?.title?.title(),
+                            it.contexts!![2]
                     )
                 }
             }
@@ -185,7 +187,7 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
                 (item as RelatedMediaNotificationModel)
                 notificationImage = item.media?.coverImage?.image
                 return context.getString(R.string.s_space_s)
-                    .format(item.media?.title?.title(), item.context)
+                        .format(item.media?.title?.title(), item.context)
             }
 
             NotificationUnionType.MEDIA_DATA_CHANGE -> createMediaDataChangeNotification(item as MediaDataChangeNotificationModel)
@@ -199,68 +201,55 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
     private fun createThreadNotif(item: ThreadNotification): String {
         notificationImage = item.user?.avatar?.image
         return context.getString(R.string.thread_notif_s)
-            .format(item.user?.name, item.context, item.threadModel?.title)
+                .format(item.user?.name, item.context, item.threadModel?.title)
     }
 
     private fun createActivityNotif(item: ActivityNotification): String {
         notificationImage = item.user?.avatar?.image
         return context.getString(R.string.s_space_s)
-            .format(item.user?.name, item.context)
+                .format(item.user?.name, item.context)
     }
 
 
     private fun createFollowingNotification(item: FollowingNotificationModel): String {
         notificationImage = item.userModel?.avatar?.image
         return context.getString(R.string.s_space_s)
-            .format(item.userModel?.name, item.context)
+                .format(item.userModel?.name, item.context)
     }
 
     private fun createMediaDataChangeNotification(item: MediaDataChangeNotificationModel): String {
         notificationImage = item.media?.coverImage?.image
         return context.getString(R.string.s_space_s)
-            .format(item.media?.title?.title(), item.context)
+                .format(item.media?.title?.title(), item.context)
     }
 
 
     private fun createMediaMergeNotification(item: MediaMergeNotificationModel): String {
         notificationImage = item.media?.coverImage?.image
         return context.getString(R.string.s_space_s)
-            .format(item.media?.title?.title(), item.context)
+                .format(item.media?.title?.title(), item.context)
     }
 
     private fun createMediaDeleteNotification(item: MediaDeletionNotificationModel): String {
         return context.getString(R.string.s_space_s)
-            .format(item.deletedMediaTitle, item.context)
+                .format(item.deletedMediaTitle, item.context)
     }
 
     private fun createNotificationPendingIntent() {
         val intent = Intent(Intent.ACTION_VIEW, null, context, MainActivity::class.java).also {
             it.putExtra(
-                LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
-                LauncherShortcuts.NOTIFICATION.ordinal
+                    LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
+                    LauncherShortcuts.NOTIFICATION.ordinal
             )
             it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
         pendingIntent =
-            PendingIntent.getActivity(
-                context,
-                0,
-                intent,
-                immutableFlagUpdateCurrent
-            )
-    }
-
-    private fun createChannel() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
-            return
-
-        val defaultChan =
-            NotificationChannel(CHANNEL_ID, CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
-        defaultChan.enableVibration(true)
-        defaultChan.vibrationPattern = longArrayOf(1000) /* ms */
-        defaultChan.enableLights(true)
-        defaultChan.lightColor = DynamicTheme.getInstance().get().accentColor
-        notificationManagerCompat.createNotificationChannel(defaultChan)
+                PendingIntent.getActivity(
+                        context,
+                        0,
+                        intent,
+                        immutableFlagUpdateCurrent
+                )
     }
 
     private fun isNewNotification(item: NotificationModel?): Boolean {

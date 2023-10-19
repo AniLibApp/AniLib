@@ -729,4 +729,5 @@
     <string name="unblock">Unblock</string>
     <string name="block_user_msg">AniLib is going to open user in browser. It is a 3rd party app and due to it\'s limitation, blocking/unblocking users is only possible through anilist.co. User must be logged in to see dropdown button in profile which is in top-left(for small screen) or in right.</string>
     <string name="support">Support</string>
+    <string name="grant_notification_permission_message">Please grant notification permission from app settings</string>
 </resources>
