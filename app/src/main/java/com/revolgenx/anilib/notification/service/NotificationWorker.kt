@@ -87,9 +87,6 @@ class NotificationWorker(private val context: Context, params: WorkerParameters)
 
                 if (suspendedQuery is Resource.Success && suspendedQuery.data != null) {
                     val item = suspendedQuery.data
-
-                    showNotification(item.firstOrNull())
-
                     if (isNewNotification(item.firstOrNull())) {
                         setNewNotification(item.firstOrNull())
                         showNotification(item.firstOrNull())
