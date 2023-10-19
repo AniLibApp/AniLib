@@ -1,24 +1,35 @@
 package com.revolgenx.anilib.activity
 
+import android.Manifest
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.Settings
 import android.view.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.*
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.google.firebase.ktx.Firebase
 import com.pranavpandey.android.dynamic.support.dialog.fragment.DynamicDialogFragment
+import com.pranavpandey.android.dynamic.support.theme.DynamicTheme
+import com.pranavpandey.android.dynamic.support.utils.DynamicHintUtils
 import com.pranavpandey.android.dynamic.utils.DynamicPackageUtils
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.appwidget.ui.fragment.AiringWidgetConfigFragment
@@ -79,6 +90,7 @@ import com.revolgenx.anilib.notification.viewmodel.NotificationStoreViewModel
 import com.revolgenx.anilib.user.fragment.UserMediaListCollectionContainerFragment
 import com.revolgenx.anilib.home.event.ChangeViewPagerPageEvent
 import com.revolgenx.anilib.home.event.MainActivityPage
+import com.revolgenx.anilib.notification.service.NotificationWorker
 import kotlinx.coroutines.launch
 import net.openid.appauth.*
 
@@ -148,8 +160,8 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         registerForEvent()
         doIfNotDevFlavor {
             supportFragmentManager.registerFragmentLifecycleCallbacks(
-                fragmentLifeCycleCallback,
-                true
+                    fragmentLifeCycleCallback,
+                    true
             )
         }
     }
@@ -173,7 +185,9 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         //update before layout inflate
         updateSharedPreference()
         super.onCreate(savedInstanceState)
-        checkReleaseInfo()
+        if (!checkReleaseInfo()) {
+            updateNotification()
+        }
         binding.updateView()
         silentFetchUserInfo()
         checkIntent(intent)
@@ -182,24 +196,28 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private fun registerForResult() {
         resultLauncher =
-            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                when (result.resultCode) {
-                    Activity.RESULT_OK -> {
-                        val intent = result.data ?: return@registerForActivityResult
-                        handleAuthorizationResponse(intent)
-                    }
-                    Activity.RESULT_CANCELED -> {
-                        makeToast(R.string.cancelled)
-                        dismissAuthLoadingDialog()
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                    when (result.resultCode) {
+                        Activity.RESULT_OK -> {
+                            val intent = result.data ?: return@registerForActivityResult
+                            handleAuthorizationResponse(intent)
+                        }
+
+                        Activity.RESULT_CANCELED -> {
+                            makeToast(R.string.cancelled)
+                            dismissAuthLoadingDialog()
+                        }
                     }
                 }
-            }
     }
 
-    private fun checkReleaseInfo() {
-        if (getVersion(this) != DynamicPackageUtils.getVersionName(this)) {
-            ReleaseInfoDialog().show(supportFragmentManager, ReleaseInfoDialog.tag)
-        }
+    private fun checkReleaseInfo(): Boolean {
+        return if (getVersion(this) != DynamicPackageUtils.getVersionName(this)) {
+            ReleaseInfoDialog().setOnDismissListener {
+                updateNotification()
+            }.show(supportFragmentManager, ReleaseInfoDialog.tag)
+            true
+        } else false
     }
 
     private fun checkIsFromShortcut(newIntent: Intent?) {
@@ -207,21 +225,24 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         if (intent.action == Intent.ACTION_VIEW) {
             if (intent.hasExtra(LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY)) {
                 val currentShortcut = intent.getIntExtra(
-                    LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
-                    LauncherShortcuts.HOME.ordinal
+                        LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
+                        LauncherShortcuts.HOME.ordinal
                 )
                 when (LauncherShortcuts.values()[currentShortcut]) {
                     LauncherShortcuts.HOME -> {
                         binding.mainBottomNavView.selectedItemId = R.id.home_navigation_menu
                     }
+
                     LauncherShortcuts.ANIME -> {
                         binding.mainBottomNavView.selectedItemId = R.id.list_navigation_menu
                         mainSharedVM.mediaListCurrentTab.value = MediaType.ANIME.ordinal
                     }
+
                     LauncherShortcuts.MANGA -> {
                         binding.mainBottomNavView.selectedItemId = R.id.list_navigation_menu
                         mainSharedVM.mediaListCurrentTab.value = MediaType.MANGA.ordinal
                     }
+
                     LauncherShortcuts.NOTIFICATION -> {
                         openNotificationCenter()
                     }
@@ -234,44 +255,44 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         val menuList = mutableListOf<HomeMenuItem>()
 
         menuList.add(
-            HomeMenuItem(
-                R.id.home_navigation_menu,
-                R.string.home,
-                R.drawable.ic_home,
-                getHomePageOrderFromType(HomePageOrderType.HOME),
-                discoverContainerFragment
-            )
+                HomeMenuItem(
+                        R.id.home_navigation_menu,
+                        R.string.home,
+                        R.drawable.ic_home,
+                        getHomePageOrderFromType(HomePageOrderType.HOME),
+                        discoverContainerFragment
+                )
         )
 
         loginContinue(false) {
             menuList.add(
-                HomeMenuItem(
-                    R.id.list_navigation_menu,
-                    R.string.list,
-                    R.drawable.ic_media_list,
-                    getHomePageOrderFromType(HomePageOrderType.LIST),
-                    alListContainerFragment
-                )
+                    HomeMenuItem(
+                            R.id.list_navigation_menu,
+                            R.string.list,
+                            R.drawable.ic_media_list,
+                            getHomePageOrderFromType(HomePageOrderType.LIST),
+                            alListContainerFragment
+                    )
             )
             menuList.add(
-                HomeMenuItem(
-                    R.id.activity_navigation_menu,
-                    R.string.social,
-                    R.drawable.ic_activity_union,
-                    getHomePageOrderFromType(HomePageOrderType.ACTIVITY),
-                    activityUnionFragment
-                )
+                    HomeMenuItem(
+                            R.id.activity_navigation_menu,
+                            R.string.social,
+                            R.drawable.ic_activity_union,
+                            getHomePageOrderFromType(HomePageOrderType.ACTIVITY),
+                            activityUnionFragment
+                    )
             )
         }
 
         menuList.add(
-            HomeMenuItem(
-                R.id.profile_navigation_menu,
-                R.string.profile,
-                R.drawable.ic_person,
-                HomePageOrderType.values().size,
-                if (loggedIn()) profileFragment else loginFragment
-            )
+                HomeMenuItem(
+                        R.id.profile_navigation_menu,
+                        R.string.profile,
+                        R.drawable.ic_person,
+                        HomePageOrderType.values().size,
+                        if (loggedIn()) profileFragment else loginFragment
+                )
         )
 
         menuList.sortBy { it.order }
@@ -290,13 +311,14 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     val isNotAlreadySelected = mainViewPager.currentItem != index
                     mainViewPager.setCurrentItem(index, true)
 
-                    if(isNotAlreadySelected) return@forEachIndexed
+                    if (isNotAlreadySelected) return@forEachIndexed
 
-                    when(item.itemId){
-                        R.id.list_navigation_menu->{
+                    when (item.itemId) {
+                        R.id.list_navigation_menu -> {
                             mainSharedVM.listNavigateToTopListener?.invoke()
                         }
-                        R.id.activity_navigation_menu->{
+
+                        R.id.activity_navigation_menu -> {
                             mainSharedVM.activityNavigateToTopListener?.invoke()
                         }
                     }
@@ -337,6 +359,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             MainActivityPage.HOME -> {
                 getHomePageOrderFromType(HomePageOrderType.HOME)
             }
+
             MainActivityPage.LIST -> {
                 getHomePageOrderFromType(HomePageOrderType.LIST)
             }
@@ -367,6 +390,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                             val username = paths[1].toString()
                             OpenUserProfileEvent(userId, username).postEvent
                         }
+
                         "anime", "manga" -> {
                             val type = if (paths[0].compareTo("anime") == 0) {
                                 MediaType.ANIME.ordinal
@@ -376,38 +400,45 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                             val mediaId = paths[1].toIntOrNull() ?: return
 
                             openMediaInfoCenter(
-                                MediaInfoMeta(
-                                    mediaId = mediaId,
-                                    type,
-                                    null,
-                                    null,
-                                    null,
-                                    null
-                                )
+                                    MediaInfoMeta(
+                                            mediaId = mediaId,
+                                            type,
+                                            null,
+                                            null,
+                                            null,
+                                            null
+                                    )
                             )
                         }
+
                         "character" -> {
                             val characterId = paths[1].toIntOrNull() ?: return
                             openCharacterCenter(characterId)
                         }
+
                         "staff" -> {
                             val staffId = paths[1].toIntOrNull() ?: return
                             openStaffCenter(staffId)
                         }
+
                         "activity" -> {
                             val activityId = paths[1].toIntOrNull() ?: return
                             openActivityInfoCenter(activityId)
                         }
                     }
                 }
+
                 OPEN_AIRING_ACTION_KEY -> {
                     openAiringScheduleCenter()
                 }
+
                 MEDIA_INFO_ACTION_KEY -> {
                     val meta =
-                        intent.parcelableExtraCompat<MediaInfoMeta?>(MEDIA_INFO_DATA_KEY) ?: return
+                            intent.parcelableExtraCompat<MediaInfoMeta?>(MEDIA_INFO_DATA_KEY)
+                                    ?: return
                     openMediaInfoCenter(meta)
                 }
+
                 ENTRY_LIST_ACTION_KEY -> {
                     intent.getIntExtra(ENTRY_LIST_DATA_KEY, -1).takeIf { it != -1 }?.let {
                         openMediaListEditorCenter(it)
@@ -430,11 +461,11 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         if (response != null) {
             authorizationService = authorizationService ?: AuthorizationService(this)
             val clientAuth: ClientAuthentication =
-                ClientSecretBasic(BuildConfig.anilistclientSecret)
+                    ClientSecretBasic(BuildConfig.anilistclientSecret)
 
             authorizationService?.performTokenRequest(
-                response.createTokenExchangeRequest(),
-                clientAuth
+                    response.createTokenExchangeRequest(),
+                    clientAuth
             ) { tokenResponse, exception ->
                 if (exception != null) {
                     Timber.e(exception, "Token Exchange failed")
@@ -499,20 +530,20 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             finish()
         } else {
             AuthenticationDialog.newInstance()
-                .show(supportFragmentManager, authDialogTag)
+                    .show(supportFragmentManager, authDialogTag)
             val serviceConfiguration =
-                AuthorizationServiceConfiguration(
-                    Uri.parse(BuildConfig.anilistAuthEndPoint) /* auth endpoint */,
-                    Uri.parse(BuildConfig.anilistTokenEndPoint) /* token endpoint */
-                )
+                    AuthorizationServiceConfiguration(
+                            Uri.parse(BuildConfig.anilistAuthEndPoint) /* auth endpoint */,
+                            Uri.parse(BuildConfig.anilistTokenEndPoint) /* token endpoint */
+                    )
 
             val clientId = BuildConfig.anilistclientId
             val redirectUri = Uri.parse(BuildConfig.anilistRedirectUri)
             val builder = AuthorizationRequest.Builder(
-                serviceConfiguration,
-                clientId,
-                ResponseTypeValues.CODE,
-                redirectUri
+                    serviceConfiguration,
+                    clientId,
+                    ResponseTypeValues.CODE,
+                    redirectUri
             )
             val request = builder.build()
             launch(Dispatchers.IO) {
@@ -528,12 +559,12 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         when (event) {
             is OpenUserProfileEvent -> {
                 addFragmentToMain(
-                    UserContainerFragment.newInstance(
-                        UserMeta(
-                            event.userId,
-                            event.username
+                        UserContainerFragment.newInstance(
+                                UserMeta(
+                                        event.userId,
+                                        event.username
+                                )
                         )
-                    )
                 )
             }
 
@@ -544,10 +575,10 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             is OpenUserFriendEvent -> {
                 event.userId ?: return
                 addFragmentToMain(
-                    UserFriendContainerFragment.newInstance(
-                        event.userId,
-                        event.isFollower
-                    )
+                        UserFriendContainerFragment.newInstance(
+                                event.userId,
+                                event.isFollower
+                        )
                 )
             }
 
@@ -624,36 +655,47 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                     SettingEventTypes.ABOUT -> {
                         addFragmentToMain(AboutFragment())
                     }
+
                     SettingEventTypes.APPLICATION -> {
                         addFragmentToMain(ApplicationSettingFragment())
                     }
+
                     SettingEventTypes.SETTING -> {
                         addFragmentToMain(SettingFragment())
                     }
+
                     SettingEventTypes.MEDIA_LIST -> {
                         addFragmentToMain(MediaListSettingFragment())
                     }
+
                     SettingEventTypes.MEDIA_SETTING -> {
                         addFragmentToMain(MediaSettingFragment())
                     }
+
                     SettingEventTypes.THEME -> {
                         addFragmentToMain(ThemeControllerFragment())
                     }
+
                     SettingEventTypes.CUSTOMIZE_FILTER -> {
                         addFragmentToMain(CustomizeFilterFragment())
                     }
+
                     SettingEventTypes.ADD_REMOVE_TAG_FILTER -> {
                         addFragmentToMain(EditTagFilterFragment.newInstance((event.data as TagSettingEventMeta).meta))
                     }
+
                     SettingEventTypes.AIRING_WIDGET -> {
                         addFragmentToMain(AiringWidgetConfigFragment())
                     }
+
                     SettingEventTypes.TRANSLATION -> {
                         addFragmentToMain(TranslationSettingFragment())
                     }
+
                     SettingEventTypes.NOTIFICATION -> {
                         addFragmentToMain(NotificationSettingFragment())
                     }
+
                     SettingEventTypes.LANGUAGE_CHOOSER -> {
                         addFragmentToMain(MlLanguageChooserFragment())
                     }
@@ -697,21 +739,58 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
     }
 
     private fun addFragmentToMain(
-        baseFragment: BaseFragment,
-        transactionAnimation: FragmentAnimationType = FragmentAnimationType.FADE
+            baseFragment: BaseFragment,
+            transactionAnimation: FragmentAnimationType = FragmentAnimationType.FADE
     ) {
         getTransactionWithAnimation(transactionAnimation)
-            .add(R.id.main_fragment_container, baseFragment)
-            .addToBackStack(null).commit()
+                .add(R.id.main_fragment_container, baseFragment)
+                .addToBackStack(null).commit()
     }
 
 
     internal data class HomeMenuItem(
-        @IdRes val id: Int,
-        @StringRes val text: Int,
-        @DrawableRes val drawRes: Int,
-        val order: Int,
-        val fragment: BaseFragment
+            @IdRes val id: Int,
+            @StringRes val text: Int,
+            @DrawableRes val drawRes: Int,
+            val order: Int,
+            val fragment: BaseFragment
     )
+
+
+    private fun updateNotification() {
+        createNotificationChannel()
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+                    if (!granted && shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                        DynamicHintUtils.getSnackbar(
+                                findViewById<View>(android.R.id.content).rootView,
+                                getString(R.string.grant_notification_permission_message),
+                                Snackbar.LENGTH_LONG
+                        ).setAction(getString(R.string.settings)) {
+                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            intent.data = Uri.parse("package:$packageName")
+                            startActivity(intent)
+                        }.show()
+                    }
+                }
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
+    }
+
+    private fun createNotificationChannel() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
+            return
+
+        val defaultChan =
+                NotificationChannel(NotificationWorker.CHANNEL_ID, NotificationWorker.CHANNEL_NAME, NotificationManager.IMPORTANCE_DEFAULT)
+        defaultChan.enableVibration(true)
+        defaultChan.vibrationPattern = longArrayOf(1000) /* ms */
+        defaultChan.enableLights(true)
+        defaultChan.lightColor = DynamicTheme.getInstance().get().accentColor
+        NotificationManagerCompat.from(this).createNotificationChannel(defaultChan)
+    }
 
 }
