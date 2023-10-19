@@ -102,7 +102,8 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
 
     private val mainSharedVM by viewModel<MainSharedVM>()
     private val notificationStoreVM by viewModel<NotificationStoreViewModel>()
-    private var resultLauncher: ActivityResultLauncher<Intent>? = null
+    private lateinit var resultLauncher: ActivityResultLauncher<Intent>
+    private lateinit var requestNotificationPermission: ActivityResultLauncher<String>
     private var authorizationService: AuthorizationService? = null
 
 
@@ -185,14 +186,15 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         //update before layout inflate
         updateSharedPreference()
         super.onCreate(savedInstanceState)
+        registerForResult()
         if (!checkReleaseInfo()) {
             updateNotification()
         }
         binding.updateView()
         silentFetchUserInfo()
         checkIntent(intent)
-        registerForResult()
     }
+
 
     private fun registerForResult() {
         resultLauncher =
@@ -209,6 +211,21 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
                         }
                     }
                 }
+
+        requestNotificationPermission = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+            if (!granted && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU && shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                DynamicHintUtils.getSnackbar(
+                        findViewById<View>(android.R.id.content).rootView,
+                        getString(R.string.grant_notification_permission_message),
+                        Snackbar.LENGTH_LONG
+                ).setAction(getString(R.string.settings)) {
+                    val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    intent.data = Uri.parse("package:$packageName")
+                    startActivity(intent)
+                }.show()
+            }
+        }
     }
 
     private fun checkReleaseInfo(): Boolean {
@@ -549,7 +566,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
             launch(Dispatchers.IO) {
                 authorizationService = AuthorizationService(this@MainActivity)
                 val requestIntent = authorizationService!!.getAuthorizationRequestIntent(request)
-                resultLauncher?.launch(requestIntent)
+                resultLauncher.launch(requestIntent)
             }
         }
     }
@@ -761,21 +778,7 @@ class MainActivity : BaseDynamicActivity<ActivityMainBinding>(), CoroutineScope,
         createNotificationChannel()
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                val requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
-                    if (!granted && shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
-                        DynamicHintUtils.getSnackbar(
-                                findViewById<View>(android.R.id.content).rootView,
-                                getString(R.string.grant_notification_permission_message),
-                                Snackbar.LENGTH_LONG
-                        ).setAction(getString(R.string.settings)) {
-                            val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                            intent.data = Uri.parse("package:$packageName")
-                            startActivity(intent)
-                        }.show()
-                    }
-                }
-                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                requestNotificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
             }
         }
     }
