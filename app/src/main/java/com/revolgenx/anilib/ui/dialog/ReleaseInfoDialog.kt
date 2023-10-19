@@ -23,4 +23,10 @@ class ReleaseInfoDialog : BaseDialogFragment<ReleaseInfoDialogLayoutBinding>() {
             .setMarkdown(binding.releaseInfo, requireContext().getString(R.string.release_info))
     }
 
+    override fun onCustomiseBuilder(dialogBuilder: DynamicDialog.Builder, savedInstanceState: Bundle?): DynamicDialog.Builder {
+        dialogBuilder.setOnDismissListener {
+            onDismissListener?.onDismiss(it)
+        }
+        return super.onCustomiseBuilder(dialogBuilder, savedInstanceState)
+    }
 }
