@@ -31,7 +31,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.androidx.AndroidScreen
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaScreen
@@ -79,6 +79,8 @@ private fun NotificationScreenContent(
         title = stringResource(id = I18nR.string.notifications),
         scrollBehavior = scrollBehavior
     ) {
+        viewModel.field?: return@ScreenScaffold
+
         val snackbarHostState = localSnackbarHostState()
         val scope = rememberCoroutineScope()
         val pagingItems = viewModel.collectAsLazyPagingItems()

@@ -29,6 +29,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -38,10 +39,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.androidx.AndroidScreen
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import cafe.adriel.voyager.navigator.Navigator
+import com.dokar.sheets.BottomSheetState
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
+import com.revolgenx.anilib.browse.ui.viewmodel.BrowseFilterViewModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.component.CharacterCard
 import com.revolgenx.anilib.character.ui.model.CharacterModel
@@ -76,6 +80,8 @@ import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.studio.ui.component.StudioItem
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.user.ui.model.UserModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -91,20 +97,29 @@ class BrowseScreen : AndroidScreen() {
 private fun BrowseScreenContent() {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val viewModel = koinViewModel<BrowseViewModel>()
+    val browseFilterViewModel: BrowseFilterViewModel = koinViewModel()
     val navigator = localNavigator()
+    val bottomSheetState = rememberBottomSheetState()
+    val scope = rememberCoroutineScope()
+    val mediaComponentState = rememberMediaComponentState(navigator = navigator)
 
     ScreenScaffold(
         topBar = {
             BrowseScreenTopAppbar(
                 scrollBehavior = scrollBehavior,
+                bottomSheetState = bottomSheetState,
+                scope = scope,
                 viewModel = viewModel
             )
         }
     ) {
-        val mediaComponentState = rememberMediaComponentState(navigator = navigator)
         BrowsePagingContent(viewModel, mediaComponentState, navigator)
+        BrowseFilterBottomSheet(state = bottomSheetState, viewModel = browseFilterViewModel) {
+
+        }
     }
 }
+
 
 @Composable
 private fun BrowsePagingContent(
@@ -189,6 +204,8 @@ private fun BrowseUserItem(user: UserModel, onClick: OnClickWithId) {
 @Composable
 fun BrowseScreenTopAppbar(
     scrollBehavior: TopAppBarScrollBehavior? = null,
+    bottomSheetState: BottomSheetState,
+    scope: CoroutineScope,
     viewModel: BrowseViewModel
 ) {
     var active by rememberSaveable { mutableStateOf(false) }
@@ -258,7 +275,9 @@ fun BrowseScreenTopAppbar(
                                 icon = AppIcons.IcFilter,
                                 contentDescriptionRes = I18nR.string.filter
                             ) {
-
+                                scope.launch {
+                                    bottomSheetState.expand()
+                                }
                             }
                         }
                     }
@@ -289,7 +308,7 @@ fun BrowseScreenTopAppbar(
                     .horizontalScroll(rememberScrollState()),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
-                BrowseTypes.values().forEach { browseType ->
+                BrowseTypes.entries.forEach { browseType ->
                     FilterChip(
                         colors = FilterChipDefaults.filterChipColors(),
                         selected = viewModel.field.browseType.value == browseType,

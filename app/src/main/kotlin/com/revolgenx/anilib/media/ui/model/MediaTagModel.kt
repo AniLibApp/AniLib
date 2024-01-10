@@ -1,5 +1,9 @@
 package com.revolgenx.anilib.media.ui.model
 
+import kotlinx.serialization.Serializable
+
+
+@Serializable
 data class MediaTagModel(
     val id: Int? = null,
     val name: String,

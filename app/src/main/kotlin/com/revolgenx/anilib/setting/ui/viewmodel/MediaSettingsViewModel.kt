@@ -2,12 +2,12 @@ package com.revolgenx.anilib.setting.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
 import com.revolgenx.anilib.common.data.state.ResourceState
-import com.revolgenx.anilib.common.data.store.AuthDataStore
+import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.setting.data.field.MediaSettingsField
 import com.revolgenx.anilib.setting.data.field.SaveMediaSettingsField
 import com.revolgenx.anilib.setting.data.service.SettingsService
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.type.UserTitleLanguage
 import com.revolgenx.anilib.user.ui.model.UserOptionsModel
 import com.revolgenx.anilib.user.ui.model.UserOptionsUiModel
@@ -19,13 +19,13 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 class MediaSettingsViewModel(
-    val authDataStore: AuthDataStore,
-    val mediaSettingsDataStore: MediaSettingsDataStore,
+    val authPreferencesDataStore: AuthPreferencesDataStore,
+    val mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore,
     private val settingsService: SettingsService
 ) : ResourceViewModel<UserOptionsUiModel, MediaSettingsField>() {
 
     override val field: MediaSettingsField = MediaSettingsField().also {
-        it.userId = authDataStore.userId.getNullable()
+        it.userId = authPreferencesDataStore.userId.get()
     }
 
     override fun load(): Flow<UserOptionsUiModel?> {

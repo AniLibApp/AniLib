@@ -417,7 +417,8 @@ fun MediaExternalLink(
         externalLinks.forEach { link ->
             Card(
                 colors = CardDefaults.cardColors(
-                    containerColor = link.color ?: MaterialTheme.colorScheme.surfaceContainerLowest
+                    containerColor = link.color?.let { Color(it) }
+                        ?: MaterialTheme.colorScheme.surfaceContainerLowest
                 )
             ) {
                 Row(

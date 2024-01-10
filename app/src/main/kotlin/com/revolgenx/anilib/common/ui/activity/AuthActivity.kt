@@ -8,7 +8,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.lifecycle.lifecycleScope
 import com.revolgenx.anilib.app.ui.activity.MainActivity
-import com.revolgenx.anilib.common.data.store.AuthDataStore
+import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
 import com.revolgenx.anilib.common.ui.screen.state.LoadingScreen
 import com.revolgenx.anilib.common.ui.theme.AppTheme
 import kotlinx.coroutines.launch
@@ -16,7 +16,7 @@ import org.koin.android.ext.android.inject
 
 /*todo: need to change way to show messages */
 class AuthActivity : ComponentActivity() {
-    private val authDataStore: AuthDataStore by inject()
+    private val authPreferencesDataStore: AuthPreferencesDataStore by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,7 +35,7 @@ class AuthActivity : ComponentActivity() {
             try {
                 matchResult.groups[1]?.value?.let {
                     lifecycleScope.launch {
-                        authDataStore.login(matchResult.groups[1]!!.value)
+                        authPreferencesDataStore.login(matchResult.groups[1]!!.value)
                     }
                 } ?: let {
                     Toast.makeText(this@AuthActivity, "Login Failed", Toast.LENGTH_LONG).show()

@@ -7,8 +7,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.revolgenx.anilib.common.data.store.AuthDataStore
-import com.revolgenx.anilib.list.data.store.MediaListFilterDataStore
+import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.MediaListFilterDataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ext.launchIO
 import com.revolgenx.anilib.common.ext.naText
@@ -24,14 +24,14 @@ import kotlinx.coroutines.flow.map
 
 abstract class MediaListViewModel(
     private val mediaListService: MediaListService,
-    private val authDataStore: AuthDataStore,
+    private val authPreferencesDataStore: AuthPreferencesDataStore,
     private val mediaListDataStore: MediaListFilterDataStore
 ) :
     ResourceViewModel<MediaListCollectionModel, MediaListCollectionField>() {
 
     private val handler = Handler(Looper.getMainLooper())
     private val sortingComparator = MediaListCollectionSortComparator()
-    private val isLoggedInUser = authDataStore.userId.mapNullable().map { field.userId == it }
+    private val isLoggedInUser = authPreferencesDataStore.userId.data.map { field.userId == it }
 
     var filter: MediaListCollectionFilter? by mutableStateOf(null)
     var mediaListCollection = mutableStateListOf<MediaListModel>()

@@ -1,15 +1,18 @@
 package com.revolgenx.anilib.common.data.store
 
 import androidx.datastore.preferences.core.intPreferencesKey
+import com.revolgenx.anilib.common.data.model.PreferenceDataStoreModel
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
+import kotlinx.coroutines.flow.map
 
 
-class AppDataStore(override val dataStore: PreferencesDataStore): BasePreferenceDataStore() {
+class AppPreferencesDataStore(override val dataStore: PreferencesDataStore):
+    BasePreferencesDataStore {
     companion object{
         val mediaCoverImageTypeKey = intPreferencesKey("media_cover_image_type_key")
     }
 
-    val mediaCoverImageType = PreferenceDataModel(
+    val mediaCoverImageType = PreferenceDataStoreModel(
         dataStore = dataStore,
         prefKey = mediaCoverImageTypeKey,
         defaultValue = MediaCoverImageModel.type_large

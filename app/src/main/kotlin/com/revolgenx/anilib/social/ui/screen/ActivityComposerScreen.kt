@@ -14,7 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import cafe.adriel.voyager.androidx.AndroidScreen
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen

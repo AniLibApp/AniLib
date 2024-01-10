@@ -8,11 +8,11 @@ import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.field.ReviewListField
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ReviewServiceImpl(apolloRepository: ApolloRepository, mediaSettingsDataStore: MediaSettingsDataStore) : BaseService(apolloRepository, mediaSettingsDataStore), ReviewService {
+class ReviewServiceImpl(apolloRepository: ApolloRepository, mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore), ReviewService {
     override fun getReviewList(field: ReviewListField): Flow<PageModel<ReviewModel>> {
         return field.toQuery().map {
             it.dataAssertNoErrors.page.let { page ->

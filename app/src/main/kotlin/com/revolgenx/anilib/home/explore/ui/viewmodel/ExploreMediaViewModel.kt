@@ -1,27 +1,29 @@
 package com.revolgenx.anilib.home.explore.ui.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.datastore.core.DataStore
+import com.revolgenx.anilib.common.ext.collectIfDiff
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
-import com.revolgenx.anilib.home.explore.data.store.ExploreMediaDataStore
 import com.revolgenx.anilib.media.data.field.MediaField
+import com.revolgenx.anilib.media.data.store.MediaFilterData
 import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.media.data.source.MediaPagingSource
 import com.revolgenx.anilib.media.ui.model.MediaModel
 
 sealed class ExploreMediaViewModel(
     private val mediaService: MediaService,
-    private val dataStore: ExploreMediaDataStore
+    private val dataStore: DataStore<MediaFilterData>
 ) :
     PagingViewModel<MediaModel, MediaField, MediaPagingSource>() {
-    override var field: MediaField by mutableStateOf(dataStore.filter.get().toField())
+    private var filter = dataStore.data.get()
+    override var field: MediaField = filter.toMediaField()
 
     init {
         launch {
-            dataStore.filter.collect {
-                field = it.toField()
+            dataStore.data.collectIfDiff(filter) { newFilter ->
+                filter = newFilter
+                field = newFilter.toMediaField()
                 refresh()
             }
         }
@@ -32,16 +34,16 @@ sealed class ExploreMediaViewModel(
 
     class ExploreTrendingViewModel(
         mediaService: MediaService,
-        dataStore: ExploreMediaDataStore.ExploreTrendingDataStore
+        dataStore: DataStore<MediaFilterData>
     ) : ExploreMediaViewModel(mediaService, dataStore)
 
     class ExplorePopularViewModel(
         mediaService: MediaService,
-        dataStore: ExploreMediaDataStore.ExplorePopularDataStore
+        dataStore: DataStore<MediaFilterData>
     ) : ExploreMediaViewModel(mediaService, dataStore)
 
     class ExploreNewlyAddedViewModel(
         mediaService: MediaService,
-        dataStore: ExploreMediaDataStore.ExploreNewlyAddedDataStore
+        dataStore: DataStore<MediaFilterData>
     ) : ExploreMediaViewModel(mediaService, dataStore)
 }

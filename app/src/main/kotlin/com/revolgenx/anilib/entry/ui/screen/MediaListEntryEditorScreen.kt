@@ -14,7 +14,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
-import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -40,9 +39,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.date.CalendarBottomSheet
@@ -60,6 +59,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSave
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.entry.ui.component.CountEditor
 import com.revolgenx.anilib.entry.ui.component.DoubleCountEditor
@@ -154,9 +154,11 @@ private fun MediaListEditScreenContent(
                     }
                 }
             }
+
             is ResourceState.Success -> {
                 localNavigator().pop()
             }
+
             else -> {}
         }
 
@@ -224,7 +226,7 @@ private fun MediaListEditScreenContent(
                             fixedCardHeight = false
                         ) {
                             val mediaListStatusEntries =
-                                getAlMediaListStatusForType(type = media.type).toList()
+                                getAlMediaListStatusForType(type = media.type)
                             val mediaListStatus = entryField.status
                             SelectMenu(
                                 entries = mediaListStatusEntries,
@@ -411,7 +413,8 @@ private fun MediaListEditScreenContent(
                             ) {
                                 entryField.advancedScores?.let {
                                     Grid(
-                                        modifier = Modifier.fillMaxWidth(), items = it,
+                                        modifier = Modifier.fillMaxWidth(),
+                                        items = it,
                                         rowSpacing = 8.dp,
                                         columnSpacing = 8.dp
                                     ) { scoreModel ->
@@ -480,9 +483,7 @@ private fun CardHeaderContent(
 
 @Composable
 private fun TextHeaderContent(
-    modifier: Modifier = Modifier,
-    heading: String,
-    content: @Composable () -> Unit
+    modifier: Modifier = Modifier, heading: String, content: @Composable () -> Unit
 ) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
         MediumText(
@@ -516,8 +517,7 @@ private fun CalendarPicker(
         colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface)
     ) {
         Icon(
-            imageVector = AppIcons.IcCalendar,
-            contentDescription = "calendar"
+            imageVector = AppIcons.IcCalendar, contentDescription = "calendar"
         )
         Text(
             modifier = Modifier
@@ -531,9 +531,7 @@ private fun CalendarPicker(
             Icon(
                 modifier = Modifier.clickable {
                     onClear()
-                },
-                imageVector = AppIcons.IcClose,
-                contentDescription = "clear"
+                }, imageVector = AppIcons.IcClose, contentDescription = "clear"
             )
         }
     }

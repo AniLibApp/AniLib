@@ -6,14 +6,14 @@ import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.home.recommendation.data.field.RecommendationField
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class RecommendationServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsDataStore: MediaSettingsDataStore
-) : BaseService(apolloRepository, mediaSettingsDataStore),
+    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
+) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
     RecommendationService {
     override fun getRecommendationList(field: RecommendationField): Flow<PageModel<RecommendationModel>> {
         return field.toQuery().map {

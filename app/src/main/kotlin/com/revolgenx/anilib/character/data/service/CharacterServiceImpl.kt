@@ -11,7 +11,7 @@ import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.StaffNameModel
 import com.revolgenx.anilib.staff.ui.model.toModel
@@ -20,8 +20,8 @@ import kotlinx.coroutines.flow.map
 
 class CharacterServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsDataStore: MediaSettingsDataStore
-) : BaseService(apolloRepository, mediaSettingsDataStore),
+    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
+) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
     CharacterService {
 
     override fun getCharacter(field: CharacterField): Flow<CharacterModel?> {

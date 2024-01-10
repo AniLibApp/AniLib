@@ -11,14 +11,9 @@ import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.common.data.store.ThemeDataStore
+import com.revolgenx.anilib.common.data.store.ThemePreferencesDataStore
 import com.revolgenx.anilib.common.ext.componentActivity
-import com.revolgenx.anilib.common.util.colorAtElevation
-import com.revolgenx.anilib.common.util.getTintColor
 import org.koin.androidx.compose.get
 
 
@@ -95,12 +90,12 @@ val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun AppTheme(
-    themeDataStore: ThemeDataStore = get(),
+    themePreferencesDataStore: ThemePreferencesDataStore = get(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val darkTheme = themeDataStore.isDark()
+    val darkTheme = themePreferencesDataStore.isDark()
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current

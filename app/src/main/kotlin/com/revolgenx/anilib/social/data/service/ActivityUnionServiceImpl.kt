@@ -4,14 +4,14 @@ import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.ext.onIO
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.ui.model.ActivityUnionModel
 import com.revolgenx.anilib.social.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ActivityUnionServiceImpl(apolloRepository: ApolloRepository, mediaSettingsDataStore: MediaSettingsDataStore) : BaseService(apolloRepository, mediaSettingsDataStore),
+class ActivityUnionServiceImpl(apolloRepository: ApolloRepository, mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
     ActivityUnionService {
     override fun getActivityUnion(field: ActivityUnionField): Flow<PageModel<ActivityUnionModel>> {
         return field.toQuery().map {

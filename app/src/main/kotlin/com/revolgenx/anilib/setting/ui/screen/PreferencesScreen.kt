@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModel
-import cafe.adriel.voyager.androidx.AndroidScreen
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
@@ -111,7 +111,7 @@ private fun PreferenceItem(
     val scope = rememberCoroutineScope()
     when (item) {
         is PreferenceModel.ListPreferenceModel<*> -> {
-            val prefState = item.pref?.collectAsNullableState() ?: item.prefState
+            val prefState = item.pref?.collectAsState() ?: item.prefState
             val prefValue = prefState?.value
             ListPreferenceItem(
                 value = prefValue,

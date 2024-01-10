@@ -12,7 +12,7 @@ import com.revolgenx.anilib.fragment.PageInfo
 import com.revolgenx.anilib.media.ui.model.MediaTagModel
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.relation.data.field.UserRelationField
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.staff.ui.model.toModel
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.studio.ui.model.toModel
@@ -37,9 +37,9 @@ import org.jetbrains.annotations.Nullable
 
 class UserServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsDataStore: MediaSettingsDataStore
+    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
 ) :
-    UserService, BaseService(apolloRepository, mediaSettingsDataStore) {
+    UserService, BaseService(apolloRepository, mediaSettingsPreferencesDataStore) {
     override fun getUser(field: UserField): Flow<UserModel?> {
         return field.toQuery().map {
             it.dataAssertNoErrors.let { data ->

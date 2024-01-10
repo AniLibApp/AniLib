@@ -5,43 +5,42 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.auth0.android.jwt.JWT
+import com.revolgenx.anilib.common.data.model.PreferenceDataStoreModel
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
-class AuthDataStore(override val dataStore: PreferencesDataStore) : BasePreferenceDataStore() {
+class AuthPreferencesDataStore(override val dataStore: PreferencesDataStore) :
+    BasePreferencesDataStore {
     companion object {
         val authTokenKey = stringPreferencesKey("auth_token_key")
         val userIdKey = intPreferencesKey("user_id_key")
     }
 
-    val token = PreferenceDataModel(
+    val token = PreferenceDataStoreModel(
         dataStore = dataStore,
         prefKey = authTokenKey
     )
-    val userId = PreferenceDataModel(
+    val userId = PreferenceDataStoreModel(
         dataStore = dataStore,
         prefKey = userIdKey
     )
 
-    val isLoggedIn = userId.mapNullable().map { it != null }
+    val isLoggedIn = userId.data.map { it != null }
 
     @Composable
-    fun isLoggedIn(): Boolean {
-        val userIdState = userId.collectAsNullableState()
-        return userIdState.value != null
-    }
+    fun isLoggedIn(): Boolean =userId.collectAsState().value != null
 
     fun continueIfLoggedIn(
         scope: CoroutineScope,
         callback: OnClick
     ) {
         scope.launch {
-            userId.collectNullable { id ->
+            userId.collect { id ->
                 if (id != null) {
                     callback.invoke()
                 }
@@ -54,7 +53,7 @@ class AuthDataStore(override val dataStore: PreferencesDataStore) : BasePreferen
         dataStore.edit { pref ->
             pref[authTokenKey] = mToken
             pref[userIdKey] = userId
-            pref[MediaSettingsDataStore.mediaTitleTypeKey] = MediaTitleModel.type_user_preferred
+            pref[MediaSettingsPreferencesDataStore.mediaTitleTypeKey] = MediaTitleModel.type_user_preferred
         }
     }
 
@@ -62,8 +61,8 @@ class AuthDataStore(override val dataStore: PreferencesDataStore) : BasePreferen
         dataStore.edit { pref ->
             pref.remove(authTokenKey)
             pref.remove(userIdKey)
-            pref.remove(MediaSettingsDataStore.displayAdultContentKey)
-            pref[MediaSettingsDataStore.mediaTitleTypeKey] = MediaTitleModel.type_romaji
+            pref.remove(MediaSettingsPreferencesDataStore.displayAdultContentKey)
+            pref[MediaSettingsPreferencesDataStore.mediaTitleTypeKey] = MediaTitleModel.type_romaji
         }
     }
 }

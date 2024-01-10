@@ -1,31 +1,28 @@
 package com.revolgenx.anilib.media.ui.viewmodel
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.ViewModel
+import androidx.datastore.core.DataStore
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
-import com.revolgenx.anilib.home.season.data.store.SeasonFilterDataStore
+import com.revolgenx.anilib.common.ui.viewmodel.BaseViewModel
 import com.revolgenx.anilib.media.data.field.MediaField
+import com.revolgenx.anilib.media.data.store.MediaFilterData
 
-class MediaFilterBottomSheetViewModel(
-    private val seasonFilterStore: SeasonFilterDataStore
-) : ViewModel() {
-    var field by mutableStateOf(MediaField())
+abstract class MediaFilterBottomSheetViewModel(
+    private val mediaFilterDataDataStore: DataStore<MediaFilterData>
+) : BaseViewModel<MediaField>() {
+    override var field: MediaField = mediaFilterDataDataStore.data.get().toMediaField()
 
     init {
         launch {
-            seasonFilterStore.data.collect {
-                field = it.toField(field)
+            mediaFilterDataDataStore.data.collect {
+                field = it.toMediaField()
             }
         }
     }
 
     fun updateFilter() {
         launch {
-            seasonFilterStore.updateData {
-                field.toData()
-            }
+            mediaFilterDataDataStore.updateData { field.toMediaFilter() }
         }
     }
 }

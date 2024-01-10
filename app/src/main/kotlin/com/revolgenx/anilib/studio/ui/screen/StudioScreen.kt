@@ -11,7 +11,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import cafe.adriel.voyager.androidx.AndroidScreen
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu

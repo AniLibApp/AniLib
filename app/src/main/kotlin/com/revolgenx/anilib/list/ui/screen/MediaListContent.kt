@@ -34,8 +34,8 @@ import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
-import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
-import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
+import com.revolgenx.anilib.common.ui.component.menu.SortMenuItem
+import com.revolgenx.anilib.common.ui.component.menu.SortOrder
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
@@ -273,7 +273,7 @@ fun MediaListFilterBottomSheetContent(
             }
             SelectMenu(
                 label = stringResource(id = I18nR.string.status),
-                entries = stringArrayResource(id = R.array.media_status).toList(),
+                entries = stringArrayResource(id = R.array.media_status),
                 selectedItemPosition = viewModel.filter.status?.ordinal,
                 showNoneItem = true
             ) { selectedItem ->
@@ -282,7 +282,7 @@ fun MediaListFilterBottomSheetContent(
                 )
             }
 
-            val genreList = stringArrayResource(id = R.array.media_genre).toList()
+            val genreList = stringArrayResource(id = R.array.media_genre)
             SelectMenu(
                 label = stringResource(id = I18nR.string.genre),
                 entries = genreList,
@@ -296,19 +296,19 @@ fun MediaListFilterBottomSheetContent(
 
             val sort = viewModel.filter.sort
             var selectedSortIndex: Int? = null
-            var selectedSortOrder: AlSortOrder = AlSortOrder.NONE
+            var selectedSortOrder: SortOrder = SortOrder.NONE
 
             if (sort != null) {
                 val isDesc = sort.toString().endsWith("_DESC")
                 selectedSortIndex = sort.ordinal / 2
-                selectedSortOrder = if (isDesc) AlSortOrder.DESC else AlSortOrder.ASC
+                selectedSortOrder = if (isDesc) SortOrder.DESC else SortOrder.ASC
             }
 
             val sortMenus =
                 stringArrayResource(id = R.array.media_list_collection_sort).mapIndexed { index, s ->
-                    AlSortMenuItem(
+                    SortMenuItem(
                         s,
-                        if (index == selectedSortIndex) selectedSortOrder else AlSortOrder.NONE
+                        if (index == selectedSortIndex) selectedSortOrder else SortOrder.NONE
                     )
                 }
 
@@ -320,7 +320,7 @@ fun MediaListFilterBottomSheetContent(
 
                 if (selectedItem != null) {
                     val alMediaSort = AlMediaSort.values()[index].sort
-                    val selectedSort = if (selectedItem.order == AlSortOrder.DESC) {
+                    val selectedSort = if (selectedItem.order == SortOrder.DESC) {
                         alMediaSort + 1
                     } else {
                         alMediaSort

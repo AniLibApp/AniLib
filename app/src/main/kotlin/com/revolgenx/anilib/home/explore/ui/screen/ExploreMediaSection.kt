@@ -17,26 +17,14 @@ import com.revolgenx.anilib.media.ui.model.MediaModel
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
-enum class ExploreMediaSectionType {
-    TRENDING,
-    POPULAR,
-    NEWLY_ADDED,
+@Composable
+fun ExploreMediaSection(viewModel: ExploreMediaViewModel) {
+    ExploreMediaHeader(viewModel)
+    ExploreMediaContent(viewModel)
 }
 
 @Composable
-fun ExploreMediaSection(type: ExploreMediaSectionType) {
-    ExploreMediaHeader(type)
-    ExploreMediaContent(type)
-}
-
-@Composable
-private fun ExploreMediaContent(type: ExploreMediaSectionType) {
-    val viewModel = when (type) {
-        ExploreMediaSectionType.TRENDING -> koinViewModel<ExploreMediaViewModel.ExploreTrendingViewModel>()
-        ExploreMediaSectionType.POPULAR -> koinViewModel<ExploreMediaViewModel.ExplorePopularViewModel>()
-        ExploreMediaSectionType.NEWLY_ADDED -> koinViewModel<ExploreMediaViewModel.ExploreNewlyAddedViewModel>()
-    }
-
+private fun ExploreMediaContent(viewModel: ExploreMediaViewModel) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
     val navigator = localNavigator()
     val mediaComponentState = rememberMediaComponentState(navigator = navigator)
@@ -72,13 +60,12 @@ private fun ExploreMediaItem(
 }
 
 @Composable
-private fun ExploreMediaHeader(type: ExploreMediaSectionType) {
-    val titleRes = when (type) {
-        ExploreMediaSectionType.TRENDING -> I18nR.string.trending
-        ExploreMediaSectionType.POPULAR -> I18nR.string.popular
-        ExploreMediaSectionType.NEWLY_ADDED -> I18nR.string.newly_added
+private fun ExploreMediaHeader(viewModel: ExploreMediaViewModel) {
+    val titleRes = when (viewModel) {
+        is ExploreMediaViewModel.ExploreTrendingViewModel -> I18nR.string.trending
+        is ExploreMediaViewModel.ExplorePopularViewModel -> I18nR.string.popular
+        is ExploreMediaViewModel.ExploreNewlyAddedViewModel -> I18nR.string.newly_added
     }
-
     ExploreScreenHeader(
         text = stringResource(id = titleRes),
         onFilter = {

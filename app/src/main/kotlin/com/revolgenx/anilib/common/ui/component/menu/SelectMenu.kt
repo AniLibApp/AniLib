@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.common.ui.component.menu
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -33,17 +32,14 @@ fun SelectMenu(
     modifier: Modifier = Modifier,
     label: String? = null,
     showNoneItem: Boolean = false,
-    entries: List<String>,
+    singleLine: Boolean = true,
+    noneItemText: Int? = null,
+    entries: Array<String>,
     selectedItemPosition: Int? = null,
     onItemSelected: (itemPosition: Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableIntStateOf(selectedItemPosition ?: -1) }
-
-
-    val shape = if (expanded)
-        RoundedCornerShape(8.dp).copy(bottomEnd = CornerSize(0.dp), bottomStart = CornerSize(0.dp))
-    else RoundedCornerShape(8.dp)
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -55,13 +51,14 @@ fun SelectMenu(
             stringResource(id = I18nR.string.none)
         }
         TextField(
-            modifier = Modifier
+            modifier = modifier
                 .menuAnchor()
                 .fillMaxWidth(),
             readOnly = true,
             value = selectedItem,
             onValueChange = {},
-            shape = shape,
+            singleLine = singleLine,
+            shape = RoundedCornerShape(8.dp),
             label = label?.let { { Text(it) } },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(
@@ -72,7 +69,7 @@ fun SelectMenu(
         )
 
         DropdownMenu(
-            modifier = modifier
+            modifier = Modifier
                 .exposedDropdownSize(),
             expanded = expanded,
             onDismissRequest = { expanded = false },
@@ -80,7 +77,7 @@ fun SelectMenu(
 
             if (showNoneItem) {
                 DropdownMenuItem(
-                    text = { Text(stringResource(id = I18nR.string.none)) },
+                    text = { Text(stringResource(id = noneItemText ?: I18nR.string.none)) },
                     onClick = {
                         expanded = false
                         selectedIndex = -1

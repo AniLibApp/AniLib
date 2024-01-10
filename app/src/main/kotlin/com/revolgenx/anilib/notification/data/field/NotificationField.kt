@@ -4,6 +4,7 @@ import com.revolgenx.anilib.NotificationQuery
 import com.revolgenx.anilib.common.data.field.BaseSourceUserField
 
 data class NotificationField(
+    override var userId: Int? = null,
     val resetNotificationCount: Boolean = true,
     var includeNotificationCount: Boolean = false
 ) : BaseSourceUserField<NotificationQuery>() {

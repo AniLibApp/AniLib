@@ -1,9 +1,9 @@
 package com.revolgenx.anilib.setting.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.revolgenx.anilib.common.data.store.AuthDataStore
+import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
 
 class SettingsViewModel(
-    val authDataStore: AuthDataStore
+    val authPreferencesDataStore: AuthPreferencesDataStore
 ) : ViewModel() {
 }

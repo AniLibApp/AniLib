@@ -7,13 +7,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.common.data.state.MediaState
 import com.revolgenx.anilib.common.data.state.UserState
-import com.revolgenx.anilib.common.data.store.AppDataStore.Companion.mediaCoverImageTypeKey
-import com.revolgenx.anilib.common.data.store.AuthDataStore.Companion.userIdKey
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.mediaCoverImageTypeKey
+import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore.Companion.userIdKey
 import com.revolgenx.anilib.common.data.store.PreferencesDataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel.Companion.type_romaji
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore.Companion.mediaTitleTypeKey
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore.Companion.mediaTitleTypeKey
 
 class MainActivityViewModel(preferencesDataStore: PreferencesDataStore) : ViewModel() {
     var userState by mutableStateOf(UserState())

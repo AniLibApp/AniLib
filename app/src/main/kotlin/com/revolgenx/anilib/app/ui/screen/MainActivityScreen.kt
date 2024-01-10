@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -44,6 +45,13 @@ import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import java.util.Calendar
+
+private val yearLesser = Calendar.getInstance().get(Calendar.YEAR) + 2
+private val yearGreater = 1940
+private val yearList by lazy {
+    (yearLesser downTo yearGreater).map { it.toString() }
+}
 
 object MainActivityScreen : Screen {
     @Composable
@@ -54,7 +62,7 @@ object MainActivityScreen : Screen {
 
 private var userScreen: UserScreen = UserScreen(isTab = true)
 
-@OptIn(ExperimentalVoyagerApi::class)
+@OptIn(ExperimentalVoyagerApi::class, ExperimentalMaterial3Api::class)
 @Composable
 private fun MainActivityScreenContent() {
     val snackbarHostState = remember { SnackbarHostState() }

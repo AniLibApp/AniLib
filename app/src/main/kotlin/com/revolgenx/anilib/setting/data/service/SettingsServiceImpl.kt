@@ -7,14 +7,14 @@ import com.revolgenx.anilib.setting.data.field.MediaSettingsField
 import com.revolgenx.anilib.setting.data.field.NotificationSettingsField
 import com.revolgenx.anilib.setting.data.field.SaveMediaSettingsField
 import com.revolgenx.anilib.setting.data.field.SaveNotificationSettingsField
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.type.NotificationType
 import com.revolgenx.anilib.user.ui.model.UserOptionsModel
 import com.revolgenx.anilib.user.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class SettingsServiceImpl(apolloRepository: ApolloRepository, mediaSettingsDataStore: MediaSettingsDataStore) : BaseService(apolloRepository, mediaSettingsDataStore),
+class SettingsServiceImpl(apolloRepository: ApolloRepository, mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
     SettingsService {
     override fun getNotificationSettings(field: NotificationSettingsField): Flow<Map<NotificationType, Boolean>?> {
         return field.toQuery().map {

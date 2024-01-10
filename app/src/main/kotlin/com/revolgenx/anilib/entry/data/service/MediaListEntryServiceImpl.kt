@@ -9,11 +9,11 @@ import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
 import com.revolgenx.anilib.entry.ui.model.UserMediaModel
 import com.revolgenx.anilib.entry.ui.model.toModel
 import com.revolgenx.anilib.list.ui.model.MediaListModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class MediaListEntryServiceImpl(apolloRepository: ApolloRepository, mediaSettingsDataStore: MediaSettingsDataStore) : BaseService(apolloRepository, mediaSettingsDataStore),
+class MediaListEntryServiceImpl(apolloRepository: ApolloRepository, mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
     MediaListEntryService {
 
     override fun saveMediaListEntry(field: SaveMediaListEntryField): Flow<MediaListModel?> {

@@ -10,6 +10,8 @@
     <string name="recommendations">Recommendations</string>
     <string name="review">Review</string>
     <string name="reviews">Reviews</string>
+    <string name="users">Users</string>
+
 
     <!--MediaType-->
     <string name="anime">Anime</string>
@@ -437,5 +439,17 @@
         <item quantity="one">%1$s episode behind</item>
         <item quantity="other">%1$s episodes behind</item>
     </plurals>
+
+    <!--Media Browse-->
+    <string name="country_of_origin">Country Of Origin</string>
+    <string name="China">China</string>
+    <string name="South_Korean">South Korean</string>
+    <string name="Japan">Japan</string>
+    <string name="Taiwan">Taiwan</string>
+    <string name="streaming_on">Streaming On</string>
+    <!--Media Browse-->
+
+
+    <string name="no_result">No Result</string>
 
 </resources>

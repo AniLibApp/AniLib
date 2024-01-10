@@ -3,9 +3,11 @@ package com.revolgenx.anilib.home.season.ui.screen
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import com.revolgenx.anilib.common.ext.collectIfDiff
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
-import com.revolgenx.anilib.home.season.data.store.SeasonDataStore
+import com.revolgenx.anilib.common.data.store.SeasonFilterDataStore
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.media.data.source.MediaPagingSource
@@ -17,16 +19,17 @@ import com.revolgenx.anilib.type.MediaSeason
 
 class SeasonViewModel(
     private val mediaService: MediaService,
-    private val seasonDataStore: SeasonDataStore
+    private val seasonFilterDataStore: SeasonFilterDataStore
 ) :
-    PagingViewModel<MediaModel, MediaField, MediaPagingSource>(initialize = false) {
-
-    override var field by mutableStateOf(seasonDataStore.filter.get().toField())
+    PagingViewModel<MediaModel, MediaField?, MediaPagingSource>() {
+    private var filter = seasonFilterDataStore.data.get()
+    override var field by mutableStateOf(filter.toMediaField())
 
     init {
         launch {
-            seasonDataStore.filter.collect {
-                field = it.toField()
+            seasonFilterDataStore.data.collectIfDiff(filter) { newFilter ->
+                filter = newFilter
+                field = filter.toMediaField()
                 refresh()
             }
         }
@@ -37,12 +40,12 @@ class SeasonViewModel(
 
     fun nextSeason() {
         launch {
-            val season = field.season.nextSeason()
-            var seasonYear = field.seasonYear
+            val season = filter.season.nextSeason()
+            var seasonYear = filter.seasonYear
             if (season == MediaSeason.WINTER) {
-                seasonYear = field.seasonYear!! + 1
+                seasonYear = filter.seasonYear!! + 1
             }
-            seasonDataStore.filter.update {
+            seasonFilterDataStore.updateData {
                 it.copy(
                     seasonYear = seasonYear,
                     season = season
@@ -53,12 +56,12 @@ class SeasonViewModel(
 
     fun previousSeason() {
         launch {
-            val season = field.season.previousSeason()
-            var seasonYear = field.seasonYear
+            val season = filter.season.previousSeason()
+            var seasonYear = filter.seasonYear
             if (season == MediaSeason.FALL) {
-                seasonYear = field.seasonYear!! - 1
+                seasonYear = filter.seasonYear!! - 1
             }
-            seasonDataStore.filter.update {
+            seasonFilterDataStore.updateData {
                 it.copy(
                     seasonYear = seasonYear,
                     season = season

@@ -19,13 +19,18 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogWindowProvider
+import androidx.datastore.core.DataStore
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.ocpsoft.prettytime.PrettyTime
 import java.util.Date
 import java.util.NavigableMap
@@ -134,3 +139,14 @@ private tailrec fun Context.findWindow(): Window? =
 
 @Composable
 fun componentActivity() = localContext().componentActivity()
+
+fun <T> Flow<T>.get() = runBlocking { first() }
+fun <T> DataStore<T>.get() = data.get()
+
+suspend fun <T> Flow<T>.collectIfDiff(old: T, collector: FlowCollector<T>){
+    collect{
+        if(it != old){
+            collector.emit(it)
+        }
+    }
+}

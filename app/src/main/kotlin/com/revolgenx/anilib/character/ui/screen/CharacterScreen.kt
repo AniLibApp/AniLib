@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import cafe.adriel.voyager.androidx.AndroidScreen
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel

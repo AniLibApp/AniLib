@@ -1,6 +1,9 @@
 package com.revolgenx.anilib.notification.ui.viewmodel
 
-import com.revolgenx.anilib.common.data.store.AuthDataStore
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import com.revolgenx.anilib.notification.data.field.NotificationField
@@ -10,21 +13,20 @@ import com.revolgenx.anilib.notification.ui.model.NotificationModel
 
 class NotificationViewModel(
     private val notificationService: NotificationService,
-    private val authDataStore: AuthDataStore
+    private val authPreferencesDataStore: AuthPreferencesDataStore
 ) :
-    PagingViewModel<NotificationModel, NotificationField, NotificationPagingSource>(initialize = false) {
+    PagingViewModel<NotificationModel, NotificationField?, NotificationPagingSource>() {
 
-    override val field: NotificationField = NotificationField()
+    override var field: NotificationField? by mutableStateOf(null)
 
     init {
         launch {
-            authDataStore.userId.collectNullable{ userId ->
-                field.userId = userId
-                refresh()
+            authPreferencesDataStore.userId.collect{ userId ->
+                field = NotificationField(userId = userId)
             }
         }
     }
 
     override val pagingSource: NotificationPagingSource
-        get() = NotificationPagingSource(this.field, notificationService)
+        get() = NotificationPagingSource(this.field!!, notificationService)
 }

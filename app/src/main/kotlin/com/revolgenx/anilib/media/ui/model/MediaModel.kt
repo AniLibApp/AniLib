@@ -3,6 +3,7 @@ package com.revolgenx.anilib.media.ui.model
 import android.text.Spanned
 import androidx.annotation.StringRes
 import androidx.compose.ui.graphics.Color
+import androidx.core.graphics.toColorInt
 import com.revolgenx.anilib.MediaOverviewQuery
 import com.revolgenx.anilib.airing.ui.model.AiringAtModel
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
@@ -257,7 +258,7 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
                 }
             )
         },
-        
+
         externalLinks = externalLinks?.mapNotNull { linkData ->
             linkData?.let {
                 MediaExternalLinkModel(
@@ -265,7 +266,8 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
                     it.url,
                     it.site,
                     it.icon,
-                    it.color?.let { Color(android.graphics.Color.parseColor(it)) })
+                    color = it.color?.toColorInt()
+                )
             }
         }?.nullIfEmpty(),
 

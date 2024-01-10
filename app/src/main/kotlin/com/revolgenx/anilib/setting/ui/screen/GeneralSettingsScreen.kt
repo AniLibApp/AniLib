@@ -29,7 +29,7 @@ object GeneralSettingsScreen : ViewModelPreferencesScreen<GeneralSettingsViewMod
     @Composable
     override fun getPreferences(): List<PreferenceModel> {
         val context = localContext()
-        val appDataStore = viewModel.appDataStore
+        val appDataStore = viewModel.appPreferencesDataStore
         val langs = remember { getLangs(context) }
 
         val currentLanguage = remember {

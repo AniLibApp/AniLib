@@ -8,7 +8,7 @@ import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.PageInfo
 import com.revolgenx.anilib.media.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.staff.ui.model.toModel
 import com.revolgenx.anilib.studio.ui.model.toModel
 import com.revolgenx.anilib.user.ui.model.UserModel
@@ -18,8 +18,8 @@ import kotlinx.coroutines.flow.map
 
 class BrowseServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsDataStore: MediaSettingsDataStore
-) : BaseService(apolloRepository, mediaSettingsDataStore), BrowseService {
+    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
+) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore), BrowseService {
     override fun browse(browseField: BrowseField): Flow<PageModel<BaseModel>> {
         return browseField.toQuery().map {
             var data: List<BaseModel>? = null

@@ -107,7 +107,7 @@ fun HomeScreenContent() {
                 .fillMaxSize()
                 .nestedScroll(scrollBehavior.nestedScrollConnection)
         ) {
-            when (HomeScreenPages.values()[page]) {
+            when (HomeScreenPages.entries[page]) {
                 HomeScreenPages.EXPLORE -> ExploreScreen()
                 HomeScreenPages.SEASON -> SeasonScreen()
                 HomeScreenPages.RECOMMENDATIONS -> RecommendationScreen()

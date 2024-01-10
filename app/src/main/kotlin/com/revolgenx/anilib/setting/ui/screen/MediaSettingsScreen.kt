@@ -89,8 +89,8 @@ class MediaSettingsScreen : ViewModelPreferencesScreen<MediaSettingsViewModel>()
         val viewModel: MediaSettingsViewModel = getViewModel()
         val resourceValue = viewModel.resource.value?.stateValue
 
-        val authDataStore = viewModel.authDataStore
-        val mediaSettingsDataStore = viewModel.mediaSettingsDataStore
+        val authDataStore = viewModel.authPreferencesDataStore
+        val mediaSettingsDataStore = viewModel.mediaSettingsPreferencesDataStore
 
         val isLoggedIn = authDataStore.isLoggedIn()
 

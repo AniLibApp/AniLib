@@ -275,7 +275,7 @@ fun SettingScreenContent(isTab: Boolean) {
         title = stringResource(id = I18nR.string.logout)
     ) {
         scope.launch {
-            viewModel.authDataStore.logout()
+            viewModel.authPreferencesDataStore.logout()
             context.startActivity(Intent(context, MainActivity::class.java).apply {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             })

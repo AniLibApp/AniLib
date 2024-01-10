@@ -4,8 +4,10 @@ import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.datastore.preferences.core.booleanPreferencesKey
+import com.revolgenx.anilib.common.data.model.PreferenceDataStoreModel
 
-class ThemeDataStore(override val dataStore: PreferencesDataStore) : BasePreferenceDataStore() {
+class ThemePreferencesDataStore(override val dataStore: PreferencesDataStore) :
+    BasePreferencesDataStore {
     companion object {
         val themeModeKey = booleanPreferencesKey("theme_mode_key")
         val themeModeSystem: Boolean? = null
@@ -13,7 +15,7 @@ class ThemeDataStore(override val dataStore: PreferencesDataStore) : BasePrefere
 //        const val themeModeDark = true
     }
 
-    val themeMode = PreferenceDataModel(
+    val themeMode = PreferenceDataStoreModel(
         dataStore = dataStore,
         prefKey = themeModeKey,
         defaultValue = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) themeModeSystem else themeModeLight
@@ -22,7 +24,7 @@ class ThemeDataStore(override val dataStore: PreferencesDataStore) : BasePrefere
     @Composable
     fun isDark(): Boolean {
         val isInDarkTheme = isSystemInDarkTheme()
-        val themeModeState = themeMode.collectAsNullableState()
+        val themeModeState = themeMode.collectAsState()
         return themeModeState.value ?: isInDarkTheme
     }
 }

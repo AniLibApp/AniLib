@@ -1,32 +1,12 @@
 package com.revolgenx.anilib.list.data.filter
 
-import androidx.datastore.core.Serializer
-import kotlinx.serialization.json.Json
-import java.io.InputStream
-import java.io.OutputStream
+import com.revolgenx.anilib.common.data.store.BaseSerializer
+import kotlinx.serialization.KSerializer
 
-class MediaListCollectionFilterSerializer : Serializer<MediaListCollectionFilter> {
+class MediaListCollectionFilterSerializer(
     override val defaultValue: MediaListCollectionFilter = MediaListCollectionFilter()
-
-    override suspend fun readFrom(input: InputStream): MediaListCollectionFilter {
-        return try {
-            Json.decodeFromString(
-                deserializer = MediaListCollectionFilter.serializer(),
-                string = input.readBytes().decodeToString()
-            )
-        } catch (e: Exception) {
-            e.printStackTrace()
-            defaultValue
-        }
-    }
-
-    override suspend fun writeTo(t: MediaListCollectionFilter, output: OutputStream) {
-        output.write(
-            Json.encodeToString(
-                serializer = MediaListCollectionFilter.serializer(),
-                value = t
-            ).encodeToByteArray()
-        )
-    }
+) : BaseSerializer<MediaListCollectionFilter>(defaultValue) {
+    override fun serializer(): KSerializer<MediaListCollectionFilter> =
+        MediaListCollectionFilter.serializer()
 }
 

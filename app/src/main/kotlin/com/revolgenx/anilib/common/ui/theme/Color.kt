@@ -107,6 +107,7 @@ val support_color = Color(0xFFE85D75)
 val rank_type_popular = Color(0xFFE85D75)
 val rank_type_rated = Color(0xFFF7BF63)
 
+val excluded_color = Color(0xFFF8375B)
 
 
 internal object ElevationTokens {

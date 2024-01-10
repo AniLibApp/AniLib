@@ -20,6 +20,7 @@ import coil.request.ImageRequest
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.LauncherShortcutKeys
 import com.revolgenx.anilib.common.data.constant.LauncherShortcuts
+import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
 import com.revolgenx.anilib.common.ui.theme.LightColorScheme
 import com.revolgenx.anilib.common.util.immutableFlagUpdateCurrent
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
@@ -35,7 +36,6 @@ import com.revolgenx.anilib.notification.ui.model.MediaMergeNotificationModel
 import com.revolgenx.anilib.notification.ui.model.NotificationModel
 import com.revolgenx.anilib.notification.ui.model.RelatedMediaNotificationModel
 import com.revolgenx.anilib.notification.ui.model.ThreadNotificationModel
-import com.revolgenx.anilib.type.NotificationType.*
 import kotlinx.coroutines.flow.single
 import java.util.Locale
 import anilib.i18n.R as I18nR
@@ -44,7 +44,8 @@ data class NotificationData(val title: String, val image: String? = null)
 class NotificationWorker(
     private val context: Context,
     params: WorkerParameters,
-    private val notificationService: NotificationService
+    private val notificationService: NotificationService,
+    private val authPreferencesDataStore: AuthPreferencesDataStore
 ) : CoroutineWorker(context, params) {
 
     companion object {
@@ -53,7 +54,7 @@ class NotificationWorker(
         const val NOTIFICATION_ID = 102020
     }
 
-    private val field = NotificationField(false).also { it.perPage = 1 }
+    private val field = NotificationField(resetNotificationCount = false).also { it.perPage = 1 }
 
     private val notificationManagerCompat: NotificationManagerCompat by lazy {
         NotificationManagerCompat.from(context)
@@ -62,6 +63,7 @@ class NotificationWorker(
 
     override suspend fun doWork(): Result {
         return try {
+
             val notifications = notificationService.getNotificationList(field).single()
             notifications.data?.firstOrNull()?.let {
                 showNotification(it)

@@ -2,14 +2,12 @@ package com.revolgenx.anilib.media.data.field
 
 import com.revolgenx.anilib.MediaPageQuery
 import com.revolgenx.anilib.common.data.field.BaseSourceField
-import com.revolgenx.anilib.media.data.filter.MediaFilter
+import com.revolgenx.anilib.media.data.store.MediaFilterData
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.type.MediaStatus
-import kotlinx.serialization.Serializable
 
-@Serializable
 data class MediaField(
     var seasonYear: Int? = null,
     var year: Int? = null,
@@ -42,7 +40,7 @@ data class MediaField(
         )
     }
 
-    fun toData() = MediaFilter(
+    fun toMediaFilter() = MediaFilterData(
         seasonYear = seasonYear,
         year = year,
         season = season,
@@ -58,3 +56,5 @@ data class MediaField(
     )
 
 }
+
+

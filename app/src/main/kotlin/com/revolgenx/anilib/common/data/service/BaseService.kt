@@ -5,15 +5,15 @@ import com.apollographql.apollo3.api.Mutation
 import com.apollographql.apollo3.api.Query
 import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import kotlinx.coroutines.flow.Flow
 
 abstract class BaseService(
     protected val apolloRepository: ApolloRepository,
-    private val mediaSettingsDataStore: MediaSettingsDataStore
+    private val mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
 ) {
     protected fun <Q : Query.Data, T : Query<Q>> BaseField<T>.toQuery(): Flow<ApolloResponse<Q>> {
-        this.canShowAdult = mediaSettingsDataStore.displayAdultContent.get()
+        this.canShowAdult = mediaSettingsPreferencesDataStore.displayAdultContent.get()!!
         return apolloRepository.query(this.toQueryOrMutation())
     }
 

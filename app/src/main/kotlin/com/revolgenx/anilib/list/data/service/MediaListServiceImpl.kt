@@ -7,15 +7,15 @@ import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.field.MediaListCollectionIdField
 import com.revolgenx.anilib.list.ui.model.MediaListCollectionModel
 import com.revolgenx.anilib.list.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsDataStore
+import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class MediaListServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsDataStore: MediaSettingsDataStore
+    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
 ) : MediaListService,
-    BaseService(apolloRepository, mediaSettingsDataStore) {
+    BaseService(apolloRepository, mediaSettingsPreferencesDataStore) {
 
     override fun getMediaListCollectionsIds(field: MediaListCollectionIdField): Flow<List<Int>> {
         return field.toQuery().map {

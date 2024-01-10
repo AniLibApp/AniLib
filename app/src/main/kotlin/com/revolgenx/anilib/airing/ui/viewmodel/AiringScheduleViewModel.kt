@@ -8,9 +8,7 @@ import com.revolgenx.anilib.airing.data.service.AiringScheduleService
 import com.revolgenx.anilib.airing.data.source.AiringSchedulePagingSource
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
-import com.revolgenx.anilib.type.AiringSort
 import java.time.Instant
-import java.time.LocalDate
 import java.time.LocalTime
 import java.time.ZoneId
 import java.time.ZonedDateTime

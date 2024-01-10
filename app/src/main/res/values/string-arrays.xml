@@ -139,4 +139,36 @@
         <item>@string/mean_score</item>
     </string-array>
 
+    <string-array name="browse_type_menu">
+        <item>@string/anime</item>
+        <item>@string/manga</item>
+        <item>@string/character</item>
+        <item>@string/staff</item>
+        <item>@string/studios</item>
+        <item>@string/users</item>
+    </string-array>
+
+    <string-array name="browse_source_menu">
+        <item>@string/none</item>
+        <item>@string/original</item>
+        <item>@string/manga</item>
+        <item>@string/light_novel</item>
+        <item>@string/visual_novel</item>
+        <item>@string/video_game</item>
+        <item>@string/other</item>
+        <item>@string/novel</item>
+        <item>@string/doujinshi</item>
+        <item>@string/anime</item>
+    </string-array>
+
+
+    <string-array name="browse_country_menu">
+        <item>@string/none</item>
+        <item>@string/Japan</item>
+        <item>@string/South_Korean</item>
+        <item>@string/China</item>
+        <item>@string/Taiwan</item>
+    </string-array>
+
+
 </resources>

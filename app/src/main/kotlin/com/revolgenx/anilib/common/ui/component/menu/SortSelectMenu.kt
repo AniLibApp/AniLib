@@ -1,7 +1,9 @@
 package com.revolgenx.anilib.common.ui.component.menu
 
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -26,56 +28,59 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowDownward
 import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowUpward
 import anilib.i18n.R as I18nR
 
-
-enum class AlSortOrder {
+enum class SortOrder {
     ASC, DESC, NONE
 }
 
-data class AlSortMenuItem(val title: String, var order: AlSortOrder = AlSortOrder.NONE)
+data class SortMenuItem(val title: String, var order: SortOrder = SortOrder.NONE)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SortSelectMenu(
     modifier: Modifier = Modifier,
     label: String? = null,
-    entries: List<AlSortMenuItem>,
+    entries: List<SortMenuItem>,
     allowNone: Boolean = true,
-    onItemsSelected: (index: Int, item: AlSortMenuItem?) -> Unit
+    singleLine: Boolean = true,
+    onItemsSelected: (index: Int, item: SortMenuItem?) -> Unit
 ) {
 
     var expanded by remember { mutableStateOf(false) }
-    var selectedItem by remember { mutableStateOf(entries.find { it.order != AlSortOrder.NONE }) }
-
-    val shape = if (expanded)
-        RoundedCornerShape(8.dp).copy(bottomEnd = CornerSize(0.dp), bottomStart = CornerSize(0.dp))
-    else RoundedCornerShape(8.dp)
+    var selectedItem by remember { mutableStateOf(entries.find { it.order != SortOrder.NONE }) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded },
     ) {
         val item = selectedItem
-        if (item != null) {
-            val orderIcon = if (item.order == AlSortOrder.ASC) {
-                AppIcons.IcArrowUpward
-            } else {
-                AppIcons.IcArrowDownward
-            }
-            Icon(
-                imageVector = orderIcon,
-                contentDescription = item.title
-            )
-        }
 
+        Row {
+
+        }
         TextField(
-            modifier = Modifier
+            modifier = modifier
                 .menuAnchor()
                 .fillMaxWidth(),
             readOnly = true,
             value = item?.title ?: stringResource(id = I18nR.string.none),
             onValueChange = {},
-            shape = shape,
-            label = { label?.let { Text(it) } },
+            shape = RoundedCornerShape(8.dp),
+            label = label?.let { { Text(it) } },
+            singleLine = singleLine,
+            prefix = item?.let {
+                @Composable {
+                    val orderIcon = if (item.order == SortOrder.ASC) {
+                        AppIcons.IcArrowUpward
+                    } else {
+                        AppIcons.IcArrowDownward
+                    }
+                    Icon(
+                        modifier = Modifier.size(16.dp).padding(horizontal = 2.dp),
+                        imageVector = orderIcon,
+                        contentDescription = item.title
+                    )
+                }
+            },
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             colors = ExposedDropdownMenuDefaults.textFieldColors(
                 focusedIndicatorColor = Color.Transparent,
@@ -85,7 +90,7 @@ fun SortSelectMenu(
         )
 
         DropdownMenu(
-            modifier = modifier
+            modifier = Modifier
                 .exposedDropdownSize(),
             expanded = expanded,
             onDismissRequest = { expanded = false }
@@ -95,20 +100,20 @@ fun SortSelectMenu(
                     text = { Text(s.title) },
                     onClick = {
                         if (selectedItem != s) {
-                            selectedItem?.order = AlSortOrder.NONE
+                            selectedItem?.order = SortOrder.NONE
                         }
                         s.order = when (s.order) {
-                            AlSortOrder.ASC -> AlSortOrder.DESC
-                            AlSortOrder.DESC -> if (allowNone) AlSortOrder.NONE else AlSortOrder.ASC
-                            AlSortOrder.NONE -> AlSortOrder.ASC
+                            SortOrder.ASC -> SortOrder.DESC
+                            SortOrder.DESC -> if (allowNone) SortOrder.NONE else SortOrder.ASC
+                            SortOrder.NONE -> SortOrder.ASC
                         }
                         selectedItem = null
-                        selectedItem = s.takeIf { it.order != AlSortOrder.NONE }
+                        selectedItem = s.takeIf { it.order != SortOrder.NONE }
                         onItemsSelected.invoke(index, selectedItem)
                     },
                     leadingIcon = {
                         if (selectedItem == s) {
-                            val orderIcon = if (s.order == AlSortOrder.ASC) {
+                            val orderIcon = if (s.order == SortOrder.ASC) {
                                 AppIcons.IcArrowUpward
                             } else {
                                 AppIcons.IcArrowDownward

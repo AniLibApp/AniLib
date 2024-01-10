@@ -39,7 +39,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import cafe.adriel.voyager.androidx.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.data.field.AiringScheduleField
 import com.revolgenx.anilib.airing.ui.model.AiringAtModel
@@ -61,8 +60,8 @@ import com.revolgenx.anilib.common.ui.component.date.CalendarBottomSheet
 import com.revolgenx.anilib.common.ui.component.date.CalendarRangeBottomSheet
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
-import com.revolgenx.anilib.common.ui.component.menu.AlSortMenuItem
-import com.revolgenx.anilib.common.ui.component.menu.AlSortOrder
+import com.revolgenx.anilib.common.ui.component.menu.SortMenuItem
+import com.revolgenx.anilib.common.ui.component.menu.SortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
@@ -77,6 +76,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronRight
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTime
 import com.revolgenx.anilib.common.ui.model.HeaderModel
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
@@ -458,12 +458,12 @@ private fun AiringSortMenu(field: AiringScheduleField) {
     val selectedSort = (field.sort.ordinal + 1) / 2
     val isDesc = field.sort.rawValue.endsWith("_DESC")
     val selectedSortIndex = if (isDesc) selectedSort - 1 else selectedSort
-    val selectedSortOrder = if (isDesc) AlSortOrder.DESC else AlSortOrder.ASC
+    val selectedSortOrder = if (isDesc) SortOrder.DESC else SortOrder.ASC
     val sortMenus =
         stringArrayResource(id = R.array.airing_sort).mapIndexed { index, s ->
-            AlSortMenuItem(
+            SortMenuItem(
                 s,
-                if (index == selectedSortIndex) selectedSortOrder else AlSortOrder.NONE
+                if (index == selectedSortIndex) selectedSortOrder else SortOrder.NONE
             )
         }
 
@@ -476,7 +476,7 @@ private fun AiringSortMenu(field: AiringScheduleField) {
         val order = selectedItem.order
         val airingIndex = index * 2
         val airingSort: AiringSort =
-            AiringSort.values()[if (order == AlSortOrder.DESC) airingIndex + 1 else airingIndex]
+            AiringSort.values()[if (order == SortOrder.DESC) airingIndex + 1 else airingIndex]
         field.sort = airingSort
     }
 }

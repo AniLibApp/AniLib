@@ -1,64 +1,39 @@
 package com.revolgenx.anilib.home.explore.ui.screen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringArrayResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import anilib.i18n.R
-import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
-import com.revolgenx.anilib.common.ext.airingScheduleScreen
-import com.revolgenx.anilib.common.ext.characterScreen
-import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
-import com.revolgenx.anilib.common.ext.mediaScreen
-import com.revolgenx.anilib.common.ext.reviewScreen
-import com.revolgenx.anilib.common.ext.staffScreen
-import com.revolgenx.anilib.common.ext.studioScreen
-import com.revolgenx.anilib.common.ext.userMediaListScreen
-import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
-import com.revolgenx.anilib.common.ui.component.button.SegmentedButton
-import com.revolgenx.anilib.common.ui.component.common.HeaderBox
 import com.revolgenx.anilib.common.ui.component.common.HeaderText
-import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
-import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
-import com.revolgenx.anilib.common.ui.component.text.MarkdownText
-import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
-import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
 import com.revolgenx.anilib.common.util.OnClick
-import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringViewModel
-import com.revolgenx.anilib.social.markdown.anilify
-import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen() {
+    val exploreTrendingViewModel: ExploreMediaViewModel.ExploreTrendingViewModel = koinViewModel()
+    val explorePopularViewModel: ExploreMediaViewModel.ExplorePopularViewModel = koinViewModel()
+    val exploreNewlyAddedViewModel: ExploreMediaViewModel.ExploreNewlyAddedViewModel =
+        koinViewModel()
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
         ExploreAiringScheduleSection()
-        ExploreMediaSection(ExploreMediaSectionType.TRENDING)
-        ExploreMediaSection(ExploreMediaSectionType.POPULAR)
-        ExploreMediaSection(ExploreMediaSectionType.NEWLY_ADDED)
+        ExploreMediaSection(exploreTrendingViewModel)
+        ExploreMediaSection(explorePopularViewModel)
+        ExploreMediaSection(exploreNewlyAddedViewModel)
         /*
                 val navigator = localNavigator()
                 Spacer(modifier = Modifier.size(20.dp))

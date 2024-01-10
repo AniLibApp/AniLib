@@ -22,6 +22,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.takeOrElse
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.KeyboardType
@@ -42,9 +43,7 @@ import kotlin.math.round
 
 @Composable
 fun MediaListEntryScore(
-    score: Double,
-    scoreFormat: ScoreFormat,
-    onScoreChange: (score: Double) -> Unit
+    score: Double, scoreFormat: ScoreFormat, onScoreChange: (score: Double) -> Unit
 ) {
 
     when (scoreFormat) {
@@ -79,9 +78,7 @@ fun MediaListEntryScore(
 
 @Composable
 fun CountEditor(
-    count: Int,
-    max: Int? = 10,
-    onScoreChange: (count: Int) -> Unit
+    count: Int, max: Int? = 10, onScoreChange: (count: Int) -> Unit
 ) {
     val min = 0
     val scoreValue = "$count"
@@ -89,26 +86,21 @@ fun CountEditor(
     fun getScoreWithInRange(newScore: Int) =
         if (newScore < min) min else if (max != null && newScore > max) max else newScore
 
-    var textFieldValueState by remember(count) {
+    val textFieldValueState by remember(count) {
         mutableStateOf(
             TextFieldValue(
-                text = scoreValue,
-                selection = TextRange(scoreValue.length)
+                text = scoreValue, selection = TextRange(scoreValue.length)
             )
         )
     }
 
 
     fun increaseScore() {
-        count.plus(1)
-            .let(::getScoreWithInRange)
-            .let { onScoreChange(it) }
+        count.plus(1).let(::getScoreWithInRange).let { onScoreChange(it) }
     }
 
     fun decreaseScore() {
-        count.minus(1)
-            .let(::getScoreWithInRange)
-            .let { onScoreChange(it) }
+        count.minus(1).let(::getScoreWithInRange).let { onScoreChange(it) }
     }
 
     Row(
@@ -119,16 +111,25 @@ fun CountEditor(
         IconButton(onClick = { decreaseScore() }) {
             Icon(imageVector = AppIcons.IcArrowDown, contentDescription = null)
         }
+
+        val textStyle = LocalTextStyle.current
+
+        val textColor = textStyle.color.takeOrElse {
+            LocalContentColor.current
+        }
+
+
         BasicTextField(
             modifier = Modifier.weight(1f),
             value = textFieldValueState,
-            onValueChange = {textFieldValue->
-                val newScore = (textFieldValue.text.ifBlank { "0" }.toInt()).let(::getScoreWithInRange)
+            onValueChange = { textFieldValue ->
+                val newScore =
+                    (textFieldValue.text.ifBlank { "0" }.toInt()).let(::getScoreWithInRange)
                 onScoreChange(newScore)
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+            textStyle = textStyle.merge(textAlign = TextAlign.Center, color = textColor)
         )
         IconButton(onClick = { increaseScore() }) {
             Icon(imageVector = AppIcons.IcArrowUp, contentDescription = null)
@@ -141,7 +142,7 @@ fun CountEditor(
 fun DoubleCountEditor(
     count: Double,
     max: Double = 10.0,
-    incrementBy : Double = 0.5,
+    incrementBy: Double = 0.5,
     onScoreChange: (count: Double) -> Unit
 ) {
     val min = 0.0
@@ -155,8 +156,7 @@ fun DoubleCountEditor(
     var textFieldValueState by remember(count) {
         mutableStateOf(
             TextFieldValue(
-                text = scoreValue,
-                selection = TextRange(scoreValue.length)
+                text = scoreValue, selection = TextRange(scoreValue.length)
             )
         )
     }
@@ -170,13 +170,11 @@ fun DoubleCountEditor(
         if (newScore < min) min else if (newScore > max) max else newScore
 
     fun increaseScore() {
-        count.plus(incrementBy).let(::getScoreWithInRange)
-            .let { updateScore(it) }
+        count.plus(incrementBy).let(::getScoreWithInRange).let { updateScore(it) }
     }
 
     fun decreaseScore() {
-        count.minus(incrementBy).let(::getScoreWithInRange)
-            .let { updateScore(it) }
+        count.minus(incrementBy).let(::getScoreWithInRange).let { updateScore(it) }
     }
 
     Row(
@@ -207,8 +205,8 @@ fun DoubleCountEditor(
                         onScoreChange(newScore)
                     }
                 } else if (!oldTextHasPeriod && newTextHasPeriod) {
-                    val text = textFieldValue.text.apply { if (length > 1) trimStart('0') }
-                        .ifBlank { "0" }
+                    val text =
+                        textFieldValue.text.apply { if (length > 1) trimStart('0') }.ifBlank { "0" }
                     textFieldValueState = textFieldValue.copy(text)
                 } else {
                     val text = textFieldValue.text.trimStart('0').trim('.').ifBlank { "0" }
@@ -225,7 +223,6 @@ fun DoubleCountEditor(
         }
     }
 }
-
 
 
 @Composable
@@ -257,9 +254,7 @@ private fun StarScoreButton(selected: Boolean, onClick: OnClick) {
         modifier = Modifier
             .fillMaxHeight()
             .clickable(
-                interactionSource = interactionSource,
-                indication = null,
-                onClick = onClick
+                interactionSource = interactionSource, indication = null, onClick = onClick
             )
     ) {
         Icon(
@@ -282,8 +277,7 @@ private fun SmileyScore(score: Double, onScoreChange: (score: Double) -> Unit) {
         onScoreChange(if (score == newScore) 0.0 else newScore)
     }
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly
+        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         SmileyScoreButton(selected = isHappy, AppIcons.IcHappy) {
             updateScore(3.0)

@@ -4,6 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.BrowseQuery
+import com.revolgenx.anilib.browse.data.model.BrowseFilterModel
 import com.revolgenx.anilib.browse.ui.model.FuzzyDateIntModel
 import com.revolgenx.anilib.common.data.field.BaseSourceField
 import com.revolgenx.anilib.common.ext.isNull
@@ -106,6 +107,39 @@ data class BrowseField(
             browseStaff = type == BrowseTypes.STAFF,
             browseStudio = type == BrowseTypes.STUDIO,
             browseUser = type == BrowseTypes.USER
+        )
+    }
+
+    fun toBrowseFilter(): BrowseFilterModel {
+        return BrowseFilterModel(
+            search = search,
+            browseType = browseType.value,
+            season = season,
+            yearGreater = yearGreater,
+            yearLesser = yearLesser,
+            year = year,
+            status = status,
+            episodesGreater = episodesGreater,
+            episodesLesser = episodesLesser,
+            chaptersGreater = chaptersGreater,
+            chaptersLesser = chaptersLesser,
+            volumesGreater = volumesGreater,
+            volumesLesser = volumesLesser,
+            durationGreater = durationGreater,
+            durationLesser = durationLesser,
+            isHentai = isHentai,
+            streamingOn = streamingOn,
+            readableOn = readableOn,
+            countryOfOrigin = countryOfOrigin,
+            source = source,
+            doujins = doujins,
+            format = format,
+            genreIn = genreIn,
+            genreNotIn = genreNotIn,
+            tagsIn = tagsIn,
+            tagsNotIn = tagsNotIn,
+            sort = sort,
+            minimumTagRank = minimumTagRank,
         )
     }
 }

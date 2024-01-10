@@ -44,7 +44,6 @@ import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.util.OnMediaClick
-import com.revolgenx.anilib.common.util.OnMediaListEntryClick
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
@@ -59,6 +58,38 @@ data class MediaComponentState(
     val snackbarHostState: SnackbarHostState?,
     val userId: Int?
 )
+
+fun onMediaClickHandler(
+    mediaComponentState: MediaComponentState,
+    openMediaEntryList: Boolean = false
+): OnMediaClick {
+    val (
+        navigator,
+        scope,
+        context,
+        snackbarHostState,
+        userId
+    ) = mediaComponentState
+
+    return if (openMediaEntryList) {
+        { id, _ ->
+            if (userId != null) {
+                navigator.mediaListEntryEditorScreen(id, userId)
+            } else {
+                scope.launch {
+                    snackbarHostState?.showSnackbar(
+                        context.getString(anilib.i18n.R.string.please_log_in),
+                        withDismissAction = true
+                    )
+                }
+            }
+        }
+    } else {
+        { id, type ->
+            mediaComponentState.navigator.mediaScreen(id, type)
+        }
+    }
+}
 
 @Composable
 fun rememberMediaComponentState(
@@ -106,7 +137,7 @@ fun MediaCard(
         onMediaClick = { id, type ->
             navigator.mediaScreen(id, type)
         },
-        onMediaEntryClick = { id, _ ->
+        onMediaLongClick = { id, _ ->
             if (userId != null) {
                 navigator.mediaListEntryEditorScreen(id, userId)
             } else {
@@ -142,10 +173,8 @@ fun CoverMediaCard(
         height,
         media = media,
         footerContent = footerContent,
-        onMediaClick = { id, type ->
-            navigator.mediaScreen(id, type)
-        },
-        onMediaEntryClick = { id, _ ->
+        onMediaClick = onMediaClickHandler(mediaComponentState),
+        onMediaLongClick = { id, _ ->
             if (userId != null) {
                 navigator.mediaListEntryEditorScreen(id, userId)
             } else {
@@ -168,7 +197,7 @@ private fun MediaCardContent(
     height: Dp = 248.dp,
     footerContent: @Composable (ColumnScope.() -> Unit)? = null,
     onMediaClick: OnMediaClick,
-    onMediaEntryClick: OnMediaListEntryClick
+    onMediaLongClick: OnMediaClick
 ) {
     Card(
         modifier = Modifier
@@ -185,7 +214,7 @@ private fun MediaCardContent(
             onMediaClick(media.id, media.type)
         },
         onLongClick = {
-            onMediaEntryClick(media.id, media.type)
+            onMediaLongClick(media.id, media.type)
         },
     ) {
         Box {
@@ -260,7 +289,7 @@ private fun CoverMediaCardContent(
     height: Dp,
     media: MediaModel,
     onMediaClick: OnMediaClick,
-    onMediaEntryClick: OnMediaListEntryClick,
+    onMediaLongClick: OnMediaClick,
     footerContent: @Composable() (ColumnScope.() -> Unit)?,
 ) {
     Card(
@@ -278,7 +307,7 @@ private fun CoverMediaCardContent(
             onMediaClick(media.id, media.type)
         },
         onLongClick = {
-            onMediaEntryClick(media.id, media.type)
+            onMediaLongClick(media.id, media.type)
         },
     ) {
         Box {

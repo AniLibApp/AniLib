@@ -21,7 +21,7 @@ enum class AlMediaSort(val sort: Int) {
     FAVOURITES(35);
 
     companion object{
-        fun from(sort: Int) = AlMediaSort.values().firstOrNull { it.sort == sort }
+        fun from(sort: Int) = entries.firstOrNull { it.sort == sort }
     }
 }
 

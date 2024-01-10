@@ -306,7 +306,8 @@ private fun UserActivityHistoryToolTip(
             state = tooltipState
         ) {
             Box(
-                modifier = Modifier.clickable {
+                modifier = Modifier
+                    .clickable {
                     scope.launch {
                         tooltipState.show()
                     }

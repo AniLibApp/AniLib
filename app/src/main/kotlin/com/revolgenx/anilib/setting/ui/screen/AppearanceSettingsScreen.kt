@@ -5,14 +5,10 @@ import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.res.stringResource
-import com.revolgenx.anilib.common.data.store.PreferencesDataStore
-import com.revolgenx.anilib.common.data.store.ThemeDataStore
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
-import com.revolgenx.anilib.common.data.store.PreferenceDataModel
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import com.revolgenx.anilib.setting.ui.viewmodel.AppearanceSettingsViewModel
-import org.koin.androidx.compose.get
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -24,7 +20,7 @@ object AppearanceSettingsScreen : ViewModelPreferencesScreen<AppearanceSettingsV
 
     @Composable
     override fun getPreferences(): List<PreferenceModel> {
-        val themeDataStore = viewModel.themeDataStore
+        val themeDataStore = viewModel.themePreferencesDataStore
         val context = localContext()
         val themeEntries = remember {
             getThemeEntries(context)

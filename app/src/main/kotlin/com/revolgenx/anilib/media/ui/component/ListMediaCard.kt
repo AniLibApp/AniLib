@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.media.ui.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,8 +20,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
-import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
@@ -31,55 +28,31 @@ import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.RegularText
 import com.revolgenx.anilib.common.util.OnMediaClick
-import com.revolgenx.anilib.common.util.OnMediaListEntryClick
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
-import kotlinx.coroutines.launch
 
 
 @Composable
-fun DetailedListMediaCard(
+fun ListMediaCard(
     media: MediaModel,
     mediaComponentState: MediaComponentState,
     footerContent: (@Composable () -> Unit)? = null,
 ) {
-    val (
-        navigator,
-        scope,
-        context,
-        snackbarHostState,
-        userId
-    ) = mediaComponentState
-
-    DetailedListMediaCardContent(
+    ListMediaCardContent(
         media = media,
         footerContent = footerContent,
-        onMediaClick = { id, type ->
-            navigator.mediaScreen(id, type)
-
-        },
-        onMediaListEntryClick = { id, _ ->
-            if (userId != null) {
-                navigator.mediaListEntryEditorScreen(id, userId)
-            } else {
-                scope.launch {
-                    snackbarHostState?.showSnackbar(
-                        context.getString(anilib.i18n.R.string.please_log_in),
-                        withDismissAction = true
-                    )
-                }
-            }
-        }
+        onMediaClick = onMediaClickHandler(mediaComponentState),
+        onMediaLongClick = onMediaClickHandler(mediaComponentState, true)
     )
 }
 
 @Composable
-private fun DetailedListMediaCardContent(
+private fun ListMediaCardContent(
     media: MediaModel,
     footerContent: (@Composable () -> Unit)?,
     onMediaClick: OnMediaClick,
-    onMediaListEntryClick: OnMediaListEntryClick
+    onMediaLongClick: OnMediaClick
 ) {
     Card(
         modifier = Modifier
@@ -90,7 +63,7 @@ private fun DetailedListMediaCardContent(
             onMediaClick(media.id, media.type)
         },
         onLongClick = {
-            onMediaListEntryClick(media.id, media.type)
+            onMediaLongClick(media.id, media.type)
         }
     ) {
         Row {
