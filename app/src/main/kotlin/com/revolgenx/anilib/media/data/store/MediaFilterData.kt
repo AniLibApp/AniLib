@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.media.data.store
 
+import com.revolgenx.anilib.media.data.constant.genreCollection
 import com.revolgenx.anilib.media.data.constant.mediaTagCollection
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.model.MediaExternalLinkModel
@@ -47,6 +48,11 @@ data class MediaFilterData(
 @Serializable
 data class MediaTagCollectionData(
     val tags: List<MediaTagModel> = mediaTagCollection
+)
+
+@Serializable
+data class GenreCollectionData(
+    val genre: List<String> = genreCollection
 )
 
 @Serializable

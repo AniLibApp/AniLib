@@ -24,6 +24,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.dokar.sheets.BottomSheetState
+import com.dokar.sheets.m3.BottomSheet
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
@@ -34,10 +36,11 @@ import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
+import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
+import com.revolgenx.anilib.common.ui.component.menu.MultiSelectModel
+import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.SortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.SortOrder
-import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
-import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.radio.TextRadioButton
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -49,8 +52,8 @@ import com.revolgenx.anilib.list.data.sort.MediaListSortType
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
-import com.revolgenx.anilib.media.ui.model.toMediaFormat
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
+import com.revolgenx.anilib.type.MediaFormat
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
@@ -59,11 +62,9 @@ import anilib.i18n.R as I18nR
 @Composable
 fun MediaListContent(
     viewModel: MediaListViewModel,
-    openFilterBottomSheet: MutableState<Boolean> = mutableStateOf(false)
+    filterViewModel: MediaListFilterViewModel,
+    bottomSheetState: BottomSheetState
 ) {
-    LaunchedEffect(viewModel) {
-        viewModel.getResource()
-    }
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
     val bottomNestedScrollConnection =
         remember { BottomNestedScrollConnection(state = scrollState) }
@@ -71,9 +72,9 @@ fun MediaListContent(
     val groupNameBottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
-    val filterBottomSheetState = rememberModalBottomSheetState(
-        skipPartiallyExpanded = true
-    )
+
+    viewModel.getResource()
+
     ScreenScaffold(
         topBar = {},
         contentWindowInsets = emptyWindowInsets(),
@@ -120,10 +121,8 @@ fun MediaListContent(
     }
 
     MediaListFilterBottomSheet(
-        openBottomSheet = openFilterBottomSheet,
-        bottomSheetState = filterBottomSheetState,
-        viewModel = koinViewModel(),
-        filter = viewModel.filter
+        bottomSheetState = bottomSheetState,
+        viewModel = filterViewModel,
     ) {
         viewModel.updateFilter(it)
     }
@@ -188,41 +187,24 @@ private fun MediaListGroupNameContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MediaListFilterBottomSheet(
-    openBottomSheet: MutableState<Boolean> = mutableStateOf(false),
-    bottomSheetState: SheetState = rememberModalBottomSheetState(),
-    filter: MediaListCollectionFilter?,
-    viewModel: MediaListFilterViewModel = koinViewModel(),
+    bottomSheetState: BottomSheetState,
+    viewModel: MediaListFilterViewModel,
     onFilter: (filter: MediaListCollectionFilter) -> Unit
 ) {
     val scope = rememberCoroutineScope()
 
-    if (openBottomSheet.value) {
-        if (filter == null) {
-            openBottomSheet.value = false
-            return
-        }
-        viewModel.filter = filter
-
-        ModalBottomSheet(
-            onDismissRequest = { openBottomSheet.value = false },
-            sheetState = bottomSheetState
-        ) {
-
-            MediaListFilterBottomSheetContent(
-                viewModel = viewModel,
-                dismiss = {
-                    scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-                        if (!bottomSheetState.isVisible) {
-                            openBottomSheet.value = false
-                        }
-                    }
+    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+        MediaListFilterBottomSheetContent(
+            viewModel = viewModel,
+            dismiss = {
+                scope.launch {
+                    bottomSheetState.collapse()
                 }
-            ) {
-                onFilter(it)
             }
+        ) {
+            onFilter(it)
         }
     }
 }
@@ -241,10 +223,10 @@ fun MediaListFilterBottomSheetContent(
         BottomSheetConfirmation(
             confirmClicked = {
                 onFilter.invoke(viewModel.filter)
-                dismiss.invoke()
+                dismiss()
             },
             dismissClicked = {
-                dismiss.invoke()
+                dismiss()
             }
         )
 
@@ -260,15 +242,21 @@ fun MediaListFilterBottomSheetContent(
             val formats = stringArrayResource(id = R.array.media_format)
             MultiSelectMenu(
                 label = stringResource(id = I18nR.string.format),
+                text = { it.second },
                 entries = formats.mapIndexed { index, s ->
-                    selectedFormats.contains(
-                        index
-                    ) to s
+                    MultiSelectModel(
+                        mutableStateOf(
+                            selectedFormats.contains(
+                                index
+                            )
+                        ),
+                        index to s
+                    )
                 },
             ) { selectedItems ->
                 viewModel.filter = viewModel.filter.copy(
                     formatsIn = selectedItems.takeIf { it.isNotEmpty() }
-                        ?.mapNotNull { it.first.toMediaFormat() }
+                        ?.mapNotNull { MediaFormat.entries.getOrNull(it.first) }
                 )
             }
             SelectMenu(
@@ -319,13 +307,13 @@ fun MediaListFilterBottomSheetContent(
                 var mediaListSortType: MediaListSortType? = null
 
                 if (selectedItem != null) {
-                    val alMediaSort = AlMediaSort.values()[index].sort
+                    val alMediaSort = AlMediaSort.entries[index].sort
                     val selectedSort = if (selectedItem.order == SortOrder.DESC) {
                         alMediaSort + 1
                     } else {
                         alMediaSort
                     }
-                    mediaListSortType = MediaListSortType.values()[selectedSort]
+                    mediaListSortType = MediaListSortType.entries.toTypedArray()[selectedSort]
                 }
 
                 viewModel.filter = viewModel.filter.copy(

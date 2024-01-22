@@ -47,7 +47,6 @@
         <item>@string/manga</item>
         <item>@string/novel</item>
         <item>@string/one_shot</item>
-        <item>@string/unknown</item>
     </string-array>
 
     <string-array name="character_role">
@@ -149,7 +148,6 @@
     </string-array>
 
     <string-array name="browse_source_menu">
-        <item>@string/none</item>
         <item>@string/original</item>
         <item>@string/manga</item>
         <item>@string/light_novel</item>
@@ -159,11 +157,16 @@
         <item>@string/novel</item>
         <item>@string/doujinshi</item>
         <item>@string/anime</item>
+        <item>@string/web_novel</item>
+        <item>@string/live_action</item>
+        <item>@string/game</item>
+        <item>@string/comic</item>
+        <item>@string/multimedia_project</item>
+        <item>@string/picture_book</item>
     </string-array>
 
 
     <string-array name="browse_country_menu">
-        <item>@string/none</item>
         <item>@string/Japan</item>
         <item>@string/South_Korean</item>
         <item>@string/China</item>

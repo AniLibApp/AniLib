@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
@@ -18,15 +19,16 @@ import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
+import com.revolgenx.anilib.common.ui.component.menu.MultiSelectModel
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.SortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.SortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.media.data.field.MediaField
-import com.revolgenx.anilib.media.ui.model.toMediaFormat
 import com.revolgenx.anilib.media.ui.model.toMediaSeason
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
 import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
+import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaSort
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -45,7 +47,6 @@ fun MediaFilterBottomSheet(
     state: BottomSheetState,
     viewModel: MediaFilterBottomSheetViewModel
 ) {
-
     val scope = rememberCoroutineScope()
 
     BottomSheet(state = state, skipPeeked = true) {
@@ -96,16 +97,24 @@ private fun MediaFilterBottomSheetContent(
         ) {
             val selectedFormats = field.formatsIn?.map { it.ordinal }.orEmpty()
             val formats = stringArrayResource(id = R.array.media_format)
+
+
             MultiSelectMenu(
                 label = stringResource(id = I18nR.string.format),
+                text = { it.second },
                 entries = formats.mapIndexed { index, s ->
-                    selectedFormats.contains(
-                        index
-                    ) to s
+                    MultiSelectModel(
+                        mutableStateOf(
+                            selectedFormats.contains(
+                                index
+                            )
+                        ),
+                        index to s
+                    )
                 },
             ) { selectedItems ->
                 field.formatsIn = selectedItems.takeIf { it.isNotEmpty() }
-                    ?.mapNotNull { it.first.toMediaFormat() }
+                    ?.mapNotNull { MediaFormat.entries.getOrNull(it.first) }
             }
             SelectMenu(
                 label = stringResource(id = I18nR.string.status),

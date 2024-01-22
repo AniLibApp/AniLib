@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.common.data.store
 
 import android.content.Context
+import com.revolgenx.anilib.browse.data.store.BrowsePreferencesDataStore
 import com.revolgenx.anilib.common.data.store.animeListFilterDataStore
 import com.revolgenx.anilib.common.data.store.mangaListFilterDataStore
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
@@ -13,6 +14,7 @@ val storeModules = module {
     single { AuthPreferencesDataStore(get()) }
     single { ThemePreferencesDataStore(get()) }
     single { MediaSettingsPreferencesDataStore(get()) }
+    single { BrowsePreferencesDataStore(get()) }
 }
 
 fun Scope.animeListFilterDataStore() = get<Context>().animeListFilterDataStore

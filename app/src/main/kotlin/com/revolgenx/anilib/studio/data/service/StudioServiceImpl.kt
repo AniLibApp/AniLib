@@ -3,7 +3,6 @@ package com.revolgenx.anilib.studio.data.service
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
-import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
@@ -26,6 +25,6 @@ class StudioServiceImpl(apolloRepository: ApolloRepository, mediaSettingsPrefere
                     }
                 )
             }
-        }.onIO()
+        }
     }
 }

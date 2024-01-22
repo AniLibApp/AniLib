@@ -25,7 +25,7 @@ import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
 import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import kotlinx.coroutines.launch
 
-abstract class ViewModelPreferencesScreen<VM: ViewModel> : PreferenceScreen() {
+abstract class ViewModelPreferencesScreen<VM : ViewModel> : PreferenceScreen() {
     @Transient
     protected var _viewModel: VM? = null
     protected val viewModel get() = _viewModel!!
@@ -121,7 +121,7 @@ private fun PreferenceItem(
             ) { newValue ->
                 scope.launch {
                     if (!item.onValueChangedListener(newValue)) {
-                        item.pref?.set(newValue)
+                        item.updatePref(newValue)
                     }
                 }
             }

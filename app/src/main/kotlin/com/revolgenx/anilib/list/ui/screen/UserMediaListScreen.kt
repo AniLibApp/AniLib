@@ -20,14 +20,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.dokar.sheets.BottomSheetState
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
@@ -40,13 +44,20 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.list.ui.viewmodel.AnimeListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
+import com.revolgenx.anilib.list.ui.viewmodel.MangaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
+import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
-class UserMediaListScreen(private val userId: Int, private var mangaTab: Boolean) :
+class UserMediaListScreen(
+    private val userId: Int,
+    private var mangaTab: Boolean
+) :
     AndroidScreen() {
     @Composable
     override fun Content() {
@@ -77,8 +88,21 @@ private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
         }
     }
 
-    var animeSearchBar by rememberSaveable { mutableStateOf(false) }
-    var mangaSearchBar by rememberSaveable { mutableStateOf(false) }
+    val animeSearchBar = rememberSaveable { mutableStateOf(false) }
+    val mangaSearchBar = rememberSaveable { mutableStateOf(false) }
+    val scope = rememberCoroutineScope()
+
+
+    val animeListViewModel: AnimeListViewModel = koinViewModel()
+    val mangaListViewModel: MangaListViewModel = koinViewModel()
+
+    val animeListFilterViewModel: AnimeListFilterViewModel = koinViewModel()
+    val mangaListFilterViewModel: MangaListFilterViewModel = koinViewModel()
+
+    val filterBottomSheetState = rememberBottomSheetState()
+
+    animeListViewModel.field.userId = userId
+    mangaListViewModel.field.userId = userId
 
     PagerScreenScaffold(
         pagerState = pagerState,
@@ -86,19 +110,28 @@ private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
         actions = {
             ActionMenu(icon = AppIcons.IcSearch) {
                 when (pagerState.currentPage) {
-                    0 -> {
-                        animeSearchBar = !animeSearchBar
-                    }
-
-                    1 -> {
-                        mangaSearchBar = !mangaSearchBar
-                    }
-
-                    else -> {}
+                    0 -> animeSearchBar.value = !animeSearchBar.value
+                    1 -> mangaSearchBar.value = !mangaSearchBar.value
                 }
             }
             ActionMenu(icon = AppIcons.IcFilter) {
+                scope.launch {
+                    when (pagerState.currentPage) {
+                        0 -> {
+                            animeListViewModel.filter?.let {
+                                animeListFilterViewModel.filter = it.copy()
+                                filterBottomSheetState.expand()
+                            }
+                        }
 
+                        1 -> {
+                            mangaListViewModel.filter?.let {
+                                mangaListFilterViewModel.filter = it.copy()
+                                filterBottomSheetState.expand()
+                            }
+                        }
+                    }
+                }
             }
         },
     ) { page ->
@@ -107,48 +140,48 @@ private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
                 .fillMaxSize()
         ) {
             when (pages[page].type) {
-                MediaListScreenPageType.ANIME -> AnimeListContent(userId, animeSearchBar) {
-                    animeSearchBar = false
-                }
+                MediaListScreenPageType.ANIME ->
+                    MediaListCommonContent(
+                        viewModel = animeListViewModel,
+                        filterViewModel = animeListFilterViewModel,
+                        filterBottomSheetState = filterBottomSheetState,
+                        showSearchBar = animeSearchBar,
+                        hideSearchBar = {
+                            animeSearchBar.value = false
+                        }
+                    )
 
-                MediaListScreenPageType.MANGA -> MangaListContent(userId, mangaSearchBar) {
-                    mangaSearchBar = false
-                }
+                MediaListScreenPageType.MANGA ->
+                    MediaListCommonContent(
+                        viewModel = mangaListViewModel,
+                        filterViewModel = mangaListFilterViewModel,
+                        filterBottomSheetState = filterBottomSheetState,
+                        showSearchBar = mangaSearchBar,
+                        hideSearchBar = {
+                            mangaSearchBar.value = false
+                        }
+                    )
             }
         }
     }
-}
-
-
-@Composable
-private fun AnimeListContent(userId: Int?, showSearchBar: Boolean, hideSearchBar: OnClick) {
-    val viewModel = koinViewModel<AnimeListViewModel>()
-    viewModel.field.userId = userId
-    MediaListCommonContent(viewModel, showSearchBar, hideSearchBar)
-}
-
-
-@Composable
-private fun MangaListContent(userId: Int?, showSearchBar: Boolean, hideSearchBar: OnClick) {
-    val viewModel = koinViewModel<MangaListViewModel>()
-    viewModel.field.userId = userId
-    MediaListCommonContent(viewModel, showSearchBar, hideSearchBar)
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MediaListCommonContent(
     viewModel: MediaListViewModel,
-    showSearchBar: Boolean,
+    filterViewModel: MediaListFilterViewModel,
+    filterBottomSheetState: BottomSheetState,
+    showSearchBar: MutableState<Boolean>,
     hideSearchBar: OnClick
 ) {
     var active by rememberSaveable { mutableStateOf(false) }
-    val openFilterBottomSheet = rememberSaveable { mutableStateOf(false) }
-    if (!showSearchBar) {
+
+    if (!showSearchBar.value) {
         active = false
     }
     Column {
-        AnimatedVisibility(visible = showSearchBar) {
+        AnimatedVisibility(visible = showSearchBar.value) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -198,7 +231,7 @@ fun MediaListCommonContent(
                                 modifier = Modifier
                                     .size(20.dp)
                                     .clickable {
-                                        openFilterBottomSheet.value = true
+
                                     },
                                 imageVector = AppIcons.IcCancel,
                                 contentDescription = stringResource(id = I18nR.string.clear)
@@ -207,10 +240,22 @@ fun MediaListCommonContent(
                 }
             }
         }
-        MediaListContent(viewModel, openFilterBottomSheet)
+        MediaListContent(
+            viewModel = viewModel,
+            filterViewModel = filterViewModel,
+            bottomSheetState = filterBottomSheetState
+        )
     }
 
-    BackHandler(enabled = showSearchBar) {
+    HandleBackPressed(showSearchBar, hideSearchBar)
+}
+
+@Composable
+private fun HandleBackPressed(
+    showSearchBar: MutableState<Boolean>,
+    hideSearchBar: OnClick
+) {
+    BackHandler(enabled = showSearchBar.value) {
         hideSearchBar()
     }
 }

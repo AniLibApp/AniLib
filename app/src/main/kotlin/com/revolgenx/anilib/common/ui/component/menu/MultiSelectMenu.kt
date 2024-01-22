@@ -14,6 +14,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,26 +23,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.common.data.tuples.MutablePair
+import com.revolgenx.anilib.common.ui.model.BaseModel
 import anilib.i18n.R as I18nR
+
+
+data class MultiSelectModel<T>(
+    var selected: MutableState<Boolean>,
+    val data: T
+) : BaseModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MultiSelectMenu(
+fun <T> MultiSelectMenu(
     modifier: Modifier = Modifier,
     label: String? = null,
-    entries: List<MutablePair<Boolean, String>>,
-    onItemsSelected: (items: List<Pair<Int, String>>) -> Unit
+    text: (data: T) -> String = { it as String },
+    entries: List<MultiSelectModel<T>>,
+    onItemsSelected: (items: List<T>) -> Unit
 ) {
-    val mutableEntries by remember {
-        mutableStateOf(entries.map { mutableStateOf(it) })
-    }
-
-    fun getSelectedItems() = mutableEntries.filter { it.value.first }
-        .mapIndexed { index, mutableState -> index to mutableState.value.second }
+    fun getSelectedItems() = entries.filter { it.selected.value }.map { it.data }
 
     var expanded by remember { mutableStateOf(false) }
-    var selectedItems by remember {
+    var selectedItems by remember(entries) {
         mutableStateOf(getSelectedItems())
     }
 
@@ -51,7 +54,7 @@ fun MultiSelectMenu(
     ) {
 
         val selectedItem = selectedItems.takeIf { it.isNotEmpty() }?.joinToString(", ") {
-            it.second
+            text(it)
         } ?: stringResource(id = I18nR.string.none)
         TextField(
             modifier = modifier
@@ -78,16 +81,16 @@ fun MultiSelectMenu(
             onDismissRequest = { expanded = false }
         ) {
 
-            mutableEntries.forEach { s ->
+            entries.forEach { s ->
                 DropdownMenuItem(
-                    text = { Text(s.value.second) },
+                    text = { Text(text(s.data)) },
                     onClick = {
-                        s.value = s.value.copy(first = !s.value.first)
+                        s.selected.value = !s.selected.value
                         selectedItems = getSelectedItems()
                         onItemsSelected.invoke(selectedItems)
                     },
                     leadingIcon = {
-                        if (s.value.first) {
+                        if (s.selected.value) {
                             Icon(
                                 Icons.Default.Check,
                                 contentDescription = null

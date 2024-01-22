@@ -43,7 +43,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import anilib.i18n.R
-import com.revolgenx.anilib.common.data.tuples.MutablePair
+import com.revolgenx.anilib.common.ui.component.search.SearchBar
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
@@ -53,43 +53,43 @@ import com.revolgenx.anilib.common.ui.theme.excluded_color
     ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class, ExperimentalFoundationApi::class
 )
 @Composable
-fun SelectSearchFilterMenu(
+fun <T> SelectSearchFilterMenu(
     modifier: Modifier = Modifier,
-    entries: List<MutablePair<Boolean?, String>>,
+    text: (data: T) -> String = { it as String },
+    entries: List<SelectFilterModel<T>>,
     showSearchFilter: Boolean = false,
-    onItemsSelected: (items: List<MutablePair<Boolean, String>>) -> Unit
+    onItemsSelected: (items: List<SelectFilterModel<T>>) -> Unit
 ) {
-    val mutableEntries by remember {
-        mutableStateOf(entries.map { mutableStateOf(it) })
-    }
-
-    var anchorWidth by remember { mutableIntStateOf(0) }
-
-    fun getSelectedItems() = mutableEntries.map { it.value }.filter { it.first != null }
-
     var expanded by remember { mutableStateOf(false) }
-    var selectedItems by remember {
-        mutableStateOf(getSelectedItems())
-    }
-
-    var search by remember {
-        mutableStateOf("")
-    }
-
-    val searchFilteredItems = remember {
-        derivedStateOf {
-            mutableEntries.filter {
-                it.value.second.contains(
-                    search, ignoreCase = true
-                )
-            }
-        }
-    }
-
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { },
     ) {
+
+        fun getSelectedItems() =
+            entries.filter { it.selected.value != SelectType.NONE }
+
+        var selectedItems by remember(entries) {
+            mutableStateOf(getSelectedItems())
+        }
+
+        var search by remember {
+            mutableStateOf("")
+        }
+
+        val searchFilteredItems = remember(entries) {
+            derivedStateOf {
+                entries.filter {
+                    text(it.data).contains(
+                        search, ignoreCase = true
+                    )
+                }
+            }
+        }
+
+
+        var anchorWidth by remember { mutableIntStateOf(0) }
+
         Card(modifier = modifier
             .menuAnchor()
             .fillMaxWidth()
@@ -124,13 +124,13 @@ fun SelectSearchFilterMenu(
                             onClick = {
                                 expanded = true
                             },
-                            label = { Text(text = it.second) },
+                            label = { Text(text = text(it.data)) },
                             border = AssistChipDefaults.assistChipBorder(
                                 true,
-                                borderColor = if (it.first == false) excluded_color else MaterialTheme.colorScheme.outline
+                                borderColor = if (it.selected.value == SelectType.EXCLUDED) excluded_color else MaterialTheme.colorScheme.outline
                             ),
                             colors = AssistChipDefaults.assistChipColors(
-                                leadingIconContentColor = if (it.first == false) excluded_color else MaterialTheme.colorScheme.onSurface
+                                leadingIconContentColor = if (it.selected.value == SelectType.EXCLUDED) excluded_color else MaterialTheme.colorScheme.onSurface
                             ),
                             trailingIcon = {
                                 Box(modifier = Modifier.clickable(
@@ -138,11 +138,9 @@ fun SelectSearchFilterMenu(
                                     interactionSource = remember {
                                         MutableInteractionSource()
                                     }) {
-                                    it.first = null
+                                    it.selected.value = SelectType.NONE
                                     selectedItems = getSelectedItems()
-                                    @Suppress("UNCHECKED_CAST") onItemsSelected.invoke(
-                                        selectedItems as List<MutablePair<Boolean, String>>
-                                    )
+                                    onItemsSelected.invoke(selectedItems)
                                 }) {
                                     Icon(
                                         modifier = Modifier.size(20.dp),
@@ -173,60 +171,52 @@ fun SelectSearchFilterMenu(
                     LazyColumn {
                         if (showSearchFilter) {
                             stickyHeader {
-                                TextField(
+                                SearchBar(
                                     modifier = Modifier
                                         .fillMaxWidth()
                                         .padding(8.dp),
-                                    value = search,
+                                    query = search,
                                     shape = RoundedCornerShape(8.dp),
-                                    onValueChange = {
+                                    onQueryChange = {
                                         search = it
                                     },
+                                    active = false,
+                                    onActiveChange = { },
+                                    onSearch = {},
                                     leadingIcon = {
                                         Icon(
                                             imageVector = AppIcons.IcSearch,
                                             contentDescription = null
                                         )
-                                    },
-                                    colors = ExposedDropdownMenuDefaults.textFieldColors(
-                                        focusedIndicatorColor = Color.Transparent,
-                                        unfocusedIndicatorColor = Color.Transparent,
-                                        focusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
-                                    )
+                                    }
                                 )
                             }
                         }
 
                         if (searchFilteredItems.value.isNotEmpty()) {
                             items(searchFilteredItems.value) { s ->
-                                DropdownMenuItem(text = { Text(s.value.second) }, onClick = {
-                                    val nextValue = when (s.value.first) {
-                                        true -> false
-                                        false -> null
-                                        null -> true
-                                    }
-                                    s.value = s.value.copy(first = nextValue)
-                                    selectedItems = getSelectedItems()
-                                    @Suppress("UNCHECKED_CAST") onItemsSelected.invoke(
-                                        selectedItems as List<MutablePair<Boolean, String>>
-                                    )
-                                }, leadingIcon = {
-                                    when (s.value.first) {
-                                        true -> {
-                                            Icon(
-                                                Icons.Default.Check, contentDescription = null
-                                            )
+                                DropdownMenuItem(
+                                    text = { Text(text(s.data)) }, onClick = {
+                                        val nextValue = when (s.selected.value) {
+                                            SelectType.INCLUDED -> SelectType.EXCLUDED
+                                            SelectType.EXCLUDED -> SelectType.NONE
+                                            SelectType.NONE -> SelectType.INCLUDED
                                         }
-
-                                        false -> {
-                                            Icon(
-                                                Icons.Default.Clear, contentDescription = null
-                                            )
+                                        s.selected.value = nextValue
+                                        selectedItems = getSelectedItems()
+                                        onItemsSelected(selectedItems)
+                                    },
+                                    leadingIcon = {
+                                        when (val included = s.selected.value) {
+                                            SelectType.NONE -> {}
+                                            else -> {
+                                                Icon(
+                                                    if (included == SelectType.INCLUDED) Icons.Default.Check else Icons.Default.Clear,
+                                                    contentDescription = null
+                                                )
+                                            }
                                         }
-
-                                        else -> {}
-                                    }
-                                })
+                                    })
                             }
                         }
 

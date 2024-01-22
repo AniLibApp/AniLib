@@ -7,7 +7,7 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import com.revolgenx.anilib.common.data.model.PreferenceDataStoreModel
 
 class ThemePreferencesDataStore(override val dataStore: PreferencesDataStore) :
-    BasePreferencesDataStore {
+    IPreferencesDataStore {
     companion object {
         val themeModeKey = booleanPreferencesKey("theme_mode_key")
         val themeModeSystem: Boolean? = null

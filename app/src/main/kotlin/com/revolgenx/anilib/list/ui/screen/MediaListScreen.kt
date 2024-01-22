@@ -25,6 +25,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -32,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -41,37 +43,49 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
+import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.isAnime
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
 abstract class MediaListScreen : BaseTabScreen() {
     @Composable
     override fun Content() {
         val viewModel = mediaListViewModel()
-        MediaListScreenContent(viewModel)
+        val filterViewModel = mediaListFilterViewModel()
+        MediaListScreenContent(viewModel, filterViewModel)
     }
 
     @Composable
     abstract fun mediaListViewModel(): MediaListViewModel
+
+    @Composable
+    abstract fun mediaListFilterViewModel(): MediaListFilterViewModel
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MediaListScreenContent(viewModel: MediaListViewModel) {
+private fun MediaListScreenContent(
+    viewModel: MediaListViewModel,
+    filterViewModel: MediaListFilterViewModel
+) {
+    val openFilterBottomSheet = rememberBottomSheetState()
+    val scope = rememberCoroutineScope()
+
 
     var active by rememberSaveable { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-
-    val openFilterBottomSheet = rememberSaveable { mutableStateOf(false) }
-    val isAnime = viewModel.field.type.isAnime
-
-    val appbarHeight = if(active) 120.dp else 64.dp
+    val appbarHeight = if (active) 120.dp else 64.dp
     val appbarAnimation by animateDpAsState(
         targetValue = appbarHeight,
         animationSpec = tween(durationMillis = 300),
         label = ""
     )
+
+    val isAnime = viewModel.field.type.isAnime
 
     ScreenScaffold(
         topBar = {
@@ -97,11 +111,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                         },
                         active = active,
                         onActiveChange = {
-                            active = if (it && true/*viewModel.searchHistory.isNotEmpty()*/) {
-                                it
-                            } else {
-                                false
-                            }
+                            active = it
                         },
                         placeholder = { Text(text = stringResource(id = if (isAnime) I18nR.string.search_anime else I18nR.string.search_manga)) },
                         leadingIcon = {
@@ -124,7 +134,12 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                     }
                                 }
                                 IconButton(onClick = {
-                                    openFilterBottomSheet.value = true
+                                    scope.launch {
+                                        viewModel.filter?.let {
+                                            filterViewModel.filter = it.copy()
+                                            openFilterBottomSheet.expand()
+                                        }
+                                    }
                                 }) {
                                     Icon(
                                         imageVector = AppIcons.IcFilter,
@@ -146,7 +161,7 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
                                     modifier = Modifier
                                         .size(20.dp)
                                         .clickable {
-                                            openFilterBottomSheet.value = true
+
                                         },
                                     imageVector = AppIcons.IcCancel,
                                     contentDescription = stringResource(id = I18nR.string.clear)
@@ -162,7 +177,11 @@ private fun MediaListScreenContent(viewModel: MediaListViewModel) {
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
         ) {
-            MediaListContent(viewModel = viewModel, openFilterBottomSheet)
+            MediaListContent(
+                viewModel = viewModel,
+                filterViewModel = filterViewModel,
+                bottomSheetState = openFilterBottomSheet
+            )
         }
     }
 }

@@ -3,13 +3,16 @@ package com.revolgenx.anilib.common.data.store
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
-import com.revolgenx.anilib.browse.data.model.BrowseFilterModelSerializer
+import com.revolgenx.anilib.browse.data.store.BrowseFilterData
+import com.revolgenx.anilib.browse.data.store.BrowseFilterDataSerializer
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilterSerializer
 import com.revolgenx.anilib.media.data.constant.readableOn
 import com.revolgenx.anilib.media.data.constant.streamingOn
 import com.revolgenx.anilib.media.data.store.ExternalLinkSourceCollectionData
 import com.revolgenx.anilib.media.data.store.ExternalLinkSourceCollectionDataSerializer
+import com.revolgenx.anilib.media.data.store.GenreCollectionData
+import com.revolgenx.anilib.media.data.store.GenreCollectionDataSerializer
 import com.revolgenx.anilib.media.data.store.MediaFilterData
 import com.revolgenx.anilib.media.data.store.MediaFilterDataSerializer
 import com.revolgenx.anilib.media.data.store.MediaTagCollectionData
@@ -21,12 +24,14 @@ import java.time.LocalDateTime
 typealias SeasonFilterDataStore = DataStore<MediaFilterData>
 typealias MediaListFilterDataStore = DataStore<MediaListCollectionFilter>
 typealias MediaTagCollectionDataStore = DataStore<MediaTagCollectionData>
+typealias GenreCollectionDataStore = DataStore<GenreCollectionData>
 typealias StreamingOnCollectionDataStore = DataStore<ExternalLinkSourceCollectionData>
 typealias ReadableOnCollectionDataStore = DataStore<ExternalLinkSourceCollectionData>
+typealias BrowseFilterDataStore = DataStore<BrowseFilterData>
 
 val Context.browseFilterDataStore by dataStore(
     fileName = "browse_filter_data_store.json",
-    serializer = BrowseFilterModelSerializer()
+    serializer = BrowseFilterDataSerializer()
 )
 
 val Context.seasonFilterDataStore by dataStore(
@@ -64,7 +69,10 @@ val Context.mediaTagCollectionDataStore by dataStore(
     fileName = "media_tag_collection_data_store.json",
     serializer = MediaTagCollectionDataSerializer()
 )
-
+val Context.genreCollectionDataStore by dataStore(
+    fileName = "genre_collection_data_store.json",
+    serializer = GenreCollectionDataSerializer()
+)
 
 val Context.streamingOnCollectionDataStore by dataStore(
     fileName = "streaming_on_collection_data_store.json",

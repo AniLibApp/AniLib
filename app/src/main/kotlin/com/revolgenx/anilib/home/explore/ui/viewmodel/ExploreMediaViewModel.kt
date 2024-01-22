@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.home.explore.ui.viewmodel
 
 import androidx.datastore.core.DataStore
-import com.revolgenx.anilib.common.ext.collectIfDiff
+import com.revolgenx.anilib.common.ext.collectIfNew
 import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
@@ -21,7 +21,7 @@ sealed class ExploreMediaViewModel(
 
     init {
         launch {
-            dataStore.data.collectIfDiff(filter) { newFilter ->
+            dataStore.data.collectIfNew(filter) { newFilter ->
                 filter = newFilter
                 field = newFilter.toMediaField()
                 refresh()

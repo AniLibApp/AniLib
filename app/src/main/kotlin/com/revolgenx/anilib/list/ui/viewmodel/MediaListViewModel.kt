@@ -10,7 +10,6 @@ import androidx.compose.runtime.setValue
 import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.MediaListFilterDataStore
 import com.revolgenx.anilib.common.ext.launch
-import com.revolgenx.anilib.common.ext.launchIO
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
@@ -105,22 +104,22 @@ abstract class MediaListViewModel(
 
     fun filterData() {
         filter ?: return
-        launchIO {
-            val mediaList =
-                getData()?.lists?.firstOrNull { it.name == currentGroupNameWithCount.first }
-                    ?: let {
-                        if (currentGroupNameWithCount.first != "All") {
+        val mediaList =
+            getData()?.lists?.firstOrNull { it.name == currentGroupNameWithCount.first }
+                ?: let {
+                    if (currentGroupNameWithCount.first != "All") {
+                        launch {
                             mediaListDataStore.updateData {
                                 it.copy(groupName = "All")
                             }
                         }
-                        null
                     }
-            val mediaListEntries = mediaList?.entries.orEmpty()
-            val filteredList = getFilteredList(mediaListEntries)
-            mediaListCollection.clear()
-            mediaListCollection.addAll(filteredList)
-        }
+                    null
+                }
+        val mediaListEntries = mediaList?.entries.orEmpty()
+        val filteredList = getFilteredList(mediaListEntries)
+        mediaListCollection.clear()
+        mediaListCollection.addAll(filteredList)
     }
 
     private fun getFilteredList(listCollection: List<MediaListModel>): List<MediaListModel> {

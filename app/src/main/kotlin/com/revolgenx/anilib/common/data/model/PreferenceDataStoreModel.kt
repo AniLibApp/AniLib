@@ -16,7 +16,7 @@ import kotlinx.coroutines.runBlocking
 interface IBaseDataModel<T> {
     val data: Flow<T?>
     fun get(): T?
-    suspend fun set(value: Any?)
+    suspend fun set(value: T?)
     suspend fun collect(collector: FlowCollector<T?>)
 
     @Composable
@@ -34,13 +34,12 @@ class PreferenceDataStoreModel<T>(
 
     override fun get(): T? = runBlocking { data.first() }
 
-    @Suppress("UNCHECKED_CAST")
-    override suspend fun set(value: Any?) {
+    override suspend fun set(value: T?) {
         if (value == null) {
             dataStore.edit { it.remove(prefKey) }
         } else {
             dataStore.edit {
-                it[prefKey] = value as T
+                it[prefKey] = value
             }
         }
     }

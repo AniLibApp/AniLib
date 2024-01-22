@@ -47,6 +47,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcHappy
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHide
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHistory
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHome
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHomeOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHourglass
@@ -208,7 +209,8 @@ val AppIcons.AllIcons: ____KtList<ImageVector>
             IcWatching,
             IcWinter,
             IcArrowDownward,
-            IcArrowUpward
+            IcArrowUpward,
+            IcHistory
         )
         return __AllIcons!!
     }

@@ -41,10 +41,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import cafe.adriel.voyager.navigator.Navigator
-import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
+import com.revolgenx.anilib.browse.data.store.BrowseFilterData
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseFilterViewModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.component.CharacterCard
@@ -70,6 +70,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.media.ui.component.MediaCard
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
@@ -80,52 +81,63 @@ import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.studio.ui.component.StudioItem
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.user.ui.model.UserModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
-class BrowseScreen : AndroidScreen() {
+class BrowseScreen(
+    private var browseFilterData: BrowseFilterData? = null
+) : AndroidScreen() {
     @Composable
     override fun Content() {
-        BrowseScreenContent()
+        BrowseScreenContent(browseFilterData)
+        if (browseFilterData != null) {
+            browseFilterData = null
+        }
     }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun BrowseScreenContent() {
+private fun BrowseScreenContent(browseFilterData: BrowseFilterData?) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val viewModel = koinViewModel<BrowseViewModel>()
+    browseFilterData?.let { filter ->
+        viewModel.updateFromBrowseFilterData(filter)
+    }
     val browseFilterViewModel: BrowseFilterViewModel = koinViewModel()
     val navigator = localNavigator()
-    val bottomSheetState = rememberBottomSheetState()
+    val browseFilterBottomSheetState = rememberBottomSheetState()
     val scope = rememberCoroutineScope()
     val mediaComponentState = rememberMediaComponentState(navigator = navigator)
 
-    ScreenScaffold(
-        topBar = {
-            BrowseScreenTopAppbar(
-                scrollBehavior = scrollBehavior,
-                bottomSheetState = bottomSheetState,
-                scope = scope,
-                viewModel = viewModel
-            )
-        }
-    ) {
+    ScreenScaffold(topBar = {
+        BrowseScreenTopAppbar(scrollBehavior = scrollBehavior,
+            viewModel = viewModel,
+            openFilterBottomSheet = {
+                scope.launch {
+                    browseFilterViewModel.updateField(viewModel.field.copy())
+                    browseFilterBottomSheetState.expand()
+                }
+            })
+    }) {
         BrowsePagingContent(viewModel, mediaComponentState, navigator)
-        BrowseFilterBottomSheet(state = bottomSheetState, viewModel = browseFilterViewModel) {
-
-        }
+        BrowseFilterBottomSheet(state = browseFilterBottomSheetState,
+            viewModel = browseFilterViewModel,
+            onFilter = {
+                scope.launch {
+                    viewModel.field = browseFilterViewModel.field.copy()
+                    viewModel.refresh()
+                    browseFilterBottomSheetState.collapse()
+                }
+            })
     }
 }
 
 
 @Composable
 private fun BrowsePagingContent(
-    viewModel: BrowseViewModel,
-    mediaComponentState: MediaComponentState,
-    navigator: Navigator
+    viewModel: BrowseViewModel, mediaComponentState: MediaComponentState, navigator: Navigator
 ) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
 
@@ -140,8 +152,7 @@ private fun BrowsePagingContent(
         when (browseModel) {
             is MediaModel -> {
                 MediaCard(
-                    media = browseModel,
-                    mediaComponentState = mediaComponentState
+                    media = browseModel, mediaComponentState = mediaComponentState
                 )
             }
 
@@ -190,8 +201,7 @@ private fun BrowseUserItem(user: UserModel, onClick: OnClickWithId) {
                 .clip(CircleShape),
             imageUrl = user.avatar?.image,
             imageOptions = ImageOptions(
-                contentScale = ContentScale.Crop,
-                alignment = Alignment.Center
+                contentScale = ContentScale.Crop, alignment = Alignment.Center
             ),
             previewPlaceholder = R.drawable.bleach
         )
@@ -204,24 +214,18 @@ private fun BrowseUserItem(user: UserModel, onClick: OnClickWithId) {
 @Composable
 fun BrowseScreenTopAppbar(
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    bottomSheetState: BottomSheetState,
-    scope: CoroutineScope,
-    viewModel: BrowseViewModel
+    viewModel: BrowseViewModel,
+    openFilterBottomSheet: OnClick
 ) {
     var active by rememberSaveable { mutableStateOf(false) }
     val appbarHeight = if (active) 166.dp else 110.dp
     val appbarAnimation by animateDpAsState(
-        targetValue = appbarHeight,
-        animationSpec = tween(durationMillis = 300),
-        label = ""
+        targetValue = appbarHeight, animationSpec = tween(durationMillis = 300), label = ""
     )
     AppBarLayout(
-        scrollBehavior = scrollBehavior,
-        colors = AppBarLayoutDefaults.appBarLayoutColors(
-            containerColor = Color.Transparent,
-            scrolledContainerColor = Color.Transparent
-        ),
-        containerHeight = appbarAnimation
+        scrollBehavior = scrollBehavior, colors = AppBarLayoutDefaults.appBarLayoutColors(
+            containerColor = Color.Transparent, scrolledContainerColor = Color.Transparent
+        ), containerHeight = appbarAnimation
     ) {
         Column(
             modifier = Modifier
@@ -229,26 +233,21 @@ fun BrowseScreenTopAppbar(
                 .fillMaxWidth(),
         ) {
             Box(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
-                RowDockedSearchBar(
-                    modifier = Modifier
-                        .align(Alignment.TopCenter)
-                        .padding(8.dp),
+                RowDockedSearchBar(modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(8.dp),
                     query = viewModel.query,
-                    onQueryChange = { viewModel.search = it },
+                    onQueryChange = { viewModel.searchQuery = it },
                     onSearch = {
                         active = false
-                        viewModel.refresh()
+                        viewModel.updateSearchHistory()
+                        viewModel.search()
                     },
                     active = active,
                     onActiveChange = {
-                        active = if (it && true/*viewModel.searchHistory.isNotEmpty()*/) {
-                            it
-                        } else {
-                            false
-                        }
+                        active = it
                     },
                     placeholder = {
                         Text(text = stringResource(id = I18nR.string.search))
@@ -266,7 +265,7 @@ fun BrowseScreenTopAppbar(
                                     icon = AppIcons.IcCancel,
                                     contentDescriptionRes = I18nR.string.clear
                                 ) {
-                                    viewModel.search = ""
+                                    viewModel.searchQuery = ""
                                     viewModel.refresh()
                                 }
                             }
@@ -275,29 +274,36 @@ fun BrowseScreenTopAppbar(
                                 icon = AppIcons.IcFilter,
                                 contentDescriptionRes = I18nR.string.filter
                             ) {
-                                scope.launch {
-                                    bottomSheetState.expand()
-                                }
+                                openFilterBottomSheet()
                             }
                         }
-                    }
-                ) {
-                    AssistChip(
-                        onClick = {
-                            viewModel.search = "hello"
-                        },
-                        label = { Text(text = "hello") },
-                        colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = MaterialTheme.colorScheme.onSurface),
-                        trailingIcon = {
-                            Icon(
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .clickable {
-                                    },
-                                imageVector = AppIcons.IcCancel,
-                                contentDescription = stringResource(id = I18nR.string.clear)
-                            )
+                    }) {
+                    val searchHistory = viewModel.searchHistory.value
+                    if (searchHistory.isEmpty()) {
+                        AssistChip(onClick = {}, label = {
+                            Text(text = stringResource(id = anilib.i18n.R.string.empty))
                         })
+                    } else {
+                        searchHistory.forEach { search ->
+                            AssistChip(onClick = {
+                                viewModel.searchQuery = search
+                                viewModel.search()
+                            },
+                                label = { Text(text = search) },
+                                colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = MaterialTheme.colorScheme.onSurface),
+                                trailingIcon = {
+                                    Icon(
+                                        modifier = Modifier
+                                            .size(20.dp)
+                                            .clickable {
+                                                viewModel.deleteSearchHistory(search)
+                                            },
+                                        imageVector = AppIcons.IcCancel,
+                                        contentDescription = stringResource(id = I18nR.string.clear)
+                                    )
+                                })
+                        }
+                    }
                 }
             }
 
@@ -309,8 +315,7 @@ fun BrowseScreenTopAppbar(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 BrowseTypes.entries.forEach { browseType ->
-                    FilterChip(
-                        colors = FilterChipDefaults.filterChipColors(),
+                    FilterChip(colors = FilterChipDefaults.filterChipColors(),
                         selected = viewModel.field.browseType.value == browseType,
                         onClick = {
                             viewModel.field.browseType.value = browseType
@@ -318,8 +323,7 @@ fun BrowseScreenTopAppbar(
                         },
                         label = {
                             Text(text = stringResource(id = browseType.title))
-                        }
-                    )
+                        })
                 }
             }
 

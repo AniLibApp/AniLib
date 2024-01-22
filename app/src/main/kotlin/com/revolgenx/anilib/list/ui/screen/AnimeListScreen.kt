@@ -5,14 +5,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMediaOutline
+import com.revolgenx.anilib.list.ui.viewmodel.AnimeListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
+import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
 object AnimeListScreen : MediaListScreen() {
@@ -37,4 +38,8 @@ object AnimeListScreen : MediaListScreen() {
         viewModel.field.userId = localUser().userId
         return viewModel
     }
+
+    @Composable
+    override fun mediaListFilterViewModel() = koinViewModel<AnimeListFilterViewModel>()
+
 }

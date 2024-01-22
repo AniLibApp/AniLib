@@ -170,6 +170,7 @@
 
     <!--App-->
     <string name="its_empty">Feeling empty</string>
+    <string name="empty">Empty</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="retry">Retry</string>
     <!--App-->
@@ -447,9 +448,13 @@
     <string name="Japan">Japan</string>
     <string name="Taiwan">Taiwan</string>
     <string name="streaming_on">Streaming On</string>
+    <string name="readable_on">Readable On</string>
+    <string name="year_range">Year Range</string>
+    <string name="no_result">No Result</string>
     <!--Media Browse-->
 
 
-    <string name="no_result">No Result</string>
+    <string name="s_underscore_s">%1$s - %2$s</string>
+
 
 </resources>

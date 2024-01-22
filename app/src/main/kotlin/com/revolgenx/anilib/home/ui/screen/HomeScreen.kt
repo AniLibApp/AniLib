@@ -18,6 +18,7 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.browse.ui.screen.BrowseScreen
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.openBrowseScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
@@ -92,7 +93,7 @@ fun HomeScreenContent() {
         navigationIcon = {},
         actions = {
             ActionMenu(icon = AppIcons.IcSearch) {
-                navigator.push(BrowseScreen())
+                navigator.openBrowseScreen()
             }
             ShowIfLoggedIn {
                 ActionMenu(icon = AppIcons.IcNotification) {

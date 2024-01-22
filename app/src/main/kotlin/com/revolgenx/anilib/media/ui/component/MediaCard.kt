@@ -264,7 +264,7 @@ private fun MediaCardContent(
                 val format = stringResource(id = media.format.toStringRes())
                 val status = stringResource(id = media.status.toStringRes())
                 val statusColor = media.status.toColor()
-                val year = media.seasonYear.naText()
+                val year = media.seasonYear
 
 
                 LightText(
@@ -274,7 +274,12 @@ private fun MediaCardContent(
                 )
 
                 LightText(
-                    text = stringResource(id = I18nR.string.s_dot_s).format(format, year),
+                    text = year?.let {
+                        stringResource(id = I18nR.string.s_dot_s).format(
+                            format,
+                            year
+                        )
+                    } ?: format,
                     lineHeight = 11.sp
                 )
             }

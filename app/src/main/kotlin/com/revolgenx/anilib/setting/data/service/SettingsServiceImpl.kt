@@ -2,7 +2,6 @@ package com.revolgenx.anilib.setting.data.service
 
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
-import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.setting.data.field.MediaSettingsField
 import com.revolgenx.anilib.setting.data.field.NotificationSettingsField
 import com.revolgenx.anilib.setting.data.field.SaveMediaSettingsField
@@ -20,18 +19,18 @@ class SettingsServiceImpl(apolloRepository: ApolloRepository, mediaSettingsPrefe
         return field.toQuery().map {
             it.data?.user?.options?.notificationOptions?.filterNotNull()
                 ?.associateBy({ it.type!! }, { it.enabled == true })
-        }.onIO()
+        }
     }
 
     override fun saveNotificationSettings(field: SaveNotificationSettingsField): Flow<Boolean> {
-        return field.toMutation().map { it.dataAssertNoErrors.updateUser?.id != null }.onIO()
+        return field.toMutation().map { it.dataAssertNoErrors.updateUser?.id != null }
     }
 
     override fun getMediaSettings(field: MediaSettingsField): Flow<UserOptionsModel?> {
-        return field.toQuery().map { it.dataAssertNoErrors.user?.options?.userMediaOptions?.toModel() }.onIO()
+        return field.toQuery().map { it.dataAssertNoErrors.user?.options?.userMediaOptions?.toModel() }
     }
 
     override fun saveMediaSettings(field: SaveMediaSettingsField): Flow<Boolean> {
-        return field.toMutation().map { it.dataAssertNoErrors.updateUser?.id != null }.onIO()
+        return field.toMutation().map { it.dataAssertNoErrors.updateUser?.id != null }
     }
 }

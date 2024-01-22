@@ -6,7 +6,6 @@ import com.revolgenx.anilib.character.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
-import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.fragment.PageInfo
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
@@ -26,7 +25,7 @@ class StaffServiceImpl(
     BaseService(apolloRepository, mediaSettingsPreferencesDataStore) {
     override fun getStaff(field: StaffField): Flow<StaffModel?> {
         return field.toQuery().map { it.dataAssertNoErrors.staff?.toModel() }
-            .onIO()
+            
     }
 
     override fun getStaffMediaCharacter(field: StaffMediaCharacterField): Flow<PageModel<MediaModel>> {
@@ -78,7 +77,7 @@ class StaffServiceImpl(
                 pageInfo = pageInfo,
                 data = data
             )
-        }.onIO()
+        }
     }
 
 
@@ -93,6 +92,6 @@ class StaffServiceImpl(
                     }
                 }
             )
-        }.onIO()
+        }
     }
 }

@@ -3,7 +3,6 @@ package com.revolgenx.anilib.social.data.service
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
-import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.ui.model.ActivityUnionModel
@@ -29,6 +28,6 @@ class ActivityUnionServiceImpl(apolloRepository: ApolloRepository, mediaSettings
                     }
                 )
             }
-        }.onIO()
+        }
     }
 }

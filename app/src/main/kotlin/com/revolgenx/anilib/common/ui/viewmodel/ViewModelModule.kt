@@ -10,11 +10,13 @@ import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
 import com.revolgenx.anilib.common.data.store.animeListFilterDataStore
+import com.revolgenx.anilib.common.data.store.browseFilterDataStore
 import com.revolgenx.anilib.common.data.store.mangaListFilterDataStore
 import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
 import com.revolgenx.anilib.common.data.store.exploreNewlyAddedDataStore
 import com.revolgenx.anilib.common.data.store.explorePopularDataStore
 import com.revolgenx.anilib.common.data.store.exploreTrendingDataStore
+import com.revolgenx.anilib.common.data.store.genreCollectionDataStore
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationViewModel
@@ -27,6 +29,11 @@ import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.common.data.store.mediaTagCollectionDataStore
 import com.revolgenx.anilib.common.data.store.readableOnCollectionDataStore
 import com.revolgenx.anilib.common.data.store.streamingOnCollectionDataStore
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreNewlyAddedFilterViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExplorePopularFilterViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreTrendingFilterViewModel
+import com.revolgenx.anilib.list.ui.viewmodel.AnimeListFilterViewModel
+import com.revolgenx.anilib.list.ui.viewmodel.MangaListFilterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
@@ -186,18 +193,21 @@ val viewModelModules = module {
     //list
     viewModel { AnimeListViewModel(get(), get(), animeListFilterDataStore()) }
     viewModel { MangaListViewModel(get(), get(), mangaListFilterDataStore()) }
-    viewModel { MediaListFilterViewModel() }
+    viewModel { AnimeListFilterViewModel() }
+    viewModel { MangaListFilterViewModel() }
 
     //activity union
     viewModel { ActivityUnionViewModel(get()) }
     viewModel { ActivityComposerViewModel() }
 
     //browse
-    viewModel { BrowseViewModel(get()) }
+    viewModel { BrowseViewModel(get(), get()) }
     viewModel { BrowseFilterViewModel(
         get<Context>().mediaTagCollectionDataStore,
+        get<Context>().genreCollectionDataStore,
         get<Context>().streamingOnCollectionDataStore,
         get<Context>().readableOnCollectionDataStore,
+        get<Context>().browseFilterDataStore,
         get()) }
 
     //reviews
@@ -219,4 +229,9 @@ val viewModelModules = module {
     viewModel { ExploreMediaViewModel.ExploreTrendingViewModel(get(), get<Context>().exploreTrendingDataStore) }
     viewModel { ExploreMediaViewModel.ExplorePopularViewModel(get(), get<Context>().explorePopularDataStore) }
     viewModel { ExploreMediaViewModel.ExploreNewlyAddedViewModel(get(), get<Context>().exploreNewlyAddedDataStore) }
+    viewModel { ExploreTrendingFilterViewModel(get<Context>().exploreTrendingDataStore) }
+    viewModel { ExplorePopularFilterViewModel(get<Context>().explorePopularDataStore) }
+    viewModel { ExploreNewlyAddedFilterViewModel(get<Context>().exploreNewlyAddedDataStore) }
+
+
 }

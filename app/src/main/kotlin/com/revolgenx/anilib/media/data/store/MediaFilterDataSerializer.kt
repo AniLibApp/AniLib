@@ -14,6 +14,12 @@ class MediaTagCollectionDataSerializer(override val defaultValue: MediaTagCollec
     override fun serializer(): KSerializer<MediaTagCollectionData> = MediaTagCollectionData.serializer()
 }
 
+class GenreCollectionDataSerializer(override val defaultValue: GenreCollectionData = GenreCollectionData()) :
+    BaseSerializer<GenreCollectionData>(defaultValue) {
+    override fun serializer(): KSerializer<GenreCollectionData> = GenreCollectionData.serializer()
+}
+
+
 
 class ExternalLinkSourceCollectionDataSerializer(override val defaultValue: ExternalLinkSourceCollectionData) :
     BaseSerializer<ExternalLinkSourceCollectionData>(defaultValue) {

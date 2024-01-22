@@ -4,7 +4,7 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.BrowseQuery
-import com.revolgenx.anilib.browse.data.model.BrowseFilterModel
+import com.revolgenx.anilib.browse.data.store.BrowseFilterData
 import com.revolgenx.anilib.browse.ui.model.FuzzyDateIntModel
 import com.revolgenx.anilib.common.data.field.BaseSourceField
 import com.revolgenx.anilib.common.ext.isNull
@@ -46,16 +46,17 @@ data class BrowseField(
     var durationGreater: Int? = null,
     var durationLesser: Int? = null,
     var isHentai: Boolean? = false,
-    var streamingOn: MutableList<Int>? = null,
-    var readableOn: MutableList<Int>? = null,
+    var streamingOn: List<Int>? = null,
+    var readableOn: List<Int>? = null,
     var countryOfOrigin: Int? = null,
     var source: MediaSource? = null,
     var doujins: Boolean? = null,
     var format: MediaFormat? = null,
-    var genreIn: MutableList<String>? = null,
-    var genreNotIn: MutableList<String>? = null,
-    var tagsIn: MutableList<String>? = null,
-    var tagsNotIn: MutableList<String>? = null,
+    var formatsIn: List<MediaFormat>? = null,
+    var genreIn: List<String>? = null,
+    var genreNotIn: List<String>? = null,
+    var tagsIn: List<String>? = null,
+    var tagsNotIn: List<String>? = null,
     var sort: MediaSort? = null,
     var minimumTagRank: Int? = null
 ) : BaseSourceField<BrowseQuery>() {
@@ -71,9 +72,9 @@ data class BrowseField(
             search = nnString(search),
             genre = nn(genreIn),
             genreNotIn = nn(genreNotIn),
-            tag = nn(tagsIn),
+            tagIn = nn(tagsIn),
             tagNotIn = nn(tagsNotIn),
-            format = nn(format),
+            formatsIn = nn(formatsIn),
             isLicensed = nn(doujins?.takeIf { !it }),
             isAdult = nn(isHentai),
 
@@ -110,9 +111,11 @@ data class BrowseField(
         )
     }
 
-    fun toBrowseFilter(): BrowseFilterModel {
-        return BrowseFilterModel(
-            search = search,
+
+
+
+    fun toBrowseFilter(): BrowseFilterData {
+        return BrowseFilterData(
             browseType = browseType.value,
             season = season,
             yearGreater = yearGreater,
@@ -134,6 +137,7 @@ data class BrowseField(
             source = source,
             doujins = doujins,
             format = format,
+            formatsIn = formatsIn,
             genreIn = genreIn,
             genreNotIn = genreNotIn,
             tagsIn = tagsIn,
@@ -141,5 +145,78 @@ data class BrowseField(
             sort = sort,
             minimumTagRank = minimumTagRank,
         )
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as BrowseField
+
+        if (search != other.search) return false
+        if (browseType != other.browseType) return false
+        if (season != other.season) return false
+        if (yearGreater != other.yearGreater) return false
+        if (yearLesser != other.yearLesser) return false
+        if (year != other.year) return false
+        if (status != other.status) return false
+        if (episodesGreater != other.episodesGreater) return false
+        if (episodesLesser != other.episodesLesser) return false
+        if (chaptersGreater != other.chaptersGreater) return false
+        if (chaptersLesser != other.chaptersLesser) return false
+        if (volumesGreater != other.volumesGreater) return false
+        if (volumesLesser != other.volumesLesser) return false
+        if (durationGreater != other.durationGreater) return false
+        if (durationLesser != other.durationLesser) return false
+        if (isHentai != other.isHentai) return false
+        if (streamingOn != other.streamingOn) return false
+        if (readableOn != other.readableOn) return false
+        if (countryOfOrigin != other.countryOfOrigin) return false
+        if (source != other.source) return false
+        if (doujins != other.doujins) return false
+        if (format != other.format) return false
+        if (formatsIn != other.formatsIn) return false
+        if (genreIn != other.genreIn) return false
+        if (genreNotIn != other.genreNotIn) return false
+        if (tagsIn != other.tagsIn) return false
+        if (tagsNotIn != other.tagsNotIn) return false
+        if (sort != other.sort) return false
+        if (minimumTagRank != other.minimumTagRank) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        var result = search?.hashCode() ?: 0
+        result = 31 * result + browseType.hashCode()
+        result = 31 * result + (season?.hashCode() ?: 0)
+        result = 31 * result + (yearGreater?.hashCode() ?: 0)
+        result = 31 * result + (yearLesser?.hashCode() ?: 0)
+        result = 31 * result + (year ?: 0)
+        result = 31 * result + (status?.hashCode() ?: 0)
+        result = 31 * result + (episodesGreater ?: 0)
+        result = 31 * result + (episodesLesser ?: 0)
+        result = 31 * result + (chaptersGreater ?: 0)
+        result = 31 * result + (chaptersLesser ?: 0)
+        result = 31 * result + (volumesGreater ?: 0)
+        result = 31 * result + (volumesLesser ?: 0)
+        result = 31 * result + (durationGreater ?: 0)
+        result = 31 * result + (durationLesser ?: 0)
+        result = 31 * result + (isHentai?.hashCode() ?: 0)
+        result = 31 * result + (streamingOn?.hashCode() ?: 0)
+        result = 31 * result + (readableOn?.hashCode() ?: 0)
+        result = 31 * result + (countryOfOrigin ?: 0)
+        result = 31 * result + (source?.hashCode() ?: 0)
+        result = 31 * result + (doujins?.hashCode() ?: 0)
+        result = 31 * result + (format?.hashCode() ?: 0)
+        result = 31 * result + (formatsIn?.hashCode() ?: 0)
+        result = 31 * result + (genreIn?.hashCode() ?: 0)
+        result = 31 * result + (genreNotIn?.hashCode() ?: 0)
+        result = 31 * result + (tagsIn?.hashCode() ?: 0)
+        result = 31 * result + (tagsNotIn?.hashCode() ?: 0)
+        result = 31 * result + (sort?.hashCode() ?: 0)
+        result = 31 * result + (minimumTagRank ?: 0)
+        result = 31 * result + perPage
+        return result
     }
 }

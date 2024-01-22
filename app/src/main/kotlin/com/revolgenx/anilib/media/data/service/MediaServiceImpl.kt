@@ -5,7 +5,6 @@ import com.revolgenx.anilib.character.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
-import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.model.toModel
 import com.revolgenx.anilib.media.data.field.MediaCharacterField
@@ -39,10 +38,10 @@ class MediaServiceImpl(
                     data = it.media.mapNotNull { it?.media?.toModel() }
                 )
             }
-        }.onIO()
+        }
 
     override fun getMediaOverview(field: MediaOverviewField): Flow<MediaModel?> =
-        field.toQuery().map { it.dataAssertNoErrors.media?.toModel() }.onIO()
+        field.toQuery().map { it.dataAssertNoErrors.media?.toModel() }
 
     override fun getMediaRecommendationList(field: MediaRecommendationField): Flow<PageModel<RecommendationModel>> =
         field.toQuery().map {
@@ -51,7 +50,7 @@ class MediaServiceImpl(
                 pageInfo = recommendations?.pageInfo?.pageInfo,
                 data = recommendations?.nodes?.mapNotNull { it?.recommendationFragment?.toModel() }
             )
-        }.onIO()
+        }
 
     override fun getMediaCharacterList(field: MediaCharacterField): Flow<PageModel<CharacterEdgeModel>> =
         field.toQuery().map {
@@ -60,7 +59,7 @@ class MediaServiceImpl(
                 pageInfo = characters?.pageInfo?.pageInfo,
                 data = characters?.edges?.mapNotNull { it?.toModel() }
             )
-        }.onIO()
+        }
 
 
     override fun getMediaStaffList(field: MediaStaffField): Flow<PageModel<StaffEdgeModel>> {
@@ -70,7 +69,7 @@ class MediaServiceImpl(
                 pageInfo = staffs?.pageInfo?.pageInfo,
                 data = staffs?.edges?.mapNotNull { it?.toModel() }
             )
-        }.onIO()
+        }
     }
 
     override fun getMediaReviewList(field: MediaReviewField): Flow<PageModel<ReviewModel>> {
@@ -80,10 +79,10 @@ class MediaServiceImpl(
                 pageInfo = reviews?.pageInfo?.pageInfo,
                 data = reviews?.edges?.mapNotNull { it?.node?.toModel() }
             )
-        }.onIO()
+        }
     }
 
     override fun getMediaStats(field: MediaStatsField): Flow<MediaStatsModel?> {
-        return field.toQuery().map { it.dataAssertNoErrors.media?.toModel() }.onIO()
+        return field.toQuery().map { it.dataAssertNoErrors.media?.toModel() }
     }
 }

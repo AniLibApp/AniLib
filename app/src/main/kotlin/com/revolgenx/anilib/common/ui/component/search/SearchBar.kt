@@ -16,10 +16,13 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.isImeVisible
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -39,6 +42,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -107,10 +111,11 @@ fun SearchBar(
             interactionSource = interactionSource,
         )
     }
+    
+//    ClearFocus(onActiveChange)
 
     LaunchedEffect(active) {
         if (!active) {
-            delay(AnimationDelayMillis.toLong())
             focusManager.clearFocus()
         }
     }
@@ -121,6 +126,7 @@ fun SearchBar(
 }
 
 
+@OptIn(ExperimentalLayoutApi::class)
 @ExperimentalMaterial3Api
 @Composable
 fun RowDockedSearchBar(
@@ -189,9 +195,10 @@ fun RowDockedSearchBar(
         }
     }
 
+//    ClearFocus(onActiveChange)
+
     LaunchedEffect(active) {
         if (!active) {
-            delay(AnimationDelayMillis.toLong())
             focusManager.clearFocus()
         }
     }
@@ -201,6 +208,23 @@ fun RowDockedSearchBar(
     }
 }
 
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun ClearFocus(onActiveChange: (Boolean) -> Unit) {
+    val isImeVisible = WindowInsets.isImeVisible
+    val isKeyboardAlreadyShown = remember {
+        mutableStateOf(false)
+    }
+    if (isImeVisible) {
+        isKeyboardAlreadyShown.value = true
+    } else {
+        if (isKeyboardAlreadyShown.value) {
+            onActiveChange(false)
+            isKeyboardAlreadyShown.value = false
+        }
+    }
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -230,7 +254,9 @@ private fun SearchBarInputField(
             .height(height ?: SearchBarDefaults.InputFieldHeight)
             .fillMaxWidth()
             .focusRequester(focusRequester)
-            .onFocusChanged { if (it.isFocused) onActiveChange(true) }
+            .onFocusChanged {
+                if (it.isFocused) onActiveChange(true)
+            }
             .semantics {
                 onClick {
                     focusRequester.requestFocus()

@@ -46,7 +46,7 @@ fun SortSelectMenu(
 ) {
 
     var expanded by remember { mutableStateOf(false) }
-    var selectedItem by remember { mutableStateOf(entries.find { it.order != SortOrder.NONE }) }
+    var selectedItem by remember(entries) { mutableStateOf(entries.find { it.order != SortOrder.NONE }) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,

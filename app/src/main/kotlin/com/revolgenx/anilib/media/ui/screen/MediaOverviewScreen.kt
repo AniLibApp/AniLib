@@ -53,7 +53,9 @@ import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naString
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.openGenre
 import com.revolgenx.anilib.common.ext.openLink
+import com.revolgenx.anilib.common.ext.openTag
 import com.revolgenx.anilib.common.ext.orNa
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.orZeroString
@@ -140,7 +142,7 @@ private fun MediaOverview(
         MediaDescription(media)
         MediaInfo(media, isAnime, context)
         MediaGenre(media.genres) {
-            // todo open genre
+            navigator.openGenre(it)
         }
         if (isAnime) {
             MediaTrailer(media.trailer) {
@@ -159,7 +161,9 @@ private fun MediaOverview(
             },
             mediaComponentState = mediaComponentState
         )
-        MediaTag(media.tags, media.tagsWithoutSpoiler ?: emptyList())
+        MediaTag(media.tags, media.tagsWithoutSpoiler ?: emptyList()){
+            navigator.openTag(it)
+        }
         MediaExternalLink(media.externalLinks) {
             openLink(it.url)
         }
@@ -452,7 +456,8 @@ fun MediaExternalLink(
 @Composable
 private fun MediaTag(
     tags: List<MediaTagModel>?,
-    tagsWithoutSpoiler: List<MediaTagModel>
+    tagsWithoutSpoiler: List<MediaTagModel>,
+    onClick: OnClickWithValue<String>
 ) {
     if (tags.isNullOrEmpty()) return
 
@@ -485,14 +490,16 @@ private fun MediaTag(
 
     MediaFlowRow {
         (if (showSpoilerTags.value) tags else tagsWithoutSpoiler).forEach { tag ->
-            Card(modifier = Modifier) {
+            Card(
+                modifier = Modifier
+            ) {
                 Row(
                     modifier = Modifier
                         .clickable {
-                            tagDetail.value = tag
-                            openSpoilerBottomSheet.value = true
+                            onClick(tag.name)
                         }
                         .padding(8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     if (tag.isMediaSpoilerTag) {
@@ -507,6 +514,10 @@ private fun MediaTag(
                             .format(tag.name, tag.rank.orZero())
                     )
                     Icon(
+                        modifier = Modifier.clickable {
+                            tagDetail.value = tag
+                            openSpoilerBottomSheet.value = true
+                        },
                         imageVector = AppIcons.IcInfo,
                         contentDescription = null,
                         tint = MaterialTheme.colorScheme.onSurfaceVariant

@@ -39,7 +39,7 @@ fun SelectMenu(
     onItemSelected: (itemPosition: Int) -> Unit
 ) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedIndex by remember { mutableIntStateOf(selectedItemPosition ?: -1) }
+    var selectedIndex by remember(selectedItemPosition) { mutableIntStateOf(selectedItemPosition ?: -1) }
 
     ExposedDropdownMenuBox(
         expanded = expanded,

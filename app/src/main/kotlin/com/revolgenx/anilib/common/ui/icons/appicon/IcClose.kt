@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.vector.path
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 
-public val AppIcons.IcClose: ImageVector
+val AppIcons.IcClose: ImageVector
     get() {
         if (_icClose != null) {
             return _icClose!!

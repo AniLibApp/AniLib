@@ -9,6 +9,6 @@ typealias PreferencesDataStore = DataStore<Preferences>
 
 val Context.preferencesDataStore: PreferencesDataStore by preferencesDataStore(name = "preferences_data_store.json")
 
-interface BasePreferencesDataStore {
+interface IPreferencesDataStore {
     val dataStore: PreferencesDataStore
 }

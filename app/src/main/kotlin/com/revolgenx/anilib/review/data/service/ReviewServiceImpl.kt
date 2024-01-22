@@ -3,7 +3,6 @@ package com.revolgenx.anilib.review.data.service
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
-import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.field.ReviewListField
 import com.revolgenx.anilib.review.ui.model.ReviewModel
@@ -24,10 +23,10 @@ class ReviewServiceImpl(apolloRepository: ApolloRepository, mediaSettingsPrefere
                     }
                 )
             }
-        }.onIO()
+        }
     }
 
     override fun getReview(field: ReviewField): Flow<ReviewModel?> {
-        return field.toQuery().map { it.dataAssertNoErrors.review?.toModel() }.onIO()
+        return field.toQuery().map { it.dataAssertNoErrors.review?.toModel() }
     }
 }

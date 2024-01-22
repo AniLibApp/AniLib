@@ -399,7 +399,6 @@ fun MediaStatus?.toColor(): Color {
 }
 
 
-fun Int.toMediaStatus() = MediaStatus.values().getOrNull(this)
-fun Int.toMediaSeason() = MediaSeason.values().getOrNull(this)
-fun Int.toMediaFormat() = MediaFormat.values().getOrNull(this)
+fun Int.toMediaStatus() = MediaStatus.entries.getOrNull(this)
+fun Int.toMediaSeason() = MediaSeason.entries.getOrNull(this)
 

@@ -2,7 +2,6 @@ package com.revolgenx.anilib.studio.data.source
 
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.source.BasePagingSource
-import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.studio.data.field.StudioField
@@ -33,6 +32,6 @@ class StudioPagingSource(field: StudioField, private val studioService: StudioSe
                     PageModel(it.pageInfo, results)
                 }
             } else it
-        }.onIO().single() as PageModel<BaseModel>
+        }.single() as PageModel<BaseModel>
     }
 }

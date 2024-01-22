@@ -6,7 +6,6 @@ import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.ext.orZero
-import com.revolgenx.anilib.common.ext.onIO
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.PageInfo
 import com.revolgenx.anilib.media.ui.model.MediaTagModel
@@ -48,7 +47,7 @@ class UserServiceImpl(
                     it.following = data.followingPage?.pageInfo?.total.orZero()
                 }
             }
-        }.onIO()
+        }
     }
 
     override fun getUserRelation(field: UserRelationField): Flow<PageModel<UserModel>> {
@@ -71,7 +70,7 @@ class UserServiceImpl(
                     data = data
                 )
             }
-        }.onIO()
+        }
     }
 
     override fun getUserFavourite(field: UserFavouriteField): Flow<PageModel<BaseModel>> {
@@ -120,7 +119,7 @@ class UserServiceImpl(
                 pageInfo = pageInfo,
                 data = data
             )
-        }.onIO()
+        }
     }
 
     override fun getUserStatsOverview(field: UserStatsOverviewField): Flow<UserModel?> {
@@ -142,7 +141,7 @@ class UserServiceImpl(
                     }
                 )
             }
-        }.onIO()
+        }
     }
 
     override fun getUserStats(field: UserStatsTypeField): Flow<List<BaseStatisticModel>> {
@@ -198,7 +197,7 @@ class UserServiceImpl(
                     }
                 }
             }.orEmpty()
-        }.onIO()
+        }
     }
 
 

@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 
 class AuthPreferencesDataStore(override val dataStore: PreferencesDataStore) :
-    BasePreferencesDataStore {
+    IPreferencesDataStore {
     companion object {
         val authTokenKey = stringPreferencesKey("auth_token_key")
         val userIdKey = intPreferencesKey("user_id_key")

@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.browse.data.model
+package com.revolgenx.anilib.browse.data.store
 
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.browse.data.field.BrowseField
@@ -12,8 +12,7 @@ import com.revolgenx.anilib.type.MediaStatus
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class BrowseFilterModel(
-    val search: String? = null,
+data class BrowseFilterData(
     val browseType: BrowseTypes = BrowseTypes.ANIME,
     val season: MediaSeason? = null,
     val yearGreater: FuzzyDateIntModel? = null,
@@ -35,6 +34,7 @@ data class BrowseFilterModel(
     val source: MediaSource? = null,
     val doujins: Boolean? = null,
     val format: MediaFormat? = null,
+    var formatsIn: List<MediaFormat>? = null,
     val genreIn: List<String>? = null,
     val genreNotIn: List<String>? = null,
     val tagsIn: List<String>? = null,
@@ -44,7 +44,6 @@ data class BrowseFilterModel(
 ) {
     fun toBrowseField(): BrowseField {
         return BrowseField(
-            search = search,
             browseType = mutableStateOf(browseType),
             season = season,
             yearGreater = yearGreater,
@@ -60,16 +59,17 @@ data class BrowseFilterModel(
             durationGreater = durationGreater,
             durationLesser = durationLesser,
             isHentai = isHentai,
-            streamingOn = streamingOn?.toMutableList(),
-            readableOn = readableOn?.toMutableList(),
+            streamingOn = streamingOn,
+            readableOn = readableOn,
             countryOfOrigin = countryOfOrigin,
             source = source,
             doujins = doujins,
             format = format,
-            genreIn = genreIn?.toMutableList(),
-            genreNotIn = genreNotIn?.toMutableList(),
-            tagsIn = tagsIn?.toMutableList(),
-            tagsNotIn = tagsNotIn?.toMutableList(),
+            formatsIn = formatsIn,
+            genreIn = genreIn,
+            genreNotIn = genreNotIn,
+            tagsIn = tagsIn,
+            tagsNotIn = tagsNotIn,
             sort = sort,
             minimumTagRank = minimumTagRank,
         )

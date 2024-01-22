@@ -11,7 +11,7 @@ import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import anilib.i18n.R as I18nR
 
 
-interface PreferenceValueChangedListener<T> {
+interface PreferenceValueChangeListener<T> {
     val onValueChanged: (suspend (newValue: T) -> Boolean)?
 }
 
@@ -32,7 +32,7 @@ sealed class PreferenceModel {
         override val enabled: Boolean = true,
         override val onValueChanged: (suspend (newValue: String) -> Boolean)?,
         val onClick: (() -> Unit)? = null,
-    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<String>
+    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangeListener<String>
 
     data class SwitchPreference(
         val pref: IBaseDataModel<Boolean>? = null,
@@ -42,7 +42,7 @@ sealed class PreferenceModel {
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
         override val onValueChanged: (suspend (newValue: Boolean) -> Boolean)? = null,
-    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<Boolean>
+    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangeListener<Boolean>
 
     data class SliderPreference(
         val value: Int,
@@ -53,7 +53,7 @@ sealed class PreferenceModel {
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
         override val onValueChanged: (suspend (newValue: Int) -> Boolean)?,
-    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<Int>
+    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangeListener<Int>
 
 
     data class ListPreferenceModel<T>(
@@ -68,9 +68,13 @@ sealed class PreferenceModel {
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
         override val onValueChanged: (suspend (newValue: T?) -> Boolean)? = null,
-    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<T> {
+    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangeListener<T> {
         val onValueChangedListener: (suspend (newValue: Any?) -> Boolean) = {
             onValueChanged?.invoke(it as? T) == true
+        }
+
+        suspend fun updatePref(value: Any?) {
+            pref?.set(value as? T)
         }
     }
 
@@ -90,7 +94,7 @@ sealed class PreferenceModel {
         override val enabled: Boolean = true,
         override val onValueChanged: (suspend (newValue: Set<String>) -> Boolean)?,
         val entries: Map<String, String>,
-    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<Set<String>>
+    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangeListener<Set<String>>
 
 
     data class EditTextPreference(
@@ -100,7 +104,7 @@ sealed class PreferenceModel {
         override val icon: ImageVector? = null,
         override val enabled: Boolean = true,
         override val onValueChanged: (suspend (newValue: String) -> Boolean)?,
-    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangedListener<String>
+    ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangeListener<String>
 
 
     data class InfoPreference(

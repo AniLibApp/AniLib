@@ -8,32 +8,99 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
+import com.dokar.sheets.BottomSheetState
+import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.browse.data.store.BrowseFilterData
+import com.revolgenx.anilib.common.ext.openBrowseScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.HeaderText
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreNewlyAddedFilterViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExplorePopularFilterViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreTrendingFilterViewModel
+import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
+import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
+import com.revolgenx.anilib.type.MediaSort
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExploreScreen() {
+    val navigator = localNavigator()
+    val bottomSheetState = rememberBottomSheetState()
+    val scope = rememberCoroutineScope()
+
+    val exploreTrendingFilterViewModel: ExploreTrendingFilterViewModel = koinViewModel()
+    val explorePopularFilterViewModel: ExplorePopularFilterViewModel = koinViewModel()
+    val exploreNewlyAddedFilterViewModel: ExploreNewlyAddedFilterViewModel = koinViewModel()
+
     val exploreTrendingViewModel: ExploreMediaViewModel.ExploreTrendingViewModel = koinViewModel()
     val explorePopularViewModel: ExploreMediaViewModel.ExplorePopularViewModel = koinViewModel()
     val exploreNewlyAddedViewModel: ExploreMediaViewModel.ExploreNewlyAddedViewModel =
         koinViewModel()
+
+    val filterViewModel: MutableState<MediaFilterBottomSheetViewModel> = remember {
+        mutableStateOf(exploreTrendingFilterViewModel)
+    }
+
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
         ExploreAiringScheduleSection()
-        ExploreMediaSection(exploreTrendingViewModel)
-        ExploreMediaSection(explorePopularViewModel)
-        ExploreMediaSection(exploreNewlyAddedViewModel)
+        ExploreMediaSection(viewModel = exploreTrendingViewModel, onFilter = {
+            filterViewModel.value = exploreTrendingFilterViewModel
+            scope.launch {
+                bottomSheetState.expand()
+            }
+        }, onMore = {
+            navigator.openBrowseScreen(
+                BrowseFilterData(
+                    sort = MediaSort.TRENDING_DESC
+                )
+            )
+        })
+        ExploreMediaSection(viewModel = explorePopularViewModel, onFilter = {
+            filterViewModel.value = explorePopularFilterViewModel
+            scope.launch {
+                bottomSheetState.expand()
+            }
+        }, onMore = {
+            navigator.openBrowseScreen(
+                BrowseFilterData(
+                    sort = MediaSort.POPULARITY_DESC
+                )
+            )
+        })
+        ExploreMediaSection(viewModel = exploreNewlyAddedViewModel, onFilter = {
+            filterViewModel.value = exploreNewlyAddedFilterViewModel
+            scope.launch {
+                bottomSheetState.expand()
+            }
+        }, onMore = {
+            navigator.openBrowseScreen(
+                BrowseFilterData(
+                    sort = MediaSort.ID_DESC
+                )
+            )
+        })
+
+        ExploreFilterBottomSheet(bottomSheetState, filterViewModel)
+
         /*
                 val navigator = localNavigator()
                 Spacer(modifier = Modifier.size(20.dp))
@@ -130,11 +197,16 @@ fun ExploreScreen() {
 }
 
 @Composable
+private fun ExploreFilterBottomSheet(
+    bottomSheetState: BottomSheetState,
+    filterViewModel: MutableState<MediaFilterBottomSheetViewModel>
+) {
+    MediaFilterBottomSheet(bottomSheetState, filterViewModel.value)
+}
+
+@Composable
 internal fun ExploreScreenHeader(
-    text: String,
-    icon: ImageVector? = null,
-    onFilter: OnClick? = null,
-    onMore: OnClick? = null
+    text: String, icon: ImageVector? = null, onFilter: OnClick? = null, onMore: OnClick? = null
 ) {
     Row(
         modifier = Modifier

@@ -2,6 +2,8 @@ package com.revolgenx.anilib.common.ext
 
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.airing.ui.screen.AiringScheduleScreen
+import com.revolgenx.anilib.browse.data.store.BrowseFilterData
+import com.revolgenx.anilib.browse.ui.screen.BrowseScreen
 import com.revolgenx.anilib.character.ui.screen.CharacterScreen
 import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
 import com.revolgenx.anilib.entry.ui.screen.MediaListEntryEditorScreen
@@ -9,8 +11,6 @@ import com.revolgenx.anilib.list.ui.screen.UserMediaListScreen
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.relation.ui.screen.UserSocialRelationScreen
 import com.revolgenx.anilib.review.ui.screen.ReviewScreen
-import com.revolgenx.anilib.setting.ui.screen.SearchSettingScreen
-import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityComposerScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityScreen
 import com.revolgenx.anilib.staff.ui.screen.StaffScreen
@@ -71,3 +71,14 @@ fun Navigator.reviewScreen(reviewId: Int) {
     push(ReviewScreen(reviewId))
 }
 
+fun Navigator.openBrowseScreen(browseFilterData: BrowseFilterData? = null){
+    push(BrowseScreen(browseFilterData))
+}
+
+fun Navigator.openGenre(genre: String){
+    openBrowseScreen(BrowseFilterData(genreIn = listOf(genre)))
+}
+
+fun Navigator.openTag(tag: String){
+    openBrowseScreen(BrowseFilterData(tagsIn = listOf(tag)))
+}

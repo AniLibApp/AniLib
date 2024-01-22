@@ -15,7 +15,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
@@ -31,7 +30,7 @@ class ActivityComposerScreen(val activityId: Int? = null) : AndroidScreen() {
 }
 
 
-private typealias HomeScreenPage = PagerScreen<ActivityComposerScreenPages>
+private typealias ActivityComposerScreenPage = PagerScreen<ActivityComposerScreenPages>
 
 private enum class ActivityComposerScreenPages {
     STATUS,
@@ -39,8 +38,8 @@ private enum class ActivityComposerScreenPages {
 }
 
 private val pages = listOf(
-    HomeScreenPage(ActivityComposerScreenPages.STATUS, I18nR.string.status),
-    HomeScreenPage(ActivityComposerScreenPages.PREVIEW, I18nR.string.preview),
+    ActivityComposerScreenPage(ActivityComposerScreenPages.STATUS, I18nR.string.status),
+    ActivityComposerScreenPage(ActivityComposerScreenPages.PREVIEW, I18nR.string.preview),
 )
 
 
@@ -58,7 +57,7 @@ private fun ActivityComposerScreenContent() {
             modifier = Modifier
                 .fillMaxSize()
         ) {
-            when (ActivityComposerScreenPages.values()[page]) {
+            when (ActivityComposerScreenPages.entries[page]) {
                 ActivityComposerScreenPages.STATUS -> ActivityComposerStatusScreen(
                     viewModel,
                     pagerState.currentPage

@@ -12,7 +12,8 @@ object PackagingOptions {
 }
 
 object Versions{
-    const val composeUi = "1.5.0"
+    const val composeUi = "1.6.0-rc01"
+    const val composeFoundation = "1.6.0-rc01"
     const val composeMaterial = "1.2.0-beta01"
     const val composeActivity = "1.8.2"
     const val voyager = "1.0.0"
@@ -36,6 +37,7 @@ object Dependencies {
     const val composeMaterial = "androidx.compose.material3:material3:${Versions.composeMaterial}"
     const val composeUi = "androidx.compose.ui:ui:${Versions.composeUi}"
     const val composeActivity = "androidx.activity:activity-compose:${Versions.composeActivity}"
+    const val composeFoundation = "androidx.compose.foundation:foundation:${Versions.composeFoundation}"
     const val composeUiTooling = "androidx.compose.ui:ui-tooling:${Versions.composeUi}"
     const val composeUiToolingPreview = "androidx.compose.ui:ui-tooling-preview:${Versions.composeUi}"
 
@@ -96,9 +98,11 @@ object Dependencies {
 
 
 fun DependencyHandler.compose() {
-    implementation(Dependencies.composeMaterial)
-    implementation(Dependencies.composeActivity)
     implementation(Dependencies.composeUi)
+    implementation(Dependencies.composeActivity)
+    //remove it later
+    implementation(Dependencies.composeFoundation)
+    implementation(Dependencies.composeMaterial)
     implementation(Dependencies.composeUiTooling)
     debugImplementation(Dependencies.composeUiToolingPreview)
 }
