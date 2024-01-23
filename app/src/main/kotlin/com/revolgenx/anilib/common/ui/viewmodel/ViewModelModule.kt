@@ -9,8 +9,10 @@ import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
+import com.revolgenx.anilib.common.data.store.airingScheduleFilterDataStore
 import com.revolgenx.anilib.common.data.store.animeListFilterDataStore
 import com.revolgenx.anilib.common.data.store.browseFilterDataStore
+import com.revolgenx.anilib.common.data.store.exploreAiringScheduleFilterDataStore
 import com.revolgenx.anilib.common.data.store.mangaListFilterDataStore
 import com.revolgenx.anilib.entry.ui.viewmodel.MediaListEntryEditorViewModel
 import com.revolgenx.anilib.common.data.store.exploreNewlyAddedDataStore
@@ -25,10 +27,11 @@ import com.revolgenx.anilib.home.season.ui.screen.SeasonViewModel
 import com.revolgenx.anilib.home.season.ui.viewmodel.SeasonFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
-import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.common.data.store.mediaTagCollectionDataStore
 import com.revolgenx.anilib.common.data.store.readableOnCollectionDataStore
 import com.revolgenx.anilib.common.data.store.streamingOnCollectionDataStore
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleFilterViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreNewlyAddedFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExplorePopularFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreTrendingFilterViewModel
@@ -79,8 +82,10 @@ val viewModelModules = module {
     viewModel { MainActivityViewModel(get()) }
 
     //airing
-    viewModel { AiringScheduleViewModel(get()) }
-    viewModel { AiringScheduleFilterViewModel() }
+    viewModel { AiringScheduleViewModel(get(), get<Context>().airingScheduleFilterDataStore, get()) }
+    viewModel { AiringScheduleFilterViewModel(get<Context>().airingScheduleFilterDataStore) }
+    viewModel { ExploreAiringScheduleViewModel(get(), get<Context>().exploreAiringScheduleFilterDataStore, get()) }
+    viewModel { ExploreAiringScheduleFilterViewModel(get<Context>().exploreAiringScheduleFilterDataStore) }
 
     // media
     viewModel { MediaViewModel(get(), get()) }
@@ -202,13 +207,16 @@ val viewModelModules = module {
 
     //browse
     viewModel { BrowseViewModel(get(), get()) }
-    viewModel { BrowseFilterViewModel(
-        get<Context>().mediaTagCollectionDataStore,
-        get<Context>().genreCollectionDataStore,
-        get<Context>().streamingOnCollectionDataStore,
-        get<Context>().readableOnCollectionDataStore,
-        get<Context>().browseFilterDataStore,
-        get()) }
+    viewModel {
+        BrowseFilterViewModel(
+            get<Context>().mediaTagCollectionDataStore,
+            get<Context>().genreCollectionDataStore,
+            get<Context>().streamingOnCollectionDataStore,
+            get<Context>().readableOnCollectionDataStore,
+            get<Context>().browseFilterDataStore,
+            get()
+        )
+    }
 
     //reviews
     viewModel { ReviewListViewModel(get()) }
@@ -226,9 +234,24 @@ val viewModelModules = module {
 
     //explore
     viewModelOf(::ExploreAiringViewModel)
-    viewModel { ExploreMediaViewModel.ExploreTrendingViewModel(get(), get<Context>().exploreTrendingDataStore) }
-    viewModel { ExploreMediaViewModel.ExplorePopularViewModel(get(), get<Context>().explorePopularDataStore) }
-    viewModel { ExploreMediaViewModel.ExploreNewlyAddedViewModel(get(), get<Context>().exploreNewlyAddedDataStore) }
+    viewModel {
+        ExploreMediaViewModel.ExploreTrendingViewModel(
+            get(),
+            get<Context>().exploreTrendingDataStore
+        )
+    }
+    viewModel {
+        ExploreMediaViewModel.ExplorePopularViewModel(
+            get(),
+            get<Context>().explorePopularDataStore
+        )
+    }
+    viewModel {
+        ExploreMediaViewModel.ExploreNewlyAddedViewModel(
+            get(),
+            get<Context>().exploreNewlyAddedDataStore
+        )
+    }
     viewModel { ExploreTrendingFilterViewModel(get<Context>().exploreTrendingDataStore) }
     viewModel { ExplorePopularFilterViewModel(get<Context>().explorePopularDataStore) }
     viewModel { ExploreNewlyAddedFilterViewModel(get<Context>().exploreNewlyAddedDataStore) }

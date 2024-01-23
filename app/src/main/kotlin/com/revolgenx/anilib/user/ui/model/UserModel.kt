@@ -46,6 +46,12 @@ data class UserModel(
 }
 
 
+data class UserSocialCountModel(
+    val following: Int = 0,
+    val followers: Int = 0,
+)
+
+
 fun UserQuery.User.toModel(): UserModel {
     val avatar = avatar?.userAvatar?.toModel()
     val anilifiedAbout = anilify(about)

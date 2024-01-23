@@ -15,6 +15,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
@@ -22,7 +23,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.Navigator
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
+import com.revolgenx.anilib.airing.ui.screen.AiringScheduleFilterBottomSheet
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.airingScheduleScreen
 import com.revolgenx.anilib.common.ext.localContext
@@ -36,18 +39,26 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleFilterViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringViewModel
 import com.revolgenx.anilib.media.ui.component.CoverMediaCard
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.toStringRes
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
 @Composable
 fun ExploreAiringScheduleSection() {
-    val viewModel: AiringScheduleViewModel = koinViewModel()
+    val viewModel: ExploreAiringScheduleViewModel = koinViewModel()
+    val filterViewModel: ExploreAiringScheduleFilterViewModel = koinViewModel()
     val exploreAiringViewModel: ExploreAiringViewModel = koinViewModel()
+
+    val filterBottomSheetState = rememberBottomSheetState()
+
+    val scope = rememberCoroutineScope()
     val navigator = localNavigator()
     val context = localContext()
 
@@ -56,7 +67,9 @@ fun ExploreAiringScheduleSection() {
             text = stringResource(id = I18nR.string.airing),
             icon = AppIcons.IcAiring,
             onFilter = {
-
+                scope.launch {
+                    filterBottomSheetState.expand()
+                }
             },
             onMore = {
                 navigator.airingScheduleScreen()
@@ -71,6 +84,11 @@ fun ExploreAiringScheduleSection() {
             viewModel = viewModel
         )
     }
+
+    AiringScheduleFilterBottomSheet(
+        bottomSheetState = filterBottomSheetState,
+        viewModel = filterViewModel
+    )
 }
 
 @Composable
@@ -124,7 +142,10 @@ private fun AiringScheduleItem(
 
             if (progressBehind != null) {
                 MediumText(
-                    text = pluralStringResource(id = I18nR.plurals.s_episodes_behind, progressBehind).format(progressBehind),
+                    text = pluralStringResource(
+                        id = I18nR.plurals.s_episodes_behind,
+                        progressBehind
+                    ).format(progressBehind),
                     color = MaterialTheme.colorScheme.primary,
                     fontSize = 11.sp,
                     maxLines = 1

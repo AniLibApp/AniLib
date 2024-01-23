@@ -22,6 +22,7 @@ import com.revolgenx.anilib.common.data.event.CommonEvent
 import com.revolgenx.anilib.common.data.event.EventBusListener
 import com.revolgenx.anilib.common.data.event.OpenCharacterScreenEvent
 import com.revolgenx.anilib.common.data.event.OpenImageEvent
+import com.revolgenx.anilib.common.data.event.OpenLinkEvent
 import com.revolgenx.anilib.common.data.event.OpenMediaScreenEvent
 import com.revolgenx.anilib.common.data.event.OpenSpoilerEvent
 import com.revolgenx.anilib.common.data.event.OpenUserScreenEvent
@@ -30,6 +31,7 @@ import com.revolgenx.anilib.common.data.event.unRegisterForEvent
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
+import com.revolgenx.anilib.common.ext.openLink
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.theme.LightColorScheme
 import com.revolgenx.anilib.notification.data.worker.NotificationWorker
@@ -204,6 +206,10 @@ abstract class BaseActivity : ComponentActivity(), EventBusListener {
                 is OpenUserScreenEvent -> {
                     viewModel.openSpoilerBottomSheet.value = false
                     navigator?.userScreen(userId, username)
+                }
+
+                is OpenLinkEvent -> {
+                    openLink(link)
                 }
             }
         }

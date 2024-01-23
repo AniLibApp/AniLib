@@ -23,7 +23,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -47,7 +47,6 @@ import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userMediaListScreen
 import com.revolgenx.anilib.common.ext.userRelationScreen
-import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
@@ -75,6 +74,7 @@ import com.revolgenx.anilib.list.ui.screen.MangaListScreen
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.MediaType
+import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.screen.userStats.UserStatsScreen
 import com.revolgenx.anilib.user.ui.viewmodel.UserScreenPageType
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
@@ -103,9 +103,7 @@ class UserScreen(
 
     @Composable
     override fun Content() {
-        id?.let {
-            UserScreenContent(userId = id, userName = userName, isTab = isTab)
-        }
+        UserScreenContent(userId = id, userName = userName, isTab = isTab)
     }
 }
 
@@ -120,7 +118,9 @@ private fun UserScreenContent(
     val viewModel: UserViewModel = koinViewModel()
     val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
 
-    viewModel.userId.value = userId
+    if(userId != null){
+        viewModel.userId.value = userId
+    }
     viewModel.field.userName = userName
     viewModel.field.userId = viewModel.userId.value
     activityUnionViewModel.field.userId = viewModel.userId.value
@@ -135,9 +135,7 @@ private fun UserScreenContent(
         derivedStateOf { viewModel.pages.filter { it.isVisible.value } }
     }
 
-    LaunchedEffect(userId) {
-        viewModel.getResource()
-    }
+    viewModel.getResource()
 
     val pagerState = rememberPagerState() { pages.size }
     val scrollBehavior =
@@ -149,11 +147,10 @@ private fun UserScreenContent(
     ScreenScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            val isLoggedInUser = viewModel.isLoggedInUser.collectAsState(initial = false)
             UserScreenTopAppbar(
                 viewModel = viewModel,
                 scrollBehavior = scrollBehavior,
-                isLoggedInUser = isLoggedInUser.value,
+                isLoggedInUser = viewModel.isLoggedInUser,
                 isTab = isTab
             )
         },
@@ -209,7 +206,7 @@ private fun UserScreenContent(
 private fun UserScreenTopAppbar(
     viewModel: UserViewModel,
     scrollBehavior: TopAppBarScrollBehavior,
-    isLoggedInUser: Boolean,
+    isLoggedInUser: State<Boolean>,
     isTab: Boolean = false,
 ) {
     val tabNavigator = if (isTab) localTabNavigator() else null
@@ -273,16 +270,7 @@ private fun UserScreenTopAppbar(
                             )
                         }
 
-                        user?.takeIf { !isLoggedInUser }?.let {
-                            FilledTonalButton(
-                                modifier = Modifier.padding(horizontal = 8.dp),
-                                onClick = { }
-                            ) {
-                                Text(
-                                    text = stringResource(id = if (it.isFollowing) I18nR.string.following else I18nR.string.follow)
-                                )
-                            }
-                        }
+                        ShowFollowingButton(user, isLoggedInUser)
                     }
                 }
 
@@ -392,6 +380,23 @@ private fun UserScreenTopAppbar(
     )
 
 
+}
+
+@Composable
+private fun ShowFollowingButton(
+    user: UserModel?,
+    isLoggedInUser: State<Boolean>
+) {
+    if (!isLoggedInUser.value && user != null) {
+        FilledTonalButton(
+            modifier = Modifier.padding(horizontal = 8.dp),
+            onClick = { }
+        ) {
+            Text(
+                text = stringResource(id = if (user.isFollowing) I18nR.string.following else I18nR.string.follow)
+            )
+        }
+    }
 }
 
 @Composable

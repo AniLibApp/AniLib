@@ -34,6 +34,7 @@ abstract class BaseEvent {
 
 sealed class CommonEvent : BaseEvent()
 
+data class OpenLinkEvent(val link: String?) : CommonEvent()
 data class OpenImageEvent(val imageUrl: String?) : CommonEvent()
 data class OpenSpoilerEvent(val spanned: Spanned) : CommonEvent()
 data class OpenUserScreenEvent(val userId: Int? = null, val username: String? = null) : CommonEvent()

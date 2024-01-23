@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.user.ui.viewmodel
 
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
@@ -30,7 +31,12 @@ class UserViewModel(
     ResourceViewModel<UserModel, UserField>() {
     override val field: UserField = UserField()
 
-    val isLoggedInUser = authPreferencesDataStore.userId.data.map { it == field.userId }
+
+    private var loggedInUserId = authPreferencesDataStore.userId.get()
+
+    val isLoggedInUser = derivedStateOf {
+        userId.value == loggedInUserId
+    }
 
     val userId = mutableStateOf<Int?>(null)
 
@@ -59,6 +65,10 @@ class UserViewModel(
 
     fun showAllPages() {
         pages.forEach { it.isVisible.value = true }
+    }
+
+    override fun onComplete() {
+        userId.value = getData()?.id
     }
 
     override fun load(): Flow<UserModel?> = userService.getUser(field)

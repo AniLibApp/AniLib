@@ -44,12 +44,12 @@ private val yearList by lazy {
 
 @Composable
 fun MediaFilterBottomSheet(
-    state: BottomSheetState,
+    bottomSheetState: BottomSheetState,
     viewModel: MediaFilterBottomSheetViewModel
 ) {
     val scope = rememberCoroutineScope()
 
-    BottomSheet(state = state, skipPeeked = true) {
+    BottomSheet(state = bottomSheetState, skipPeeked = true) {
         MediaFilterBottomSheetContent(
             field = viewModel.field,
             onPositiveClicked = {
@@ -57,7 +57,7 @@ fun MediaFilterBottomSheet(
             }
         ) {
             scope.launch {
-                state.collapse()
+                bottomSheetState.collapse()
             }
         }
     }

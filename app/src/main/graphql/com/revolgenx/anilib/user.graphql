@@ -64,6 +64,29 @@ query UserQuery(
     }
 }
 
+
+query UserSocialCountQuery(
+    $userId:Int!,
+){
+    followingPage:Page{
+        pageInfo{
+            total
+        }
+        following(userId:$userId){
+            __typename
+        }
+    }
+
+    followerPage:Page{
+        pageInfo{
+            total
+        }
+        followers(userId:$userId){
+            __typename
+        }
+    }
+}
+
 query UserRelationQuery(
     $page: Int!,
     $perPage: Int!,

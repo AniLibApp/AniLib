@@ -5,6 +5,7 @@ import com.revolgenx.anilib.character.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.PageInfo
@@ -17,10 +18,12 @@ import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.studio.ui.model.toModel
 import com.revolgenx.anilib.user.data.field.UserFavouriteField
 import com.revolgenx.anilib.user.data.field.UserField
+import com.revolgenx.anilib.user.data.field.UserSocialCountField
 import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.field.UserStatsOverviewField
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
 import com.revolgenx.anilib.user.ui.model.UserModel
+import com.revolgenx.anilib.user.ui.model.UserSocialCountModel
 import com.revolgenx.anilib.user.ui.model.statistics.BaseStatisticModel
 import com.revolgenx.anilib.user.ui.model.statistics.UserGenreStatisticModel
 import com.revolgenx.anilib.user.ui.model.statistics.UserStaffStatisticModel
@@ -31,6 +34,8 @@ import com.revolgenx.anilib.user.ui.model.statistics.UserVoiceActorStatisticMode
 import com.revolgenx.anilib.user.ui.model.statistics.toModel
 import com.revolgenx.anilib.user.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.map
 import org.jetbrains.annotations.Nullable
 
@@ -42,10 +47,33 @@ class UserServiceImpl(
     override fun getUser(field: UserField): Flow<UserModel?> {
         return field.toQuery().map {
             it.dataAssertNoErrors.let { data ->
-                data.user?.toModel()?.also {
-                    it.followers = data.followerPage?.pageInfo?.total.orZero()
-                    it.following = data.followingPage?.pageInfo?.total.orZero()
+                data.user?.toModel()?.also { userModel ->
+                    if (field.userId == null) {
+                        field.userId = userModel.id
+                        getUserSocialCount(UserSocialCountField(userModel.id))
+                            .catch {
+                                emit(UserSocialCountModel())
+                            }.firstOrNull()
+                            ?.let { socialCountModel ->
+                                userModel.followers = socialCountModel.followers
+                                userModel.following = socialCountModel.following
+                            }
+                    } else {
+                        userModel.followers = data.followerPage?.pageInfo?.total.orZero()
+                        userModel.following = data.followingPage?.pageInfo?.total.orZero()
+                    }
                 }
+            }
+        }
+    }
+
+    override fun getUserSocialCount(field: UserSocialCountField): Flow<UserSocialCountModel> {
+        return field.toQuery().map {
+            it.dataAssertNoErrors.let { data ->
+                UserSocialCountModel(
+                    followers = data.followerPage?.pageInfo?.total.orZero(),
+                    following = data.followingPage?.pageInfo?.total.orZero()
+                )
             }
         }
     }

@@ -139,10 +139,3 @@ fun componentActivity() = localContext().componentActivity()
 fun <T> Flow<T>.get() = runBlocking { first() }
 fun <T> DataStore<T>.get() = data.get()
 
-suspend fun <T> Flow<T>.collectIfNew(old: T, collector: FlowCollector<T>){
-    collect{
-        if(it != old){
-            collector.emit(it)
-        }
-    }
-}

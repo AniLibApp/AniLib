@@ -3,6 +3,8 @@ package com.revolgenx.anilib.common.data.store
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
+import com.revolgenx.anilib.airing.data.store.AiringScheduleFilterData
+import com.revolgenx.anilib.airing.data.store.AiringScheduleFilterDataSerializer
 import com.revolgenx.anilib.browse.data.store.BrowseFilterData
 import com.revolgenx.anilib.browse.data.store.BrowseFilterDataSerializer
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
@@ -28,6 +30,7 @@ typealias GenreCollectionDataStore = DataStore<GenreCollectionData>
 typealias StreamingOnCollectionDataStore = DataStore<ExternalLinkSourceCollectionData>
 typealias ReadableOnCollectionDataStore = DataStore<ExternalLinkSourceCollectionData>
 typealias BrowseFilterDataStore = DataStore<BrowseFilterData>
+typealias AiringScheduleFilterDataStore = DataStore<AiringScheduleFilterData>
 
 val Context.browseFilterDataStore by dataStore(
     fileName = "browse_filter_data_store.json",
@@ -83,7 +86,6 @@ val Context.streamingOnCollectionDataStore by dataStore(
     )
 )
 
-
 val Context.readableOnCollectionDataStore by dataStore(
     fileName = "readable_on_collection_data_store.json",
     serializer = ExternalLinkSourceCollectionDataSerializer(
@@ -91,4 +93,14 @@ val Context.readableOnCollectionDataStore by dataStore(
             readableOn
         )
     )
+)
+
+val Context.airingScheduleFilterDataStore by dataStore(
+    fileName = "airing_schedule_filter_data_store.json",
+    serializer = AiringScheduleFilterDataSerializer()
+)
+
+val Context.exploreAiringScheduleFilterDataStore by dataStore(
+    fileName = "explore_airing_schedule_filter_data_store.json",
+    serializer = AiringScheduleFilterDataSerializer()
 )

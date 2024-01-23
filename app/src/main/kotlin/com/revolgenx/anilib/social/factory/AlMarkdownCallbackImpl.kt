@@ -3,6 +3,7 @@ package com.revolgenx.anilib.social.factory
 import android.text.Spanned
 import com.revolgenx.anilib.common.data.event.OpenCharacterScreenEvent
 import com.revolgenx.anilib.common.data.event.OpenImageEvent
+import com.revolgenx.anilib.common.data.event.OpenLinkEvent
 import com.revolgenx.anilib.common.data.event.OpenMediaScreenEvent
 import com.revolgenx.anilib.common.data.event.OpenSpoilerEvent
 import com.revolgenx.anilib.common.data.event.OpenUserScreenEvent
@@ -10,10 +11,11 @@ import com.revolgenx.anilib.type.MediaType
 
 class AlMarkdownCallbackImpl : AlMarkdownCallback {
     override fun onYoutubeClick(link: String) {
-
+        OpenLinkEvent(link).postEvent
     }
 
     override fun onVideoClick(link: String) {
+        OpenLinkEvent(link).postEvent
     }
 
     override fun onImageClick(link: String) {

@@ -3,7 +3,6 @@ package com.revolgenx.anilib.home.season.ui.screen
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import com.revolgenx.anilib.common.ext.collectIfNew
 import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
@@ -27,7 +26,9 @@ class SeasonViewModel(
 
     init {
         launch {
-            seasonFilterDataStore.data.collectIfNew(filter) { newFilter ->
+            seasonFilterDataStore.data.collect { newFilter ->
+                if (filter == newFilter) return@collect
+
                 filter = newFilter
                 field = filter.toMediaField()
                 refresh()
