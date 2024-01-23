@@ -9,6 +9,7 @@ import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
+import com.revolgenx.anilib.common.data.store.activityUnionFilterDataStore
 import com.revolgenx.anilib.common.data.store.airingScheduleFilterDataStore
 import com.revolgenx.anilib.common.data.store.animeListFilterDataStore
 import com.revolgenx.anilib.common.data.store.browseFilterDataStore
@@ -54,7 +55,9 @@ import com.revolgenx.anilib.setting.ui.viewmodel.MediaSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.NotificationSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionFilterViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.MainActivityUnionViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
@@ -82,9 +85,21 @@ val viewModelModules = module {
     viewModel { MainActivityViewModel(get()) }
 
     //airing
-    viewModel { AiringScheduleViewModel(get(), get<Context>().airingScheduleFilterDataStore, get()) }
+    viewModel {
+        AiringScheduleViewModel(
+            get(),
+            get<Context>().airingScheduleFilterDataStore,
+            get()
+        )
+    }
     viewModel { AiringScheduleFilterViewModel(get<Context>().airingScheduleFilterDataStore) }
-    viewModel { ExploreAiringScheduleViewModel(get(), get<Context>().exploreAiringScheduleFilterDataStore, get()) }
+    viewModel {
+        ExploreAiringScheduleViewModel(
+            get(),
+            get<Context>().exploreAiringScheduleFilterDataStore,
+            get()
+        )
+    }
     viewModel { ExploreAiringScheduleFilterViewModel(get<Context>().exploreAiringScheduleFilterDataStore) }
 
     // media
@@ -202,8 +217,10 @@ val viewModelModules = module {
     viewModel { MangaListFilterViewModel() }
 
     //activity union
+    viewModel { MainActivityUnionViewModel(get(), get<Context>().activityUnionFilterDataStore) }
     viewModel { ActivityUnionViewModel(get()) }
     viewModel { ActivityComposerViewModel() }
+    viewModel { ActivityUnionFilterViewModel(get<Context>().activityUnionFilterDataStore) }
 
     //browse
     viewModel { BrowseViewModel(get(), get()) }

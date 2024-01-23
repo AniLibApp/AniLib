@@ -437,7 +437,7 @@ fun BrowseFilterRangeSlider(
         BrowseFilterHeader(heading = heading)
         if (position.value.start != start || position.value.endInclusive != end) {
             RegularText(
-                text = stringResource(id = anilib.i18n.R.string.s_underscore_s).format(
+                text = stringResource(id = anilib.i18n.R.string.s_dash_s).format(
                     position.value.start.toInt(), position.value.endInclusive.toInt()
                 )
             )

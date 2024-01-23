@@ -4,13 +4,23 @@ query ActivityUnionQuery(
     $userId:Int,
     $mediaId:Int,
     $type:ActivityType,
-    $type_in:[ActivityType]
-    $isFollowing:Boolean){
+    $type_in:[ActivityType],
+    $isFollowing:Boolean,
+    $hasReplies:Boolean
+){
     page: Page(page:$page, perPage:$perPage) @nonnull{
-       pageInfo @nonnull{
-           ... pageInfo
-       }
-        activities(userId:$userId, mediaId:$mediaId, type:$type,type_in:$type_in,isFollowing:$isFollowing, sort:[ID_DESC]){
+        pageInfo @nonnull{
+            ... pageInfo
+        }
+        activities(
+            userId:$userId,
+            mediaId:$mediaId,
+            type:$type,
+            type_in:$type_in,
+            isFollowing:$isFollowing,
+            hasRepliesOrTypeText: $hasReplies
+            sort:[ID_DESC]
+        ){
             __typename
             ... on TextActivity{
                 id

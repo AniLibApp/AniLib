@@ -454,7 +454,14 @@
     <!--Media Browse-->
 
 
-    <string name="s_underscore_s">%1$s - %2$s</string>
+    <string name="s_dash_s">%1$s - %2$s</string>
+
+    <!--Activity Union Screen-->
+    <string name="text_status">Text Status</string>>
+    <string name="list_progress">List Progress</string>
+    <string name="activity_type">Activity Type</string>
+    <string name="has_replies">Has Replies</string>
+    <!--Activity Union Screen-->
 
 
 </resources>

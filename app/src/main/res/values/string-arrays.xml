@@ -173,5 +173,10 @@
         <item>@string/Taiwan</item>
     </string-array>
 
+    <string-array name="activity_type_menu">
+        <item>@string/all</item>
+        <item>@string/text_status</item>
+        <item>@string/list_progress</item>
+    </string-array>
 
 </resources>

@@ -20,6 +20,8 @@ import com.revolgenx.anilib.media.data.store.MediaFilterDataSerializer
 import com.revolgenx.anilib.media.data.store.MediaTagCollectionData
 import com.revolgenx.anilib.media.data.store.MediaTagCollectionDataSerializer
 import com.revolgenx.anilib.media.ui.model.seasonFromMonth
+import com.revolgenx.anilib.social.data.data.ActivityUnionFilterData
+import com.revolgenx.anilib.social.data.data.ActivityUnionFilterDataSerializer
 import com.revolgenx.anilib.type.MediaSort
 import java.time.LocalDateTime
 
@@ -31,6 +33,7 @@ typealias StreamingOnCollectionDataStore = DataStore<ExternalLinkSourceCollectio
 typealias ReadableOnCollectionDataStore = DataStore<ExternalLinkSourceCollectionData>
 typealias BrowseFilterDataStore = DataStore<BrowseFilterData>
 typealias AiringScheduleFilterDataStore = DataStore<AiringScheduleFilterData>
+typealias ActivityUnionFilterDataStore = DataStore<ActivityUnionFilterData>
 
 val Context.browseFilterDataStore by dataStore(
     fileName = "browse_filter_data_store.json",
@@ -103,4 +106,10 @@ val Context.airingScheduleFilterDataStore by dataStore(
 val Context.exploreAiringScheduleFilterDataStore by dataStore(
     fileName = "explore_airing_schedule_filter_data_store.json",
     serializer = AiringScheduleFilterDataSerializer()
+)
+
+
+val Context.activityUnionFilterDataStore by dataStore(
+    fileName = "activity_union_filter_data_store.json",
+    serializer = ActivityUnionFilterDataSerializer()
 )
