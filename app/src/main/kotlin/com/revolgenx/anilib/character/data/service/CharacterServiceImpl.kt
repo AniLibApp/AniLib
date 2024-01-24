@@ -5,9 +5,11 @@ import com.revolgenx.anilib.character.data.field.CharacterField
 import com.revolgenx.anilib.character.data.field.CharacterMediaField
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.character.ui.model.toModel
+import com.revolgenx.anilib.common.data.field.ToggleFavoriteField
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.data.service.ToggleService
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
@@ -19,7 +21,8 @@ import kotlinx.coroutines.flow.map
 
 class CharacterServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
+    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore,
+    private val toggleService: ToggleService
 ) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
     CharacterService {
 
@@ -58,5 +61,10 @@ class CharacterServiceImpl(
             }
             hashMap.values.toList()
         }
+    }
+
+
+    override fun toggleFavorite(characterId: Int): Flow<Boolean> {
+        return toggleService.toggleFavourite(ToggleFavoriteField(characterId = characterId))
     }
 }

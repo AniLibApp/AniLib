@@ -42,9 +42,7 @@ fun ScreenScaffold(
     title: String = "",
     subTitle: String? = null,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    attachScrollBehaviorConnection: Boolean = true,
     bottomNestedScrollConnection: BottomNestedScrollConnection? = null,
-    attachBottomScrollConnection: Boolean = true,
     topBar: (@Composable () -> Unit)? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     floatingActionButton: @Composable () -> Unit = {},
@@ -80,13 +78,13 @@ fun ScreenScaffold(
                     .fillMaxSize()
                     .padding(paddingValues)
                     .let {
-                        if (attachBottomScrollConnection && bottomNestedScrollConnection != null) {
+                        if (bottomNestedScrollConnection != null) {
                             it.nestedScroll(bottomNestedScrollConnection)
                         } else {
                             it
                         }
                     }.let {
-                        if (attachScrollBehaviorConnection && scrollBehavior != null) {
+                        if (scrollBehavior != null) {
                             it.nestedScroll(scrollBehavior.nestedScrollConnection)
                         } else {
                             it

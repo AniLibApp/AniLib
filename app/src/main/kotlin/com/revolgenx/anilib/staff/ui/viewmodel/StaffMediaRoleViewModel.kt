@@ -9,7 +9,7 @@ import com.revolgenx.anilib.staff.data.source.StaffMediaRolePagingSource
 class StaffMediaRoleViewModel(
     private val service: StaffService
 ) : PagingViewModel<BaseModel, StaffMediaRoleField, StaffMediaRolePagingSource>() {
-    override val field: StaffMediaRoleField = StaffMediaRoleField()
+    override var field: StaffMediaRoleField = StaffMediaRoleField()
     override val pagingSource: StaffMediaRolePagingSource
         get() = StaffMediaRolePagingSource(this.field, service)
 }

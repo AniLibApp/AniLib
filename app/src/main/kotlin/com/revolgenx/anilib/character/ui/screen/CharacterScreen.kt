@@ -61,12 +61,7 @@ private val pages = listOf(
 private fun CharacterScreenContent(characterId: Int) {
     val pagerState = rememberPagerState { pages.size }
     val aboutViewModel: CharacterAboutViewModel = koinViewModel()
-    val mediaViewModel: CharacterMediaViewModel = koinViewModel()
-    val actorViewModel: CharacterActorViewModel = koinViewModel()
-
     aboutViewModel.field.characterId = characterId
-    mediaViewModel.field.characterId = characterId
-    actorViewModel.field.characterId = characterId
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
@@ -90,8 +85,8 @@ private fun CharacterScreenContent(characterId: Int) {
         ) {
             when (pages[page].type) {
                 CharacterScreenPageType.ABOUT -> CharacterAboutScreen(aboutViewModel)
-                CharacterScreenPageType.MEDIA -> CharacterMediaScreen(mediaViewModel)
-                CharacterScreenPageType.VOICE_ROLES -> CharacterActorScreen(actorViewModel)
+                CharacterScreenPageType.MEDIA -> CharacterMediaScreen(characterId)
+                CharacterScreenPageType.VOICE_ROLES -> CharacterActorScreen(characterId)
             }
         }
     }

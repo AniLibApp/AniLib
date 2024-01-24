@@ -8,4 +8,6 @@ import kotlinx.coroutines.flow.Flow
 
 interface StudioService {
     fun getStudioMedia(field: StudioField): Flow<PageModel<MediaModel>>
+    fun toggleFavorite(studioId: Int): Flow<Boolean>
+
 }

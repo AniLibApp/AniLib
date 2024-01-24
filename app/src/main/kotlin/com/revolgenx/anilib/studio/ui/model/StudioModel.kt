@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.studio.ui.model
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.StudioMediaQuery
 import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.common.ui.model.BaseModel
@@ -12,7 +14,7 @@ data class StudioModel(
     val id: Int = -1,
     val name: String? = null,
     val favourites: Int? = null,
-    val isFavourite: Boolean = false,
+    val isFavourite: MutableState<Boolean> = mutableStateOf(false),
     val siteUrl: String? = null,
     val isAnimationStudio: Boolean = false,
     val media: MediaConnectionModel? = null,
@@ -24,7 +26,7 @@ fun StudioMediaQuery.Studio.toModel(): StudioModel {
         id = id,
         name = name,
         favourites = favourites,
-        isFavourite = isFavourite,
+        isFavourite = mutableStateOf(isFavourite),
         siteUrl = siteUrl,
     )
 }

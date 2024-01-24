@@ -115,7 +115,7 @@ fun AboutScreen(
                         text = favourites.prettyNumberFormat(),
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
-                    AppIcons.IcHeart
+                    Spacer(modifier = Modifier.size(2.dp))
                     Icon(
                         imageVector = if(isFavourite) AppIcons.IcHeart else AppIcons.IcHeartOutline,
                         contentDescription = null

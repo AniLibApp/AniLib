@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 
 class MediaSettingsViewModel(
@@ -39,7 +40,7 @@ class MediaSettingsViewModel(
             val airingNotifications = userOptionsUiModel.airingNotifications.value
             val saveField = SaveMediaSettingsField(
                 model = UserOptionsModel(
-                    titleLanguage = UserTitleLanguage.values()[titleLanguage],
+                    titleLanguage = UserTitleLanguage.entries[titleLanguage],
                     airingNotifications = airingNotifications,
                     activityMergeTime = userOptionsUiModel.activityMergeTime.intValue
                 )
@@ -48,8 +49,11 @@ class MediaSettingsViewModel(
                 saveResource.value = ResourceState.success(it)
             }.catch {
                 saveResource.value = ResourceState.error(it)
-            }
-                .launchIn(viewModelScope)
+            }.onCompletion {
+                if(it == null){
+                    mediaSettingsPreferencesDataStore.mediaTitleType.set(titleLanguage)
+                }
+            }.launchIn(viewModelScope)
         }
     }
 

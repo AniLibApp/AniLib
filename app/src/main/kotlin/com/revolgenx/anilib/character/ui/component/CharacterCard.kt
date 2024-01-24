@@ -51,7 +51,7 @@ fun CharacterOrStaffCard(
                 }
             }
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(4.dp)
     ) {
         Column(
             modifier = Modifier

@@ -11,7 +11,9 @@ enum class StaffMediaCharacterSort {
     START_DATE_DESC,
     START_DATE,
     TITLE_ROMAJI,
-    CHARACTER_SORT
+    TITLE_ENGLISH,
+    TITLE_NATIVE,
+//    CHARACTER_SORT
 }
 
 data class StaffMediaCharacterField(
@@ -28,7 +30,8 @@ data class StaffMediaCharacterField(
             page = nn(page),
             perPage = nn(perPage),
             onList = nnBool(onList),
-            sort = nn(sort.takeIf { it != StaffMediaCharacterSort.CHARACTER_SORT }?.let { listOf(MediaSort.safeValueOf(it.name)) }),
+//            sort = nn(sort.takeIf { it != StaffMediaCharacterSort.CHARACTER_SORT }?.let { listOf(MediaSort.safeValueOf(it.name)) }),
+            sort = nn(listOf(MediaSort.safeValueOf(sort.name))),
             sortCharacter = sortCharacter
         )
     }

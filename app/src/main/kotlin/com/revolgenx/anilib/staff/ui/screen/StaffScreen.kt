@@ -39,15 +39,15 @@ private typealias StaffScreenPage = PagerScreen<StaffScreenPageType>
 
 enum class StaffScreenPageType {
     ABOUT,
-    MEDIA,
-    VOICE_ROLES
+    VOICE_ROLES,
+    STAFF_ROLES
 }
 
 private val pages = listOf(
     StaffScreenPage(StaffScreenPageType.ABOUT, I18nR.string.about, AppIcons.IcAbout),
-    StaffScreenPage(StaffScreenPageType.MEDIA, I18nR.string.media, AppIcons.IcMedia),
+    StaffScreenPage(StaffScreenPageType.VOICE_ROLES, I18nR.string.voice_roles, AppIcons.IcMedia),
     StaffScreenPage(
-        StaffScreenPageType.VOICE_ROLES,
+        StaffScreenPageType.STAFF_ROLES,
         I18nR.string.staff_roles,
         AppIcons.IcGroup
     )
@@ -88,8 +88,8 @@ private fun StaffScreenContent(staffId: Int) {
         ) {
             when (pages[page].type) {
                 StaffScreenPageType.ABOUT -> StaffAboutScreen(aboutViewModel)
-                StaffScreenPageType.MEDIA -> StaffMediaCharacterScreen(mediaCharacterViewModel)
-                StaffScreenPageType.VOICE_ROLES -> StaffMediaRoleScreen(mediaRoleViewModel)
+                StaffScreenPageType.VOICE_ROLES -> StaffMediaCharacterScreen(mediaCharacterViewModel)
+                StaffScreenPageType.STAFF_ROLES -> StaffMediaRoleScreen(mediaRoleViewModel)
             }
         }
     }

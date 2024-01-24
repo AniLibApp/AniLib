@@ -1,8 +1,10 @@
 package com.revolgenx.anilib.studio.data.service
 
+import com.revolgenx.anilib.common.data.field.ToggleFavoriteField
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.data.service.ToggleService
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
@@ -11,7 +13,11 @@ import com.revolgenx.anilib.studio.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class StudioServiceImpl(apolloRepository: ApolloRepository, mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
+class StudioServiceImpl(
+    apolloRepository: ApolloRepository,
+    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore,
+    private val toggleService: ToggleService
+) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
     StudioService {
     override fun getStudioMedia(field: StudioField): Flow<PageModel<MediaModel>> {
         return field.toQuery().map {
@@ -26,5 +32,9 @@ class StudioServiceImpl(apolloRepository: ApolloRepository, mediaSettingsPrefere
                 )
             }
         }
+    }
+
+    override fun toggleFavorite(studioId: Int): Flow<Boolean> {
+        return toggleService.toggleFavourite(ToggleFavoriteField(studioId = studioId))
     }
 }

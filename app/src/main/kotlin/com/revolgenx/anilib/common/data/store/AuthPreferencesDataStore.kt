@@ -53,7 +53,6 @@ class AuthPreferencesDataStore(override val dataStore: PreferencesDataStore) :
         dataStore.edit { pref ->
             pref[authTokenKey] = mToken
             pref[userIdKey] = userId
-            pref[MediaSettingsPreferencesDataStore.mediaTitleTypeKey] = MediaTitleModel.type_user_preferred
         }
     }
 

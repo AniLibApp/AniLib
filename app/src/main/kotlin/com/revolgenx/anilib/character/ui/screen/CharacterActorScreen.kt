@@ -13,13 +13,16 @@ import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun CharacterActorScreen(viewModel: CharacterActorViewModel) {
+fun CharacterActorScreen(characterId: Int) {
     val navigator = localNavigator()
-    LaunchedEffect(viewModel) {
-        viewModel.getResource()
-    }
+
+    val viewModel: CharacterActorViewModel = koinViewModel()
+    viewModel.field.characterId = characterId
+    viewModel.getResource()
+
     ResourceScreen(
         viewModel = viewModel
     ) { staffModels ->

@@ -10,7 +10,9 @@ enum class StaffMediaRoleSort {
     FAVOURITES_DESC,
     START_DATE_DESC,
     START_DATE,
-    TITLE_ROMAJI
+    TITLE_ROMAJI,
+    TITLE_ENGLISH,
+    TITLE_NATIVE
 }
 
 data class StaffMediaRoleField(

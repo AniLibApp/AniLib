@@ -13,4 +13,5 @@ interface CharacterService {
     fun getCharacter(field: CharacterField): Flow<CharacterModel?>
     fun getCharacterMedia(field: CharacterMediaField): Flow<PageModel<MediaModel>>
     fun getCharacterActor(field: CharacterActorField): Flow<List<StaffModel>?>
+    fun toggleFavorite(characterId: Int): Flow<Boolean>
 }

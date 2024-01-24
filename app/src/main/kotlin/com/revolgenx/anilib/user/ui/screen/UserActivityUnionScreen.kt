@@ -41,11 +41,14 @@ fun UserActivityUnionScreen(viewModel: ActivityUnionViewModel) {
                 content = {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
-                    ){
+                    ) {
                         ActionMenu(icon = AppIcons.IcFilter) {
                         }
 
-                        VerticalDivider(modifier = Modifier.height(20.dp), color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        VerticalDivider(
+                            modifier = Modifier.height(20.dp),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
 
                         ActionMenu(icon = AppIcons.IcCreate) {
                             navigator.activityComposerScreen()
@@ -55,13 +58,9 @@ fun UserActivityUnionScreen(viewModel: ActivityUnionViewModel) {
         },
         topBar = {},
         navigationIcon = {},
+        bottomNestedScrollConnection = bottomScrollConnection,
         contentWindowInsets = emptyWindowInsets()
     ) {
-        Box(
-            modifier = Modifier
-                .nestedScroll(bottomScrollConnection)
-        ) {
-            ActivityUnionScreenContent(viewModel = viewModel)
-        }
+        ActivityUnionScreenContent(viewModel = viewModel)
     }
 }

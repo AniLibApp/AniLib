@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.common.ext.imageViewerScreen
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -15,8 +17,15 @@ fun CharacterAboutScreen(
     viewModel: CharacterAboutViewModel
 ) {
     val navigator = localNavigator()
-    LaunchedEffect(viewModel) {
-        viewModel.getResource()
+    val context = localContext()
+    val snackbarHostState = localSnackbarHostState()
+    viewModel.getResource()
+
+    LaunchedEffect(viewModel.showToggleErrorMsg.value) {
+        if (viewModel.showToggleErrorMsg.value) {
+            snackbarHostState.showSnackbar(context.getString(anilib.i18n.R.string.failed_to_toggle), withDismissAction = true)
+            viewModel.showToggleErrorMsg.value = false
+        }
     }
 
     ResourceScreen(viewModel = viewModel) { character ->
@@ -29,7 +38,7 @@ fun CharacterAboutScreen(
             description = character.description,
             spannedDescription = character.spannedDescription,
             onFavouriteClick = {
-                /*todo favourite*/
+                viewModel.toggleFavorite()
             },
             onImageClick = {
                 navigator.imageViewerScreen(it)

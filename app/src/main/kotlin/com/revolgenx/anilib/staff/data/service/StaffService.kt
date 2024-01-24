@@ -12,4 +12,5 @@ interface StaffService {
     fun getStaff(field: StaffField): Flow<StaffModel?>
     fun getStaffMediaCharacter(field: StaffMediaCharacterField): Flow<PageModel<MediaModel>>
     fun getStaffMediaRole(field: StaffMediaRoleField): Flow<PageModel<MediaModel>>
+    fun toggleFavorite(staffId: Int): Flow<Boolean>
 }

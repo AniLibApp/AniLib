@@ -62,35 +62,30 @@ fun RecommendationScreen(viewModel: RecommendationViewModel = koinViewModel()) {
                 //todo filter
             }
         },
+        bottomNestedScrollConnection = bottomScrollConnection,
         contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
         val mediaComponentState = rememberMediaComponentState(navigator = navigator)
 
-        RecommendationPagingContent(viewModel, bottomScrollConnection, mediaComponentState)
+        RecommendationPagingContent(viewModel, mediaComponentState)
     }
 }
 
 @Composable
 private fun RecommendationPagingContent(
     viewModel: RecommendationViewModel,
-    bottomScrollConnection: BottomNestedScrollConnection,
     mediaComponentState: MediaComponentState
 ) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .nestedScroll(bottomScrollConnection)
-    ) {
-        LazyPagingList(
-            pagingItems = pagingItems,
-            onRefresh = {
-                viewModel.refresh()
-            },
-        ) { model ->
-            model ?: return@LazyPagingList
-            RecommendationItem(model = model, mediaComponentState = mediaComponentState)
-        }
+
+    LazyPagingList(
+        pagingItems = pagingItems,
+        onRefresh = {
+            viewModel.refresh()
+        },
+    ) { model ->
+        model ?: return@LazyPagingList
+        RecommendationItem(model = model, mediaComponentState = mediaComponentState)
     }
 }
 
@@ -119,7 +114,10 @@ fun RecommendationItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     model.mediaRecommendation?.let {
-                        MediaRowItemContentEnd(media = it, mediaComponentState = mediaComponentState)
+                        MediaRowItemContentEnd(
+                            media = it,
+                            mediaComponentState = mediaComponentState
+                        )
                     }
                 }
             }

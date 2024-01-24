@@ -5,6 +5,7 @@ import com.revolgenx.anilib.common.data.source.BasePagingSource
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.studio.data.field.StudioField
+import com.revolgenx.anilib.studio.data.field.StudioMediaSort
 import com.revolgenx.anilib.studio.data.service.StudioService
 import com.revolgenx.anilib.type.MediaSort
 import kotlinx.coroutines.flow.map
@@ -16,7 +17,7 @@ class StudioPagingSource(field: StudioField, private val studioService: StudioSe
 
     override suspend fun loadPage(): PageModel<BaseModel> {
         return studioService.getStudioMedia(field).let {
-            if (field.sort == MediaSort.START_DATE_DESC) {
+            if (field.sort == StudioMediaSort.START_DATE_DESC) {
                 it.map {
                     val results = arrayListOf<BaseModel>()
                     for (mediaModel in it.data.orEmpty()) {

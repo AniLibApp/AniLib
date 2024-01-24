@@ -179,4 +179,14 @@
         <item>@string/list_progress</item>
     </string-array>
 
+
+    <string-array name="staff_character_studio_media_sort_menu">
+        <item>@string/popularity</item>
+        <item>@string/average_score</item>
+        <item>@string/favourites</item>
+        <item>@string/newest</item>
+        <item>@string/oldest</item>
+        <item>@string/title</item>
+    </string-array>
+
 </resources>

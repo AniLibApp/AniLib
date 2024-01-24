@@ -8,6 +8,7 @@ import com.revolgenx.anilib.browse.ui.viewmodel.BrowseFilterViewModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
+import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaFilterViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
 import com.revolgenx.anilib.common.data.store.activityUnionFilterDataStore
 import com.revolgenx.anilib.common.data.store.airingScheduleFilterDataStore
@@ -59,8 +60,11 @@ import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionFilterViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.MainActivityUnionViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
+import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterFilterViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
+import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleFilterViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel
+import com.revolgenx.anilib.studio.ui.viewmodel.StudioFilterViewModel
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.data.field.UserFavouriteType
@@ -117,15 +121,19 @@ val viewModelModules = module {
     //character
     viewModel { CharacterAboutViewModel(get()) }
     viewModel { CharacterMediaViewModel(get()) }
+    viewModel { CharacterMediaFilterViewModel(get()) }
     viewModel { CharacterActorViewModel(get()) }
 
     //staff
     viewModel { StaffAboutViewModel(get()) }
     viewModel { StaffMediaCharacterViewModel(get()) }
+    viewModel { StaffMediaCharacterFilterViewModel(get()) }
+    viewModel { StaffMediaRoleFilterViewModel(get()) }
     viewModel { StaffMediaRoleViewModel(get()) }
 
     //studio
     viewModel { StudioViewModel(get()) }
+    viewModel { StudioFilterViewModel(get()) }
 
     //user
     viewModel { UserViewModel(get(), get()) }

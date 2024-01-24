@@ -21,6 +21,9 @@ import com.revolgenx.anilib.common.ui.theme.AppTheme
 
 /*
 * todo: handle customtab cancel result
+*
+*
+* todo: get user setting of media title type
 * */
 class MainActivity : BaseActivity() {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)

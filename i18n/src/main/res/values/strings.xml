@@ -463,5 +463,13 @@
     <string name="has_replies">Has Replies</string>
     <!--Activity Union Screen-->
 
+    <!--Sort-->
+    <string name="on_list">On List</string>
+    <string name="newest">Newest</string>
+    <string name="oldest">Oldest</string>
+    <!--Sort-->
+    <!--Toggle Service-->
+    <string name="failed_to_toggle">Failed to toggle.</string>
+    <!--Toggle Service-->
 
 </resources>

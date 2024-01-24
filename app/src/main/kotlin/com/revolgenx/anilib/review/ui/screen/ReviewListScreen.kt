@@ -87,30 +87,26 @@ fun ReviewListScreen(
                 //todo filter
             }
         },
+        bottomNestedScrollConnection = bottomScrollConnection,
         contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
         val pagingItems = viewModel.collectAsLazyPagingItems()
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .nestedScroll(bottomScrollConnection)
-        ) {
-            LazyPagingList(
-                pagingItems = pagingItems,
-                onRefresh = {
-                    viewModel.refresh()
+
+        LazyPagingList(
+            pagingItems = pagingItems,
+            onRefresh = {
+                viewModel.refresh()
+            },
+        ) { model ->
+            model ?: return@LazyPagingList
+            ReviewListItem(model,
+                onUserClick = {
+                    navigator.userScreen(it)
                 },
-            ) { model ->
-                model ?: return@LazyPagingList
-                ReviewListItem(model,
-                    onUserClick = {
-                        navigator.userScreen(it)
-                    },
-                    onMediaClick = { id, type ->
-                        navigator.mediaScreen(id, type)
-                    }) {
-                    navigator.reviewScreen(it)
-                }
+                onMediaClick = { id, type ->
+                    navigator.mediaScreen(id, type)
+                }) {
+                navigator.reviewScreen(it)
             }
         }
     }

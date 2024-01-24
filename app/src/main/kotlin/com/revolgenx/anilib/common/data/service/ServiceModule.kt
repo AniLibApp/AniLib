@@ -22,6 +22,7 @@ import com.revolgenx.anilib.setting.data.service.SettingsService
 import com.revolgenx.anilib.setting.data.service.SettingsServiceImpl
 import com.revolgenx.anilib.social.data.service.ActivityUnionService
 import com.revolgenx.anilib.social.data.service.ActivityUnionServiceImpl
+import com.revolgenx.anilib.common.data.service.ToggleServiceImpl
 import com.revolgenx.anilib.staff.data.service.StaffService
 import com.revolgenx.anilib.staff.data.service.StaffServiceImpl
 import com.revolgenx.anilib.studio.data.service.StudioService
@@ -47,4 +48,5 @@ val serviceModules = module {
     factoryOf(::ReviewServiceImpl) { bind<ReviewService>() }
     factoryOf(::RecommendationServiceImpl) { bind<RecommendationService>() }
     factoryOf(::SettingsServiceImpl) { bind<SettingsService>() }
+    factoryOf(::ToggleServiceImpl) { bind<ToggleService>() }
 }

@@ -11,20 +11,18 @@ data class MediaTitleModel(
 ) {
     companion object {
         @Retention(AnnotationRetention.SOURCE)
-        @IntDef(type_romaji, type_english, type_native, type_user_preferred)
+        @IntDef(type_romaji, type_english, type_native)
         annotation class MediaTitleType
 
         const val type_romaji = 0
         const val type_english = 1
         const val type_native = 2
-        const val type_user_preferred = 3
     }
 
     fun title(@MediaTitleType which: Int) = when (which) {
         type_romaji -> romaji
         type_english -> english ?: romaji
         type_native -> native ?: romaji
-        type_user_preferred -> userPreferred ?: romaji
         else -> romaji
     }
 }

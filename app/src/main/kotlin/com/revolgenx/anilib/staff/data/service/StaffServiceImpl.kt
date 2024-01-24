@@ -3,9 +3,11 @@ package com.revolgenx.anilib.staff.data.service
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.character.ui.model.CharacterNameModel
 import com.revolgenx.anilib.character.ui.model.toModel
+import com.revolgenx.anilib.common.data.field.ToggleFavoriteField
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.data.service.ToggleService
 import com.revolgenx.anilib.fragment.PageInfo
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
@@ -20,7 +22,8 @@ import kotlinx.coroutines.flow.map
 
 class StaffServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
+    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore,
+    private val toggleService: ToggleService
 ) : StaffService,
     BaseService(apolloRepository, mediaSettingsPreferencesDataStore) {
     override fun getStaff(field: StaffField): Flow<StaffModel?> {
@@ -93,5 +96,9 @@ class StaffServiceImpl(
                 }
             )
         }
+    }
+
+    override fun toggleFavorite(staffId: Int): Flow<Boolean> {
+        return toggleService.toggleFavourite(ToggleFavoriteField(staffId = staffId))
     }
 }
