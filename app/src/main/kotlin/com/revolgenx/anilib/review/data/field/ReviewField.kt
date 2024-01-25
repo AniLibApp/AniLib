@@ -12,14 +12,23 @@ data class ReviewField(var reviewId: Int? = null) : BaseField<ReviewQuery>() {
     }
 }
 
+
+enum class ReviewListSort(val raw: String){
+    NEWEST("ID_DESC"),
+    SCORE("SCORE_DESC"),
+    RATING("RATING_DESC"),
+    CREATED_AT("CREATED_AT_DESC"),
+    UPDATED_AT("UPDATED_AT_DESC"),
+}
+
 data class ReviewListField(
-    var sort: ReviewSort = ReviewSort.ID_DESC
+    var sort: ReviewListSort = ReviewListSort.NEWEST
 ) : BaseSourceField<ReviewListQuery>() {
     override fun toQueryOrMutation(): ReviewListQuery {
         return ReviewListQuery(
             page = nn(page),
             perPage = nn(perPage),
-            sort = nn(listOf(sort))
+            sort = nn(listOf(ReviewSort.safeValueOf(sort.raw)))
         )
     }
 }

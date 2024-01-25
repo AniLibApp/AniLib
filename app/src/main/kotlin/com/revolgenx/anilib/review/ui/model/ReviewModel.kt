@@ -1,7 +1,9 @@
 package com.revolgenx.anilib.review.ui.model
 
 import android.text.Spanned
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.MediaReviewQuery
 import com.revolgenx.anilib.ReviewListQuery
@@ -28,8 +30,6 @@ data class ReviewModel(
     val mediaType: MediaType? = null,
     val summary: String? = null,
     val body: String? = null,
-    val rating: Int = 0,
-    val ratingAmount: Int = 0,
     val score: Int? = null,
     val private: Boolean = false,
     val siteUrl: String? = null,
@@ -41,9 +41,17 @@ data class ReviewModel(
     val user: UserModel? = null,
     val anilifiedBody: String = "",
     val bodySpanned: Spanned? = null,
+    var rating: MutableIntState = mutableIntStateOf(0),
+    val ratingAmount: MutableIntState = mutableIntStateOf(0),
     var userRating: MutableState<ReviewRating> = mutableStateOf(ReviewRating.NO_VOTE)
 ) : BaseModel
 
+data class RateReviewModel(
+    val id: Int,
+    val userRating: ReviewRating,
+    val ratingAmount: Int,
+    val rating: Int
+)
 
 fun ReviewListQuery.Review.toModel(): ReviewModel {
     return reviewFragment.toModel()
@@ -64,8 +72,8 @@ fun ReviewQuery.Review.toModel(): ReviewModel {
 
 fun MediaReviewQuery.Node.toModel() = ReviewModel(
     id = id,
-    rating = rating.orZero(),
-    ratingAmount = ratingAmount.orZero(),
+    rating = mutableIntStateOf(rating.orZero()),
+    ratingAmount = mutableIntStateOf(ratingAmount.orZero()) ,
     summary = summary,
     user = user?.let {
         UserModel(
@@ -80,8 +88,8 @@ fun MediaReviewQuery.Node.toModel() = ReviewModel(
 fun ReviewFragment.toModel(): ReviewModel {
     return ReviewModel(
         id = id,
-        rating = rating.orZero(),
-        ratingAmount = ratingAmount.orZero(),
+        rating = mutableIntStateOf(rating.orZero()),
+        ratingAmount = mutableIntStateOf(ratingAmount.orZero()),
         summary = summary,
         score = score,
         createdAt = createdAt,

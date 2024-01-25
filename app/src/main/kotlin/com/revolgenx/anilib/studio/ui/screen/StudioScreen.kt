@@ -138,7 +138,7 @@ private fun StudioScreenContent(studioId: Int) {
     ) {snackbarHostState->
         LaunchedEffect(viewModel.showToggleErrorMsg.value) {
             if (viewModel.showToggleErrorMsg.value) {
-                snackbarHostState.showSnackbar(context.getString(R.string.failed_to_toggle), withDismissAction = true)
+                snackbarHostState.showSnackbar(context.getString(R.string.operation_failed), withDismissAction = true)
                 viewModel.showToggleErrorMsg.value = false
             }
         }

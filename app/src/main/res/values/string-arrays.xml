@@ -189,4 +189,18 @@
         <item>@string/title</item>
     </string-array>
 
+
+    <string-array name="recommendation_sort_menu">
+        <item>@string/recent</item>
+        <item>@string/highest_rated</item>
+        <item>@string/lowest_rated</item>
+    </string-array>
+
+    <string-array name="review_list_sort_menu">
+        <item>@string/newest</item>
+        <item>@string/score</item>
+        <item>@string/rating</item>
+        <item>@string/created_at</item>
+        <item>@string/updated_at</item>
+    </string-array>
 </resources>

@@ -104,13 +104,9 @@ class BrowseFilterViewModel(
         }
     }
 
-    fun updateField(mField: BrowseField? = null) {
-        if (mField == null) {
-            updateUIFilters()
-        } else if (mField != field) {
-            this.field = mField
-            updateUIFilters()
-        }
+    fun updateField(mField: BrowseField) {
+        field = mField
+        updateUIFilters()
     }
 
     private fun updateUIFilters() {

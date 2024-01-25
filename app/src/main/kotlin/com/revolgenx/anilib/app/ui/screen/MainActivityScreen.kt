@@ -67,9 +67,6 @@ private var userScreen: UserScreen = UserScreen(isTab = true)
 private fun MainActivityScreenContent() {
     val snackbarHostState = remember { SnackbarHostState() }
     val navigator = localNavigator()
-    val backPressed = remember {
-        mutableStateOf(false)
-    }
 
     TabNavigator(
         tab = HomeScreen,
@@ -119,7 +116,7 @@ private fun MainActivityScreenContent() {
                 ) {
                     CurrentTab()
                 }
-                BackPress(navigator = navigator, snackbarHostState, backPressed)
+                BackPress(navigator = navigator, snackbarHostState)
             }
         }
     }
@@ -146,15 +143,11 @@ private fun RowScope.TabNavigationItem(tab: BaseTabScreen) {
 private fun BackPress(
     navigator: Navigator,
     snackbarHostState: SnackbarHostState,
-    backPressed: MutableState<Boolean>
 ) {
     val scope = rememberCoroutineScope()
     val context = localContext()
-    LaunchedEffect(key1 = backPressed) {
-        if (backPressed.value) {
-            delay(2000)
-            backPressed.value = false
-        }
+    val backPressed = remember {
+        mutableStateOf(false)
     }
 
     val msg = stringResource(id = R.string.press_again_to_exit)
@@ -172,6 +165,7 @@ private fun BackPress(
                     withDismissAction = true,
                     duration = SnackbarDuration.Short
                 )
+                backPressed.value = false
             }
         }
     }

@@ -27,6 +27,7 @@ import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.userScreen
@@ -61,6 +63,7 @@ import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
@@ -82,13 +85,12 @@ class ReviewScreen(private val reviewId: Int) : AndroidScreen() {
 @Composable
 private fun ReviewScreenContent(viewModel: ReviewViewModel) {
 
-    LaunchedEffect(viewModel) {
-        viewModel.getResource()
-    }
+    viewModel.getResource()
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     val navigator = localNavigator()
+    val context = localContext()
 
     ScreenScaffold(
         topBar = {
@@ -96,7 +98,18 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
                 reviewModel = viewModel.resource.value?.stateValue,
                 scrollBehavior = scrollBehavior,
             )
-        }) {
+        }) { snackbarHostState ->
+
+        LaunchedEffect(viewModel.showToggleErrorMsg.value) {
+            if (viewModel.showToggleErrorMsg.value) {
+                snackbarHostState.showSnackbar(
+                    context.getString(anilib.i18n.R.string.operation_failed),
+                    withDismissAction = true
+                )
+                viewModel.showToggleErrorMsg.value = false
+            }
+        }
+
         ResourceScreen(viewModel = viewModel) { review ->
             val user = review.user
             Column(
@@ -149,12 +162,16 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
 
                 MarkdownText(spanned = review.bodySpanned)
 
-                ReviewLikeDislike(viewModel, review)
+                ReviewLikeDislike(review, onLike = {
+                    viewModel.likeReview(review)
+                }, onDislike = {
+                    viewModel.dislikeReview(review)
+                })
 
                 MediumText(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
                     text = stringResource(id = I18nR.string.d_out_of_d_liked_this_review).format(
-                        review.rating, review.ratingAmount
+                        review.rating.intValue, review.ratingAmount.intValue
                     ),
                 )
             }
@@ -164,23 +181,30 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
 
 
 @Composable
-private fun ColumnScope.ReviewLikeDislike(viewModel: ReviewViewModel, review: ReviewModel) {
+private fun ColumnScope.ReviewLikeDislike(
+    review: ReviewModel,
+    onLike: OnClick,
+    onDislike: OnClick
+) {
     Row(
         modifier = Modifier.align(Alignment.CenterHorizontally),
     ) {
-        ReviewLikeDislikeButton(true, review.userRating.value) {}
-        ReviewLikeDislikeButton(false, review.userRating.value) {}
+        ReviewLikeDislikeButton(true, review.userRating, onClick = onLike)
+        ReviewLikeDislikeButton(false, review.userRating, onClick = onDislike)
     }
 }
 
-// todo mutation
 @Composable
 fun ReviewLikeDislikeButton(
-    likeButton: Boolean, rating: ReviewRating, onCheckChange: (Boolean) -> Unit
+    likeButton: Boolean,
+    rating: MutableState<ReviewRating>,
+    onClick: OnClick
 ) {
     IconToggleButton(
-        checked = if (likeButton) rating == ReviewRating.UP_VOTE else rating == ReviewRating.DOWN_VOTE,
-        onCheckedChange = onCheckChange
+        checked = if (likeButton) rating.value == ReviewRating.UP_VOTE else rating.value == ReviewRating.DOWN_VOTE,
+        onCheckedChange = {
+            onClick()
+        }
     ) {
         Icon(
             imageVector = if (likeButton) AppIcons.IcThumbUp else AppIcons.IcThumbDown,

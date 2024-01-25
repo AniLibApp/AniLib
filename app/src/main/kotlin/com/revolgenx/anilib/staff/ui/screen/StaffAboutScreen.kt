@@ -23,7 +23,7 @@ fun StaffAboutScreen(
     viewModel.getResource()
     LaunchedEffect(viewModel.showToggleErrorMsg.value) {
         if(viewModel.showToggleErrorMsg.value){
-            snackbarHostState.showSnackbar(context.getString(anilib.i18n.R.string.failed_to_toggle), withDismissAction = true)
+            snackbarHostState.showSnackbar(context.getString(anilib.i18n.R.string.operation_failed), withDismissAction = true)
             viewModel.showToggleErrorMsg.value = false
         }
     }

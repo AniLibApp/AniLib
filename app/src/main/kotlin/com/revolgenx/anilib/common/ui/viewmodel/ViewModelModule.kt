@@ -37,6 +37,7 @@ import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleViewM
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreNewlyAddedFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExplorePopularFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreTrendingFilterViewModel
+import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListFilterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
@@ -48,6 +49,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
 import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationType
 import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationViewModel
+import com.revolgenx.anilib.review.ui.viewmodel.ReviewListFilterViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.AppearanceSettingsViewModel
@@ -245,10 +247,12 @@ val viewModelModules = module {
 
     //reviews
     viewModel { ReviewListViewModel(get()) }
+    viewModel { ReviewListFilterViewModel() }
     viewModel { ReviewViewModel(get()) }
 
     //recommendations
     viewModel { RecommendationViewModel(get()) }
+    viewModel { RecommendationFilterViewModel() }
 
     //settings
     viewModel { SettingsViewModel(get()) }

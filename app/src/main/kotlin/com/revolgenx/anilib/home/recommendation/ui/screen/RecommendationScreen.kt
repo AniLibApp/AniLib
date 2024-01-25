@@ -3,6 +3,7 @@ package com.revolgenx.anilib.home.recommendation.ui.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -12,25 +13,41 @@ import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.verticalScroll
 import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconToggleButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringArrayResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dokar.sheets.BottomSheetState
+import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.R
+import com.revolgenx.anilib.character.data.field.CharacterMediaField
+import com.revolgenx.anilib.character.data.field.CharacterMediaSort
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
+import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -38,36 +55,69 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.home.recommendation.data.field.MediaRecommendationSort
+import com.revolgenx.anilib.home.recommendation.data.field.RecommendationField
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
+import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationFilterViewModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
 import com.revolgenx.anilib.media.ui.component.MediaRowItemContentEnd
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
+import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.type.RecommendationRating
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecommendationScreen(viewModel: RecommendationViewModel = koinViewModel()) {
+fun RecommendationScreen() {
+    val viewModel: RecommendationViewModel = koinViewModel()
+    val filterViewModel: RecommendationFilterViewModel = koinViewModel()
+    val filterBottomSheetState = rememberBottomSheetState()
+
+    val context = localContext()
     val navigator = localNavigator()
+    val scope = rememberCoroutineScope()
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
     val bottomScrollConnection =
         remember { BottomNestedScrollConnection(state = scrollState) }
+
 
     ScreenScaffold(
         topBar = {},
         floatingActionButton = {
             DisappearingFAB(scrollState = scrollState, icon = AppIcons.IcFilter) {
-                //todo filter
+                filterViewModel.field = viewModel.field.copy()
+                scope.launch {
+                    filterBottomSheetState.expand()
+                }
             }
         },
         bottomNestedScrollConnection = bottomScrollConnection,
         contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
-    ) {
-        val mediaComponentState = rememberMediaComponentState(navigator = navigator)
+    ) { snackbarHostState ->
 
+        LaunchedEffect(viewModel.showToggleErrorMsg.value) {
+            if (viewModel.showToggleErrorMsg.value) {
+                snackbarHostState.showSnackbar(
+                    context.getString(anilib.i18n.R.string.operation_failed),
+                    withDismissAction = true
+                )
+                viewModel.showToggleErrorMsg.value = false
+            }
+        }
+
+        val mediaComponentState = rememberMediaComponentState(navigator = navigator)
         RecommendationPagingContent(viewModel, mediaComponentState)
+        RecommendationFilterBottomSheet(
+            bottomSheetState = filterBottomSheetState,
+            viewModel = filterViewModel
+        ) {
+            viewModel.field = it
+            viewModel.refresh()
+        }
     }
 }
 
@@ -85,7 +135,16 @@ private fun RecommendationPagingContent(
         },
     ) { model ->
         model ?: return@LazyPagingList
-        RecommendationItem(model = model, mediaComponentState = mediaComponentState)
+        RecommendationItem(
+            model = model,
+            mediaComponentState = mediaComponentState,
+            onLike = {
+                viewModel.likeRecommendation(model)
+            },
+            onDislike = {
+                viewModel.dislikeRecommendation(model)
+            }
+        )
     }
 }
 
@@ -93,7 +152,9 @@ private fun RecommendationPagingContent(
 @Composable
 fun RecommendationItem(
     model: RecommendationModel,
-    mediaComponentState: MediaComponentState
+    mediaComponentState: MediaComponentState,
+    onLike: OnClick,
+    onDislike: OnClick
 ) {
     Card(
         modifier = Modifier
@@ -127,7 +188,11 @@ fun RecommendationItem(
                     .align(Alignment.BottomCenter)
                     .padding(bottom = 4.dp)
             ) {
-                RecommendationButton(model = model)
+                RecommendationButton(
+                    model = model,
+                    onLike = onLike,
+                    onDislike = onDislike
+                )
             }
         }
     }
@@ -135,7 +200,9 @@ fun RecommendationItem(
 
 @Composable
 private fun RecommendationButton(
-    model: RecommendationModel
+    model: RecommendationModel,
+    onLike: OnClick,
+    onDislike: OnClick
 ) {
     Surface(
         shape = CircleShape,
@@ -146,41 +213,111 @@ private fun RecommendationButton(
             horizontalArrangement = Arrangement.spacedBy(6.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box(
-                modifier = Modifier.clickable {
-                    /*todo filter*/
-                }
-            ) {
+
+            IconToggleButton(
+                modifier = Modifier.size(32.dp),
+                checked = model.userRating.value == RecommendationRating.RATE_UP,
+                onCheckedChange = {
+                    onLike()
+                }) {
                 Icon(
                     modifier = Modifier
                         .padding(8.dp)
                         .size(14.dp),
                     imageVector = AppIcons.IcThumbUp,
                     contentDescription = null,
-                    tint = if (model.userRating == RecommendationRating.RATE_UP) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
-            Box(
-                modifier = Modifier.clickable {
-                    /*todo filter*/
-                }
-            ) {
+
+            IconToggleButton(
+                modifier = Modifier.size(32.dp),
+                checked = model.userRating.value == RecommendationRating.RATE_DOWN,
+                onCheckedChange = {
+                    onDislike()
+                }) {
                 Icon(
                     modifier = Modifier
                         .padding(8.dp)
                         .size(14.dp),
                     imageVector = AppIcons.IcThumbDown,
                     contentDescription = null,
-                    tint = if (model.userRating == RecommendationRating.RATE_DOWN) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
 
             MediumText(
                 modifier = Modifier.padding(end = 4.dp),
-                text = model.rating.toString(),
+                text = model.rating.intValue.toString(),
                 fontSize = 11.sp
             )
+        }
+    }
+}
+
+
+@Composable
+private fun RecommendationFilterBottomSheet(
+    bottomSheetState: BottomSheetState,
+    viewModel: RecommendationFilterViewModel,
+    onFilter: (field: RecommendationField) -> Unit
+) {
+    val scope = rememberCoroutineScope()
+    val dismiss: () -> Unit = {
+        scope.launch {
+            bottomSheetState.collapse()
+        }
+    }
+
+    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+        RecommendationFilterBottomSheetContent(
+            viewModel = viewModel,
+            dismiss = dismiss,
+            onFilter = onFilter
+        )
+    }
+}
+
+@Composable
+private fun RecommendationFilterBottomSheetContent(
+    viewModel: RecommendationFilterViewModel,
+    dismiss: () -> Unit,
+    onFilter: (field: RecommendationField) -> Unit
+) {
+    val field = viewModel.field
+    Column(
+        modifier = Modifier
+            .padding(bottom = 4.dp)
+    ) {
+        BottomSheetConfirmation(
+            confirmClicked = {
+                onFilter(field)
+                dismiss()
+            },
+            dismissClicked = {
+                dismiss()
+            }
+        )
+
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp),
+        ) {
+
+            SelectMenu(
+                entries = stringArrayResource(id = R.array.recommendation_sort_menu),
+                selectedItemPosition = field.sort.ordinal
+            ) { selectedSort ->
+                field.sort = MediaRecommendationSort.entries[selectedSort]
+            }
+
+            TextSwitch(
+                title = stringResource(id = anilib.i18n.R.string.on_list),
+                checked = field.onList,
+                onCheckedChanged = {
+                    field.onList = it
+                })
         }
     }
 }

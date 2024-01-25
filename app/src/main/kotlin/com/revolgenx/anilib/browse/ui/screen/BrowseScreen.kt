@@ -91,9 +91,7 @@ class BrowseScreen(
     @Composable
     override fun Content() {
         BrowseScreenContent(browseFilterData)
-        if (browseFilterData != null) {
-            browseFilterData = null
-        }
+        browseFilterData = null
     }
 }
 

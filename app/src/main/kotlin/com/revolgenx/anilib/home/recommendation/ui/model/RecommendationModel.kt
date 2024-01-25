@@ -1,5 +1,9 @@
 package com.revolgenx.anilib.home.recommendation.ui.model
 
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.RecommendationQuery
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.model.BaseModel
@@ -10,11 +14,11 @@ import com.revolgenx.anilib.type.RecommendationRating
 
 data class RecommendationModel(
     val id: Int,
-    val rating: Int,
+    val rating: MutableIntState,
     /**
      * RecommendationRating
      * */
-    val userRating: RecommendationRating?,
+    val userRating: MutableState<RecommendationRating?>,
     // The media the recommendation is from
     val media: MediaModel?,
     // The recommended media
@@ -26,11 +30,11 @@ fun RecommendationQuery.Recommendation.toModel(): RecommendationModel {
     return recommendationFragment.toModel().copy(media = media?.media?.toModel())
 }
 
-fun RecommendationFragment.toModel(): RecommendationModel{
+fun RecommendationFragment.toModel(): RecommendationModel {
     return RecommendationModel(
         id = id,
-        rating = rating.orZero(),
-        userRating = userRating,
+        rating = mutableIntStateOf(rating.orZero()),
+        userRating = mutableStateOf(userRating),
         media = null,
         mediaRecommendation = mediaRecommendation?.media?.toModel()
     )

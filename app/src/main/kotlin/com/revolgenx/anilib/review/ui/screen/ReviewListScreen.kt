@@ -16,66 +16,78 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import com.revolgenx.anilib.common.ui.component.card.Card
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import cafe.adriel.voyager.navigator.Navigator
+import com.dokar.sheets.BottomSheetState
+import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.mediaScreen
-import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.reviewScreen
 import com.revolgenx.anilib.common.ext.userScreen
+import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
-import com.revolgenx.anilib.media.ui.component.MediaTitleType
+import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
+import com.revolgenx.anilib.common.ui.component.image.ImageOptions
+import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import com.revolgenx.anilib.common.ui.theme.review_list_gradient_bottom
 import com.revolgenx.anilib.common.ui.theme.review_list_gradient_top
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.common.util.OnMediaClick
+import com.revolgenx.anilib.media.ui.component.MediaTitleType
+import com.revolgenx.anilib.review.data.field.ReviewListField
+import com.revolgenx.anilib.review.data.field.ReviewListSort
 import com.revolgenx.anilib.review.ui.model.ReviewModel
+import com.revolgenx.anilib.review.ui.viewmodel.ReviewListFilterViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
-import com.revolgenx.anilib.common.ui.component.image.ImageOptions
-import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
-import com.revolgenx.anilib.common.ui.icons.AppIcons
-import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
-import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ReviewListScreen(
-    viewModel: ReviewListViewModel = koinViewModel()
-) {
+fun ReviewListScreen() {
+    val viewModel: ReviewListViewModel = koinViewModel()
+    val filterViewModel: ReviewListFilterViewModel = koinViewModel()
+    val filterBottomSheetState = rememberBottomSheetState()
+
     val navigator = localNavigator()
+    val scope = rememberCoroutineScope()
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
     val bottomScrollConnection =
         remember { BottomNestedScrollConnection(state = scrollState) }
@@ -84,30 +96,48 @@ fun ReviewListScreen(
         topBar = {},
         floatingActionButton = {
             DisappearingFAB(scrollState = scrollState, icon = AppIcons.IcFilter) {
-                //todo filter
+                filterViewModel.field = viewModel.field.copy()
+                scope.launch {
+                    filterBottomSheetState.expand()
+                }
             }
         },
         bottomNestedScrollConnection = bottomScrollConnection,
         contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
-        val pagingItems = viewModel.collectAsLazyPagingItems()
+        ReviewListScreenContent(viewModel, navigator)
+        ReviewListFilterBottomSheet(
+            bottomSheetState = filterBottomSheetState,
+            viewModel = filterViewModel
+        ) {
+            viewModel.field = it
+            viewModel.refresh()
+        }
+    }
+}
 
-        LazyPagingList(
-            pagingItems = pagingItems,
-            onRefresh = {
-                viewModel.refresh()
+@Composable
+private fun ReviewListScreenContent(
+    viewModel: ReviewListViewModel,
+    navigator: Navigator
+) {
+    val pagingItems = viewModel.collectAsLazyPagingItems()
+
+    LazyPagingList(
+        pagingItems = pagingItems,
+        onRefresh = {
+            viewModel.refresh()
+        },
+    ) { model ->
+        model ?: return@LazyPagingList
+        ReviewListItem(model,
+            onUserClick = {
+                navigator.userScreen(it)
             },
-        ) { model ->
-            model ?: return@LazyPagingList
-            ReviewListItem(model,
-                onUserClick = {
-                    navigator.userScreen(it)
-                },
-                onMediaClick = { id, type ->
-                    navigator.mediaScreen(id, type)
-                }) {
-                navigator.reviewScreen(it)
-            }
+            onMediaClick = { id, type ->
+                navigator.mediaScreen(id, type)
+            }) {
+            navigator.reviewScreen(it)
         }
     }
 }
@@ -239,10 +269,71 @@ fun ReviewListItem(
                 )
                 MediumText(
                     modifier = Modifier.padding(horizontal = 3.dp),
-                    text = model.rating.orZero().toString(),
+                    text = model.rating.intValue.toString(),
                     fontSize = 12.sp
                 )
             }
         }
     }
 }
+
+
+@Composable
+private fun ReviewListFilterBottomSheet(
+    bottomSheetState: BottomSheetState,
+    viewModel: ReviewListFilterViewModel,
+    onFilter: (field: ReviewListField) -> Unit
+) {
+    val scope = rememberCoroutineScope()
+    val dismiss: () -> Unit = {
+        scope.launch {
+            bottomSheetState.collapse()
+        }
+    }
+
+    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+        ReviewListFilterBottomSheetContent(
+            viewModel = viewModel,
+            dismiss = dismiss,
+            onFilter = onFilter
+        )
+    }
+}
+
+@Composable
+private fun ReviewListFilterBottomSheetContent(
+    viewModel: ReviewListFilterViewModel,
+    dismiss: () -> Unit,
+    onFilter: (field: ReviewListField) -> Unit
+) {
+    val field = viewModel.field
+    Column(
+        modifier = Modifier
+            .padding(bottom = 4.dp)
+    ) {
+        BottomSheetConfirmation(
+            confirmClicked = {
+                onFilter(field)
+                dismiss()
+            },
+            dismissClicked = {
+                dismiss()
+            }
+        )
+
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp)
+                .padding(vertical = 8.dp),
+        ) {
+            SelectMenu(
+                entries = stringArrayResource(id = R.array.review_list_sort_menu),
+                selectedItemPosition = field.sort.ordinal
+            ) { selectedSort ->
+                field.sort = ReviewListSort.entries[selectedSort]
+            }
+        }
+    }
+}
+

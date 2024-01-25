@@ -99,9 +99,9 @@ private fun MediaReviewItem(
                         Icon(
                             modifier = Modifier.size(12.dp),
                             imageVector = Icons.Rounded.ThumbUp,
-                            contentDescription = reviewModel.rating.orZero().toString(),
+                            contentDescription = reviewModel.rating.intValue.toString(),
                         )
-                        Text(reviewModel.rating.orZero().prettyNumberFormat())
+                        Text(reviewModel.rating.intValue.prettyNumberFormat())
                     }
                 }
             }
