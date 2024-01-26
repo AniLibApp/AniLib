@@ -22,6 +22,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,6 +30,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dokar.sheets.BottomSheetState
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
@@ -47,17 +50,23 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.ui.icons.appicon.IcNotification
 import com.revolgenx.anilib.common.ui.icons.appicon.IcNotificationOutline
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
 import com.revolgenx.anilib.social.ui.model.ActivityModel
 import com.revolgenx.anilib.social.ui.model.ListActivityModel
 import com.revolgenx.anilib.social.ui.model.MessageActivityModel
 import com.revolgenx.anilib.social.ui.model.TextActivityModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun ActivityUnionScreenContent(
-    viewModel: ActivityUnionViewModel
+    viewModel: ActivityUnionViewModel,
+    activityReplyBottomSheetState: BottomSheetState = rememberBottomSheetState()
 ) {
+    val navigator = localNavigator()
+    val scope = rememberCoroutineScope()
     val pagingItems = viewModel.collectAsLazyPagingItems()
     LazyPagingList(
         pagingItems = pagingItems,
@@ -71,20 +80,60 @@ fun ActivityUnionScreenContent(
         ) {
             activityUnionModel.apply {
                 if (listActivityModel != null) {
-                    ListActivityItem(listActivityModel)
+                    ListActivityItem(
+                        model = listActivityModel,
+                        onUserClick = {
+                            navigator.userScreen(it)
+                        },
+                        onReplyClick = {
+                            scope.launch {
+                                viewModel.activityReplyId.intValue = it
+                                activityReplyBottomSheetState.peek()
+                            }
+                        })
                 } else if (messageActivityModel != null) {
-                    MessageActivityItem(messageActivityModel)
+                    MessageActivityItem(
+                        model = messageActivityModel,
+                        onUserClick = {
+                            navigator.userScreen(it)
+                        },
+                        onReplyClick = {
+                            scope.launch {
+                                viewModel.activityReplyId.intValue = it
+                                activityReplyBottomSheetState.peek()
+                            }
+                        })
                 } else if (textActivityModel != null) {
-                    TextActivityItem(textActivityModel)
+                    TextActivityItem(
+                        model = textActivityModel,
+                        onUserClick = {
+                            navigator.userScreen(it)
+                        },
+                        onReplyClick = {
+                            scope.launch {
+                                viewModel.activityReplyId.intValue = it
+                                activityReplyBottomSheetState.peek()
+                            }
+                        })
                 }
             }
         }
     }
+
+//    ActivityReplyBottomSheet(
+//        activityId = viewModel.activityReplyId,
+//        bottomSheetState = activityReplyBottomSheetState
+//    )
+
 }
 
 
 @Composable
-fun ListActivityItem(model: ListActivityModel) {
+fun ListActivityItem(
+    model: ListActivityModel,
+    onUserClick: OnClickWithId,
+    onReplyClick: OnClickWithId
+) {
     val media = model.media
     Card(
         modifier = Modifier
@@ -117,7 +166,7 @@ fun ListActivityItem(model: ListActivityModel) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
-                    ActivityItemTop(model = model)
+                    ActivityItemTop(model = model, onUserClick = onUserClick)
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = model.progressStatus,
@@ -125,14 +174,18 @@ fun ListActivityItem(model: ListActivityModel) {
                         maxLines = 2
                     )
                 }
-                ActivityItemBottom(model = model)
+                ActivityItemBottom(model = model, onReplyClick = onReplyClick)
             }
         }
     }
 }
 
 @Composable
-fun MessageActivityItem(model: MessageActivityModel) {
+fun MessageActivityItem(
+    model: MessageActivityModel,
+    onUserClick: OnClickWithId,
+    onReplyClick: OnClickWithId
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -141,19 +194,23 @@ fun MessageActivityItem(model: MessageActivityModel) {
             modifier = Modifier.padding(6.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            ActivityItemTop(model)
+            ActivityItemTop(model = model, onUserClick = onUserClick)
             MarkdownText(
                 modifier = Modifier.fillMaxWidth(),
                 spanned = model.messageSpanned
             )
-            ActivityItemBottom(model)
+            ActivityItemBottom(model, onReplyClick = onReplyClick)
         }
     }
 }
 
 
 @Composable
-fun TextActivityItem(model: TextActivityModel) {
+fun TextActivityItem(
+    model: TextActivityModel,
+    onUserClick: OnClickWithId,
+    onReplyClick: OnClickWithId
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -162,20 +219,19 @@ fun TextActivityItem(model: TextActivityModel) {
             modifier = Modifier.padding(6.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            ActivityItemTop(model)
+            ActivityItemTop(model = model, onUserClick = onUserClick)
             MarkdownText(
                 modifier = Modifier.fillMaxWidth(),
                 spanned = model.textSpanned
             )
-            ActivityItemBottom(model)
+            ActivityItemBottom(model, onReplyClick = onReplyClick)
         }
     }
 }
 
 
 @Composable
-fun ActivityItemTop(model: ActivityModel) {
-    val navigator = localNavigator()
+fun ActivityItemTop(model: ActivityModel, onUserClick: OnClickWithId) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -186,7 +242,7 @@ fun ActivityItemTop(model: ActivityModel) {
                 .weight(1f)
                 .clickable {
                     model.userId?.let {
-                        navigator.userScreen(it)
+                        onUserClick(it)
                     }
                 },
             verticalAlignment = Alignment.CenterVertically,
@@ -232,7 +288,7 @@ fun ActivityItemTop(model: ActivityModel) {
 
 
 @Composable
-private fun ActivityItemBottom(model: ActivityModel) {
+private fun ActivityItemBottom(model: ActivityModel, onReplyClick: OnClickWithId) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Bottom
@@ -250,7 +306,9 @@ private fun ActivityItemBottom(model: ActivityModel) {
 
             TextButton(
                 colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
-                onClick = { /*TODO*/ },
+                onClick = {
+                    onReplyClick(model.id)
+                },
                 contentPadding = PaddingValues(8.dp)
             ) {
                 Icon(
@@ -284,11 +342,4 @@ private fun ActivityItemBottom(model: ActivityModel) {
 
         }
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun ActivityItemBottomPreview() {
-    ActivityItemBottom(TextActivityModel(0, likeCount = 2, replyCount = 3))
 }

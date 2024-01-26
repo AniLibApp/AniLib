@@ -96,6 +96,23 @@ query ActivityUnionQuery(
 
 }
 
+query ActivityReplyQuery(
+    $page:Int,
+    $perPage:Int,
+    $activityId: Int
+){
+    page: Page(page:$page, perPage:$perPage) @nonnull{
+        pageInfo @nonnull{
+            ... pageInfo
+        }
+
+        activityReplies(activityId: $activityId){
+            ... activityReply
+        }
+    }
+}
+
+
 query ActivityInfoQuery($id:Int){
     activity: Activity(id:$id){
         ... on TextActivity{
@@ -113,7 +130,7 @@ query ActivityInfoQuery($id:Int){
                 ... likeUsers
             }
             replies{
-                ... replyUsers
+                ... activityReply
             }
             user{
                 ... activityUser
@@ -146,7 +163,7 @@ query ActivityInfoQuery($id:Int){
                 ... likeUsers
             }
             replies{
-                ... replyUsers
+                ... activityReply
             }
             user{
                 ... activityUser
@@ -172,7 +189,7 @@ query ActivityInfoQuery($id:Int){
                 ... likeUsers
             }
             replies{
-                ... replyUsers
+                ... activityReply
             }
         }
     }
@@ -223,7 +240,7 @@ mutation SaveActivityReplyMutation($id:Int,$activityId:Int, $text:String){
     }
 }
 
-fragment replyUsers on ActivityReply{
+fragment activityReply on ActivityReply{
     id
     activityId
     userId

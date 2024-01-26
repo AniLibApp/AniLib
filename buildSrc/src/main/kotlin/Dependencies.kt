@@ -18,7 +18,7 @@ object Versions{
     const val composeActivity = "1.8.2"
     const val voyager = "1.0.0"
     const val timber = "5.0.1"
-    const val koin = "3.4.1"
+    const val koin = "3.5.3"
     const val coil = "2.4.0"
     const val desugar = "1.1.5"
     const val paging = "3.2.0"
@@ -45,9 +45,10 @@ object Dependencies {
     const val voyagerTab = "cafe.adriel.voyager:voyager-tab-navigator:${Versions.voyager}"
 
 
-    const val koin = "io.insert-koin:koin-android:${Versions.koin}"
-    const val koinCompose = "io.insert-koin:koin-androidx-compose:${Versions.koin}"
-    const val koinWorkManager = "io.insert-koin:koin-androidx-workmanager:${Versions.koin}"
+    const val koinBom = "io.insert-koin:koin-bom:${Versions.koin}"
+    const val koin = "io.insert-koin:koin-android"
+    const val koinCompose = "io.insert-koin:koin-androidx-compose"
+    const val koinWorkManager = "io.insert-koin:koin-androidx-workmanager"
 
     const val apollo = "com.apollographql.apollo3:apollo-runtime:3.7.3"
     const val loggingInterceptor = "com.squareup.okhttp3:logging-interceptor:4.10.0"
@@ -107,6 +108,7 @@ fun DependencyHandler.compose() {
     debugImplementation(Dependencies.composeUiToolingPreview)
 }
 fun DependencyHandler.koin() {
+    dependencyPlatform(Dependencies.koinBom)
     implementation(Dependencies.koin)
     implementation(Dependencies.koinCompose)
     implementation(Dependencies.koinWorkManager)

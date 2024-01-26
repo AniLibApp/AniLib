@@ -54,6 +54,7 @@ fun <M : BaseModel> LazyPagingList(
     span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     gridOptions: GridOptions? = null,
     onRefresh: (() -> Unit)? = null,
+    divider: @Composable (() -> Unit)? = null,
     itemContentIndex: (@Composable Any.(index: Int, value: M?) -> Unit)? = null,
     itemContent: (@Composable Any.(value: M?) -> Unit)? = null
 ) {
@@ -77,6 +78,7 @@ fun <M : BaseModel> LazyPagingList(
             ListPagingListType.COLUMN -> LazyColumnLayout(
                 items = items,
                 pagingItems = pagingItems,
+                divider = divider,
                 itemContent = itemContent,
                 itemContentIndex = itemContentIndex
             )
@@ -105,6 +107,7 @@ fun <M : BaseModel> LazyPagingList(
 private fun <M : BaseModel> LazyColumnLayout(
     items: List<M>?,
     pagingItems: LazyPagingItems<M>?,
+    divider: @Composable (() -> Unit)? = null,
     itemContentIndex: (@Composable LazyItemScope.(index: Int, value: M?) -> Unit)? = null,
     itemContent: (@Composable LazyItemScope.(value: M?) -> Unit)? = null
 ) {
@@ -122,6 +125,11 @@ private fun <M : BaseModel> LazyColumnLayout(
 
                 if (itemContentIndex != null) {
                     itemContentIndex(index, item)
+                }
+
+
+                if (!pagingItems.loadState.append.endOfPaginationReached || index < pagingItems.itemCount - 1) {
+                    divider?.invoke()
                 }
             }
         }
@@ -142,7 +150,11 @@ private fun <M : BaseModel> LazyColumnLayout(
         }
 
         pagingItems?.let {
-            lazyListResourceState(items = items, pagingItems = pagingItems, type = ListPagingListType.COLUMN)
+            lazyListResourceState(
+                items = items,
+                pagingItems = pagingItems,
+                type = ListPagingListType.COLUMN
+            )
         }
     }
 }
@@ -189,7 +201,11 @@ private fun <M : BaseModel> LazyRowLayout(
         }
 
         pagingItems?.let {
-            lazyListResourceState(items = items, pagingItems = pagingItems, type = ListPagingListType.ROW)
+            lazyListResourceState(
+                items = items,
+                pagingItems = pagingItems,
+                type = ListPagingListType.ROW
+            )
         }
     }
 }
@@ -268,7 +284,7 @@ private fun <M : BaseModel> LazyGridLayout(
 private fun <M : BaseModel> LazyListScope.lazyListResourceState(
     items: List<M>?,
     pagingItems: LazyPagingItems<M>?,
-    type: ListPagingListType
+    type: ListPagingListType,
 ) {
 
     if (items?.isEmpty() == true) {
@@ -320,6 +336,7 @@ private fun <M : BaseModel> LazyListScope.lazyListResourceState(
         }
 
         is LoadState.NotLoading -> {}
+
         else -> {}
     }
 }

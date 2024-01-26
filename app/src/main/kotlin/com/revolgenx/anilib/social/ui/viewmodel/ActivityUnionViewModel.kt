@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.social.ui.viewmodel
 
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.mutableIntStateOf
 import com.revolgenx.anilib.common.data.store.ActivityUnionFilterDataStore
 import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
@@ -15,6 +17,8 @@ open class ActivityUnionViewModel(private val activityUnionService: ActivityUnio
     override val field: ActivityUnionField = ActivityUnionField()
     override val pagingSource: ActivityUnionPagingSource
         get() = ActivityUnionPagingSource(this.field, activityUnionService)
+
+    val activityReplyId = mutableIntStateOf(-1)
 }
 
 class MainActivityUnionViewModel(

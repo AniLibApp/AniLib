@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.social.ui.screen
 
+import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -85,6 +87,7 @@ object ActivityUnionScreen : BaseTabScreen() {
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
         val navigator = localNavigator()
+        val activityReplyBottomSheetState = rememberBottomSheetState()
 
         ScreenScaffold(
             topBar = {
@@ -122,13 +125,18 @@ object ActivityUnionScreen : BaseTabScreen() {
             bottomNestedScrollConnection = bottomNestedScrollConnection,
             contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
         ) {
-            ActivityUnionScreenContent(viewModel = viewModel)
+            ActivityUnionScreenContent(viewModel = viewModel, activityReplyBottomSheetState)
+            ActivityUnionFilterBottomSheet(
+                bottomSheetState = filterBottomSheetState,
+                viewModel = filterViewModel
+            )
         }
 
-        ActivityUnionFilterBottomSheet(
-            bottomSheetState = filterBottomSheetState,
-            viewModel = filterViewModel
+        ActivityReplyBottomSheet(
+            activityId = viewModel.activityReplyId,
+            bottomSheetState = activityReplyBottomSheetState
         )
+
     }
 }
 

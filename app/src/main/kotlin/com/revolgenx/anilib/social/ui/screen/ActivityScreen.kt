@@ -1,10 +1,9 @@
 package com.revolgenx.anilib.social.ui.screen
 
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
-import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 
 class ActivityScreen(private val activityId: Int): AndroidScreen() {
     @Composable

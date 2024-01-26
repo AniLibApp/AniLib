@@ -476,5 +476,7 @@
     <!--Sort-->
 
     <string name="operation_failed">Operation failed.</string>
+    <string name="replies">Replies</string>
+    <string name="reply">Reply</string>
 
 </resources>

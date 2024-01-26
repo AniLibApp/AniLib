@@ -58,6 +58,7 @@ import com.revolgenx.anilib.setting.ui.viewmodel.MediaSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.NotificationSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionFilterViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.MainActivityUnionViewModel
@@ -231,6 +232,7 @@ val viewModelModules = module {
     viewModel { ActivityUnionViewModel(get()) }
     viewModel { ActivityComposerViewModel() }
     viewModel { ActivityUnionFilterViewModel(get<Context>().activityUnionFilterDataStore) }
+    viewModel { parameters -> ActivityReplyViewModel(parameters.get(), get(), get()) }
 
     //browse
     viewModel { BrowseViewModel(get(), get()) }
