@@ -16,6 +16,8 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
+import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
@@ -76,7 +78,8 @@ private fun CharacterScreenContent(characterId: Int) {
                     ShareOverflowMenu(text = site)
                 }
             }
-        }
+        },
+        contentWindowInsets = horizontalBottomWindowInsets()
     ) { page ->
         Box(
             modifier = Modifier

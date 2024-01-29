@@ -23,12 +23,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.composed
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.Placeable
 import androidx.compose.ui.layout.SubcomposeLayout
 import androidx.compose.ui.platform.debugInspectorInfo
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastFold
+import androidx.compose.ui.util.fastForEach
+import androidx.compose.ui.util.fastForEachIndexed
 import com.revolgenx.anilib.common.ui.component.tab.TabRowDefaults.tabIndicatorOffset
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -38,7 +42,7 @@ fun ScrollableTabRow(
     selectedTabIndex: Int,
     modifier: Modifier = Modifier,
     containerColor: Color = Color.Transparent,
-    contentColor: Color = TabRowDefaults.contentColor,
+    contentColor: Color = TabRowDefaults.primaryContainerColor,
     edgePadding: Dp = ScrollableTabRowPadding,
     indicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
         TabRowDefaults.SecondaryIndicator(
@@ -48,12 +52,13 @@ fun ScrollableTabRow(
     divider: @Composable (() -> Unit)? = null,
     tabs: @Composable () -> Unit
 ) {
+    val scrollState = rememberScrollState()
+
     Surface(
         modifier = modifier,
         color = containerColor,
         contentColor = contentColor
     ) {
-        val scrollState = rememberScrollState()
         val coroutineScope = rememberCoroutineScope()
         val scrollableTabData = remember(scrollState, coroutineScope) {
             ScrollableTabData(
@@ -73,15 +78,30 @@ fun ScrollableTabRow(
 
             val tabMeasurables = subcompose(TabSlots.Tabs, tabs)
 
-            val layoutHeight = tabMeasurables.fold(initial = 0) { curr, measurable ->
+            val layoutHeight = tabMeasurables.fastFold(initial = 0) { curr, measurable ->
                 maxOf(curr, measurable.maxIntrinsicHeight(Constraints.Infinity))
             }
 
-            val tabConstraints = constraints.copy(minWidth = 0, minHeight = layoutHeight)
-            val tabPlaceables = tabMeasurables
-                .map { it.measure(tabConstraints) }
+            val tabConstraints = constraints.copy(
+                minWidth = 0,
+                minHeight = layoutHeight,
+                maxHeight = layoutHeight,
+            )
 
-            val layoutWidth = tabPlaceables.fold(initial = padding * 2) { curr, measurable ->
+            val tabPlaceables = mutableListOf<Placeable>()
+            val tabContentWidths = mutableListOf<Dp>()
+            tabMeasurables.fastForEach {
+                val placeable = it.measure(tabConstraints)
+                val contentWidth =
+                    minOf(
+                        it.maxIntrinsicWidth(placeable.height),
+                        placeable.width
+                    ).toDp()
+                tabPlaceables.add(placeable)
+                tabContentWidths.add(contentWidth)
+            }
+
+            val layoutWidth = tabPlaceables.fastFold(initial = padding * 2) { curr, measurable ->
                 curr + measurable.width
             }
 
@@ -90,16 +110,23 @@ fun ScrollableTabRow(
                 // Place the tabs
                 val tabPositions = mutableListOf<TabPosition>()
                 var left = padding
-                tabPlaceables.forEach {
-                    it.placeRelative(left, 0)
-                    tabPositions.add(TabPosition(left = left.toDp(), width = it.width.toDp()))
-                    left += it.width
+
+                tabPlaceables.fastForEachIndexed { index, placeable ->
+                    placeable.placeRelative(left, 0)
+                    tabPositions.add(
+                        TabPosition(
+                            left = left.toDp(),
+                            width = placeable.width.toDp(),
+                            contentWidth = tabContentWidths[index]
+                        )
+                    )
+                    left += placeable.width
                 }
 
                 // The divider is measured with its own height, and width equal to the total width
                 // of the tab row, and then placed on top of the tabs.
-                if(divider != null){
-                    subcompose(TabSlots.Divider, divider).forEach {
+                if (divider != null) {
+                    subcompose(TabSlots.Divider, divider).fastForEach {
                         val placeable = it.measure(
                             constraints.copy(
                                 minHeight = 0,
@@ -130,7 +157,7 @@ fun ScrollableTabRow(
     }
 }
 
-class TabPosition internal constructor(val left: Dp, val width: Dp) {
+class TabPosition internal constructor(val left: Dp, val width: Dp, val contentWidth: Dp) {
     val right: Dp get() = left + width
 
     override fun equals(other: Any?): Boolean {
@@ -139,6 +166,7 @@ class TabPosition internal constructor(val left: Dp, val width: Dp) {
 
         if (left != other.left) return false
         if (width != other.width) return false
+        if (contentWidth != other.contentWidth) return false
 
         return true
     }
@@ -146,11 +174,12 @@ class TabPosition internal constructor(val left: Dp, val width: Dp) {
     override fun hashCode(): Int {
         var result = left.hashCode()
         result = 31 * result + width.hashCode()
+        result = 31 * result + contentWidth.hashCode()
         return result
     }
 
     override fun toString(): String {
-        return "TabPosition(left=$left, right=$right, width=$width)"
+        return "TabPosition(left=$left, right=$right, width=$width, contentWidth=$contentWidth)"
     }
 }
 

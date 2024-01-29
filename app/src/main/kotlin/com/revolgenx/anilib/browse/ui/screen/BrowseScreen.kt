@@ -50,6 +50,7 @@ import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.component.CharacterCard
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.characterScreen
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
@@ -109,16 +110,19 @@ private fun BrowseScreenContent(browseFilterData: BrowseFilterData?) {
     val scope = rememberCoroutineScope()
     val mediaComponentState = rememberMediaComponentState(navigator = navigator)
 
-    ScreenScaffold(topBar = {
-        BrowseScreenTopAppbar(scrollBehavior = scrollBehavior,
-            viewModel = viewModel,
-            openFilterBottomSheet = {
-                scope.launch {
-                    browseFilterViewModel.updateField(viewModel.field.copy())
-                    browseFilterBottomSheetState.expand()
-                }
-            })
-    }) {
+    ScreenScaffold(
+        topBar = {
+            BrowseScreenTopAppbar(scrollBehavior = scrollBehavior,
+                viewModel = viewModel,
+                openFilterBottomSheet = {
+                    scope.launch {
+                        browseFilterViewModel.updateField(viewModel.field.copy())
+                        browseFilterBottomSheetState.expand()
+                    }
+                })
+        },
+        contentWindowInsets = horizontalBottomWindowInsets()
+    ) {
         BrowsePagingContent(viewModel, mediaComponentState, navigator)
         BrowseFilterBottomSheet(state = browseFilterBottomSheetState,
             viewModel = browseFilterViewModel,

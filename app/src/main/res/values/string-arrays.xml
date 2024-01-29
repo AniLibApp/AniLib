@@ -203,4 +203,17 @@
         <item>@string/created_at</item>
         <item>@string/updated_at</item>
     </string-array>
+
+    <string-array name="staff_language_menu">
+        <item>@string/japanese</item>
+        <item>@string/english</item>
+        <item>@string/korean</item>
+        <item>@string/italian</item>
+        <item>@string/spanish</item>
+        <item>@string/portuguese</item>
+        <item>@string/french</item>
+        <item>@string/german</item>
+        <item>@string/hebrew</item>
+        <item>@string/hungarian</item>
+    </string-array>
 </resources>

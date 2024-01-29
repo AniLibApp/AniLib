@@ -6,16 +6,13 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -43,7 +40,6 @@ import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.reviewScreen
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
@@ -59,7 +55,10 @@ import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.component.text.shadow
+import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
+import com.revolgenx.anilib.common.ui.composition.isLandScape
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
@@ -103,7 +102,6 @@ fun ReviewListScreen() {
             }
         },
         bottomNestedScrollConnection = bottomScrollConnection,
-        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
         ReviewListScreenContent(viewModel, navigator)
         ReviewListFilterBottomSheet(
@@ -122,12 +120,15 @@ private fun ReviewListScreenContent(
     navigator: Navigator
 ) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
+    val isLandScape = isLandScape()
 
     LazyPagingList(
         pagingItems = pagingItems,
         onRefresh = {
             viewModel.refresh()
         },
+        type = if (isLandScape) ListPagingListType.GRID else ListPagingListType.COLUMN,
+        gridOptions = GridOptions(GridCells.Fixed(2))
     ) { model ->
         model ?: return@LazyPagingList
         ReviewListItem(model,

@@ -34,6 +34,8 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -92,7 +94,8 @@ private fun MediaListScreenContent(
             AppBarLayout(
                 scrollBehavior = scrollBehavior,
                 colors = AppBarLayoutDefaults.transparentColors(),
-                containerHeight = appbarAnimation
+                containerHeight = appbarAnimation,
+                windowInsets = topWindowInsets()
             ) {
                 Box(
                     modifier = Modifier
@@ -171,7 +174,6 @@ private fun MediaListScreenContent(
                 }
             }
         },
-        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
         Box(
             modifier = Modifier

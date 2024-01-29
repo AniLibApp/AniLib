@@ -113,7 +113,6 @@ fun UserFavouritesScreen(
         topBar = {},
         navigationIcon = {},
         actions = {},
-        contentWindowInsets = emptyWindowInsets(),
     ) {
         Box(
             modifier = Modifier

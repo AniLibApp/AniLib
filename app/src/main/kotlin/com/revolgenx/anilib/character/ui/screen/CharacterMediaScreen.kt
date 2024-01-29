@@ -27,6 +27,7 @@ import com.revolgenx.anilib.character.data.field.CharacterMediaField
 import com.revolgenx.anilib.character.data.field.CharacterMediaSort
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaFilterViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -75,7 +76,6 @@ fun CharacterMediaScreen(characterId: Int) {
             }
         },
         bottomNestedScrollConnection = bottomScrollConnection,
-        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
         val mediaComponentState = rememberMediaComponentState(navigator = navigator)
         CharacterMediaPagingContent(viewModel, mediaComponentState)

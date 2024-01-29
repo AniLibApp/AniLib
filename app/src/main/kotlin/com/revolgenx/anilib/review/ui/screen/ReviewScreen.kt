@@ -44,6 +44,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
@@ -98,7 +99,9 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
                 reviewModel = viewModel.resource.value?.stateValue,
                 scrollBehavior = scrollBehavior,
             )
-        }) { snackbarHostState ->
+        },
+        contentWindowInsets = horizontalBottomWindowInsets()
+    ) { snackbarHostState ->
 
         LaunchedEffect(viewModel.showToggleErrorMsg.value) {
             if (viewModel.showToggleErrorMsg.value) {

@@ -10,6 +10,7 @@ data class ActivityUnionField(
     var type: ActivityType? = null,
     var mediaId: Int? = null
 ) : BaseSourceUserField<ActivityUnionQuery>() {
+    override var perPage: Int = 25
     override fun toQueryOrMutation(): ActivityUnionQuery {
         val typeIn = if (userId == null) {
             listOf(

@@ -119,12 +119,6 @@ fun ActivityUnionScreenContent(
             }
         }
     }
-
-//    ActivityReplyBottomSheet(
-//        activityId = viewModel.activityReplyId,
-//        bottomSheetState = activityReplyBottomSheetState
-//    )
-
 }
 
 

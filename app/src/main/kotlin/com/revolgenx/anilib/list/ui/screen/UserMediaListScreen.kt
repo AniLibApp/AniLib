@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
@@ -134,6 +135,7 @@ private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
                 }
             }
         },
+        contentWindowInsets = horizontalBottomWindowInsets()
     ) { page ->
         Box(
             modifier = Modifier

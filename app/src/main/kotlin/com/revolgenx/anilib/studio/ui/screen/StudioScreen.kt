@@ -28,6 +28,7 @@ import anilib.i18n.R
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
@@ -135,6 +136,7 @@ private fun StudioScreenContent(studioId: Int) {
         },
         bottomNestedScrollConnection = bottomScrollConnection,
         scrollBehavior = scrollBehavior,
+        contentWindowInsets = horizontalBottomWindowInsets()
     ) {snackbarHostState->
         LaunchedEffect(viewModel.showToggleErrorMsg.value) {
             if (viewModel.showToggleErrorMsg.value) {

@@ -11,8 +11,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -30,12 +32,14 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.horizontalWindowInsets
+import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CollapsibleAppBarLayout(
+private fun CollapsibleAppBarLayout(
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     containerHeight: Dp = AppBarHeight,
@@ -74,7 +78,11 @@ fun CollapsibleAppBarLayout(
         val height = LocalDensity.current.run {
             containerHeight.toPx() + (scrollBehavior?.state?.heightOffset ?: 0f)
         }
-        TopAppBarContent(windowInsets = emptyWindowInsets(), heightPx = height, content)
+        TopAppBarContent(
+            windowInsets = windowInsets.only(WindowInsetsSides.Horizontal),
+            heightPx = height,
+            content
+        )
     }
 }
 
@@ -87,11 +95,13 @@ fun CollapsingAppbar(
     scrollBehavior: TopAppBarScrollBehavior,
     containerContent: @Composable BoxScope.(isCollapsed: Boolean) -> Unit,
     title: @Composable (isCollapsed: Boolean) -> Unit,
-    navigationIcon: @Composable (()-> Unit)? = null,
+    navigationIcon: @Composable (() -> Unit)? = null,
     actions: @Composable RowScope.(isCollapsed: Boolean) -> Unit,
-    maxAlpha:Float = 0.8f,
+    maxAlpha: Float = 0.8f,
     alphaFraction: Float = maxAlpha,
-    collapseFraction: Float = 0.7f
+    collapseFraction: Float = 0.7f,
+    windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
+    contentWindowInsets: WindowInsets = TopAppBarDefaults.windowInsets
 ) {
     val topAppBarState = scrollBehavior.state
     val progress = topAppBarState.collapseProgress().value
@@ -103,6 +113,7 @@ fun CollapsingAppbar(
             containerHeight = containerHeight,
             appBarHeight = appBarHeight,
             scrollBehavior = scrollBehavior,
+            windowInsets = contentWindowInsets
         ) {
             containerContent(isCollapsed)
             Box(
@@ -117,11 +128,12 @@ fun CollapsingAppbar(
         }
 
         AppBarLayout(
-            colors = AppBarLayoutDefaults.transparentColors()
+            colors = AppBarLayoutDefaults.transparentColors(),
+            windowInsets = windowInsets
         ) {
             AppBar(
                 title = {
-                        title(isCollapsed)
+                    title(isCollapsed)
                 },
                 navigationIcon = navigationIcon ?: {
                     NavigationIcon(tonalButton = !isCollapsed)

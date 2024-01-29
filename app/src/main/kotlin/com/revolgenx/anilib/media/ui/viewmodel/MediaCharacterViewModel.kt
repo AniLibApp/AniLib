@@ -9,7 +9,7 @@ import com.revolgenx.anilib.media.data.source.MediaCharacterPagingSource
 class MediaCharacterViewModel(private val mediaService: MediaService) :
     PagingViewModel<CharacterEdgeModel, MediaCharacterField, MediaCharacterPagingSource>() {
 
-    override val field = MediaCharacterField()
+    override var field = MediaCharacterField()
 
     override val pagingSource: MediaCharacterPagingSource
         get() = MediaCharacterPagingSource(this.field, mediaService)

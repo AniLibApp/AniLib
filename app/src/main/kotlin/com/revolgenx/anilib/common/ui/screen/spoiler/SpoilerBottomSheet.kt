@@ -34,26 +34,31 @@ fun SpoilerBottomSheet(
             onDismissRequest = { openBottomSheet.value = false },
             sheetState = bottomSheetState
         ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                Text(
-                    text = stringResource(id = I18nR.string.spoiler) + " ( ╯°□°)╯",
-                    style = MaterialTheme.typography.titleLarge,
-                )
+            SpoilerBottomSheetContent(spanned)
+        }
+    }
+}
 
-                Box(
-                    modifier = Modifier.verticalScroll(rememberScrollState())
-                ) {
-                    MarkdownText(
-                        modifier = Modifier.fillMaxWidth(),
-                        spanned = spanned
-                    )
-                }
-            }
+@Composable
+private fun SpoilerBottomSheetContent(spanned: Spanned?) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = stringResource(id = I18nR.string.spoiler) + " ( ╯°□°)╯",
+            style = MaterialTheme.typography.titleLarge,
+        )
+
+        Box(
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        ) {
+            MarkdownText(
+                modifier = Modifier.fillMaxWidth(),
+                spanned = spanned
+            )
         }
     }
 }

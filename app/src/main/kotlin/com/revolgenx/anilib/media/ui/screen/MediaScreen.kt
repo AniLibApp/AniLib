@@ -11,11 +11,15 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -52,6 +56,7 @@ import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
@@ -107,7 +112,7 @@ class MediaScreen(
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
-fun MediaScreenContent(
+private fun MediaScreenContent(
     mediaId: Int,
     mediaType: MediaType,
 ) {
@@ -125,19 +130,17 @@ fun MediaScreenContent(
     }
     val pagerState = rememberPagerState() { visiblePages.size }
 
-    LaunchedEffect(viewModel) {
-        viewModel.field.mediaId = mediaId
-        recommendationViewModel.field.mediaId = mediaId
-        statsViewModel.field.mediaId = mediaId
-        reviewViewModel.field.mediaId = mediaId
-        staffViewModel.field.mediaId = mediaId
-        characterViewModel.field.mediaId = mediaId
-        activityUnionViewModel.field.also {
-            it.mediaId = mediaId
-            it.type = ActivityType.MEDIA_LIST
-        }
-        viewModel.getResource()
+    viewModel.field.mediaId = mediaId
+    recommendationViewModel.field.mediaId = mediaId
+    statsViewModel.field.mediaId = mediaId
+    reviewViewModel.field.mediaId = mediaId
+    staffViewModel.field.mediaId = mediaId
+    characterViewModel.field.mediaId = mediaId
+    activityUnionViewModel.field.also {
+        it.mediaId = mediaId
+        it.type = ActivityType.MEDIA_LIST
     }
+    viewModel.getResource()
 
 
     val scrollBehavior =
@@ -153,14 +156,13 @@ fun MediaScreenContent(
                 scrollBehavior = scrollBehavior,
             )
         },
-        contentWindowInsets = emptyWindowInsets()
+        contentWindowInsets = horizontalBottomWindowInsets(),
     ) {
         PagerScreenScaffold(
             pages = visiblePages,
             pagerState = pagerState,
             navigationIcon = {},
             actions = {},
-            contentWindowInsets = NavigationBarDefaults.windowInsets,
             windowInsets = emptyWindowInsets()
         ) { page ->
             Box(

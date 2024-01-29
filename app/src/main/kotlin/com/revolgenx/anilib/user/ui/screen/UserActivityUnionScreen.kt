@@ -59,7 +59,6 @@ fun UserActivityUnionScreen(viewModel: ActivityUnionViewModel) {
         topBar = {},
         navigationIcon = {},
         bottomNestedScrollConnection = bottomScrollConnection,
-        contentWindowInsets = emptyWindowInsets()
     ) {
         ActivityUnionScreenContent(viewModel = viewModel)
     }

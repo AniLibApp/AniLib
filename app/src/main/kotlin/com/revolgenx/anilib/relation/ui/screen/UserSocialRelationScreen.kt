@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcGroup
@@ -65,7 +66,8 @@ fun UserSocialRelationScreenContent(userId: Int, isFollower: Boolean?) {
         pages = pages,
         pagerState = pagerState,
         actions = {},
-        scrollBehavior = scrollBehavior
+        scrollBehavior = scrollBehavior,
+        contentWindowInsets = horizontalBottomWindowInsets()
     ) { page ->
         Box(
             modifier = Modifier

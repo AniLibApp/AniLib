@@ -65,11 +65,6 @@ private fun <T> PagerScreenTabRow(
     val selectedTabIndex = pagerState.currentPage
     ScrollableTabRow(
         selectedTabIndex = selectedTabIndex,
-        indicator = { tabPositions ->
-            TabRowDefaults.SecondaryIndicator(
-                Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-            )
-        },
         divider = {}
     ) {
         pages.forEachIndexed { index, page ->

@@ -15,27 +15,23 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.revolgenx.anilib.common.ext.isNotNull
-import com.revolgenx.anilib.common.ui.component.pullrefresh.PullRefreshIndicator
-import com.revolgenx.anilib.common.ui.component.pullrefresh.pullRefresh
-import com.revolgenx.anilib.common.ui.component.pullrefresh.rememberPullRefreshState
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.screen.state.EmptyScreen
 import com.revolgenx.anilib.common.ui.screen.state.ErrorScreen
 import com.revolgenx.anilib.common.ui.screen.state.ErrorSection
 import com.revolgenx.anilib.common.ui.screen.state.LoadingScreen
 import com.revolgenx.anilib.common.ui.screen.state.LoadingSection
-import kotlinx.coroutines.delay
 
 enum class ListPagingListType {
     COLUMN,
@@ -45,6 +41,7 @@ enum class ListPagingListType {
 
 data class GridOptions(val columns: GridCells)
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <M : BaseModel> LazyPagingList(
     modifier: Modifier = Modifier,
@@ -58,21 +55,17 @@ fun <M : BaseModel> LazyPagingList(
     itemContentIndex: (@Composable Any.(index: Int, value: M?) -> Unit)? = null,
     itemContent: (@Composable Any.(value: M?) -> Unit)? = null
 ) {
-    var refreshing by remember { mutableStateOf(false) }
-    val pullRefreshState = rememberPullRefreshState(refreshing, onRefresh = {
-        refreshing = true
-        onRefresh?.invoke()
-    })
+    val state = rememberPullToRefreshState()
 
-    LaunchedEffect(refreshing) {
-        if (refreshing) {
-            delay(200)
-            refreshing = false
+    if(state.isRefreshing){
+        LaunchedEffect(true) {
+            onRefresh?.invoke()
+            state.endRefresh()
         }
     }
 
     Box(modifier.let {
-        it.takeIf { onRefresh.isNotNull() }?.pullRefresh(pullRefreshState) ?: it
+        it.takeIf { onRefresh.isNotNull() }?.nestedScroll(state.nestedScrollConnection) ?: it
     }) {
         when (type) {
             ListPagingListType.COLUMN -> LazyColumnLayout(
@@ -99,7 +92,13 @@ fun <M : BaseModel> LazyPagingList(
                 itemContentIndex = itemContentIndex
             )
         }
-        PullRefreshIndicator(refreshing, pullRefreshState, Modifier.align(Alignment.TopCenter))
+
+        if (onRefresh != null) {
+            PullToRefreshContainer(
+                modifier = Modifier.align(Alignment.TopCenter),
+                state = state,
+            )
+        }
     }
 }
 
@@ -128,8 +127,10 @@ private fun <M : BaseModel> LazyColumnLayout(
                 }
 
 
-                if (!pagingItems.loadState.append.endOfPaginationReached || index < pagingItems.itemCount - 1) {
-                    divider?.invoke()
+                divider?.let {
+                    if (!pagingItems.loadState.append.endOfPaginationReached || index < pagingItems.itemCount - 1) {
+                        it.invoke()
+                    }
                 }
             }
         }

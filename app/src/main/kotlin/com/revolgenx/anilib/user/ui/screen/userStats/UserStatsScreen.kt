@@ -92,7 +92,6 @@ fun UserStatsScreen(userId: Int?, type: MediaType) {
         topBar = {},
         navigationIcon = {},
         actions = {},
-        contentWindowInsets = emptyWindowInsets(),
     ) {
         Box(
             modifier = Modifier

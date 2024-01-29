@@ -479,4 +479,15 @@
     <string name="replies">Replies</string>
     <string name="reply">Reply</string>
 
+    <!--Staff languages-->
+    <string name="japanese">Japanese</string>
+    <string name="korean">Korean</string>
+    <string name="italian">Italian</string>
+    <string name="spanish">Spanish</string>
+    <string name="portuguese">Portuguese</string>
+    <string name="french">French</string>
+    <string name="german">German</string>
+    <string name="hebrew">Hebrew</string>
+    <string name="hungarian">Hungarian</string>
+    <!--Staff languages-->
 </resources>

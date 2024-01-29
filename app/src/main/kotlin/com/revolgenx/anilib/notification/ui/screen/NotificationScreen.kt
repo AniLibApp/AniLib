@@ -33,6 +33,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
@@ -77,7 +78,8 @@ private fun NotificationScreenContent(
     val navigator = localNavigator()
     ScreenScaffold(
         title = stringResource(id = I18nR.string.notifications),
-        scrollBehavior = scrollBehavior
+        scrollBehavior = scrollBehavior,
+        contentWindowInsets = horizontalBottomWindowInsets()
     ) {
         viewModel.field?: return@ScreenScaffold
 

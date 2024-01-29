@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.style.TextOverflow
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarColors
@@ -50,7 +51,7 @@ fun ScreenScaffold(
     appBarLayoutColors: AppBarLayoutColors = AppBarLayoutDefaults.appBarLayoutColors(),
     appBarColors: AppBarColors = AppBarDefaults.transparentColor(),
     actions: (@Composable RowScope.() -> Unit)? = null,
-    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+    contentWindowInsets: WindowInsets = emptyWindowInsets(),
     content: @Composable BoxScope.(snackbarHostState: SnackbarHostState) -> Unit
 ) {
     val snackbarHostState = remember { SnackbarHostState() }

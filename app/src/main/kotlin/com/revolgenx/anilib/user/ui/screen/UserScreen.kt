@@ -42,9 +42,9 @@ import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
-import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
+import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ext.userMediaListScreen
 import com.revolgenx.anilib.common.ext.userRelationScreen
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
@@ -154,14 +154,14 @@ private fun UserScreenContent(
                 isTab = isTab
             )
         },
-        contentWindowInsets = emptyWindowInsets()
+        contentWindowInsets = if (isTab) emptyWindowInsets() else horizontalBottomWindowInsets(),
     ) {
         PagerScreenScaffold(
             pages = pages,
             pagerState = pagerState,
             navigationIcon = {},
             actions = {},
-            contentWindowInsets = if (isTab) horizontalWindowInsets() else horizontalBottomWindowInsets(),
+            contentWindowInsets = emptyWindowInsets(),
             windowInsets = emptyWindowInsets()
         ) { page ->
             Box(
@@ -221,6 +221,8 @@ private fun UserScreenTopAppbar(
         maxAlpha = 1f,
         alphaFraction = 0.7f,
         collapseFraction = 0.7f,
+        windowInsets = if(isTab) topWindowInsets() else TopAppBarDefaults.windowInsets,
+        contentWindowInsets = if(isTab) topWindowInsets() else TopAppBarDefaults.windowInsets,
         containerContent = { _ ->
             Column(
                 modifier = Modifier

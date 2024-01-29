@@ -77,7 +77,6 @@ fun MediaListContent(
 
     ScreenScaffold(
         topBar = {},
-        contentWindowInsets = emptyWindowInsets(),
         floatingActionButton = {
             DisappearingFAB(
                 scrollState = scrollState,

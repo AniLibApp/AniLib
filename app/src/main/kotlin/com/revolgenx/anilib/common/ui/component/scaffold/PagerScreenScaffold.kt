@@ -20,6 +20,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.appbar.PagerScreenTopAppBar
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
@@ -34,7 +36,7 @@ fun <T> PagerScreenScaffold(
     navigationIcon: (@Composable () -> Unit)? = null,
     actions: (@Composable RowScope.() -> Unit)? = null,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
-    contentWindowInsets: WindowInsets = ScaffoldDefaults.contentWindowInsets,
+    contentWindowInsets: WindowInsets = emptyWindowInsets(),
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
     content: @Composable (page: Int) -> Unit
 ) {

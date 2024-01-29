@@ -40,6 +40,7 @@ import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleTimer
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.isNull
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.mediaScreen
@@ -180,7 +181,8 @@ private fun AiringScreenContent() {
                 }
             )
         },
-        scrollBehavior = scrollBehavior
+        scrollBehavior = scrollBehavior,
+        contentWindowInsets = horizontalBottomWindowInsets()
     ) {
         val pagingItems = viewModel.collectAsLazyPagingItems()
 

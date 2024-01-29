@@ -1,7 +1,5 @@
 package com.revolgenx.anilib.social.ui.screen
 
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
@@ -26,10 +24,11 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
-import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.activityComposerScreen
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
@@ -47,7 +46,6 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcForum
 import com.revolgenx.anilib.common.ui.icons.appicon.IcForumOutline
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
-import com.revolgenx.anilib.media.ui.model.toMediaStatus
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionFilterViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.MainActivityUnionViewModel
@@ -93,6 +91,7 @@ object ActivityUnionScreen : BaseTabScreen() {
             topBar = {
                 AppBarLayout(
                     scrollBehavior = scrollBehavior,
+                    windowInsets = topWindowInsets()
                 ) {
                     AppBar(
                         title = {
@@ -123,7 +122,6 @@ object ActivityUnionScreen : BaseTabScreen() {
             },
             scrollBehavior = scrollBehavior,
             bottomNestedScrollConnection = bottomNestedScrollConnection,
-            contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
         ) {
             ActivityUnionScreenContent(viewModel = viewModel, activityReplyBottomSheetState)
             ActivityUnionFilterBottomSheet(

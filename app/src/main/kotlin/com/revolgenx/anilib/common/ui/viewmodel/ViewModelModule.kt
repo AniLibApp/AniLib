@@ -40,6 +40,7 @@ import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreTrendingFilterViewM
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListFilterViewModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterFilterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
@@ -113,6 +114,7 @@ val viewModelModules = module {
     viewModel { MediaViewModel(get(), get()) }
     viewModel { MediaRecommendationViewModel(get()) }
     viewModel { MediaCharacterViewModel(get()) }
+    viewModel { MediaCharacterFilterViewModel() }
     viewModel { MediaStaffViewModel(get()) }
     viewModel { MediaReviewViewModel(get()) }
     viewModel { MediaStatsViewModel(get()) }

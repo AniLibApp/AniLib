@@ -105,10 +105,7 @@ private fun ExploreAiringScheduleContent(
     ) {
         LazyPagingList(
             pagingItems = pagingItems,
-            type = ListPagingListType.ROW,
-            onRefresh = {
-                viewModel.refresh()
-            }
+            type = ListPagingListType.ROW
         ) { model ->
             if (model == null || model !is AiringScheduleModel) return@LazyPagingList
             AiringScheduleItem(

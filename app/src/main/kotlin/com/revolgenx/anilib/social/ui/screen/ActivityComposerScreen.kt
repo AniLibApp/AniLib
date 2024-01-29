@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
@@ -52,6 +53,7 @@ private fun ActivityComposerScreenContent() {
     PagerScreenScaffold(
         pages = pages,
         pagerState = pagerState,
+        contentWindowInsets = horizontalBottomWindowInsets()
     ) { page ->
         Box(
             modifier = Modifier

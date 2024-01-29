@@ -12,6 +12,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
+import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
@@ -79,7 +81,8 @@ private fun StaffScreenContent(staffId: Int) {
                     ShareOverflowMenu(text = site)
                 }
             }
-        }
+        },
+        contentWindowInsets = horizontalBottomWindowInsets()
     ) { page ->
         Box(
             modifier = Modifier

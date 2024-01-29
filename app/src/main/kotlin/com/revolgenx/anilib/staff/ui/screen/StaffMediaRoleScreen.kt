@@ -32,6 +32,7 @@ import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
@@ -89,7 +90,6 @@ fun StaffMediaRoleScreen(viewModel: StaffMediaRoleViewModel) {
             }
         },
         bottomNestedScrollConnection = bottomScrollConnection,
-        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) {
         val snackbar = localSnackbarHostState()
         val mediaComponentState =

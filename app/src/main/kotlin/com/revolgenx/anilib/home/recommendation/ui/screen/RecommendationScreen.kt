@@ -39,6 +39,7 @@ import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.data.field.CharacterMediaField
 import com.revolgenx.anilib.character.data.field.CharacterMediaSort
+import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
@@ -96,7 +97,6 @@ fun RecommendationScreen() {
             }
         },
         bottomNestedScrollConnection = bottomScrollConnection,
-        contentWindowInsets = WindowInsets.systemBars.only(WindowInsetsSides.Horizontal)
     ) { snackbarHostState ->
 
         LaunchedEffect(viewModel.showToggleErrorMsg.value) {

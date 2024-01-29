@@ -20,6 +20,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
@@ -40,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.data.state.ResourceState
+import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
@@ -133,6 +135,7 @@ private fun MediaListEditScreenContent(
                 )
             }
         },
+        contentWindowInsets = NavigationBarDefaults.windowInsets
     ) {
 
         val snackbar = localSnackbarHostState()
