@@ -33,6 +33,7 @@ fun MediaStaffScreen(
         type = ListPagingListType.GRID,
         gridOptions = GridOptions(GridCells.Adaptive(168.dp)),
         pagingItems = pagingItems,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         }

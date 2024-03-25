@@ -95,6 +95,7 @@ private fun StaffMediaCharacterPagingContent(
     val pagingItems = viewModel.collectAsLazyPagingItems()
     LazyPagingList(
         pagingItems = pagingItems,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },

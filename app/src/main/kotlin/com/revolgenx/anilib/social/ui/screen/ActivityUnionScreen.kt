@@ -1,11 +1,7 @@
 package com.revolgenx.anilib.social.ui.screen
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -26,8 +22,6 @@ import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.activityComposerScreen
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
@@ -84,8 +78,8 @@ object ActivityUnionScreen : BaseTabScreen() {
             remember { BottomNestedScrollConnection(state = scrollState) }
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
-        val navigator = localNavigator()
         val activityReplyBottomSheetState = rememberBottomSheetState()
+        val activityComposerBottomSheetState = rememberBottomSheetState()
 
         ScreenScaffold(
             topBar = {
@@ -117,13 +111,22 @@ object ActivityUnionScreen : BaseTabScreen() {
                     scrollState = scrollState,
                     icon = AppIcons.IcCreate
                 ) {
-                    navigator.activityComposerScreen()
+                    scope.launch {
+                        activityComposerBottomSheetState.peek()
+                    }
                 }
             },
             scrollBehavior = scrollBehavior,
             bottomNestedScrollConnection = bottomNestedScrollConnection,
         ) {
-            ActivityUnionScreenContent(viewModel = viewModel, activityReplyBottomSheetState)
+            ActivityUnionScreenContent(
+                viewModel = viewModel,
+                onReplyClick = {
+                    scope.launch {
+                        viewModel.activityId.intValue = it
+                        activityReplyBottomSheetState.peek()
+                    }
+                })
             ActivityUnionFilterBottomSheet(
                 bottomSheetState = filterBottomSheetState,
                 viewModel = filterViewModel
@@ -131,8 +134,14 @@ object ActivityUnionScreen : BaseTabScreen() {
         }
 
         ActivityReplyBottomSheet(
-            activityId = viewModel.activityReplyId,
-            bottomSheetState = activityReplyBottomSheetState
+            activityId = viewModel.activityId,
+            bottomSheetState = activityReplyBottomSheetState,
+            activityComposerBottomSheetState = activityComposerBottomSheetState,
+        )
+
+        ActivityComposerBottomSheet(
+            bottomSheetState = activityComposerBottomSheetState,
+            viewModel = koinViewModel()
         )
 
     }

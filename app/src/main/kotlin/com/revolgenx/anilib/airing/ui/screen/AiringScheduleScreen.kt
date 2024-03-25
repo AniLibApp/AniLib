@@ -55,6 +55,7 @@ import com.revolgenx.anilib.common.ui.component.date.CalendarRangeBottomSheet
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.component.text.MediumLargeText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -188,6 +189,7 @@ private fun AiringScreenContent() {
 
         LazyPagingList(
             pagingItems = pagingItems,
+            pullRefresh = true,
             onRefresh = {
                 viewModel.refresh()
             },
@@ -353,7 +355,7 @@ private fun AiringScheduleTimer(
     } else {
         airingScheduleTimer.timeLeft.value.formatString(context)
     }
-    SemiBoldText(
+    MediumLargeText(
         text = scheduleTimeText,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )

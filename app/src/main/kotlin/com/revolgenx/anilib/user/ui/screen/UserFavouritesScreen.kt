@@ -146,6 +146,7 @@ private fun UserFavouritePageScreen(viewModel: UserFavouriteContentViewModel) {
     LazyPagingList(
         pagingItems = pagingItems,
         type = if (viewModel.field.type == UserFavouriteType.STUDIO) ListPagingListType.COLUMN else ListPagingListType.GRID,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },

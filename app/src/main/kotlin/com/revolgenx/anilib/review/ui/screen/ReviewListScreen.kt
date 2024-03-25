@@ -124,6 +124,7 @@ private fun ReviewListScreenContent(
 
     LazyPagingList(
         pagingItems = pagingItems,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },

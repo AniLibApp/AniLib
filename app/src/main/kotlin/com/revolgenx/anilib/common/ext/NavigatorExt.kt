@@ -11,7 +11,6 @@ import com.revolgenx.anilib.list.ui.screen.UserMediaListScreen
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
 import com.revolgenx.anilib.relation.ui.screen.UserSocialRelationScreen
 import com.revolgenx.anilib.review.ui.screen.ReviewScreen
-import com.revolgenx.anilib.social.ui.screen.ActivityComposerScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityScreen
 import com.revolgenx.anilib.staff.ui.screen.StaffScreen
 import com.revolgenx.anilib.studio.ui.screen.StudioScreen
@@ -56,10 +55,6 @@ fun Navigator.userRelationScreen(userId: Int, isFollower: Boolean? = null) {
 
 fun Navigator.activityScreen(activityId: Int) {
     push(ActivityScreen(activityId))
-}
-
-fun Navigator.activityComposerScreen(activityId: Int? = null) {
-    push(ActivityComposerScreen(activityId))
 }
 
 fun Navigator.imageViewerScreen(url: String) {

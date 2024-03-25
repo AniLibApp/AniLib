@@ -167,6 +167,7 @@ private fun StudioPagingContent(
     LazyPagingList(
         type = ListPagingListType.GRID,
         pagingItems = pagingItems,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },

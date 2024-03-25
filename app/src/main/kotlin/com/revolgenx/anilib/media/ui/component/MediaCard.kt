@@ -2,6 +2,7 @@ package com.revolgenx.anilib.media.ui.component
 
 import android.content.Context
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,12 +38,14 @@ import com.revolgenx.anilib.common.ext.maybeLocalSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.openGenre
 import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.composition.localUser
+import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.common.util.OnMediaClick
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
@@ -117,7 +120,7 @@ fun rememberMediaComponentState(
 fun MediaCard(
     media: MediaModel,
     width: Dp? = null,
-    height: Dp = 248.dp,
+    height: Dp = 254.dp,
     footerContent: @Composable (ColumnScope.() -> Unit)? = null,
     mediaComponentState: MediaComponentState
 ) {
@@ -153,7 +156,7 @@ fun MediaCard(
 
 
 @Composable
-fun CoverMediaCard(
+fun MediaCardBox(
     media: MediaModel,
     width: Dp? = null,
     height: Dp = 248.dp,
@@ -168,12 +171,15 @@ fun CoverMediaCard(
         userId
     ) = mediaComponentState
 
-    CoverMediaCardContent(
+    MediaCardBoxContent(
         width,
         height,
         media = media,
         footerContent = footerContent,
         onMediaClick = onMediaClickHandler(mediaComponentState),
+        onGenreClick = {
+            navigator.openGenre(it)
+        },
         onMediaLongClick = { id, _ ->
             if (userId != null) {
                 navigator.mediaListEntryEditorScreen(id, userId)
@@ -289,12 +295,13 @@ private fun MediaCardContent(
 
 
 @Composable
-private fun CoverMediaCardContent(
+private fun MediaCardBoxContent(
     width: Dp?,
     height: Dp,
     media: MediaModel,
     onMediaClick: OnMediaClick,
     onMediaLongClick: OnMediaClick,
+    onGenreClick: OnClickWithValue<String>,
     footerContent: @Composable() (ColumnScope.() -> Unit)?,
 ) {
     Card(
@@ -369,11 +376,12 @@ private fun CoverMediaCardContent(
                                 horizontalArrangement = Arrangement.spacedBy(4.dp)
                             ) {
                                 it.take(3).forEach {
-                                    MediumText(
+                                    LightText(
+                                        modifier = Modifier.clickable {
+                                            onGenreClick(it)
+                                        },
                                         text = it,
                                         color = MaterialTheme.colorScheme.primary,
-                                        fontSize = 10.sp,
-                                        maxLines = 1
                                     )
                                 }
                             }
@@ -406,7 +414,7 @@ private fun CoverMediaCardContent(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MediaItemRowContent(
+fun MediaRowContent(
     media: MediaModel,
     content: @Composable () -> Unit = {},
     mediaComponentState: MediaComponentState

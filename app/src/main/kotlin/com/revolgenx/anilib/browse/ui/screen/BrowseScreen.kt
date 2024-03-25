@@ -146,6 +146,7 @@ private fun BrowsePagingContent(
     LazyPagingList(
         pagingItems = pagingItems,
         type = viewModel.listType.value,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },
@@ -226,7 +227,8 @@ fun BrowseScreenTopAppbar(
     )
     AppBarLayout(
         scrollBehavior = scrollBehavior, colors = AppBarLayoutDefaults.appBarLayoutColors(
-            containerColor = Color.Transparent, scrolledContainerColor = Color.Transparent
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest,
+            scrolledContainerColor = Color.Transparent
         ), containerHeight = appbarAnimation
     ) {
         Column(

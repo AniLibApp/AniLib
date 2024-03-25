@@ -30,7 +30,7 @@ import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.home.season.ui.viewmodel.SeasonFilterViewModel
 import com.revolgenx.anilib.media.data.field.MediaField
-import com.revolgenx.anilib.media.ui.component.ListMediaCard
+import com.revolgenx.anilib.media.ui.component.MediaCardRow
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
@@ -71,6 +71,7 @@ fun SeasonScreen() {
 
         LazyPagingList(
             pagingItems = pagingItems,
+            pullRefresh = true,
             onRefresh = {
                 viewModel.refresh()
             }
@@ -89,7 +90,7 @@ private fun SeasonItem(
     media: MediaModel,
     mediaComponentState: MediaComponentState
 ) {
-    ListMediaCard(media = media, mediaComponentState = mediaComponentState)
+    MediaCardRow(media = media, mediaComponentState = mediaComponentState)
 }
 
 @Composable

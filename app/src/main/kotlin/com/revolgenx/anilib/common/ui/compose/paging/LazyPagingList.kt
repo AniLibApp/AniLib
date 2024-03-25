@@ -1,8 +1,11 @@
 package com.revolgenx.anilib.common.ui.compose.paging
 
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
@@ -15,14 +18,22 @@ import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.revolgenx.anilib.common.ext.isNotNull
@@ -32,6 +43,7 @@ import com.revolgenx.anilib.common.ui.screen.state.ErrorScreen
 import com.revolgenx.anilib.common.ui.screen.state.ErrorSection
 import com.revolgenx.anilib.common.ui.screen.state.LoadingScreen
 import com.revolgenx.anilib.common.ui.screen.state.LoadingSection
+import com.revolgenx.anilib.common.util.OnClick
 
 enum class ListPagingListType {
     COLUMN,
@@ -50,14 +62,16 @@ fun <M : BaseModel> LazyPagingList(
     pagingItems: LazyPagingItems<M>? = null,
     span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     gridOptions: GridOptions? = null,
-    onRefresh: (() -> Unit)? = null,
+    showRefreshButton: MutableState<Boolean>? = null,
+    pullRefresh: Boolean = false,
+    onRefresh: OnClick? = null,
     divider: @Composable (() -> Unit)? = null,
     itemContentIndex: (@Composable Any.(index: Int, value: M?) -> Unit)? = null,
     itemContent: (@Composable Any.(value: M?) -> Unit)? = null
 ) {
     val state = rememberPullToRefreshState()
 
-    if(state.isRefreshing){
+    if (state.isRefreshing) {
         LaunchedEffect(true) {
             onRefresh?.invoke()
             state.endRefresh()
@@ -93,10 +107,36 @@ fun <M : BaseModel> LazyPagingList(
             )
         }
 
-        if (onRefresh != null) {
+        if (pullRefresh) {
             PullToRefreshContainer(
                 modifier = Modifier.align(Alignment.TopCenter),
                 state = state,
+            )
+        }
+
+        RefreshButton(visible = showRefreshButton) {
+            onRefresh?.invoke()
+        }
+    }
+}
+
+
+@Composable
+private fun BoxScope.RefreshButton(
+    modifier: Modifier = Modifier,
+    visible: State<Boolean>?,
+    onClick: OnClick
+) {
+    if (visible?.value == true) {
+        Button(
+            modifier = modifier
+                .align(Alignment.TopCenter)
+                .padding(10.dp),
+            onClick = onClick
+        ) {
+            Text(
+                text = stringResource(id = anilib.i18n.R.string.refresh),
+                fontSize = 14.sp
             )
         }
     }

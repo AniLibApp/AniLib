@@ -43,6 +43,7 @@ fun MediaReviewScreen(viewModel: MediaReviewViewModel) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
     LazyPagingList(
         pagingItems = pagingItems,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         }

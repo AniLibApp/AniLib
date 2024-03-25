@@ -35,6 +35,7 @@ fun <T> PagerScreenScaffold(
     scrollBehavior: TopAppBarScrollBehavior? = null,
     navigationIcon: (@Composable () -> Unit)? = null,
     actions: (@Composable RowScope.() -> Unit)? = null,
+    userScrollEnabled: Boolean = true,
     containerColor: Color = MaterialTheme.colorScheme.surfaceContainerLowest,
     contentWindowInsets: WindowInsets = emptyWindowInsets(),
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
@@ -65,6 +66,7 @@ fun <T> PagerScreenScaffold(
         ) { paddingValues ->
             HorizontalPager(
                 state = pagerState,
+                userScrollEnabled = userScrollEnabled,
                 modifier = Modifier
                     .padding(paddingValues)
             ) { page ->

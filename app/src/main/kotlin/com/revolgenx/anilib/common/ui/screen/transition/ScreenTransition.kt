@@ -16,6 +16,8 @@ import androidx.compose.animation.core.VisibilityThreshold
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutHorizontally
@@ -123,5 +125,21 @@ public fun FadeTransition(
         modifier = modifier,
         content = content,
         transition = { fadeIn(animationSpec = animationSpec) togetherWith fadeOut(animationSpec = animationSpec) }
+    )
+}
+
+@ExperimentalAnimationApi
+@Composable
+public fun FadeScaleTransition(
+    navigator: Navigator,
+    modifier: Modifier = Modifier,
+    animationSpec: FiniteAnimationSpec<Float> = spring(stiffness = Spring.StiffnessMediumLow),
+    content: ScreenTransitionContent = { it.Content() }
+) {
+    ScreenTransition(
+        navigator = navigator,
+        modifier = modifier,
+        content = content,
+        transition = { fadeIn(animationSpec = animationSpec, 0.9f) + scaleIn(animationSpec, 0.9f) togetherWith fadeOut(animationSpec = animationSpec, 0.9f) + scaleOut(animationSpec, 0.9f) }
     )
 }

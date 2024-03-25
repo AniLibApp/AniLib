@@ -3,13 +3,9 @@ package com.revolgenx.anilib.staff.ui.screen
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -32,7 +28,6 @@ import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
@@ -53,7 +48,7 @@ import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
-import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
+import com.revolgenx.anilib.media.ui.component.MediaRowContent
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
@@ -119,6 +114,7 @@ private fun StaffMediaRolePagingContent(
         type = ListPagingListType.GRID,
         gridOptions = GridOptions(GridCells.Adaptive(168.dp)),
         pagingItems = pagingItems,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },
@@ -164,7 +160,7 @@ private fun StaffMediaRoleItem(
             .height(124.dp)
             .padding(6.dp)
     ) {
-        MediaItemRowContent(
+        MediaRowContent(
             media = model,
             content = {
                 Box(modifier = Modifier.fillMaxHeight()) {

@@ -34,12 +34,12 @@ import com.revolgenx.anilib.media.ui.model.toStringRes
 
 
 @Composable
-fun ListMediaCard(
+fun MediaCardRow(
     media: MediaModel,
     mediaComponentState: MediaComponentState,
     footerContent: (@Composable () -> Unit)? = null,
 ) {
-    ListMediaCardContent(
+    MediaCardRowContent(
         media = media,
         footerContent = footerContent,
         onMediaClick = onMediaClickHandler(mediaComponentState),
@@ -48,7 +48,7 @@ fun ListMediaCard(
 }
 
 @Composable
-private fun ListMediaCardContent(
+private fun MediaCardRowContent(
     media: MediaModel,
     footerContent: (@Composable () -> Unit)?,
     onMediaClick: OnMediaClick,

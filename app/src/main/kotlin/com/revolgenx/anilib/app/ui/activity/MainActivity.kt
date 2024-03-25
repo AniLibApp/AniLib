@@ -16,6 +16,8 @@ import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalMediaState
 import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import com.revolgenx.anilib.common.ui.screen.spoiler.SpoilerBottomSheet
+import com.revolgenx.anilib.common.ui.screen.transition.FadeScaleTransition
+import com.revolgenx.anilib.common.ui.screen.transition.FadeTransition
 import com.revolgenx.anilib.common.ui.screen.transition.SlideTransition
 import com.revolgenx.anilib.common.ui.theme.AppTheme
 
@@ -51,6 +53,7 @@ class MainActivity : BaseActivity() {
                 val bottomSheetState = rememberModalBottomSheetState(
                     skipPartiallyExpanded = true
                 )
+
                 SpoilerBottomSheet(
                     openBottomSheet = viewModel.openSpoilerBottomSheet,
                     bottomSheetState = bottomSheetState,

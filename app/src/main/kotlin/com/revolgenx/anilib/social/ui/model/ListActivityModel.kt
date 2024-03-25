@@ -1,5 +1,9 @@
 package com.revolgenx.anilib.social.ui.model
 
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.ActivityUnionQuery
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
@@ -14,19 +18,21 @@ data class ListActivityModel(
     override val type: ActivityType = ActivityType.UNKNOWN__,
     override val replyCount: Int = 0,
     override val siteUrl: String? = null,
-    override val isSubscribed: Boolean = false,
-    override val likeCount: Int = 0,
-    override val isLiked: Boolean = false,
     override val isPinned: Boolean = false,
     override val createdAt: Int = 0,
     override val createdAtPrettyTime: String = "",
     override val user: UserModel? = null,
     override val replies: List<ActivityReplyModel>? = null,
     override val likes: List<UserModel>? = null,
+    override val isLiked: MutableState<Boolean> = mutableStateOf(false),
+    override val likeCount: MutableIntState = mutableIntStateOf(0),
+    override val isSubscribed: MutableState<Boolean> = mutableStateOf(false),
+    override val isDeleted: MutableState<Boolean> = mutableStateOf(false),
+
     var status: String? = null,
     var progress: String? = null,
     var media: MediaModel? = null
-) : ActivityModel, BaseModel {
+) : ActivityModel() {
     val progressStatus: String
         get() = "${status?.capitalize()}${if (progress.isNullOrBlank()) " " else " $progress of "}${media!!.title!!.userPreferred}"
 }
@@ -47,9 +53,7 @@ fun ActivityUnionQuery.OnListActivity.toModel(): ListActivityModel {
         },
         status = status!!,
         progress = progress ?: "",
-        likeCount = likeCount,
         replyCount = replyCount,
-        isSubscribed = isSubscribed ?: false,
         type = type!!,
         user = user?.activityUser?.toModel(),
         likes = likes?.mapNotNull {
@@ -59,6 +63,8 @@ fun ActivityUnionQuery.OnListActivity.toModel(): ListActivityModel {
         createdAt = createdAt,
         createdAtPrettyTime = createdAt.toLong().prettyTime(),
         userId = userId,
-        isLiked = isLiked ?: false
+        likeCount = mutableIntStateOf(likeCount),
+        isSubscribed = mutableStateOf(isSubscribed ?: false),
+        isLiked = mutableStateOf(isLiked ?: false),
     )
 }

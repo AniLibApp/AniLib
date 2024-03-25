@@ -25,7 +25,7 @@ fun SemiBoldText(
     lineHeight: TextUnit? = null,
     textAlign: TextAlign? = null,
     color: Color = Color.Unspecified,
-    letterSpacing: TextUnit? = null,
+    letterSpacing: TextUnit = TextUnit.Unspecified,
     style: TextStyle = LocalTextStyle.current
 ) {
     Text(
@@ -36,10 +36,26 @@ fun SemiBoldText(
         lineHeight = lineHeight ?: 18.sp,
         overflow = TextOverflow.Ellipsis,
         fontWeight = FontWeight.SemiBold,
-        letterSpacing = letterSpacing ?: 0.2.sp,
+        letterSpacing = letterSpacing,
         textAlign = textAlign,
         color = color,
         style = style
+    )
+}
+
+
+@Composable
+fun MediumLargeText(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Unspecified,
+) {
+    MediumText(
+        text = text,
+        modifier = modifier,
+        fontSize = 16.sp,
+        lineHeight = 18.sp,
+        color = color
     )
 }
 
@@ -62,7 +78,6 @@ fun MediumText(
         lineHeight = lineHeight ?: 16.sp,
         overflow = TextOverflow.Ellipsis,
         fontWeight = FontWeight.Medium,
-        letterSpacing = 0.2.sp,
         textAlign = textAlign,
         color = color,
         style = style
@@ -78,7 +93,7 @@ fun RegularText(
     maxLines: Int? = null,
     lineHeight: TextUnit? = null,
     textAlign: TextAlign? = null,
-    color: Color? = null,
+    color: Color = Color.Unspecified,
     style: TextStyle = LocalTextStyle.current
 ) {
     Text(
@@ -88,9 +103,8 @@ fun RegularText(
         fontSize = fontSize ?: 14.sp,
         lineHeight = lineHeight ?: 16.sp,
         overflow = TextOverflow.Ellipsis,
-        letterSpacing = 0.2.sp,
         textAlign = textAlign,
-        color = color ?: MaterialTheme.colorScheme.onSurfaceVariant,
+        color = color,
         style = style
     )
 }
@@ -115,7 +129,6 @@ fun LightText(
         color = color ?: MaterialTheme.colorScheme.onSurfaceVariant,
         overflow = TextOverflow.Ellipsis,
         fontWeight = FontWeight.Light,
-        letterSpacing = 0.2.sp,
         textAlign = textAlign
     )
 }

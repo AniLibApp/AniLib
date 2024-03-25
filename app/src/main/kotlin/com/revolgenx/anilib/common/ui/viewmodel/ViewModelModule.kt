@@ -230,8 +230,8 @@ val viewModelModules = module {
     viewModel { MangaListFilterViewModel() }
 
     //activity union
-    viewModel { MainActivityUnionViewModel(get(), get<Context>().activityUnionFilterDataStore) }
-    viewModel { ActivityUnionViewModel(get()) }
+    viewModel { MainActivityUnionViewModel(get(), get<Context>().activityUnionFilterDataStore, get()) }
+    viewModel { ActivityUnionViewModel(get(), get()) }
     viewModel { ActivityComposerViewModel() }
     viewModel { ActivityUnionFilterViewModel(get<Context>().activityUnionFilterDataStore) }
     viewModel { parameters -> ActivityReplyViewModel(parameters.get(), get(), get()) }

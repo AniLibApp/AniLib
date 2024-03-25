@@ -26,22 +26,22 @@ class ActivityReplyViewModel(
 
     val showToggleErrorMsg = mutableStateOf(false)
 
-    fun toggleLike(replyModel: ActivityReplyModel) {
-        val toggleLikeField =
-            ToggleLikeV2Field(id = replyModel.id, type = LikeableType.ACTIVITY_REPLY)
+    fun toggleLike(model: ActivityReplyModel) {
+        if(model.id == -1) return
 
-        val isLiked = replyModel.isLiked
-        val oldIsLiked = isLiked.value
-        isLiked.value = !oldIsLiked
+        val toggleLikeField = ToggleLikeV2Field(id = model.id, type = LikeableType.ACTIVITY_REPLY)
+
+        val isLiked = model.isLiked.value
+        model.isLiked.value = !isLiked
 
         launch {
             toggleService.toggleLikeV2(toggleLikeField)
                 .onEach {
                     it ?: return@onEach
-                    replyModel.likeCount.intValue = it.likeCount
-                    replyModel.isLiked.value = it.isLiked
+                    model.likeCount.intValue = it.likeCount
+                    model.isLiked.value = it.isLiked
                 }.catch {
-                    isLiked.value = oldIsLiked
+                    model.isLiked.value = isLiked
                     showToggleErrorMsg.value = true
                 }.collect()
         }

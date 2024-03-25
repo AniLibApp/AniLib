@@ -30,7 +30,7 @@ import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.airingScheduleScreen
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ext.orZero
+import com.revolgenx.anilib.common.ext.openGenre
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -42,7 +42,7 @@ import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringViewModel
-import com.revolgenx.anilib.media.ui.component.CoverMediaCard
+import com.revolgenx.anilib.media.ui.component.MediaCardBox
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.toStringRes
@@ -125,7 +125,7 @@ private fun AiringScheduleItem(
     context: Context
 ) {
     val media = airingScheduleModel.media ?: return
-    CoverMediaCard(
+    MediaCardBox(
         media = media,
         mediaComponentState = mediaComponentState,
         width = ExploreMediaCardWidth,
@@ -154,11 +154,12 @@ private fun AiringScheduleItem(
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         it.take(3).forEach {
-                            MediumText(
+                            LightText(
+                                modifier = Modifier.clickable {
+                                    mediaComponentState.navigator.openGenre(it)
+                                },
                                 text = it,
                                 color = MaterialTheme.colorScheme.primary,
-                                fontSize = 10.sp,
-                                maxLines = 1
                             )
                         }
                     }

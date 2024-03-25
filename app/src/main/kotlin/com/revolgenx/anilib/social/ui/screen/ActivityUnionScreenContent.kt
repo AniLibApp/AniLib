@@ -18,24 +18,29 @@ import androidx.compose.material3.ButtonDefaults
 import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.dokar.sheets.BottomSheetState
-import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userScreen
+import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
+import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.LightText
@@ -43,12 +48,15 @@ import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcDelete
+import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMessage
-import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.ui.icons.appicon.IcNotification
 import com.revolgenx.anilib.common.ui.icons.appicon.IcNotificationOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPencil
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithId
@@ -58,63 +66,107 @@ import com.revolgenx.anilib.social.ui.model.ListActivityModel
 import com.revolgenx.anilib.social.ui.model.MessageActivityModel
 import com.revolgenx.anilib.social.ui.model.TextActivityModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
-import kotlinx.coroutines.launch
 
 @Composable
 fun ActivityUnionScreenContent(
     viewModel: ActivityUnionViewModel,
-    activityReplyBottomSheetState: BottomSheetState = rememberBottomSheetState()
+    onReplyClick: OnClickWithId,
 ) {
     val navigator = localNavigator()
-    val scope = rememberCoroutineScope()
     val pagingItems = viewModel.collectAsLazyPagingItems()
+    val snackbarHostState = localSnackbarHostState()
+    val context = localContext()
+    val user = localUser()
+
+    LaunchedEffect(viewModel.showToggleErrorMsg.value) {
+        if (viewModel.showToggleErrorMsg.value) {
+            snackbarHostState.showSnackbar(
+                context.getString(anilib.i18n.R.string.operation_failed),
+                withDismissAction = true
+            )
+            viewModel.showToggleErrorMsg.value = false
+        }
+    }
+
     LazyPagingList(
         pagingItems = pagingItems,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },
-    ) { activityUnionModel ->
-        activityUnionModel ?: return@LazyPagingList
+    ) { activityModel ->
+        activityModel ?: return@LazyPagingList
         Box(
             modifier = Modifier.padding(vertical = 8.dp, horizontal = 4.dp)
         ) {
-            activityUnionModel.apply {
-                if (listActivityModel != null) {
-                    ListActivityItem(
-                        model = listActivityModel,
-                        onUserClick = {
-                            navigator.userScreen(it)
-                        },
-                        onReplyClick = {
-                            scope.launch {
-                                viewModel.activityReplyId.intValue = it
-                                activityReplyBottomSheetState.peek()
+            if (activityModel.isDeleted.value) {
+                ActivityDeletedItem()
+            }else{
+                when (activityModel) {
+                    is ListActivityModel -> {
+                        ListActivityItem(
+                            model = activityModel,
+                            loggedInUserId = user.userId,
+                            onUserClick = {
+                                navigator.userScreen(it)
+                            },
+                            onSubscribeClick = {
+                                viewModel.toggleSubscription(activityModel)
+                            },
+                            onLikeClick = {
+                                viewModel.toggleLike(activityModel)
+                            },
+                            onReplyClick = onReplyClick,
+                            onDelete = {
+
+                            })
+                    }
+
+                    is MessageActivityModel -> {
+                        MessageActivityItem(
+                            model = activityModel,
+                            loggedInUserId = user.userId,
+                            onUserClick = {
+                                navigator.userScreen(it)
+                            },
+                            onSubscribeClick = {
+                                viewModel.toggleSubscription(activityModel)
+                            },
+                            onLikeClick = {
+                                viewModel.toggleLike(activityModel)
+                            },
+                            onReplyClick = onReplyClick,
+                            onEdit = {
+
+                            },
+                            onDelete = {
+
                             }
-                        })
-                } else if (messageActivityModel != null) {
-                    MessageActivityItem(
-                        model = messageActivityModel,
-                        onUserClick = {
-                            navigator.userScreen(it)
-                        },
-                        onReplyClick = {
-                            scope.launch {
-                                viewModel.activityReplyId.intValue = it
-                                activityReplyBottomSheetState.peek()
+                        )
+                    }
+
+                    is TextActivityModel -> {
+                        TextActivityItem(
+                            model = activityModel,
+                            loggedInUserId = user.userId,
+                            onUserClick = {
+                                navigator.userScreen(it)
+                            },
+                            onSubscribeClick = {
+                                viewModel.toggleSubscription(activityModel)
+                            },
+                            onLikeClick = {
+                                viewModel.toggleLike(activityModel)
+                            },
+                            onReplyClick = onReplyClick,
+                            onEdit = {
+
+                            },
+                            onDelete = {
+
                             }
-                        })
-                } else if (textActivityModel != null) {
-                    TextActivityItem(
-                        model = textActivityModel,
-                        onUserClick = {
-                            navigator.userScreen(it)
-                        },
-                        onReplyClick = {
-                            scope.launch {
-                                viewModel.activityReplyId.intValue = it
-                                activityReplyBottomSheetState.peek()
-                            }
-                        })
+                        )
+                    }
                 }
             }
         }
@@ -125,8 +177,12 @@ fun ActivityUnionScreenContent(
 @Composable
 fun ListActivityItem(
     model: ListActivityModel,
+    loggedInUserId: Int?,
     onUserClick: OnClickWithId,
-    onReplyClick: OnClickWithId
+    onSubscribeClick: OnClick,
+    onReplyClick: OnClickWithId,
+    onLikeClick: OnClick,
+    onDelete: OnClick
 ) {
     val media = model.media
     Card(
@@ -160,7 +216,13 @@ fun ListActivityItem(
                 Column(
                     verticalArrangement = Arrangement.spacedBy(2.dp)
                 ) {
-                    ActivityItemTop(model = model, onUserClick = onUserClick)
+                    ActivityItemTop(
+                        model = model,
+                        loggedInUserId = loggedInUserId,
+                        onUserClick = onUserClick,
+                        onSubscribeClick = onSubscribeClick,
+                        onDelete = onDelete
+                    )
                     Text(
                         modifier = Modifier.fillMaxWidth(),
                         text = model.progressStatus,
@@ -168,7 +230,11 @@ fun ListActivityItem(
                         maxLines = 2
                     )
                 }
-                ActivityItemBottom(model = model, onReplyClick = onReplyClick)
+                ActivityItemBottom(
+                    model = model,
+                    onReplyClick = onReplyClick,
+                    onLikeClick = onLikeClick
+                )
             }
         }
     }
@@ -177,8 +243,13 @@ fun ListActivityItem(
 @Composable
 fun MessageActivityItem(
     model: MessageActivityModel,
+    loggedInUserId: Int?,
     onUserClick: OnClickWithId,
-    onReplyClick: OnClickWithId
+    onSubscribeClick: OnClick,
+    onReplyClick: OnClickWithId,
+    onLikeClick: OnClick,
+    onEdit: OnClick,
+    onDelete: OnClick
 ) {
     Card(
         modifier = Modifier
@@ -188,12 +259,19 @@ fun MessageActivityItem(
             modifier = Modifier.padding(6.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            ActivityItemTop(model = model, onUserClick = onUserClick)
+            ActivityItemTop(
+                model = model,
+                loggedInUserId = loggedInUserId,
+                onUserClick = onUserClick,
+                onSubscribeClick = onSubscribeClick,
+                onEdit = onEdit,
+                onDelete = onDelete
+            )
             MarkdownText(
                 modifier = Modifier.fillMaxWidth(),
                 spanned = model.messageSpanned
             )
-            ActivityItemBottom(model, onReplyClick = onReplyClick)
+            ActivityItemBottom(model, onReplyClick = onReplyClick, onLikeClick = onLikeClick)
         }
     }
 }
@@ -202,8 +280,13 @@ fun MessageActivityItem(
 @Composable
 fun TextActivityItem(
     model: TextActivityModel,
+    loggedInUserId: Int?,
     onUserClick: OnClickWithId,
-    onReplyClick: OnClickWithId
+    onSubscribeClick: OnClick,
+    onReplyClick: OnClickWithId,
+    onLikeClick: OnClick,
+    onEdit: OnClick,
+    onDelete: OnClick,
 ) {
     Card(
         modifier = Modifier
@@ -213,19 +296,33 @@ fun TextActivityItem(
             modifier = Modifier.padding(6.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            ActivityItemTop(model = model, onUserClick = onUserClick)
+            ActivityItemTop(
+                model = model,
+                loggedInUserId = loggedInUserId,
+                onUserClick = onUserClick,
+                onSubscribeClick = onSubscribeClick,
+                onEdit = onEdit,
+                onDelete = onDelete
+            )
             MarkdownText(
                 modifier = Modifier.fillMaxWidth(),
                 spanned = model.textSpanned
             )
-            ActivityItemBottom(model, onReplyClick = onReplyClick)
+            ActivityItemBottom(model, onReplyClick = onReplyClick, onLikeClick = onLikeClick)
         }
     }
 }
 
 
 @Composable
-fun ActivityItemTop(model: ActivityModel, onUserClick: OnClickWithId) {
+fun ActivityItemTop(
+    model: ActivityModel,
+    loggedInUserId: Int?,
+    onUserClick: OnClickWithId,
+    onSubscribeClick: OnClick,
+    onEdit: OnClick? = null,
+    onDelete: OnClick,
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth(),
@@ -262,19 +359,37 @@ fun ActivityItemTop(model: ActivityModel, onUserClick: OnClickWithId) {
         }
 
         Row {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                onSubscribeClick()
+            }) {
                 Icon(
                     modifier = Modifier.size(20.dp),
-                    imageVector = if (model.isSubscribed) AppIcons.IcNotification else AppIcons.IcNotificationOutline,
+                    imageVector = if (model.isSubscribed.value) AppIcons.IcNotification else AppIcons.IcNotificationOutline,
                     contentDescription = null
                 )
             }
-            IconButton(onClick = { /*TODO*/ }) {
-                Icon(
-                    modifier = Modifier.size(20.dp),
-                    imageVector = AppIcons.IcMoreHoriz,
-                    contentDescription = null
-                )
+
+            OverflowMenu {
+                loggedInUserId?.takeIf { loggedInUserId == model.userId }?.let {
+                    onEdit?.let {
+                        OverflowMenuItem(
+                            textRes = anilib.i18n.R.string.edit,
+                            icon = AppIcons.IcPencil,
+                            onClick = it
+                        )
+                    }
+
+                    OverflowMenuItem(
+                        textRes = anilib.i18n.R.string.edit,
+                        icon = AppIcons.IcDelete,
+                        onClick = onDelete
+                    )
+                }
+
+                model.siteUrl?.let { site ->
+                    OpenInBrowserOverflowMenu(link = site)
+                    ShareOverflowMenu(text = site)
+                }
             }
         }
     }
@@ -282,7 +397,11 @@ fun ActivityItemTop(model: ActivityModel, onUserClick: OnClickWithId) {
 
 
 @Composable
-private fun ActivityItemBottom(model: ActivityModel, onReplyClick: OnClickWithId) {
+private fun ActivityItemBottom(
+    model: ActivityModel,
+    onReplyClick: OnClickWithId,
+    onLikeClick: OnClick
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Bottom
@@ -311,7 +430,7 @@ private fun ActivityItemBottom(model: ActivityModel, onReplyClick: OnClickWithId
                     contentDescription = null
                 )
                 MediumText(
-                    modifier = Modifier.padding(start = 2.dp),
+                    modifier = Modifier.padding(start = 4.dp),
                     text = model.replyCount.prettyNumberFormat(),
                     fontSize = 14.sp
                 )
@@ -320,20 +439,37 @@ private fun ActivityItemBottom(model: ActivityModel, onReplyClick: OnClickWithId
 
             TextButton(
                 colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
-                onClick = { /*TODO*/ },
+                onClick = {
+                    onLikeClick()
+                },
                 contentPadding = PaddingValues(8.dp)
             ) {
                 Icon(
                     modifier = Modifier.size(20.dp),
-                    imageVector = AppIcons.IcHeartOutline,
-                    contentDescription = null
+                    imageVector = if (model.isLiked.value) AppIcons.IcHeart else AppIcons.IcHeartOutline,
+                    contentDescription = null,
+                    tint = if (model.isLiked.value) MaterialTheme.colorScheme.primary else LocalContentColor.current
                 )
                 MediumText(
-                    modifier = Modifier.padding(start = 2.dp),
-                    text = model.likeCount.prettyNumberFormat(),
+                    modifier = Modifier.padding(start = 4.dp),
+                    text = model.likeCount.intValue.prettyNumberFormat(),
                 )
             }
 
         }
+    }
+}
+
+
+@Composable
+private fun ActivityDeletedItem() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp),
+            text = stringResource(id = anilib.i18n.R.string.activity_has_been_deleted)
+        )
     }
 }

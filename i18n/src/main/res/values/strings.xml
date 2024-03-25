@@ -490,4 +490,12 @@
     <string name="hebrew">Hebrew</string>
     <string name="hungarian">Hungarian</string>
     <!--Staff languages-->
+
+    <string name="compose">Compose</string>
+    <string name="refresh">Refresh</string>
+
+    <!--Activity-->
+    <string name="activity_has_been_deleted">Activity has been deleted.</string>
+    <!--Activity-->
+
 </resources>

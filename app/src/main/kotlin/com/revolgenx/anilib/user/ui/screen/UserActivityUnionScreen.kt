@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.user.ui.screen
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -11,10 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.common.ext.activityComposerScreen
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -51,7 +47,7 @@ fun UserActivityUnionScreen(viewModel: ActivityUnionViewModel) {
                         )
 
                         ActionMenu(icon = AppIcons.IcCreate) {
-                            navigator.activityComposerScreen()
+
                         }
                     }
                 })
@@ -60,6 +56,11 @@ fun UserActivityUnionScreen(viewModel: ActivityUnionViewModel) {
         navigationIcon = {},
         bottomNestedScrollConnection = bottomScrollConnection,
     ) {
-        ActivityUnionScreenContent(viewModel = viewModel)
+        ActivityUnionScreenContent(
+            viewModel = viewModel,
+            onReplyClick = {
+                /*todo on reply*/
+            }
+        )
     }
 }

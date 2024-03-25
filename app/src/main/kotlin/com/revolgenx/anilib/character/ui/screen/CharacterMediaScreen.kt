@@ -98,6 +98,7 @@ private fun CharacterMediaPagingContent(
     LazyPagingList(
         pagingItems = pagingItems,
         type = ListPagingListType.GRID,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },

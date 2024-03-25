@@ -7,13 +7,6 @@ import com.revolgenx.anilib.fragment.MessengerUser
 import com.revolgenx.anilib.user.ui.model.UserAvatarModel
 import com.revolgenx.anilib.user.ui.model.UserModel
 
-data class ActivityUnionModel(
-    val textActivityModel: TextActivityModel? = null,
-    val listActivityModel: ListActivityModel? = null,
-    val messageActivityModel: MessageActivityModel? = null
-) : BaseModel
-
-
 
 fun LikeUsers.toModel() = UserModel(
     id = id,

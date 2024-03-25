@@ -3,6 +3,7 @@ package com.revolgenx.anilib.common.data.service
 import com.revolgenx.anilib.common.data.field.ToggleFavoriteField
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
+import com.revolgenx.anilib.social.data.field.ToggleActivitySubscriptionField
 import com.revolgenx.anilib.social.data.field.ToggleLikeV2Field
 import com.revolgenx.anilib.social.ui.model.LikeableUnionModel
 import kotlinx.coroutines.flow.Flow
@@ -48,5 +49,16 @@ class ToggleServiceImpl(
 
     override fun toggleFavourite(field: ToggleFavoriteField): Flow<Boolean> {
         return field.toMutation().map { true }.catch { emit(false) }
+    }
+
+    /**
+     * True if Un/Subscribed successfully, false if any error
+     * */
+    override fun toggleActivitySubscription(field: ToggleActivitySubscriptionField): Flow<Boolean> {
+        return field.toMutation().map {
+            it.dataAssertNoErrors.toggleActivitySubscription?.let {
+                true
+            } ?: false
+        }.catch { emit(false) }
     }
 }

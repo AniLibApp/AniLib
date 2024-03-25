@@ -6,8 +6,8 @@ import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.social.data.field.ActivityReplyField
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
+import com.revolgenx.anilib.social.ui.model.ActivityModel
 import com.revolgenx.anilib.social.ui.model.ActivityReplyModel
-import com.revolgenx.anilib.social.ui.model.ActivityUnionModel
 import com.revolgenx.anilib.social.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
@@ -17,7 +17,7 @@ class ActivityUnionServiceImpl(
     mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
 ) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
     ActivityUnionService {
-    override fun getActivityUnion(field: ActivityUnionField): Flow<PageModel<ActivityUnionModel>> {
+    override fun getActivityUnion(field: ActivityUnionField): Flow<PageModel<ActivityModel>> {
         return field.toQuery().map {
             it.dataAssertNoErrors.page.let {
                 PageModel(
@@ -25,11 +25,9 @@ class ActivityUnionServiceImpl(
                     data = it.activities?.mapNotNull {
                         if (!field.canShowAdult && it?.onListActivity?.media?.isAdult == true) return@mapNotNull null
 
-                        ActivityUnionModel(
-                            listActivityModel = it?.onListActivity?.toModel(),
-                            messageActivityModel = it?.onMessageActivity?.toModel(),
-                            textActivityModel = it?.onTextActivity?.toModel()
-                        )
+                        it?.onTextActivity?.toModel()
+                            ?: it?.onListActivity?.toModel()
+                            ?: it?.onMessageActivity?.toModel()
                     }
                 )
             }

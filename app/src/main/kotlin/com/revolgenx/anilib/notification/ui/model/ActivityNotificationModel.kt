@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.notification.ui.model
 
-import com.revolgenx.anilib.social.ui.model.ActivityUnionModel
+import com.revolgenx.anilib.social.ui.model.ActivityModel
 import com.revolgenx.anilib.type.NotificationType
 import com.revolgenx.anilib.user.ui.model.UserModel
 
@@ -13,6 +13,6 @@ data class ActivityNotificationModel(
     val userId: Int,
     val activityId: Int,
     val context: String?,
-    val activity: ActivityUnionModel? = null,
+    val activity: ActivityModel? = null,
     val user: UserModel?
 ) : NotificationModel()

@@ -97,6 +97,7 @@ fun MediaListContent(
             ) {
                 LazyPagingList(
                     items = viewModel.mediaListCollection,
+                    pullRefresh = true,
                     onRefresh = {
                         viewModel.refresh()
                     }

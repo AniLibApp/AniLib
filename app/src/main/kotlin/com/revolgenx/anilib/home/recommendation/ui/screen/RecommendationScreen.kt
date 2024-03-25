@@ -1,18 +1,13 @@
 package com.revolgenx.anilib.home.recommendation.ui.screen
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -20,7 +15,6 @@ import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconToggleButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,9 +31,6 @@ import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.character.data.field.CharacterMediaField
-import com.revolgenx.anilib.character.data.field.CharacterMediaSort
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
@@ -63,10 +54,9 @@ import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationFilterViewModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
-import com.revolgenx.anilib.media.ui.component.MediaItemRowContent
+import com.revolgenx.anilib.media.ui.component.MediaRowContent
 import com.revolgenx.anilib.media.ui.component.MediaRowItemContentEnd
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
-import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.type.RecommendationRating
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -130,6 +120,7 @@ private fun RecommendationPagingContent(
 
     LazyPagingList(
         pagingItems = pagingItems,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },
@@ -167,7 +158,7 @@ fun RecommendationItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     model.media?.let {
-                        MediaItemRowContent(media = it, mediaComponentState = mediaComponentState)
+                        MediaRowContent(media = it, mediaComponentState = mediaComponentState)
                     }
                 }
 

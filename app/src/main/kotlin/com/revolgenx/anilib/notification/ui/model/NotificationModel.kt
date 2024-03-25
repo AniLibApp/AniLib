@@ -3,10 +3,11 @@ package com.revolgenx.anilib.notification.ui.model
 import com.revolgenx.anilib.NotificationQuery
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
+import com.revolgenx.anilib.fragment.NotificationActivity
 import com.revolgenx.anilib.fragment.NotificationMediaContent
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
-import com.revolgenx.anilib.social.ui.model.ActivityUnionModel
+import com.revolgenx.anilib.social.ui.model.ActivityModel
 import com.revolgenx.anilib.social.ui.model.ListActivityModel
 import com.revolgenx.anilib.social.ui.model.MessageActivityModel
 import com.revolgenx.anilib.social.ui.model.TextActivityModel
@@ -112,29 +113,7 @@ fun NotificationQuery.Notification.toModel(): NotificationModel? {
                         )
                     },
 
-                    activity = it.activity?.notificationActivity?.let {
-                        ActivityUnionModel(
-                            textActivityModel = it.onTextActivity?.let {
-                                TextActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            },
-
-                            listActivityModel = it.onListActivity?.let {
-                                ListActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            },
-                            messageActivityModel = it.onMessageActivity?.let {
-                                MessageActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            }
-                        )
-                    },
+                    activity = it.activity?.notificationActivity?.toModel(),
                     createdAt = it.createdAt,
                     createdAtPrettyTime = it.createdAt?.toLong()?.prettyTime()
                 )
@@ -158,29 +137,7 @@ fun NotificationQuery.Notification.toModel(): NotificationModel? {
                         )
                     },
 
-                    activity = it.activity?.notificationActivity?.let {
-                        ActivityUnionModel(
-                            textActivityModel = it.onTextActivity?.let {
-                                TextActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            },
-
-                            listActivityModel = it.onListActivity?.let {
-                                ListActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            },
-                            messageActivityModel = it.onMessageActivity?.let {
-                                MessageActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            }
-                        )
-                    },
+                    activity = it.activity?.notificationActivity?.toModel(),
                     createdAt = it.createdAt,
                     createdAtPrettyTime = it.createdAt?.toLong()?.prettyTime()
                 )
@@ -204,29 +161,7 @@ fun NotificationQuery.Notification.toModel(): NotificationModel? {
                         )
                     },
 
-                    activity = it.activity?.notificationActivity?.let {
-                        ActivityUnionModel(
-                            textActivityModel = it.onTextActivity?.let {
-                                TextActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            },
-
-                            listActivityModel = it.onListActivity?.let {
-                                ListActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            },
-                            messageActivityModel = it.onMessageActivity?.let {
-                                MessageActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            }
-                        )
-                    },
+                    activity = it.activity?.notificationActivity?.toModel(),
                     createdAt = it.createdAt,
                     createdAtPrettyTime = it.createdAt?.toLong()?.prettyTime()
                 )
@@ -250,29 +185,7 @@ fun NotificationQuery.Notification.toModel(): NotificationModel? {
                         )
                     },
 
-                    activity = it.activity?.notificationActivity?.let {
-                        ActivityUnionModel(
-                            textActivityModel = it.onTextActivity?.let {
-                                TextActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            },
-
-                            listActivityModel = it.onListActivity?.let {
-                                ListActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            },
-                            messageActivityModel = it.onMessageActivity?.let {
-                                MessageActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            }
-                        )
-                    },
+                    activity = it.activity?.notificationActivity?.toModel(),
                     createdAt = it.createdAt,
                     createdAtPrettyTime = it.createdAt?.toLong()?.prettyTime()
                 )
@@ -296,29 +209,7 @@ fun NotificationQuery.Notification.toModel(): NotificationModel? {
                         )
                     },
 
-                    activity = it.activity?.notificationActivity?.let {
-                        ActivityUnionModel(
-                            textActivityModel = it.onTextActivity?.let {
-                                TextActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            },
-
-                            listActivityModel = it.onListActivity?.let {
-                                ListActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            },
-                            messageActivityModel = it.onMessageActivity?.let {
-                                MessageActivityModel(
-                                    id = it.id,
-                                    siteUrl = it.siteUrl
-                                )
-                            }
-                        )
-                    },
+                    activity = it.activity?.notificationActivity?.toModel(),
                     createdAt = it.createdAt,
                     createdAtPrettyTime = it.createdAt?.toLong()?.prettyTime()
                 )
@@ -541,3 +432,22 @@ fun NotificationMediaContent.toModel() =
         isAdult = isAdult == true,
         type = type
     )
+
+fun NotificationActivity.toModel(): ActivityModel? {
+    return onTextActivity?.let {
+        TextActivityModel(
+            id = it.id,
+            siteUrl = it.siteUrl
+        )
+    } ?: onListActivity?.let {
+        ListActivityModel(
+            id = it.id,
+            siteUrl = it.siteUrl
+        )
+    } ?: onMessageActivity?.let {
+        MessageActivityModel(
+            id = it.id,
+            siteUrl = it.siteUrl
+        )
+    }
+}

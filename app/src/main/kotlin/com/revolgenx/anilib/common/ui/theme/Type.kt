@@ -22,11 +22,20 @@ val cabinFonts = FontFamily(
 )
 
 val overpassFonts = FontFamily(
-    Font(R.font.overpass_regular),
-    Font(R.font.overpass_medium, weight = FontWeight.Medium),
-    Font(R.font.overpass_semi_bold, weight = FontWeight.SemiBold),
-    Font(R.font.overpass_bold, weight = FontWeight.Bold),
+    Font(R.font.inter_regular),
+    Font(R.font.inter_extralight, weight = FontWeight.ExtraLight),
+    Font(R.font.inter_light, weight = FontWeight.Light),
+    Font(R.font.inter_medium, weight = FontWeight.Medium),
+    Font(R.font.inter_semibold, weight = FontWeight.SemiBold),
+    Font(R.font.inter_bold, weight = FontWeight.Bold),
 )
+
+//val overpassFonts = FontFamily(
+//    Font(R.font.overpass_regular),
+//    Font(R.font.overpass_medium, weight = FontWeight.Medium),
+//    Font(R.font.overpass_semi_bold, weight = FontWeight.SemiBold),
+//    Font(R.font.overpass_bold, weight = FontWeight.Bold),
+//)
 
 // Set of Material typography styles to start with
 

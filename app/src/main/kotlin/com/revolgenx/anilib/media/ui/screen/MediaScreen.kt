@@ -71,6 +71,7 @@ import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.text.RegularText
 import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -323,10 +324,10 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .align(Alignment.Bottom),
-                        verticalArrangement = Arrangement.spacedBy(2.dp)
+                        verticalArrangement = Arrangement.spacedBy(3.dp)
                     ) {
                         MediaTitleType {
-                            SemiBoldText(
+                            MediumText(
                                 text = media?.title?.title(it).naText(),
                                 fontSize = 20.sp,
                                 lineHeight = 22.sp,
@@ -347,7 +348,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                 imageVector = AppIcons.IcStar,
                                 contentDescription = null
                             )
-                            MediumText(
+                            RegularText(
                                 text = media?.popularity.orZero().prettyNumberFormat(),
                                 fontSize = 14.sp,
                                 lineHeight = 17.sp,
@@ -360,7 +361,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                 imageVector = AppIcons.IcHeart,
                                 contentDescription = null
                             )
-                            MediumText(
+                            RegularText(
                                 text = media?.favourites.orZero().prettyNumberFormat(),
                                 fontSize = 14.sp,
                                 lineHeight = 17.sp,
@@ -375,7 +376,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                     .naText()
 
 
-                            MediumText(
+                            RegularText(
                                 text = stringResource(id = I18nR.string.season_dot_year).format(
                                     season,
                                     media?.seasonYear.naText()
@@ -387,14 +388,14 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                         }
 
                         media?.nextAiringEpisode?.let {
-                            MediumText(
+                            RegularText(
                                 text = stringResource(id = I18nR.string.episode_airing_date).format(
                                     it.episode,
                                     it.airingAtModel.airingDateTime.naText()
                                 ),
                                 style = LocalTextStyle.current.shadow(surfaceContainerLowest),
-                                fontSize = 16.sp,
-                                lineHeight = 20.sp,
+                                fontSize = 15.sp,
+                                lineHeight = 18.sp,
                             )
                         }
 

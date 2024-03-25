@@ -42,6 +42,7 @@ fun UserRelationScreen(userId: Int, isFollower: Boolean) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
     LazyPagingList(
         pagingItems = pagingItems,
+        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         }

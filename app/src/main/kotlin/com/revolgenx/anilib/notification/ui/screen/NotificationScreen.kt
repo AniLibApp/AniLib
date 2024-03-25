@@ -89,6 +89,7 @@ private fun NotificationScreenContent(
 
         LazyPagingList(
             pagingItems = pagingItems,
+            pullRefresh = true,
             onRefresh = {
                 viewModel.refresh()
             },

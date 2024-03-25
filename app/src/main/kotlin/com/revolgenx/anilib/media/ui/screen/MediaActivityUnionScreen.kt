@@ -13,5 +13,10 @@ fun MediaActivityUnionScreen(
     viewModel.field.also {
         it.type = ActivityType.MEDIA_LIST
     }
-    ActivityUnionScreenContent(viewModel = viewModel)
+    ActivityUnionScreenContent(
+        viewModel = viewModel,
+        onReplyClick = {
+            /*todo on reply*/
+        }
+    )
 }

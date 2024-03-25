@@ -1,6 +1,10 @@
 package com.revolgenx.anilib.social.ui.model
 
 import android.text.Spanned
+import androidx.compose.runtime.MutableIntState
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.ActivityUnionQuery
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
@@ -15,19 +19,20 @@ data class TextActivityModel(
     override val type: ActivityType = ActivityType.UNKNOWN__,
     override val replyCount: Int = 0,
     override val siteUrl: String? = null,
-    override val isSubscribed: Boolean = false,
-    override val likeCount: Int = 0,
-    override val isLiked: Boolean = false,
     override val isPinned: Boolean = false,
     override val createdAt: Int = 0,
     override val createdAtPrettyTime: String = "",
     override val user: UserModel? = null,
     override val replies: List<ActivityReplyModel>? = null,
     override val likes: List<UserModel>? = null,
+    override val isLiked: MutableState<Boolean> = mutableStateOf(false),
+    override val likeCount: MutableIntState = mutableIntStateOf(0),
+    override val isSubscribed: MutableState<Boolean> = mutableStateOf(false),
+    override val isDeleted: MutableState<Boolean> = mutableStateOf(false),
     val text: String? = null,
     val anilifiedText: String = "",
     val textSpanned: Spanned? = null
-) : ActivityModel, BaseModel
+) : ActivityModel()
 
 
 fun ActivityUnionQuery.OnTextActivity.toModel(): TextActivityModel {
@@ -37,9 +42,7 @@ fun ActivityUnionQuery.OnTextActivity.toModel(): TextActivityModel {
         text = text.orEmpty(),
         anilifiedText = anilifiedText,
         textSpanned = markdown.toMarkdown(anilifiedText),
-        likeCount = likeCount,
         replyCount = replyCount,
-        isSubscribed = isSubscribed ?: false,
         type = type!!,
         user = user?.activityUser?.toModel(),
         likes = likes?.mapNotNull {
@@ -49,6 +52,8 @@ fun ActivityUnionQuery.OnTextActivity.toModel(): TextActivityModel {
         createdAt = createdAt,
         createdAtPrettyTime = createdAt.toLong().prettyTime(),
         userId = userId,
-        isLiked = isLiked ?: false,
+        likeCount = mutableIntStateOf(likeCount) ,
+        isSubscribed = mutableStateOf(isSubscribed ?: false) ,
+        isLiked = mutableStateOf(isLiked ?: false) ,
     )
 }
