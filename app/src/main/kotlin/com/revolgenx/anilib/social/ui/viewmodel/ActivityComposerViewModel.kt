@@ -1,14 +1,24 @@
 package com.revolgenx.anilib.social.ui.viewmodel
 
 import android.text.Spanned
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
+import com.revolgenx.anilib.social.data.service.ActivityUnionService
 import com.revolgenx.anilib.social.factory.markdown
 import com.revolgenx.anilib.social.markdown.anilify
 
-class ActivityComposerViewModel : ViewModel() {
+class ActivityComposerViewModel(
+    activityUnionService: ActivityUnionService
+) : ViewModel() {
+    var activityId by mutableIntStateOf(-1)
+    var recipientId by mutableIntStateOf(-1)
+    var private by mutableStateOf(false)
+
     val textFieldValue = mutableStateOf(TextFieldValue())
     val spannedText = mutableStateOf<Spanned?>(null)
 
@@ -23,5 +33,9 @@ class ActivityComposerViewModel : ViewModel() {
             textFieldValue.value =
                 tf.copy(text = newText, selection = TextRange(newText.length - value.second))
         }
+    }
+
+    fun save(){
+
     }
 }

@@ -7,7 +7,10 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -25,18 +28,16 @@ import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.PeekHeight
 import com.dokar.sheets.m3.BottomSheetLayout
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
-import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
-import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcDelete
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSend
 import com.revolgenx.anilib.social.ui.component.MarkdownEditor
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
 private typealias ActivityComposerScreenPage = PagerScreen<ActivityComposerScreenPages>
@@ -75,7 +76,7 @@ fun ActivityComposerBottomSheet(
 }
 
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun ActivityComposerScreenContent(
     viewModel: ActivityComposerViewModel
@@ -102,13 +103,11 @@ private fun ActivityComposerScreenContent(
         ) {
             when (ActivityComposerScreenPages.entries[page]) {
                 ActivityComposerScreenPages.COMPOSE -> ActivityComposerStatusScreen(
-                    viewModel,
-                    pagerState.currentPage
+                    viewModel
                 )
 
                 ActivityComposerScreenPages.PREVIEW -> ActivityComposerPreviewScreen(
-                    viewModel,
-                    pagerState.currentPage
+                    viewModel
                 )
             }
         }
@@ -117,7 +116,7 @@ private fun ActivityComposerScreenContent(
 
 
 @Composable
-fun ActivityComposerStatusScreen(viewModel: ActivityComposerViewModel, currentPage: Int) {
+private fun ActivityComposerStatusScreen(viewModel: ActivityComposerViewModel) {
     Column(
         verticalArrangement = Arrangement.spacedBy(6.dp)
     ) {
@@ -145,14 +144,21 @@ fun ActivityComposerStatusScreen(viewModel: ActivityComposerViewModel, currentPa
 }
 
 @Composable
-fun ActivityComposerPreviewScreen(viewModel: ActivityComposerViewModel, currentPage: Int) {
+private fun ActivityComposerPreviewScreen(viewModel: ActivityComposerViewModel) {
     LaunchedEffect(viewModel.textFieldValue.value) {
         viewModel.toMarkdown()
     }
 
-    MarkdownText(
-        modifier = Modifier.fillMaxWidth(),
-        spanned = viewModel.spannedText.value
-    )
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(10.dp)
+            .verticalScroll(rememberScrollState())
+    ) {
+        MarkdownText(
+            modifier = Modifier.fillMaxWidth(),
+            spanned = viewModel.spannedText.value
+        )
+    }
 
 }

@@ -1,11 +1,17 @@
 package com.revolgenx.anilib.social.data.service
 
+import com.apollographql.apollo3.api.Optional
+import com.revolgenx.anilib.DeleteActivityMutation
+import com.revolgenx.anilib.DeleteActivityReplyMutation
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.social.data.field.ActivityReplyField
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
+import com.revolgenx.anilib.social.data.field.SaveActivityReplyField
+import com.revolgenx.anilib.social.data.field.SaveMessageActivityField
+import com.revolgenx.anilib.social.data.field.SaveTextActivityField
 import com.revolgenx.anilib.social.ui.model.ActivityModel
 import com.revolgenx.anilib.social.ui.model.ActivityReplyModel
 import com.revolgenx.anilib.social.ui.model.toModel
@@ -45,6 +51,38 @@ class ActivityUnionServiceImpl(
                 )
             }
         }
+    }
+
+    override fun saveTextActivity(field: SaveTextActivityField): Flow<Int?> {
+        return field.toMutation().map {
+            it.dataAssertNoErrors.saveTextActivity?.id
+        }
+    }
+
+    override fun saveMessageActivity(field: SaveMessageActivityField): Flow<Int?> {
+        return field.toMutation().map {
+            it.dataAssertNoErrors.saveMessageActivity?.id
+        }
+    }
+
+    override fun saveActivityReply(field: SaveActivityReplyField): Flow<Int?> {
+        return field.toMutation().map {
+            it.dataAssertNoErrors.saveActivityReply?.id
+        }
+    }
+
+    override fun deleteActivity(id: Int): Flow<Boolean> {
+        return apolloRepository.mutation(DeleteActivityMutation(id = Optional.present(id)))
+            .map {
+                it.dataAssertNoErrors.deleteActivity?.deleted == true
+            }
+    }
+
+    override fun deleteActivityReply(id: Int): Flow<Boolean> {
+        return apolloRepository.mutation(DeleteActivityReplyMutation(id = Optional.present(id)))
+            .map {
+                it.dataAssertNoErrors.deleteActivityReply?.deleted == true
+            }
     }
 
 }
