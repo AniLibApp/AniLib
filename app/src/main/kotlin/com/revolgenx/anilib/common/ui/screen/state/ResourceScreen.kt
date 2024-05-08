@@ -38,7 +38,7 @@ private fun <M : Any, F : BaseField<*>> ResourceScreenContent(
 
 @Composable
 private fun <M : Any, F : BaseField<*>> ResourceLoadingSection(viewModel: ResourceViewModel<M, F>) {
-    if (viewModel.saveResource.value is ResourceState.Loading || viewModel.deleteResource.value is ResourceState.Loading) {
+    if (viewModel.saveResource is ResourceState.Loading || viewModel.deleteResource is ResourceState.Loading) {
         LinearLoadingSection()
     }
 }

@@ -47,6 +47,9 @@ class ToggleServiceImpl(
         }
     }
 
+    /**
+     * True if Toggled successfully, false if any error
+     * */
     override fun toggleFavourite(field: ToggleFavoriteField): Flow<Boolean> {
         return field.toMutation().map { true }.catch { emit(false) }
     }

@@ -2,11 +2,7 @@ package com.revolgenx.anilib.home.ui.screen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
@@ -19,10 +15,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.revolgenx.anilib.R
-import com.revolgenx.anilib.browse.ui.screen.BrowseScreen
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
-import com.revolgenx.anilib.common.ext.openBrowseScreen
+import com.revolgenx.anilib.common.ext.browseScreen
 import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
@@ -98,7 +91,7 @@ fun HomeScreenContent() {
         navigationIcon = {},
         actions = {
             ActionMenu(icon = AppIcons.IcSearch) {
-                navigator.openBrowseScreen()
+                navigator.browseScreen()
             }
             ShowIfLoggedIn {
                 ActionMenu(icon = AppIcons.IcNotification) {

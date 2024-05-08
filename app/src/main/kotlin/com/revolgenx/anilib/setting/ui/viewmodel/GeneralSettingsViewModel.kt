@@ -1,10 +1,10 @@
 package com.revolgenx.anilib.setting.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
-import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.GeneralPreferencesDataStore
 
 class GeneralSettingsViewModel(
-    val appPreferencesDataStore: AppPreferencesDataStore
+    val generalPreferencesDataStore: GeneralPreferencesDataStore
 ) : ViewModel() {
 
 }

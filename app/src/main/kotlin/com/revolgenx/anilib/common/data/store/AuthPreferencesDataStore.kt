@@ -5,7 +5,6 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.auth0.android.jwt.JWT
-import com.revolgenx.anilib.common.data.model.PreferenceDataStoreModel
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
@@ -14,18 +13,17 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 
-class AuthPreferencesDataStore(override val dataStore: PreferencesDataStore) :
-    IPreferencesDataStore {
+class AuthPreferencesDataStore(val dataStore: PreferencesDataStore) {
     companion object {
         val authTokenKey = stringPreferencesKey("auth_token_key")
         val userIdKey = intPreferencesKey("user_id_key")
     }
 
-    val token = PreferenceDataStoreModel(
+    val token = AppPreferencesDataStore(
         dataStore = dataStore,
         prefKey = authTokenKey
     )
-    val userId = PreferenceDataStoreModel(
+    val userId = AppPreferencesDataStore(
         dataStore = dataStore,
         prefKey = userIdKey
     )

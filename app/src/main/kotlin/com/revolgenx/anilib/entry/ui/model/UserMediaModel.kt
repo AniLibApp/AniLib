@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.entry.ui.model
 
+import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.MediaListEntryQuery
 import com.revolgenx.anilib.SaveMediaListEntryMutation
 import com.revolgenx.anilib.list.ui.model.MediaListModel
@@ -55,7 +56,7 @@ fun MediaListEntryQuery.Data.toModel(): UserMediaModel {
                 episodes = media.episodes,
                 chapters = media.chapters,
                 volumes = media.volumes,
-                isFavourite = media.isFavourite,
+                isFavourite = mutableStateOf(media.isFavourite),
                 mediaListEntry = media.mediaListEntry?.toModel()
             )
         })

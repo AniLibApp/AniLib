@@ -41,7 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.data.state.ResourceState
-import com.revolgenx.anilib.common.ext.horizontalWindowInsets
+import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
@@ -78,15 +78,12 @@ import java.time.ZoneId
 import java.time.ZonedDateTime
 import anilib.i18n.R as I18nR
 
-class MediaListEntryEditorScreen(private val mediaId: Int, private val userId: Int) :
+class MediaListEntryEditorScreen(private val mediaId: Int) :
     AndroidScreen() {
     @Composable
     override fun Content() {
         val viewModel: MediaListEntryEditorViewModel = koinViewModel()
-        viewModel.field.also {
-            it.mediaId = mediaId
-            it.userId = userId
-        }
+        viewModel.field.mediaId = mediaId
         MediaListEditScreenContent(viewModel)
     }
 }
@@ -97,11 +94,9 @@ class MediaListEntryEditorScreen(private val mediaId: Int, private val userId: I
 private fun MediaListEditScreenContent(
     viewModel: MediaListEntryEditorViewModel,
 ) {
-
-    LaunchedEffect(viewModel) {
-        viewModel.getResource()
-    }
-
+    viewModel.getResource()
+    val navigator = localNavigator()
+    val context = localContext()
     val editTitle = stringResource(id = I18nR.string.edit)
     var title by remember { mutableStateOf(editTitle) }
     val openConfirmDialog = remember { mutableStateOf(false) }
@@ -136,19 +131,20 @@ private fun MediaListEditScreenContent(
             }
         },
         contentWindowInsets = NavigationBarDefaults.windowInsets
-    ) {
+    ) { snackbar ->
 
-        val snackbar = localSnackbarHostState()
-        when (viewModel.deleteResource.value) {
-            is ResourceState.Error -> {
-                val failedToDelete = stringResource(id = I18nR.string.failed_to_delete)
-                val retry = stringResource(id = I18nR.string.retry)
-                LaunchedEffect(viewModel) {
+        LaunchedEffect(viewModel.deleteResource) {
+            when (viewModel.deleteResource) {
+                is ResourceState.Error -> {
+                    val failedToDelete = context.getString(I18nR.string.failed_to_delete)
+                    val retry = context.getString(I18nR.string.retry)
                     when (snackbar.showSnackbar(
-                        failedToDelete, retry, duration = SnackbarDuration.Long
+                        failedToDelete,
+                        retry,
+                        duration = SnackbarDuration.Long
                     )) {
                         SnackbarResult.Dismissed -> {
-                            viewModel.deleteResource.value = null
+                            viewModel.deleteResource = null
                         }
 
                         SnackbarResult.ActionPerformed -> {
@@ -156,25 +152,27 @@ private fun MediaListEditScreenContent(
                         }
                     }
                 }
-            }
 
-            is ResourceState.Success -> {
-                localNavigator().pop()
-            }
+                is ResourceState.Success -> {
+                    navigator.pop()
+                }
 
-            else -> {}
+                else -> {}
+            }
         }
 
-        when (viewModel.saveResource.value) {
-            is ResourceState.Error -> {
-                val failedToSave = stringResource(id = I18nR.string.failed_to_save)
-                val retry = stringResource(id = I18nR.string.retry)
-                LaunchedEffect(viewModel) {
+        LaunchedEffect(viewModel.saveResource) {
+            when (viewModel.saveResource) {
+                is ResourceState.Error -> {
+                    val failedToSave = context.getString(I18nR.string.failed_to_save)
+                    val retry = context.getString(I18nR.string.retry)
                     when (snackbar.showSnackbar(
-                        failedToSave, retry, duration = SnackbarDuration.Long
+                        failedToSave,
+                        retry,
+                        duration = SnackbarDuration.Long
                     )) {
                         SnackbarResult.Dismissed -> {
-                            viewModel.saveResource.value = null
+                            viewModel.saveResource = null
                         }
 
                         SnackbarResult.ActionPerformed -> {
@@ -182,13 +180,13 @@ private fun MediaListEditScreenContent(
                         }
                     }
                 }
-            }
 
-            is ResourceState.Success -> {
-                localNavigator().pop()
-            }
+                is ResourceState.Success -> {
+                    navigator.pop()
+                }
 
-            else -> {}
+                else -> {}
+            }
         }
 
 

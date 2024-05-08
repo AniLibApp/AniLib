@@ -35,9 +35,9 @@ data class ListPreferenceEntry<T>(val title: String, val value: T?)
 fun <T> ListPreferenceItem(
     value: T?,
     title: String,
-    subtitle: String? = null,
-    icon: ImageVector? = null,
     entries: List<ListPreferenceEntry<out T>>,
+    subtitle: String? = entries.firstOrNull { it.value == value }?.title,
+    icon: ImageVector? = null,
     onValueChange: (T?) -> Unit,
 ) {
     var isDialogShown by remember { mutableStateOf(false) }

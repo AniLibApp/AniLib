@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="background_colors">
+        <item>@color/background_indigo_light</item>
+        <item>@color/background_red_light</item>
+        <item>@color/background_green_light</item>
+        <item>@color/background_blue_light</item>
+        <item>@color/background_teal_light</item>
+        <item>@color/background_purple_light</item>
+        <item>@color/background_orange_light</item>
+        <item>@color/background_brown_light</item>
+    </integer-array>
+</resources>

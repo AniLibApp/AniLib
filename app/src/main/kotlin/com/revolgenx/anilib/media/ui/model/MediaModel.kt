@@ -2,6 +2,8 @@ package com.revolgenx.anilib.media.ui.model
 
 import android.text.Spanned
 import androidx.annotation.StringRes
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
 import com.revolgenx.anilib.MediaOverviewQuery
@@ -67,7 +69,7 @@ data class MediaModel(
     val hashtag: String? = null,
     val idMal: Int = -1,
     val isAdult: Boolean = false,
-    val isFavourite: Boolean = false,
+    val isFavourite: MutableState<Boolean> = mutableStateOf(false),
     val meanScore: Int? = null,
     val mediaListEntry: MediaListModel? = null,
     val nextAiringEpisode: AiringScheduleModel? = null,
@@ -138,10 +140,10 @@ fun Media.toModel(): MediaModel {
         bannerImage = bannerImage ?: coverImage?.extraLargeImage,
         isAdult = isAdult ?: false,
         mediaListEntry = mediaListEntry?.let { list ->
-            MediaListModel(
-                progress = list.progress ?: 0,
-                status = list.status
-            )
+                MediaListModel(
+                    progress = list.progress ?: 0,
+                    status = mutableStateOf(list.status)
+                )
         }
     )
 }
@@ -192,7 +194,7 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
         hashtag = hashtag,
         synonyms = synonyms?.filterNotNull(),
         synonymsString = synonyms?.joinToString("\n"),
-        isFavourite = isFavourite,
+        isFavourite = mutableStateOf(isFavourite),
         countryOfOrigin = country,
         streamingEpisodes = streamingEpisodes?.mapNotNull {
             it?.let {
@@ -205,8 +207,8 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
             }
         },
         mediaListEntry = mediaListEntry?.let {
-            MediaListModel(it.id, status = it.status)
-        },
+            MediaListModel(it.id, status = mutableStateOf(it.status) )
+        } ?: MediaListModel(),
         nextAiringEpisode = nextAiringEpisode?.let {
             AiringScheduleModel(
                 episode = it.episode,

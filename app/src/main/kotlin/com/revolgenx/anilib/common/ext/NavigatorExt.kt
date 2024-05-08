@@ -41,8 +41,8 @@ fun Navigator.userScreen(userId: Int? = null, username: String? = null) {
     push(UserScreen(id = userId, userName = username))
 }
 
-fun Navigator.mediaListEntryEditorScreen(mediaId: Int, userId: Int) {
-    push(MediaListEntryEditorScreen(mediaId, userId))
+fun Navigator.mediaListEntryEditorScreen(mediaId: Int) {
+    push(MediaListEntryEditorScreen(mediaId))
 }
 
 fun Navigator.userMediaListScreen(userId: Int, mangaTab: Boolean = false) {
@@ -66,14 +66,15 @@ fun Navigator.reviewScreen(reviewId: Int) {
     push(ReviewScreen(reviewId))
 }
 
-fun Navigator.openBrowseScreen(browseFilterData: BrowseFilterData? = null){
+
+fun Navigator.browseScreen(browseFilterData: BrowseFilterData? = null){
     push(BrowseScreen(browseFilterData))
 }
 
-fun Navigator.openGenre(genre: String){
-    openBrowseScreen(BrowseFilterData(genreIn = listOf(genre)))
+fun Navigator.browseGenreScreen(genre: String){
+    browseScreen(BrowseFilterData(genreIn = listOf(genre)))
 }
 
-fun Navigator.openTag(tag: String){
-    openBrowseScreen(BrowseFilterData(tagsIn = listOf(tag)))
+fun Navigator.browseTagScreen(tag: String){
+    browseScreen(BrowseFilterData(tagsIn = listOf(tag)))
 }

@@ -6,30 +6,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import androidx.core.os.LocaleListCompat
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.util.getDisplayName
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
+import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
 import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import com.revolgenx.anilib.setting.ui.viewmodel.GeneralSettingsViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.xmlpull.v1.XmlPullParser
 import anilib.i18n.R as I18nR
 
-object GeneralSettingsScreen : ViewModelPreferencesScreen<GeneralSettingsViewModel>() {
-
-    override val titleRes: Int = I18nR.string.settings_general
+object GeneralSettingsScreen : PreferencesScreen() {
 
     @Composable
-    override fun getViewModel(): GeneralSettingsViewModel = koinViewModel()
-
-
-    @Composable
-    override fun getPreferences(): List<PreferenceModel> {
+    override fun PreferencesContent() {
         val context = localContext()
-        val appDataStore = viewModel.appPreferencesDataStore
+        val scope = rememberCoroutineScope()
+        val viewModel: GeneralSettingsViewModel = koinViewModel()
+
+        val appDataStore = viewModel.generalPreferencesDataStore
         val langs = remember { getLangs(context) }
 
         val currentLanguage = remember {
@@ -52,23 +53,25 @@ object GeneralSettingsScreen : ViewModelPreferencesScreen<GeneralSettingsViewMod
             AppCompatDelegate.setApplicationLocales(locale)
         }
 
-        return listOf(
-            PreferenceModel.ListPreferenceModel(
-                prefState = currentLanguage,
-                title = stringResource(anilib.i18n.R.string.settings_general_app_language),
-                entries = langs,
-                onValueChanged = { newValue ->
-                    currentLanguage.value = newValue!!
-                    true
-                },
-            ),
-            PreferenceModel.ListPreferenceModel(
-                pref = appDataStore.mediaCoverImageType,
-                title = stringResource(anilib.i18n.R.string.cover_image_quality),
-                entries = imageQualityEntry
-            )
-        )
+        ListPreferenceItem(value = currentLanguage.value, title = stringResource(anilib.i18n.R.string.settings_general_app_language), entries = langs) { newValue->
+            currentLanguage.value = newValue!!
+        }
+
+        val mediaCoverImageType = appDataStore.mediaCoverImageType.collectAsState()
+
+        ListPreferenceItem(
+            value = mediaCoverImageType.value,
+            title = stringResource(anilib.i18n.R.string.cover_image_quality),
+            entries = imageQualityEntry
+        ) { newValue->
+            scope.launch{
+                appDataStore.mediaCoverImageType.set(newValue)
+            }
+        }
+
     }
+
+    override val titleRes: Int = I18nR.string.settings_general
 
     private fun coverImagePrefList(context: Context): List<ListPreferenceEntry<Int>> {
         return listOf(

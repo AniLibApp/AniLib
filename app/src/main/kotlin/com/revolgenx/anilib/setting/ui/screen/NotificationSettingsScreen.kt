@@ -12,21 +12,22 @@ import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSave
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
+import com.revolgenx.anilib.setting.ui.component.GroupPreferenceItem
+import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
 import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import com.revolgenx.anilib.setting.ui.viewmodel.NotificationSettingsViewModel
 import com.revolgenx.anilib.type.NotificationType
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
-class NotificationSettingsScreen : ViewModelPreferencesScreen<NotificationSettingsViewModel>() {
+class NotificationSettingsScreen : PreferencesScreen() {
 
     override val titleRes: Int = I18nR.string.notifications
 
-    @Composable
-    override fun getViewModel(): NotificationSettingsViewModel = koinViewModel()
-
     @Composable()
     override fun SaveAction() {
+        val viewModel: NotificationSettingsViewModel = koinViewModel()
+
         ActionMenu(
             icon = AppIcons.IcSave
         ) {
@@ -35,17 +36,27 @@ class NotificationSettingsScreen : ViewModelPreferencesScreen<NotificationSettin
     }
 
     @Composable
-    override fun PreferenceContent() {
+    override fun PreferencesContent() {
+        val viewModel: NotificationSettingsViewModel = koinViewModel()
+
         ResourceScreen(viewModel = viewModel) {
             SaveResourceState(viewModel)
-            super.PreferenceContent()
+            NotificationScreenContent(viewModel = viewModel)
         }
+    }
+
+    @Composable
+    private fun NotificationScreenContent(viewModel: NotificationSettingsViewModel) {
+        val resourceValue = viewModel.resource.value?.stateValue ?: emptyMap()
+        ActivitySubscriptionsGroup(resourceValue)
+        SocialGroup(resourceValue)
+        SiteDataChangesGroup(resourceValue)
     }
 
     @Composable
     private fun SaveResourceState(viewModel: NotificationSettingsViewModel) {
         val snackbar = localSnackbarHostState()
-        when (viewModel.saveResource.value) {
+        when (viewModel.saveResource) {
             is ResourceState.Error -> {
                 val failedToSave = stringResource(id = I18nR.string.failed_to_save)
                 val retry = stringResource(id = I18nR.string.retry)
@@ -54,7 +65,7 @@ class NotificationSettingsScreen : ViewModelPreferencesScreen<NotificationSettin
                         failedToSave, retry, duration = SnackbarDuration.Long
                     )) {
                         SnackbarResult.Dismissed -> {
-                            viewModel.saveResource.value = null
+                            viewModel.saveResource = null
                         }
 
                         SnackbarResult.ActionPerformed -> {
@@ -69,179 +80,126 @@ class NotificationSettingsScreen : ViewModelPreferencesScreen<NotificationSettin
     }
 
     @Composable
-    override fun getPreferences(): List<PreferenceModel> {
-        val viewModel: NotificationSettingsViewModel = getViewModel()
-        val resourceValue = viewModel.resource.value?.stateValue ?: emptyMap()
-        return listOf(
-            getActivitySubscriptionsGroup(resourceValue),
-            getSocialGroup(resourceValue),
-            getSiteDataChangesGroup(resourceValue)
-        )
-    }
-
-    @Composable
-    private fun getActivitySubscriptionsGroup(
+    private fun ActivitySubscriptionsGroup(
         map: Map<NotificationType, MutableState<Boolean>>,
-    ): PreferenceModel.PreferenceGroup {
-        val activitySubs = listOf(
-            PreferenceModel.SwitchPreference(
+    ) {
+        GroupPreferenceItem(title = stringResource(id = I18nR.string.activity_subscriptions)) {
+            SwitchPreferenceItem(
                 title = stringResource(id = I18nR.string.automatically_subscribe_me_to_activity_i_create),
-                prefState = map[NotificationType.ACTIVITY_REPLY],
-                onValueChanged = {
-                    map[NotificationType.ACTIVITY_REPLY]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
+                checked = map[NotificationType.ACTIVITY_REPLY]?.value == true
+            ) {
+                map[NotificationType.ACTIVITY_REPLY]?.value = it
+            }
+
+            SwitchPreferenceItem(
                 title = stringResource(id = I18nR.string.automatically_subscribe_me_to_activity_i_reply_to),
-                prefState = map[NotificationType.ACTIVITY_REPLY_SUBSCRIBED],
-                onValueChanged = {
-                    map[NotificationType.ACTIVITY_REPLY_SUBSCRIBED]?.value = it
-                    true
-                }
-            )
-        )
-
-        return PreferenceModel.PreferenceGroup(
-            title = stringResource(id = I18nR.string.activity_subscriptions),
-            preferenceItems = activitySubs
-        )
+                checked = map[NotificationType.ACTIVITY_REPLY_SUBSCRIBED]?.value == true
+            ) {
+                map[NotificationType.ACTIVITY_REPLY_SUBSCRIBED]?.value = it
+            }
+        }
     }
 
 
     @Composable
-    private fun getSocialGroup(map: Map<NotificationType, MutableState<Boolean>>): PreferenceModel.PreferenceGroup {
-        val social = listOf(
-            PreferenceModel.SwitchPreference(
+    private fun SocialGroup(map: Map<NotificationType, MutableState<Boolean>>) {
+        GroupPreferenceItem(title = stringResource(id = I18nR.string.social)) {
+            SwitchPreferenceItem(
                 title = stringResource(id = I18nR.string.when_someone_follows_me),
-                prefState = map[NotificationType.FOLLOWING],
-                onValueChanged = {
-                    map[NotificationType.FOLLOWING]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
-                title = stringResource(id = I18nR.string.receive_message_notif),
-                prefState = map[NotificationType.ACTIVITY_MESSAGE],
-                onValueChanged = {
-                    map[NotificationType.ACTIVITY_MESSAGE]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
-                title = stringResource(id = I18nR.string.mention_replay_notif),
-                prefState = map[NotificationType.ACTIVITY_MENTION],
-                onValueChanged = {
-                    map[NotificationType.ACTIVITY_MENTION]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
-                title = stringResource(id = I18nR.string.activity_like_notif),
-                prefState = map[NotificationType.ACTIVITY_LIKE],
-                onValueChanged = {
-                    map[NotificationType.ACTIVITY_LIKE]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
-                title = stringResource(id = I18nR.string.likes_activity_reply_notif),
-                prefState = map[NotificationType.ACTIVITY_REPLY_LIKE],
-                onValueChanged = {
-                    map[NotificationType.ACTIVITY_REPLY_LIKE]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
-                title = stringResource(id = I18nR.string.forum_reply_notif),
-                prefState = map[NotificationType.THREAD_COMMENT_REPLY],
-                onValueChanged = {
-                    map[NotificationType.THREAD_COMMENT_REPLY]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
-                title = stringResource(id = I18nR.string.forum_mention_notif),
-                prefState = map[NotificationType.THREAD_COMMENT_MENTION],
-                onValueChanged = {
-                    map[NotificationType.THREAD_COMMENT_MENTION]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
-                title = stringResource(id = I18nR.string.forum_coment_liked_notif),
-                prefState = map[NotificationType.THREAD_COMMENT_LIKE],
-                onValueChanged = {
-                    map[NotificationType.THREAD_COMMENT_LIKE]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
-                title = stringResource(id = I18nR.string.reply_to_subscribed_forum_notif),
-                prefState = map[NotificationType.THREAD_SUBSCRIBED],
-                onValueChanged = {
-                    map[NotificationType.THREAD_SUBSCRIBED]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
-                title = stringResource(id = I18nR.string.forum_liked_notif),
-                prefState = map[NotificationType.THREAD_LIKE],
-                onValueChanged = {
-                    map[NotificationType.THREAD_LIKE]?.value = it
-                    true
-                }
-            )
-        )
+                checked = map[NotificationType.FOLLOWING]?.value == true
+            ) {
+                map[NotificationType.FOLLOWING]?.value = it
+            }
 
-        return PreferenceModel.PreferenceGroup(
-            title = stringResource(id = I18nR.string.social),
-            preferenceItems = social
-        )
+            SwitchPreferenceItem(
+                title = stringResource(id = I18nR.string.receive_message_notif),
+                checked = map[NotificationType.ACTIVITY_MESSAGE]?.value == true
+            ) {
+                map[NotificationType.ACTIVITY_MESSAGE]?.value = it
+            }
+            SwitchPreferenceItem(
+                title = stringResource(id = I18nR.string.mention_replay_notif),
+                checked = map[NotificationType.ACTIVITY_MENTION]?.value == true
+            ) {
+                map[NotificationType.ACTIVITY_MENTION]?.value = it
+            }
+            SwitchPreferenceItem(
+                title = stringResource(id = I18nR.string.activity_like_notif),
+                checked = map[NotificationType.ACTIVITY_LIKE]?.value == true
+            ) {
+                map[NotificationType.ACTIVITY_LIKE]?.value = it
+            }
+            SwitchPreferenceItem(
+                title = stringResource(id = I18nR.string.likes_activity_reply_notif),
+                checked = map[NotificationType.ACTIVITY_REPLY_LIKE]?.value == true
+            ) {
+                map[NotificationType.ACTIVITY_REPLY_LIKE]?.value = it
+            }
+            SwitchPreferenceItem(
+                title = stringResource(id = I18nR.string.forum_reply_notif),
+                checked = map[NotificationType.THREAD_COMMENT_REPLY]?.value == true
+            ) {
+                map[NotificationType.THREAD_COMMENT_REPLY]?.value = it
+            }
+            SwitchPreferenceItem(
+                title = stringResource(id = I18nR.string.forum_mention_notif),
+                checked = map[NotificationType.THREAD_COMMENT_MENTION]?.value == true
+            ) {
+                map[NotificationType.THREAD_COMMENT_MENTION]?.value = it
+            }
+            SwitchPreferenceItem(
+                title = stringResource(id = I18nR.string.forum_coment_liked_notif),
+                checked = map[NotificationType.THREAD_COMMENT_LIKE]?.value == true
+            ) {
+                map[NotificationType.THREAD_COMMENT_LIKE]?.value = it
+            }
+            SwitchPreferenceItem(
+                title = stringResource(id = I18nR.string.reply_to_subscribed_forum_notif),
+                checked = map[NotificationType.THREAD_SUBSCRIBED]?.value == true
+            ) {
+                map[NotificationType.THREAD_SUBSCRIBED]?.value = it
+            }
+            SwitchPreferenceItem(
+                title = stringResource(id = I18nR.string.forum_liked_notif),
+                checked = map[NotificationType.THREAD_LIKE]?.value == true
+            ) {
+                map[NotificationType.THREAD_LIKE]?.value = it
+            }
+        }
+
     }
 
     @Composable
-    fun getSiteDataChangesGroup(map: Map<NotificationType, MutableState<Boolean>>): PreferenceModel.PreferenceGroup {
-        val siteDataChanges = listOf(
-            PreferenceModel.SwitchPreference(
+    fun SiteDataChangesGroup(map: Map<NotificationType, MutableState<Boolean>>) {
+        GroupPreferenceItem(title = stringResource(id = I18nR.string.site_data_changes)) {
+
+            SwitchPreferenceItem(
                 title = stringResource(id = I18nR.string.media_related_to_me),
-                prefState = map[NotificationType.RELATED_MEDIA_ADDITION],
-                onValueChanged = {
-                    map[NotificationType.RELATED_MEDIA_ADDITION]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
+                checked = map[NotificationType.RELATED_MEDIA_ADDITION]?.value == true
+            ) {
+                map[NotificationType.RELATED_MEDIA_ADDITION]?.value = it
+            }
+
+            SwitchPreferenceItem(
                 title = stringResource(id = I18nR.string.media_modified_in_my_list),
-                prefState = map[NotificationType.MEDIA_DATA_CHANGE],
-                onValueChanged = {
-                    map[NotificationType.MEDIA_DATA_CHANGE]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
+                checked = map[NotificationType.MEDIA_DATA_CHANGE]?.value == true
+            ) {
+                map[NotificationType.MEDIA_DATA_CHANGE]?.value = it
+            }
+            SwitchPreferenceItem(
                 title = stringResource(id = I18nR.string.media_merged_in_my_list),
-                prefState = map[NotificationType.MEDIA_MERGE],
-                onValueChanged = {
-                    map[NotificationType.MEDIA_MERGE]?.value = it
-                    true
-                }
-            ),
-            PreferenceModel.SwitchPreference(
+                checked = map[NotificationType.MEDIA_MERGE]?.value == true
+            ) {
+                map[NotificationType.MEDIA_MERGE]?.value = it
+            }
+            SwitchPreferenceItem(
                 title = stringResource(id = I18nR.string.media_deleted_in_my_list),
-                prefState = map[NotificationType.MEDIA_DELETION],
-                onValueChanged = {
-                    map[NotificationType.MEDIA_DELETION]?.value = it
-                    true
-                }
-            ),
+                checked = map[NotificationType.MEDIA_DELETION]?.value == true
+            ) {
+                map[NotificationType.MEDIA_DELETION]?.value = it
+            }
 
-            )
-
-        return PreferenceModel.PreferenceGroup(
-            title = stringResource(id = I18nR.string.site_data_changes),
-            preferenceItems = siteDataChanges
-        )
+        }
     }
 
 }

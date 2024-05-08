@@ -50,6 +50,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
 import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationType
 import com.revolgenx.anilib.relation.ui.viewmodel.UserRelationViewModel
+import com.revolgenx.anilib.review.ui.viewmodel.ReviewComposerViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListFilterViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
@@ -111,7 +112,7 @@ val viewModelModules = module {
     viewModel { ExploreAiringScheduleFilterViewModel(get<Context>().exploreAiringScheduleFilterDataStore) }
 
     // media
-    viewModel { MediaViewModel(get(), get()) }
+    viewModel { MediaViewModel(get(), get(), get(), get()) }
     viewModel { MediaRecommendationViewModel(get()) }
     viewModel { MediaCharacterViewModel(get()) }
     viewModel { MediaCharacterFilterViewModel() }
@@ -221,7 +222,7 @@ val viewModelModules = module {
     viewModel { NotificationViewModel(get(), get()) }
 
     //editor
-    viewModel { MediaListEntryEditorViewModel(get()) }
+    viewModel { MediaListEntryEditorViewModel(get(),get(), get()) }
 
     //list
     viewModel { AnimeListViewModel(get(), get(), animeListFilterDataStore()) }
@@ -232,7 +233,7 @@ val viewModelModules = module {
     //activity union
     viewModel { MainActivityUnionViewModel(get(), get<Context>().activityUnionFilterDataStore, get()) }
     viewModel { ActivityUnionViewModel(get(), get()) }
-    viewModel { ActivityComposerViewModel() }
+    viewModel { ActivityComposerViewModel(get()) }
     viewModel { ActivityUnionFilterViewModel(get<Context>().activityUnionFilterDataStore) }
     viewModel { parameters -> ActivityReplyViewModel(parameters.get(), get(), get()) }
 
@@ -253,6 +254,7 @@ val viewModelModules = module {
     viewModel { ReviewListViewModel(get()) }
     viewModel { ReviewListFilterViewModel() }
     viewModel { ReviewViewModel(get()) }
+    viewModel { ReviewComposerViewModel(get(), get())}
 
     //recommendations
     viewModel { RecommendationViewModel(get()) }

@@ -15,12 +15,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import coil.ImageLoader
 import coil.decode.GifDecoder
 import coil.decode.ImageDecoderDecoder
 import coil.imageLoader
-import com.revolgenx.anilib.common.data.store.ThemePreferencesDataStore
+import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.componentActivity
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
@@ -28,7 +27,8 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import org.koin.androidx.compose.get
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
+import org.koin.compose.koinInject
 
 
 class ImageViewerScreen(private val url: String) : AndroidScreen() {
@@ -45,8 +45,10 @@ private var imageLoader: ImageLoader? = null
 @Composable
 private fun ImageViewerScreenContent(imageUrl: String) {
     val activity = componentActivity()
-    val themePreferencesDataStore: ThemePreferencesDataStore = get()
-    val darkTheme = themePreferencesDataStore.isDark()
+    val themeDataStore: ThemeDataStore = koinInject()
+    val darkTheme = themeDataStore.collectAsState().value.isDarkTheme()
+
+
     DisposableEffect(darkTheme) {
         activity?.enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(

@@ -2,6 +2,7 @@ package com.revolgenx.anilib.list.ui.model
 
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.stringArrayResource
 import com.revolgenx.anilib.MediaListEntryQuery
@@ -38,7 +39,7 @@ data class MediaListModel(
     val id: Int = -1,
     val userId: Int = -1,
     val mediaId: Int = -1,
-    val status: MediaListStatus? = null,
+    val status: MutableState<MediaListStatus?> = mutableStateOf(null),
     val score: Double? = null,
     val progress: Int? = null,
     val progressVolumes: Int? = null,
@@ -62,7 +63,7 @@ data class MediaListModel(
 fun MediaListEntry.toModel() = MediaListModel(
     id = id,
     mediaId = mediaId,
-    status = status,
+    status = mutableStateOf(status) ,
     score = score,
     progress = progress,
     progressVolumes = progressVolumes,
@@ -105,7 +106,7 @@ fun MediaListStatus?.toColor() = when (this) {
 fun MediaListStatus?.toStringRes(mediaType: MediaType): Int {
     val isManga = mediaType.isManga
     return when (this) {
-        MediaListStatus.CURRENT -> if (isManga) I18nR.string.watching else I18nR.string.reading
+        MediaListStatus.CURRENT -> if (isManga) I18nR.string.reading else I18nR.string.watching
         MediaListStatus.PLANNING -> if (isManga) I18nR.string.plan_to_read else I18nR.string.plan_to_watch
         MediaListStatus.COMPLETED -> I18nR.string.completed
         MediaListStatus.DROPPED -> I18nR.string.dropped

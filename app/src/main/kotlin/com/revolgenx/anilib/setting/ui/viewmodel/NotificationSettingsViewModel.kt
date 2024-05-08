@@ -28,7 +28,6 @@ class NotificationSettingsViewModel(
         getResource()
     }
 
-    override val saveResource: MutableState<ResourceState<Any>?> = mutableStateOf(null)
     override fun load(): Flow<Map<NotificationType, MutableState<Boolean>>?> {
         return settingsService.getNotificationSettings(field)
             .map { it?.mapValues { mutableStateOf(it.value) } }
@@ -36,14 +35,14 @@ class NotificationSettingsViewModel(
 
     override fun save() {
         resource.value?.stateValue?.let {
-            saveResource.value = ResourceState.loading()
+            super.save()
             settingsService.saveNotificationSettings(
                 SaveNotificationSettingsField(it.mapValues { it.value.value })
             )
                 .onEach {
-                    saveResource.value = ResourceState.success(it)
+                    saveComplete(it)
                 }.catch {
-                    saveResource.value = ResourceState.error(it)
+                    saveFailed(it)
                 }
                 .launchIn(viewModelScope)
         }

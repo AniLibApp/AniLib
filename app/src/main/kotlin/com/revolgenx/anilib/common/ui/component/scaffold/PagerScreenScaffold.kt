@@ -27,7 +27,7 @@ import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun <T> PagerScreenScaffold(
     pages: List<PagerScreen<T>> = emptyList(),

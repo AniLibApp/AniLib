@@ -4,27 +4,25 @@ import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import anilib.i18n.R
-import com.revolgenx.anilib.common.data.store.IPreferencesDataStore
-import com.revolgenx.anilib.common.data.model.PreferenceDataStoreModel
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.PreferencesDataStore
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 
 
-class MediaSettingsPreferencesDataStore(override val dataStore: PreferencesDataStore) :
-    IPreferencesDataStore {
+class MediaSettingsPreferencesDataStore(val dataStore: PreferencesDataStore){
     companion object {
         val mediaTitleTypeKey = intPreferencesKey("media_title_type_key")
         val displayAdultContentKey = booleanPreferencesKey("display_adult_content_key")
     }
 
-    val mediaTitleType = PreferenceDataStoreModel(
+    val mediaTitleType = AppPreferencesDataStore(
         dataStore = dataStore,
         prefKey = mediaTitleTypeKey,
         defaultValue = MediaTitleModel.type_romaji
     )
 
-    val displayAdultContent = PreferenceDataStoreModel(
+    val displayAdultContent = AppPreferencesDataStore(
         dataStore = dataStore,
         prefKey = displayAdultContentKey,
         defaultValue = false

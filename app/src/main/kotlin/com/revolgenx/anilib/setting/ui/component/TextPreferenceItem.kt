@@ -20,7 +20,7 @@ fun TextPreferenceItem(
     icon: ImageVector? = null,
     iconTint: Color = MaterialTheme.colorScheme.primary,
     widget: @Composable (() -> Unit)? = null,
-    onClick: (OnClick)? = null,
+    onClick: OnClick? = null,
 ) {
     BasePreferenceItem(
         modifier = modifier,

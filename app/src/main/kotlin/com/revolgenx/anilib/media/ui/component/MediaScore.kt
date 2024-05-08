@@ -48,8 +48,8 @@ fun MediaInfoBadge(
                 media.mediaListEntry?.let {
                     Icon(
                         modifier = Modifier.size(14.dp),
-                        imageVector = it.status.toImageVector(),
-                        tint = it.status.toColor(),
+                        imageVector = it.status.value.toImageVector(),
+                        tint = it.status.value.toColor(),
                         contentDescription = null
                     )
                 }

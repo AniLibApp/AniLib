@@ -1,13 +1,12 @@
 package com.revolgenx.anilib.entry.ui.viewmodel
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.exception.ApolloException
-import com.revolgenx.anilib.common.data.state.ResourceState
+import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
 import com.revolgenx.anilib.common.data.tuples.MutablePair
 import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
@@ -16,28 +15,30 @@ import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
 import com.revolgenx.anilib.entry.data.service.MediaListEntryService
 import com.revolgenx.anilib.entry.ui.model.AdvancedScoreModel
 import com.revolgenx.anilib.entry.ui.model.UserMediaModel
-import com.revolgenx.anilib.list.ui.model.MediaListModel
-import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.list.data.store.MediaListEntryEventStore
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.ScoreFormat
-import com.revolgenx.anilib.user.ui.model.UserModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlin.math.roundToInt
 
-class MediaListEntryEditorViewModel(private val mediaListEntryService: MediaListEntryService) :
+class MediaListEntryEditorViewModel(
+    private val mediaListEntryService: MediaListEntryService,
+    private val authPreferencesDataStore: AuthPreferencesDataStore,
+    private val mediaListEntryEventStore: MediaListEntryEventStore
+) :
     ResourceViewModel<UserMediaModel, MediaListEntryField>() {
-    override val field: MediaListEntryField = MediaListEntryField()
+
+
+    override val field: MediaListEntryField = MediaListEntryField().also {
+        it.userId = authPreferencesDataStore.userId.get()
+    }
 
     val saveField = SaveMediaListEntryField()
     var isFavourite by mutableStateOf(false)
     var userHasMediaListEntry by mutableStateOf(false)
-
-    override val deleteResource: MutableState<ResourceState<Any>?> = mutableStateOf(null)
-    override val saveResource: MutableState<ResourceState<Any>?> = mutableStateOf(null)
 
     override fun load(): Flow<UserMediaModel> {
         return mediaListEntryService.getMediaListEntry(field).onEach {
@@ -49,7 +50,7 @@ class MediaListEntryEditorViewModel(private val mediaListEntryService: MediaList
     private fun UserMediaModel.toSaveField() {
         val userModel = user
         media?.let { mediaModel ->
-            isFavourite = mediaModel.isFavourite
+            isFavourite = mediaModel.isFavourite.value
             userHasMediaListEntry = mediaModel.mediaListEntry.isNotNull()
 
             mediaModel.mediaListEntry?.apply {
@@ -63,7 +64,7 @@ class MediaListEntryEditorViewModel(private val mediaListEntryService: MediaList
                 saveField.hiddenFromStatusLists = hiddenFromStatusLists
                 saveField.notes = notes
                 saveField.repeat = repeat
-                saveField.status = status ?: MediaListStatus.CURRENT
+                saveField.status = status.value ?: MediaListStatus.CURRENT
                 saveField.score = score ?: 0.0
                 saveField.completedAt = completedAt
                 saveField.advancedScores = advancedScores
@@ -80,7 +81,7 @@ class MediaListEntryEditorViewModel(private val mediaListEntryService: MediaList
                     listOptions?.advancedScoring?.map {
                         AdvancedScoreModel(
                             it,
-                            mutableStateOf(0.0)
+                            mutableDoubleStateOf(0.0)
                         )
                     }
                 saveField.customLists =
@@ -106,35 +107,41 @@ class MediaListEntryEditorViewModel(private val mediaListEntryService: MediaList
     }
 
     override fun save() {
-        saveResource.value = ResourceState.loading()
+        super.save()
         mediaListEntryService.saveMediaListEntry(saveField)
-            .onEach {
-                saveResource.value = ResourceState.success(it)
+            .onEach { listModel ->
+                saveComplete(listModel)
+                if (listModel != null) {
+                    if (userHasMediaListEntry) {
+                        mediaListEntryEventStore.update(listModel)
+                    } else {
+                        mediaListEntryEventStore.create(listModel)
+                    }
+                }
             }
             .catch {
-                saveResource.value = ResourceState.error(it)
+                saveFailed(it)
             }
             .launchIn(viewModelScope)
     }
 
     override fun delete() {
-        val resourceValue = resource.value
-        if (resourceValue is ResourceState.Success) {
-            deleteResource.value = ResourceState.loading()
-            resourceValue.data?.media?.mediaListEntry?.id?.let { id ->
-                mediaListEntryService.deleteMediaListEntry(id)
-                    .onEach {
-                        if (it) {
-                            deleteResource.value = ResourceState.success(it)
-                        } else {
-                            throw ApolloException("Failed to delete")
-                        }
+        val resourceValue = getData() ?: return
+        super.delete()
+        resourceValue.media?.mediaListEntry?.let { entry ->
+            mediaListEntryService.deleteMediaListEntry(entry.id)
+                .onEach {
+                    if (it) {
+                        deleteComplete(it)
+                        mediaListEntryEventStore.delete(entry)
+                    } else {
+                        throw ApolloException("Failed to delete")
                     }
-                    .catch {
-                        deleteResource.value = ResourceState.error(it)
-                    }
-                    .launchIn(viewModelScope)
-            }
+                }
+                .catch {
+                    deleteFailed(it)
+                }
+                .launchIn(viewModelScope)
         }
     }
 }

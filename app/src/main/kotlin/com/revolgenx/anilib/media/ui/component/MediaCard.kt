@@ -38,7 +38,7 @@ import com.revolgenx.anilib.common.ext.maybeLocalSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ext.openGenre
+import com.revolgenx.anilib.common.ext.browseGenreScreen
 import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
@@ -77,7 +77,7 @@ fun onMediaClickHandler(
     return if (openMediaEntryList) {
         { id, _ ->
             if (userId != null) {
-                navigator.mediaListEntryEditorScreen(id, userId)
+                navigator.mediaListEntryEditorScreen(id)
             } else {
                 scope.launch {
                     snackbarHostState?.showSnackbar(
@@ -142,7 +142,7 @@ fun MediaCard(
         },
         onMediaLongClick = { id, _ ->
             if (userId != null) {
-                navigator.mediaListEntryEditorScreen(id, userId)
+                navigator.mediaListEntryEditorScreen(id)
             } else {
                 scope.launch {
                     snackbarHostState?.showSnackbar(
@@ -178,11 +178,11 @@ fun MediaCardBox(
         footerContent = footerContent,
         onMediaClick = onMediaClickHandler(mediaComponentState),
         onGenreClick = {
-            navigator.openGenre(it)
+            navigator.browseGenreScreen(it)
         },
         onMediaLongClick = { id, _ ->
             if (userId != null) {
-                navigator.mediaListEntryEditorScreen(id, userId)
+                navigator.mediaListEntryEditorScreen(id)
             } else {
                 scope.launch {
                     snackbarHostState?.showSnackbar(
@@ -433,7 +433,7 @@ fun MediaRowContent(
             .combinedClickable(
                 onLongClick = {
                     if (userId != null) {
-                        navigator.mediaListEntryEditorScreen(media.id, userId)
+                        navigator.mediaListEntryEditorScreen(media.id)
                     } else {
                         scope.launch {
                             snackbarHostState?.showSnackbar(
@@ -528,7 +528,7 @@ fun MediaRowItemContentEnd(
             .combinedClickable(
                 onLongClick = {
                     if (userId != null) {
-                        navigator.mediaListEntryEditorScreen(media.id, userId)
+                        navigator.mediaListEntryEditorScreen(media.id)
                     } else {
                         scope.launch {
                             snackbarHostState?.showSnackbar(

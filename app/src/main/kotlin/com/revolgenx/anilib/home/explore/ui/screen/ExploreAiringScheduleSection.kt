@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,7 +31,7 @@ import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.airingScheduleScreen
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ext.openGenre
+import com.revolgenx.anilib.common.ext.browseGenreScreen
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -156,7 +157,7 @@ private fun AiringScheduleItem(
                         it.take(3).forEach {
                             LightText(
                                 modifier = Modifier.clickable {
-                                    mediaComponentState.navigator.openGenre(it)
+                                    mediaComponentState.navigator.browseGenreScreen(it)
                                 },
                                 text = it,
                                 color = MaterialTheme.colorScheme.primary,
@@ -215,7 +216,9 @@ private fun ExploreAiringHeader(
 ) {
     val weekDays = exploreAiringViewModel.weekDaysFromToday.value
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 2.dp)
     ) {
         weekDays.forEach { (day, startDay) ->
             Box(

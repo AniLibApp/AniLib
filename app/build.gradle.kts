@@ -144,6 +144,11 @@ dependencies {
     prettytime()
     chart()
     sheetsM3()
+
+    implementation("com.materialkolor:material-kolor:1.4.4")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.3.0")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:color:1.3.0")
+
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

@@ -9,11 +9,9 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.browse.data.store.BrowseFilterData
-import com.revolgenx.anilib.common.ext.openBrowseScreen
+import com.revolgenx.anilib.common.ext.browseScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.HeaderText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -68,7 +66,7 @@ fun ExploreScreen() {
                 bottomSheetState.expand()
             }
         }, onMore = {
-            navigator.openBrowseScreen(
+            navigator.browseScreen(
                 BrowseFilterData(
                     sort = MediaSort.TRENDING_DESC
                 )
@@ -80,7 +78,7 @@ fun ExploreScreen() {
                 bottomSheetState.expand()
             }
         }, onMore = {
-            navigator.openBrowseScreen(
+            navigator.browseScreen(
                 BrowseFilterData(
                     sort = MediaSort.POPULARITY_DESC
                 )
@@ -92,7 +90,7 @@ fun ExploreScreen() {
                 bottomSheetState.expand()
             }
         }, onMore = {
-            navigator.openBrowseScreen(
+            navigator.browseScreen(
                 BrowseFilterData(
                     sort = MediaSort.ID_DESC
                 )

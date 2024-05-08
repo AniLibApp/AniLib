@@ -91,7 +91,7 @@ fun RegularText(
     modifier: Modifier = Modifier,
     fontSize: TextUnit? = null,
     maxLines: Int? = null,
-    lineHeight: TextUnit? = null,
+    lineHeight: TextUnit = TextUnit.Unspecified,
     textAlign: TextAlign? = null,
     color: Color = Color.Unspecified,
     style: TextStyle = LocalTextStyle.current
@@ -101,7 +101,7 @@ fun RegularText(
         text = text,
         maxLines = maxLines ?: 2,
         fontSize = fontSize ?: 14.sp,
-        lineHeight = lineHeight ?: 16.sp,
+        lineHeight = lineHeight,
         overflow = TextOverflow.Ellipsis,
         textAlign = textAlign,
         color = color,

@@ -15,6 +15,7 @@ import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.MediaStatsModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
+import com.revolgenx.anilib.type.MediaType
 import kotlinx.coroutines.flow.Flow
 
 interface MediaService {
@@ -45,4 +46,8 @@ interface MediaService {
         field: MediaStatsField
     ): Flow<MediaStatsModel?>
 
+    fun toggleFavourite(
+        mediaId: Int,
+        type: MediaType
+    ): Flow<Boolean>
 }

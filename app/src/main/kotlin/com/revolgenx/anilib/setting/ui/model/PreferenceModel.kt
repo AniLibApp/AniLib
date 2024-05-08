@@ -6,7 +6,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.datastore.preferences.core.Preferences
-import com.revolgenx.anilib.common.data.model.IBaseDataModel
+import com.revolgenx.anilib.common.data.store.BasePreferenceDataStore
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import anilib.i18n.R as I18nR
 
@@ -35,7 +35,7 @@ sealed class PreferenceModel {
     ) : PreferenceModel(), PreferenceItemModel, PreferenceValueChangeListener<String>
 
     data class SwitchPreference(
-        val pref: IBaseDataModel<Boolean>? = null,
+        val pref: BasePreferenceDataStore<Boolean>? = null,
         val prefState: State<Boolean>? = null,
         override val title: String,
         override val subtitle: String? = null,
@@ -57,7 +57,7 @@ sealed class PreferenceModel {
 
 
     data class ListPreferenceModel<T>(
-        val pref: IBaseDataModel<T>? = null,
+        val pref: BasePreferenceDataStore<T>? = null,
         val prefState: State<T>? = null,
         override val title: String,
         override val subtitle: String = "%s",

@@ -2,9 +2,11 @@ package com.revolgenx.anilib.media.data.service
 
 import com.revolgenx.anilib.character.ui.model.CharacterEdgeModel
 import com.revolgenx.anilib.character.ui.model.toModel
+import com.revolgenx.anilib.common.data.field.ToggleFavoriteField
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.data.service.ToggleService
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.model.toModel
 import com.revolgenx.anilib.media.data.field.MediaCharacterField
@@ -16,18 +18,21 @@ import com.revolgenx.anilib.media.data.field.MediaStaffField
 import com.revolgenx.anilib.media.data.field.MediaStatsField
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.MediaStatsModel
+import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.model.toModel
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
 import com.revolgenx.anilib.staff.ui.model.toModel
+import com.revolgenx.anilib.type.MediaType
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class MediaServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
+    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore,
+    private val toggleService: ToggleService
 ) :
     MediaService, BaseService(apolloRepository, mediaSettingsPreferencesDataStore) {
     override fun getMediaList(field: MediaField): Flow<PageModel<MediaModel>> =
@@ -84,5 +89,15 @@ class MediaServiceImpl(
 
     override fun getMediaStats(field: MediaStatsField): Flow<MediaStatsModel?> {
         return field.toQuery().map { it.dataAssertNoErrors.media?.toModel() }
+    }
+
+    override fun toggleFavourite(mediaId: Int, type: MediaType): Flow<Boolean> {
+        val isAnime = type.isAnime
+        return toggleService.toggleFavourite(
+            ToggleFavoriteField(
+                animeId = if (isAnime) mediaId else null,
+                mangaId = if (isAnime) null else mediaId
+            )
+        )
     }
 }

@@ -41,7 +41,7 @@ fun SegmentedButton(
                         .clickable {
                             onItemSelected(index)
                         },
-                    color = if (index == selectedPosition) colorScheme.secondaryContainer else colorScheme.surfaceContainerLowest
+                    color = if (index == selectedPosition) colorScheme.primaryContainer else colorScheme.surfaceContainerLowest
                 ) {
                     Box {
                         Text(

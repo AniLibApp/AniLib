@@ -4,8 +4,8 @@ import android.app.Application
 import coil.Coil
 import com.revolgenx.anilib.common.data.repository.repositoryModules
 import com.revolgenx.anilib.common.data.service.serviceModules
-import com.revolgenx.anilib.common.data.store.ThemePreferencesDataStore
 import com.revolgenx.anilib.common.data.store.storeModules
+import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.data.worker.workerModules
 import com.revolgenx.anilib.common.ui.viewmodel.viewModelModules
 import com.revolgenx.anilib.social.factory.AlMarkdownCallbackImpl
@@ -17,7 +17,6 @@ import org.koin.core.context.startKoin
 import timber.log.Timber
 
 class App : Application() {
-    private val themePreferencesDataStore by inject<ThemePreferencesDataStore>()
     private val koinMoules = listOf(
         repositoryModules,
         serviceModules,
@@ -25,6 +24,8 @@ class App : Application() {
         storeModules,
         workerModules
     )
+
+    private val themeStore: ThemeDataStore by inject()
 
     override fun onCreate() {
 
@@ -36,7 +37,7 @@ class App : Application() {
         }
 
         Timber.plant(Timber.DebugTree())
-        AlMarkdownFactory.init(this, AlMarkdownCallbackImpl())
+        AlMarkdownFactory.init(this, themeStore.get().primary.toInt(), AlMarkdownCallbackImpl())
         Coil.setImageLoader(Coil.imageLoader(this).newBuilder().crossfade(true).build())
     }
 

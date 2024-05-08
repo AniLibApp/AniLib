@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.entry.data.field
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.apollographql.apollo3.api.Optional
@@ -16,7 +17,7 @@ class SaveMediaListEntryField() : BaseField<SaveMediaListEntryMutation>() {
     var id: Int? = null
     var mediaId: Int? = null
     var status by mutableStateOf(MediaListStatus.CURRENT)
-    var score by mutableStateOf(0.0)
+    var score by mutableDoubleStateOf(0.0)
     var advancedScores: List<AdvancedScoreModel>? = null
     var progress by mutableStateOf<Int?>(null)
     var progressVolumes by mutableStateOf<Int?>(null)

@@ -21,7 +21,6 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.LauncherShortcutKeys
 import com.revolgenx.anilib.common.data.constant.LauncherShortcuts
 import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
-import com.revolgenx.anilib.common.ui.theme.LightColorScheme
 import com.revolgenx.anilib.common.util.immutableFlagUpdateCurrent
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.notification.data.field.NotificationField
@@ -216,7 +215,7 @@ class NotificationWorker(
         notificationChannel.enableVibration(true)
         notificationChannel.vibrationPattern = longArrayOf(1000) /* ms */
         notificationChannel.enableLights(true)
-        notificationChannel.lightColor = LightColorScheme.primary.toArgb()
+//        notificationChannel.lightColor = LightColorScheme.primary.toArgb()
         notificationManagerCompat.createNotificationChannel(notificationChannel)
     }
 

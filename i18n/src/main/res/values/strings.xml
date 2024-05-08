@@ -156,10 +156,14 @@
     <string name="failed_to_save">Failed to save.</string>
     <!--entry-->
 
-    <!--reivews-->
+    <!--reviews-->
     <string name="review_score_format">Score: %1$s/100</string>
     <string name="review_of_s_by_s">Review of %1$s by %2$s</string>
-    <!--reivews-->
+    <string name="write_review">Write review</string>
+    <string name="review_summary">Review summary</string>
+    <string name="write_review_valid_desc">Review must be greater than 2200 characters</string>
+    <string name="write_review_summary_valid_desc">Summary must be less than 120 characters and greater than 20 characters</string>
+    <!--reviews-->
 
     <!--notifications-->
     <string name="thread_notif_s">%1$s %2$s %3$s</string>
@@ -497,5 +501,27 @@
     <!--Activity-->
     <string name="activity_has_been_deleted">Activity has been deleted.</string>
     <!--Activity-->
+
+
+    <!--Theme-->
+    <string name="theme">Theme</string>
+    <string name="color">Color</string>
+    <string name="primary_color">Primary Color</string>
+    <string name="themes">Themes</string>
+    <string name="midnight">Midnight</string>
+    <string name="bee">Bee</string>
+    <string name="strawberry_daiquiri">Strawberry Daiquiri</string>
+    <string name="tako">Tako</string>
+    <string name="teal">Teal</string>
+    <string name="green_apple">Green Apple</string>
+    <string name="seeding">Seeding</string>
+    <string name="seed_color">Seed Color</string>
+    <string name="_default">Default</string>
+    <string name="custom">Custom</string>
+    <string name="primary_container_color">Primary Container Color</string>
+    <string name="surface_container_color">Surface Container Color</string>
+    <string name="surface_color">Surface Color</string>
+    <string name="surface_variant_color">Surface Variant Color</string>
+    <!--Theme-->
 
 </resources>

@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.systemBars
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.platform.LocalView
@@ -143,3 +144,8 @@ fun componentActivity() = localContext().componentActivity()
 fun <T> Flow<T>.get() = runBlocking { first() }
 fun <T> DataStore<T>.get() = data.get()
 
+fun SnackbarHostState.showLoginMsg(context: Context,scope: CoroutineScope){
+    scope.launch {
+        showSnackbar(message = context.getString(anilib.i18n.R.string.please_log_in))
+    }
+}

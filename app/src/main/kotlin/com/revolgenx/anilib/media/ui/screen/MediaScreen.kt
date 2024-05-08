@@ -7,19 +7,14 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,10 +23,11 @@ import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.IconToggleButton
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -53,16 +49,22 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
+import com.revolgenx.anilib.common.ext.showLoginMsg
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.appbar.collapse
@@ -72,14 +74,18 @@ import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.RegularText
-import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.component.text.shadow
+import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCheck
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.ui.icons.appicon.IcReview
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
+import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.list.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
@@ -93,8 +99,11 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaScreenPageType
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
+import com.revolgenx.anilib.review.ui.screen.ReviewComposerBottomSheet
+import com.revolgenx.anilib.review.ui.viewmodel.ReviewComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.ActivityType
+import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -111,13 +120,16 @@ class MediaScreen(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 private fun MediaScreenContent(
     mediaId: Int,
     mediaType: MediaType,
 ) {
-    val coroutineScope = rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
+    val context = localContext()
+    val navigator = localNavigator()
+
     val viewModel: MediaViewModel = koinViewModel()
     val recommendationViewModel: MediaRecommendationViewModel = koinViewModel()
     val statsViewModel: MediaStatsViewModel = koinViewModel()
@@ -126,10 +138,17 @@ private fun MediaScreenContent(
     val staffViewModel: MediaStaffViewModel = koinViewModel()
     val characterViewModel: MediaCharacterViewModel = koinViewModel()
 
+    val reviewComposerViewModel: ReviewComposerViewModel = koinViewModel()
+    val reviewComposerBottomSheetState = rememberBottomSheetState()
+
+
+    val user = localUser()
+    val isLoggedIn = user.isLoggedIn
+
     val visiblePages by remember {
         derivedStateOf { viewModel.pages.filter { it.isVisible.value } }
     }
-    val pagerState = rememberPagerState() { visiblePages.size }
+    val pagerState = rememberPagerState { visiblePages.size }
 
     viewModel.field.mediaId = mediaId
     recommendationViewModel.field.mediaId = mediaId
@@ -141,6 +160,8 @@ private fun MediaScreenContent(
         it.mediaId = mediaId
         it.type = ActivityType.MEDIA_LIST
     }
+
+    reviewComposerViewModel.field.mediaId = mediaId
     viewModel.getResource()
 
 
@@ -151,14 +172,64 @@ private fun MediaScreenContent(
     ScreenScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
+            val snackbarHostState = localSnackbarHostState()
+            fun continueIfLoggedIn(cont: () -> Unit) {
+                if (isLoggedIn) {
+                    cont()
+                } else {
+                    snackbarHostState.showLoginMsg(context = context, scope = scope)
+                }
+            }
+
+            val mediaModel = viewModel.getData()
+
             MediaScreenTopAppBar(
                 mediaType = mediaType,
-                mediaModel = viewModel.resource.value?.stateValue,
+                mediaModel = mediaModel,
                 scrollBehavior = scrollBehavior,
+                isLoggedIn = isLoggedIn,
+                onMoreClick = {
+                    continueIfLoggedIn {}
+                },
+                onEditorClick = {
+                    continueIfLoggedIn {
+                        navigator.mediaListEntryEditorScreen(mediaId = mediaId)
+                    }
+                },
+                onFavouriteClick = {
+                    continueIfLoggedIn {
+                        mediaModel?.type?.let {
+                            viewModel.toggleFavourite(type = it)
+                        }
+                    }
+                },
+                onReviewClick = {
+                    continueIfLoggedIn {
+                        scope.launch {
+                            reviewComposerBottomSheetState.peek()
+                        }
+                    }
+                },
+                onMediaListStatusChange = { listStatus ->
+                    continueIfLoggedIn {
+                        viewModel.updateEntryStatus(listStatus)
+                    }
+                }
             )
         },
         contentWindowInsets = horizontalBottomWindowInsets(),
-    ) {
+    ) { snackbarHostState ->
+
+        LaunchedEffect(viewModel.errorMsg) {
+            viewModel.errorMsg?.let {
+                snackbarHostState.showSnackbar(
+                    context.getString(it),
+                    withDismissAction = true
+                )
+                viewModel.errorMsg = null
+            }
+        }
+
         PagerScreenScaffold(
             pages = visiblePages,
             pagerState = pagerState,
@@ -174,7 +245,7 @@ private fun MediaScreenContent(
                 when (visiblePages[page].type) {
                     MediaScreenPageType.OVERVIEW -> MediaOverviewScreen(viewModel, mediaType,
                         recommendationScreen = {
-                            coroutineScope.launch {
+                            scope.launch {
                                 pagerState.scrollToPage(MediaScreenPageType.RECOMMENDATIONS.ordinal)
                             }
                         })
@@ -205,8 +276,16 @@ private fun MediaScreenContent(
                 }
             }
         }
+
     }
+
+
+    ReviewComposerBottomSheet(
+        bottomSheetState = reviewComposerBottomSheetState,
+        viewModel = reviewComposerViewModel
+    )
 }
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -214,6 +293,12 @@ private fun MediaScreenTopAppBar(
     mediaType: MediaType,
     mediaModel: MediaModel?,
     scrollBehavior: TopAppBarScrollBehavior,
+    isLoggedIn: Boolean,
+    onEditorClick: OnClick,
+    onReviewClick: OnClick,
+    onFavouriteClick: OnClick,
+    onMoreClick: OnClick,
+    onMediaListStatusChange: OnClickWithValue<MediaListStatus>
 ) {
     val containerHeight = 320.dp
     CollapsingAppbar(
@@ -224,7 +309,13 @@ private fun MediaScreenTopAppBar(
                 containerHeight = containerHeight,
                 media = mediaModel,
                 mediaType = mediaType,
-                isCollapsed = it
+                isCollapsed = it,
+                isLoggedIn = isLoggedIn,
+                onEditorClick = onEditorClick,
+                onReviewClick = onReviewClick,
+                onFavouriteClick = onFavouriteClick,
+                onMoreClick = onMoreClick,
+                onMediaListStatusChange = onMediaListStatusChange
             )
         },
         title = { isCollapsed ->
@@ -254,11 +345,17 @@ private fun MediaScreenTopAppBar(
 
 
 @Composable
-private fun BoxScope.MediaTopAppBarContainerContent(
+private fun MediaTopAppBarContainerContent(
     containerHeight: Dp,
     media: MediaModel?,
     mediaType: MediaType,
-    isCollapsed: Boolean
+    isCollapsed: Boolean,
+    isLoggedIn: Boolean,
+    onEditorClick: OnClick,
+    onReviewClick: OnClick,
+    onFavouriteClick: OnClick,
+    onMoreClick: OnClick,
+    onMediaListStatusChange: OnClickWithValue<MediaListStatus>
 ) {
     val isAnime = mediaType.isAnime
     ImageAsync(
@@ -350,8 +447,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                             )
                             RegularText(
                                 text = media?.popularity.orZero().prettyNumberFormat(),
-                                fontSize = 14.sp,
-                                lineHeight = 17.sp,
+                                fontSize = 13.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
 
@@ -363,8 +459,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                             )
                             RegularText(
                                 text = media?.favourites.orZero().prettyNumberFormat(),
-                                fontSize = 14.sp,
-                                lineHeight = 17.sp,
+                                fontSize = 13.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
                         }
@@ -381,8 +476,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                     season,
                                     media?.seasonYear.naText()
                                 ),
-                                fontSize = 14.sp,
-                                lineHeight = 17.sp,
+                                fontSize = 13.sp,
                                 style = LocalTextStyle.current.shadow(surfaceContainerLowest)
                             )
                         }
@@ -394,8 +488,7 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                                     it.airingAtModel.airingDateTime.naText()
                                 ),
                                 style = LocalTextStyle.current.shadow(surfaceContainerLowest),
-                                fontSize = 15.sp,
-                                lineHeight = 18.sp,
+                                fontSize = 14.sp,
                             )
                         }
 
@@ -408,9 +501,11 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                     ) {
                         Button(
                             modifier = Modifier.weight(1f),
-                            onClick = { /*TODO*/ }) {
+                            onClick = {
+                                onEditorClick()
+                            }) {
                             Text(
-                                text = media?.mediaListEntry?.status?.toStringRes(mediaType = mediaType)
+                                text = media?.mediaListEntry?.status?.value?.toStringRes(mediaType = mediaType)
                                     .let {
                                         stringResource(
                                             id = it ?: I18nR.string.add
@@ -419,22 +514,43 @@ private fun BoxScope.MediaTopAppBarContainerContent(
                             )
                         }
 
-                        ActionMenu(icon = AppIcons.IcMoreHoriz) {
+                        if (isLoggedIn) {
+                            Box {
+                                OverflowMenu() { isOpen ->
+                                    MediaListStatus.entries.forEach { mediaListStatus ->
+                                        if (mediaListStatus == MediaListStatus.UNKNOWN__) return@forEach
 
+                                        OverflowMenuItem(
+                                            textRes = mediaListStatus.toStringRes(mediaType = mediaType),
+                                            icon = if (media?.mediaListEntry?.status?.value == mediaListStatus) AppIcons.IcCheck else null,
+                                            iconSpace = true,
+                                            onClick = {
+                                                onMediaListStatusChange(mediaListStatus)
+                                                isOpen.value = false
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        } else {
+                            ActionMenu(icon = AppIcons.IcMoreHoriz) {
+                                onMoreClick()
+                            }
                         }
 
                         ActionMenu(icon = AppIcons.IcReview) {
-
+                            onReviewClick()
                         }
 
                         IconToggleButton(
-                            checked = media?.isFavourite == true,
+                            checked = media?.isFavourite?.value == true,
                             onCheckedChange = {
-                                //todo mutation
-                            }
+                                onFavouriteClick()
+                            },
+                            colors = IconButtonDefaults.iconToggleButtonColors(checkedContentColor = LocalContentColor.current)
                         ) {
                             Icon(
-                                imageVector = if (media?.isFavourite == true) AppIcons.IcHeart else AppIcons.IcHeartOutline,
+                                imageVector = if (media?.isFavourite?.value == true) AppIcons.IcHeart else AppIcons.IcHeartOutline,
                                 contentDescription = null
                             )
                         }

@@ -1,22 +1,20 @@
 package com.revolgenx.anilib.common.ui.theme
 
-import android.os.Build
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.ui.platform.LocalContext
-import com.revolgenx.anilib.common.data.store.ThemePreferencesDataStore
+import com.revolgenx.anilib.common.data.store.theme.ThemeData
+import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.componentActivity
-import org.koin.androidx.compose.get
+import org.koin.compose.koinInject
 
-
+/*
 val LightColorScheme = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
@@ -92,25 +90,29 @@ val DarkColorScheme = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
     outlineVariant = md_theme_dark_outlineVariant,
     scrim = md_theme_dark_scrim,
-)
+)*/
 
 @Composable
 fun AppTheme(
-    themePreferencesDataStore: ThemePreferencesDataStore = get(),
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    val darkTheme = themePreferencesDataStore.isDark()
-    val colorScheme = when {
-        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
-            val context = LocalContext.current
-            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
-        }
+    val themeDataStore: ThemeDataStore = koinInject()
+    val themeData = themeDataStore.collectAsState().value
+    val darkTheme = themeData.isDarkTheme()
 
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
-    }
+    val colorScheme = themeData.colorScheme(darkTheme)
+
+//    val colorScheme = when {
+//        dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
+//            val context = LocalContext.current
+//            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
+//        }
+//
+//        darkTheme -> DarkColorScheme
+//        else -> LightColorScheme
+//    }
 
     val activity = componentActivity()
     DisposableEffect(darkTheme) {
@@ -143,3 +145,4 @@ fun AppTheme(
         }
     )
 }
+

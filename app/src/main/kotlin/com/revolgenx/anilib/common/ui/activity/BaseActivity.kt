@@ -28,15 +28,16 @@ import com.revolgenx.anilib.common.data.event.OpenSpoilerEvent
 import com.revolgenx.anilib.common.data.event.OpenUserScreenEvent
 import com.revolgenx.anilib.common.data.event.registerForEvent
 import com.revolgenx.anilib.common.data.event.unRegisterForEvent
+import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.openLink
 import com.revolgenx.anilib.common.ext.userScreen
-import com.revolgenx.anilib.common.ui.theme.LightColorScheme
 import com.revolgenx.anilib.notification.data.worker.NotificationWorker
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import anilib.i18n.R as I18n
 
@@ -44,6 +45,7 @@ import anilib.i18n.R as I18n
 abstract class BaseActivity : ComponentActivity(), EventBusListener {
     protected val viewModel by viewModel<MainActivityViewModel>()
     protected var navigator: Navigator? = null
+    private val themeDataStore:ThemeDataStore by inject()
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -138,7 +140,7 @@ abstract class BaseActivity : ComponentActivity(), EventBusListener {
         notificationChannel.enableVibration(true)
         notificationChannel.vibrationPattern = longArrayOf(1000) /* ms */
         notificationChannel.enableLights(true)
-        notificationChannel.lightColor = LightColorScheme.primary.toArgb()
+        notificationChannel.lightColor = themeDataStore.get().primary.toInt()
         notificationManagerCompat.createNotificationChannel(notificationChannel)
     }
 

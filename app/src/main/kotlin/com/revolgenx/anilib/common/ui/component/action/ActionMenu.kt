@@ -7,7 +7,9 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -48,7 +50,8 @@ fun ActionMenu(
     icon: ImageVector? = null,
     @StringRes contentDescriptionRes: Int? = null,
     tonalButton: Boolean = false,
-    onClick: OnClick,
+    enabled: Boolean = true,
+    onClick: OnClick
 ) {
     if (tonalButton) {
         FilledTonalIconButton(
@@ -63,7 +66,7 @@ fun ActionMenu(
             )
         }
     } else {
-        IconButton(onClick = onClick) {
+        IconButton(onClick = onClick, enabled = enabled) {
             ActionMenuIcon(
                 icon,
                 contentDescriptionRes,
@@ -120,6 +123,7 @@ fun OverflowMenuItem(
     modifier: Modifier = Modifier,
     @StringRes textRes: Int,
     icon: ImageVector? = null,
+    iconSpace: Boolean = false,
     @StringRes contentDescriptionRes: Int? = null,
     isChecked: Boolean = false,
     onCheckedChange: ((Boolean) -> Unit)? = null,
@@ -136,6 +140,7 @@ fun OverflowMenuItem(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+
                     icon?.let {
                         Icon(
                             imageVector = it,
@@ -143,7 +148,12 @@ fun OverflowMenuItem(
                                 id = (contentDescriptionRes ?: textRes)
                             )
                         )
+                    } ?: let{
+                        if(iconSpace){
+                            Spacer(modifier = Modifier.size(24.dp))
+                        }
                     }
+
                     Text(stringResource(id = textRes))
                 }
                 if (onCheckedChange != null) {

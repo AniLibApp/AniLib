@@ -12,9 +12,9 @@ object PackagingOptions {
 }
 
 object Versions{
-    const val composeUi = "1.7.0-alpha05"
-    const val composeFoundation = "1.7.0-alpha05"
-    const val composeMaterial = "1.3.0-alpha03"
+    const val composeUi = "1.6.6"
+    const val composeFoundation = "1.6.6"
+    const val composeMaterial = "1.2.1"
     const val composeActivity = "1.8.2"
     const val voyager = "1.0.0"
     const val timber = "5.0.1"

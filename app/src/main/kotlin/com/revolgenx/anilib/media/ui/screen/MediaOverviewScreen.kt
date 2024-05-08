@@ -53,9 +53,9 @@ import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naString
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ext.openGenre
+import com.revolgenx.anilib.common.ext.browseGenreScreen
 import com.revolgenx.anilib.common.ext.openLink
-import com.revolgenx.anilib.common.ext.openTag
+import com.revolgenx.anilib.common.ext.browseTagScreen
 import com.revolgenx.anilib.common.ext.orNa
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.orZeroString
@@ -142,7 +142,7 @@ private fun MediaOverview(
         MediaDescription(media)
         MediaInfo(media, isAnime, context)
         MediaGenre(media.genres) {
-            navigator.openGenre(it)
+            navigator.browseGenreScreen(it)
         }
         if (isAnime) {
             MediaTrailer(media.trailer) {
@@ -162,7 +162,7 @@ private fun MediaOverview(
             mediaComponentState = mediaComponentState
         )
         MediaTag(media.tags, media.tagsWithoutSpoiler ?: emptyList()){
-            navigator.openTag(it)
+            navigator.browseTagScreen(it)
         }
         MediaExternalLink(media.externalLinks) {
             openLink(it.url)

@@ -1,7 +1,9 @@
 package com.revolgenx.anilib.common.ui.viewmodel
 
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.exception.ApolloException
 import com.revolgenx.anilib.common.data.field.BaseField
@@ -13,16 +15,36 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 
+
 abstract class ResourceViewModel<M : Any, F : BaseField<*>> : BaseViewModel<F>() {
     open val resource: MutableState<ResourceState<M>?> = mutableStateOf(null)
 
-    open val deleteResource: MutableState<ResourceState<Any>?> = mutableStateOf(null)
-    open val saveResource: MutableState<ResourceState<Any>?> = mutableStateOf(null)
+    open var deleteResource by mutableStateOf<ResourceState<Any>?>(null)
+    open var saveResource by mutableStateOf<ResourceState<Any>?>(null)
+    var errorMsg by mutableStateOf<Int?>(null)
+
 
     protected abstract fun load(): Flow<M?>
     
-    open fun save(){}
-    open fun delete(){}
+    open fun save(){
+        saveResource = ResourceState.loading()
+    }
+    protected fun saveComplete(data: Any?){
+        saveResource = ResourceState.success(data)
+    }
+    protected fun saveFailed(it: Throwable){
+        saveResource = ResourceState.error(it)
+    }
+
+    open fun delete(){
+        deleteResource = ResourceState.loading()
+    }
+    protected fun deleteComplete(data: Any?){
+        deleteResource = ResourceState.success(data)
+    }
+    protected fun deleteFailed(it: Throwable){
+        deleteResource = ResourceState.error(it)
+    }
 
     fun getResource() {
         if (resource.value.isNull()) {
@@ -47,7 +69,7 @@ abstract class ResourceViewModel<M : Any, F : BaseField<*>> : BaseViewModel<F>()
             }.launchIn(viewModelScope)
     }
 
-    protected fun getData(): M? {
+    fun getData(): M? {
         val state = resource.value
         return if (state is ResourceState.Success) state.data else null
     }

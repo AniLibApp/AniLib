@@ -6,9 +6,17 @@ import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.common.data.field.BaseSourceField
 import com.revolgenx.anilib.type.ReviewSort
 
-data class ReviewField(var reviewId: Int? = null) : BaseField<ReviewQuery>() {
+data class ReviewField(
+    var reviewId: Int? = null,
+    var mediaId: Int? = null,
+    var userId: Int? = null
+) : BaseField<ReviewQuery>() {
     override fun toQueryOrMutation(): ReviewQuery {
-        return ReviewQuery(reviewId = nn(reviewId))
+        return ReviewQuery(
+            reviewId = nn(reviewId),
+            mediaId = nn(mediaId),
+            userId = nn(userId)
+        )
     }
 }
 

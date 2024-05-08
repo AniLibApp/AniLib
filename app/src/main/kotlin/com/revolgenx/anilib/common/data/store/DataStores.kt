@@ -1,12 +1,22 @@
 package com.revolgenx.anilib.common.data.store
 
 import android.content.Context
+import android.os.Build
 import androidx.datastore.core.DataStore
+import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.dataStore
+import androidx.datastore.dataStoreFile
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStore
 import com.revolgenx.anilib.airing.data.store.AiringScheduleFilterData
 import com.revolgenx.anilib.airing.data.store.AiringScheduleFilterDataSerializer
 import com.revolgenx.anilib.browse.data.store.BrowseFilterData
 import com.revolgenx.anilib.browse.data.store.BrowseFilterDataSerializer
+import com.revolgenx.anilib.common.data.store.theme.ThemeData
+import com.revolgenx.anilib.common.data.store.theme.ThemeDataSerializer
+import com.revolgenx.anilib.common.data.store.theme.isDarkMode
+import com.revolgenx.anilib.common.ui.theme.defaultDarkTheme
+import com.revolgenx.anilib.common.ui.theme.defaultTheme
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilterSerializer
 import com.revolgenx.anilib.media.data.constant.readableOn
@@ -108,8 +118,18 @@ val Context.exploreAiringScheduleFilterDataStore by dataStore(
     serializer = AiringScheduleFilterDataSerializer()
 )
 
-
 val Context.activityUnionFilterDataStore by dataStore(
     fileName = "activity_union_filter_data_store.json",
     serializer = ActivityUnionFilterDataSerializer()
 )
+typealias PreferencesDataStore = DataStore<Preferences>
+
+val Context.preferencesDataStore: PreferencesDataStore by preferencesDataStore(name = "preferences_data_store.json")
+val Context.themeDataStore: DataStore<ThemeData>
+    get() {
+        val isDark = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) this.isDarkMode else false
+        return DataStoreFactory.create(
+            serializer = ThemeDataSerializer(if(isDark) defaultDarkTheme else defaultTheme),
+            produceFile = { applicationContext.dataStoreFile("theme_data_store.json") }
+        )
+    }

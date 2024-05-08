@@ -24,8 +24,8 @@ query MediaReviewQuery($mediaId:Int, $page:Int, $perPage:Int){
 }
 
 
-query ReviewQuery($reviewId:Int){
-    review: Review(id:$reviewId){
+query ReviewQuery($reviewId:Int, $mediaId:Int, $userId:Int){
+    review: Review(id:$reviewId,mediaId:$mediaId,userId:$userId){
         ... reviewFragment
         body
         private

@@ -7,7 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.common.data.state.MediaState
 import com.revolgenx.anilib.common.data.state.UserState
-import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.mediaCoverImageTypeKey
+import com.revolgenx.anilib.common.data.store.GeneralPreferencesDataStore.Companion.mediaCoverImageTypeKey
 import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore.Companion.userIdKey
 import com.revolgenx.anilib.common.data.store.PreferencesDataStore
 import com.revolgenx.anilib.common.ext.launch

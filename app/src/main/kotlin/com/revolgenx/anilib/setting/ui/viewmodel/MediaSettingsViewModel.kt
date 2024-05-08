@@ -35,7 +35,7 @@ class MediaSettingsViewModel(
 
     override fun save() {
         resource.value?.stateValue?.let { userOptionsUiModel ->
-            saveResource.value = ResourceState.loading()
+            super.save()
             val titleLanguage = userOptionsUiModel.titleLanguage.value
             val airingNotifications = userOptionsUiModel.airingNotifications.value
             val saveField = SaveMediaSettingsField(
@@ -46,9 +46,9 @@ class MediaSettingsViewModel(
                 )
             )
             settingsService.saveMediaSettings(saveField).onEach {
-                saveResource.value = ResourceState.success(it)
+                saveComplete(it)
             }.catch {
-                saveResource.value = ResourceState.error(it)
+                saveFailed(it)
             }.onCompletion {
                 if(it == null){
                     mediaSettingsPreferencesDataStore.mediaTitleType.set(titleLanguage)

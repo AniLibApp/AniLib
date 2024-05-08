@@ -28,7 +28,7 @@ internal fun BasePreferenceItem(
 ) {
     Row(
         modifier = modifier
-            .clickable(enabled = onClick != null, onClick = { onClick?.invoke() })
+            .let { onClick?.let { c -> it.clickable { c.invoke() } } ?: it }
             .fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
