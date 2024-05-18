@@ -3,32 +3,41 @@ package com.revolgenx.anilib.setting.ui.screen
 import android.content.Context
 import android.os.Build
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import anilib.i18n.R
-import com.materialkolor.dynamicColorScheme
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.color.ColorDialog
+import com.maxkeppeler.sheets.color.models.ColorConfig
 import com.maxkeppeler.sheets.color.models.ColorSelection
+import com.maxkeppeler.sheets.color.models.MultipleColors
+import com.maxkeppeler.sheets.color.models.SingleColor
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ui.theme.primaryColors
+import com.revolgenx.anilib.common.ui.theme.primaryContainerColors
+import com.revolgenx.anilib.common.ui.theme.surfaceColors
+import com.revolgenx.anilib.common.ui.theme.surfaceContainerColors
+import com.revolgenx.anilib.common.ui.theme.surfaceContainerLowColors
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.setting.ui.component.GroupPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
@@ -92,59 +101,76 @@ object AppearanceSettingsScreen : PreferencesScreen() {
             }
         }
 
+        val isCustomTheme = themeData.theme == 1
+
         GroupPreferenceItem(title = stringResource(I18nR.string.color)) {
             ColorGroupContent(
                 color = themeData.background,
-                title = stringResource(id = R.string.surface_color)
+                title = stringResource(id = R.string.surface_color),
+                subtitle = stringResource(id = R.string.surface_color_desc),
+                enabled = isCustomTheme,
+                colorsInt = surfaceColors
             ) { selectedColor ->
                 viewModel.setBackground(selectedColor)
             }
 
+
+            // card
             ColorGroupContent(
-                color = themeData.surfaceVariant,
-                title = stringResource(id = R.string.surface_variant_color)
+                color = themeData.surfaceContainerLow,
+                title = stringResource(id = R.string.surface_container_low_color),
+                subtitle = stringResource(id = R.string.surface_container_low_color_desc),
+                enabled = isCustomTheme,
+                colorsInt = surfaceContainerLowColors
             ) { selectedColor ->
-                viewModel.setSurfaceVariant(selectedColor)
+                viewModel.setSurfaceContainerLow(selectedColor)
             }
 
+            // navigation bar
             ColorGroupContent(
                 color = themeData.surfaceContainer,
-                title = stringResource(id = R.string.surface_container_color)
+                title = stringResource(id = R.string.surface_container_color),
+                subtitle = stringResource(id = R.string.surface_container_color_desc),
+                enabled = isCustomTheme,
+                colorsInt = surfaceContainerColors
             ) { selectedColor ->
                 viewModel.setSurfaceContainer(selectedColor)
             }
 
             ColorGroupContent(
                 color = themeData.primary,
-                title = stringResource(id = R.string.primary_color)
+                title = stringResource(id = R.string.primary_color),
+                subtitle = stringResource(id = R.string.primary_color_desc),
+                enabled = isCustomTheme,
+                colorsInt = primaryColors
             ) { selectedColor ->
                 viewModel.setPrimary(selectedColor)
             }
 
+
+            // floating action button
             ColorGroupContent(
                 color = themeData.primaryContainer,
-                title = stringResource(id = R.string.primary_container_color)
+                title = stringResource(id = R.string.primary_container_color),
+                subtitle = stringResource(id = R.string.primary_container_color_desc),
+                enabled = isCustomTheme,
+                colorsInt = primaryContainerColors
             ) { selectedColor ->
                 viewModel.setPrimaryContainer(selectedColor)
             }
-
-
 
         }
 
 
         GroupPreferenceItem(title = stringResource(I18nR.string.seeding)) {
             ColorGroupContent(
-                color = themeData.primary,
-                title = stringResource(id = R.string.seed_color)
+                color = themeData.seedColor,
+                title = stringResource(id = R.string.seed_color),
+                subtitle = stringResource(id = R.string.surface_color_desc),
+                enabled = isCustomTheme
             ) { selectedColor ->
-                scope.launch {
-                    themeDataStore.source.updateData {
-                        it.copy(primary = selectedColor)
-                    }
-                }
+                viewModel.seedColor(color = selectedColor, isDarkTheme = isDarkTheme)
             }
-
         }
     }
 
@@ -153,36 +179,42 @@ object AppearanceSettingsScreen : PreferencesScreen() {
     private fun ColorGroupContent(
         color: Int,
         title: String,
+        subtitle: String,
+        enabled: Boolean,
+        colorsInt: List<Int> = listOf(),
         onColorSelected: OnClickWithValue<Int>
     ) {
         val state = rememberUseCaseState()
         ColorDialog(
             state = state,
             selection = ColorSelection(
+                selectedColor = SingleColor(colorInt = color),
                 onSelectColor = { selectedColor ->
                     onColorSelected(selectedColor)
                 }
+            ),
+            config = ColorConfig(
+                templateColors = MultipleColors.ColorsInt(colorsInt)
             ))
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .clickable {
+                .alpha(if(enabled) 1f else 0.5f)
+                .clickable(enabled = enabled) {
                     state.show()
                 },
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
-                TextPreferenceItem(
-                    modifier = Modifier.weight(1f),
-                    title = title,
-                    subtitle = Integer.toHexString(color)
-                )
-            }
+            TextPreferenceItem(
+                modifier = Modifier.weight(1f),
+                title = title,
+                subtitle = subtitle
+            )
             Box(
                 modifier = Modifier
                     .padding(4.dp)
-                    .size(40.dp)
+                    .size(48.dp)
+                    .border(width = 1.dp, color = MaterialTheme.colorScheme.onSurface, shape = CircleShape)
                     .clip(RoundedCornerShape(100.dp))
                     .background(Color(color))
             )

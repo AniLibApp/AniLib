@@ -28,8 +28,9 @@ data class ThemeData(
     val background: Int,
     val onBackground: Int,
     val surfaceContainer: Int,
-    val surfaceVariant: Int,
+    val surfaceContainerLow: Int,
     val onSurfaceVariant: Int,
+    val seedColor: Int = primary
 ) {
     @Transient
     val lightColorScheme = lightColorScheme(
@@ -41,13 +42,13 @@ data class ThemeData(
         onBackground = Color(onBackground),
         surface = Color(background),
         onSurface = Color(onBackground),
-        surfaceVariant = Color(surfaceVariant),
-        onSurfaceVariant = Color(onSurfaceVariant),
         surfaceContainerLowest = Color(background),
-        surfaceContainerLow = Color(background),
+        surfaceContainerLow = Color(surfaceContainerLow),
         surfaceContainer = Color(surfaceContainer),
         surfaceContainerHigh = Color(surfaceContainer),
-        surfaceContainerHighest = Color(surfaceVariant),
+        surfaceContainerHighest = Color(surfaceContainerLow),
+        surfaceVariant = Color(surfaceContainerLow),
+        onSurfaceVariant = Color(onSurfaceVariant),
         secondaryContainer = colorAtElevation(
             Color(surfaceContainer),
             Color(primary),
@@ -70,13 +71,13 @@ data class ThemeData(
         onBackground = Color(onBackground),
         surface = Color(background),
         onSurface = Color(onBackground),
-        surfaceVariant = Color(surfaceVariant),
-        onSurfaceVariant = Color(onSurfaceVariant),
         surfaceContainerLowest = Color(background),
-        surfaceContainerLow = Color(background),
+        surfaceContainerLow = Color(surfaceContainerLow),
         surfaceContainer = Color(surfaceContainer),
         surfaceContainerHigh = Color(surfaceContainer),
-        surfaceContainerHighest = Color(surfaceVariant),
+        surfaceContainerHighest = Color(surfaceContainerLow),
+        surfaceVariant = Color(surfaceContainerLow),
+        onSurfaceVariant = Color(onSurfaceVariant),
         secondaryContainer = colorAtElevation(
             Color(surfaceContainer),
             Color(primary),
@@ -93,11 +94,6 @@ data class ThemeData(
         return if (isDarkTheme) darkColorScheme else lightColorScheme
     }
 
-    @Composable
-    fun isDarkTheme(): Boolean {
-        val systemInDarkTheme = isSystemInDarkTheme()
-        return darkMode ?: systemInDarkTheme
-    }
 }
 
 val Context.isDarkMode get() = (resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES

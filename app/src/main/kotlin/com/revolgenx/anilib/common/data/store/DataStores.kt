@@ -15,6 +15,7 @@ import com.revolgenx.anilib.browse.data.store.BrowseFilterDataSerializer
 import com.revolgenx.anilib.common.data.store.theme.ThemeData
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataSerializer
 import com.revolgenx.anilib.common.data.store.theme.isDarkMode
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ui.theme.defaultDarkTheme
 import com.revolgenx.anilib.common.ui.theme.defaultTheme
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
@@ -125,11 +126,26 @@ val Context.activityUnionFilterDataStore by dataStore(
 typealias PreferencesDataStore = DataStore<Preferences>
 
 val Context.preferencesDataStore: PreferencesDataStore by preferencesDataStore(name = "preferences_data_store.json")
+
 val Context.themeDataStore: DataStore<ThemeData>
     get() {
         val isDark = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) this.isDarkMode else false
         return DataStoreFactory.create(
-            serializer = ThemeDataSerializer(if(isDark) defaultDarkTheme else defaultTheme),
+            serializer = ThemeDataSerializer(if (isDark) defaultDarkTheme else defaultTheme),
             produceFile = { applicationContext.dataStoreFile("theme_data_store.json") }
         )
     }
+
+fun Context.customThemeDataStore(themeDataStore: DataStore<ThemeData>): DataStore<ThemeData> {
+    val darkMode = themeDataStore.get().darkMode
+    val isDark = darkMode ?: this.isDarkMode
+    return DataStoreFactory.create(
+        serializer = ThemeDataSerializer(
+            if (isDark) defaultDarkTheme.copy(
+                darkMode = darkMode,
+                theme = 1
+            ) else defaultTheme.copy(darkMode = darkMode, theme = 1)
+        ),
+        produceFile = { applicationContext.dataStoreFile("custom_theme_data_store.json") }
+    )
+}

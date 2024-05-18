@@ -4,16 +4,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.lifecycle.ViewModel
 import com.materialkolor.Contrast
-import com.materialkolor.PaletteStyle
+import com.materialkolor.dynamicColorScheme
 import com.materialkolor.dynamiccolor.ContrastCurve
 import com.materialkolor.dynamiccolor.DynamicColor
 import com.materialkolor.dynamiccolor.MaterialDynamicColors
 import com.materialkolor.ktx.getColor
-import com.materialkolor.ktx.harmonize
-import com.materialkolor.ktx.toDynamicScheme
 import com.materialkolor.ktx.toHct
 import com.materialkolor.palettes.TonalPalette
 import com.materialkolor.scheme.SchemeTonalSpot
+import com.revolgenx.anilib.common.data.store.theme.CustomThemeDataStore
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.theme.beeDarkTheme
@@ -26,15 +25,14 @@ import com.revolgenx.anilib.common.ui.theme.midnightDarkTheme
 import com.revolgenx.anilib.common.ui.theme.midnightTheme
 import com.revolgenx.anilib.common.ui.theme.strawberryDarkTheme
 import com.revolgenx.anilib.common.ui.theme.strawberryTheme
-import com.revolgenx.anilib.common.ui.theme.takoDarkTheme
-import com.revolgenx.anilib.common.ui.theme.takoTheme
 import com.revolgenx.anilib.common.ui.theme.tealDarkTheme
 import com.revolgenx.anilib.common.ui.theme.tealTheme
 import com.revolgenx.anilib.common.util.isColorDark
 
 
 class AppearanceSettingsViewModel(
-    val themeDataStore: ThemeDataStore
+    val themeDataStore: ThemeDataStore,
+    private val customThemeDataStore: CustomThemeDataStore
 ) : ViewModel() {
     companion object {
         val colors = MaterialDynamicColors(false)
@@ -54,7 +52,7 @@ class AppearanceSettingsViewModel(
                     }
 
                     1 -> {
-                        if (isDarkTheme) defaultDarkTheme else defaultTheme
+                        customThemeDataStore.get()
                     }
 
                     2 -> {
@@ -70,14 +68,10 @@ class AppearanceSettingsViewModel(
                     }
 
                     5 -> {
-                        if (isDarkTheme) takoDarkTheme else takoTheme
-                    }
-
-                    6 -> {
                         if (isDarkTheme) tealDarkTheme else tealTheme
                     }
 
-                    7 -> {
+                    6 -> {
                         if (isDarkTheme) greenAppleDarkTheme else greenAppleTheme
                     }
 
@@ -92,68 +86,111 @@ class AppearanceSettingsViewModel(
 
     fun setPrimary(color: Int) {
         launch {
-            themeDataStore.source.updateData {
-                val onBg = foreGroundColor(color)
+            val onBg = foregroundColor(color)
+
+            val customTheme = customThemeDataStore.source.updateData {
                 it.copy(
                     theme = 1,
                     primary = color,
                     onPrimary = onBg.toArgb()
                 )
             }
+
+            themeDataStore.source.updateData { customTheme }
+
         }
     }
 
-    fun setPrimaryContainer(color: Int){
+    fun setPrimaryContainer(color: Int) {
         launch {
-            themeDataStore.source.updateData {
-                val onBg = foreGroundColor(color)
+            val onBg = foregroundColor(color)
+            val customTheme = customThemeDataStore.source.updateData {
                 it.copy(
                     theme = 1,
                     primaryContainer = color,
                     onPrimaryContainer = onBg.toArgb()
                 )
             }
+            themeDataStore.source.updateData { customTheme }
+
         }
     }
 
-    fun setSurfaceContainer(color: Int){
+    fun setSurfaceContainer(color: Int) {
         launch {
-            themeDataStore.source.updateData {
+
+            val customTheme = customThemeDataStore.source.updateData {
                 it.copy(
                     theme = 1,
                     surfaceContainer = color,
                 )
             }
+
+            themeDataStore.source.updateData { customTheme }
+
         }
     }
 
-    fun setSurfaceVariant(color: Int) {
+    fun setSurfaceContainerLow(color: Int) {
         launch {
-            themeDataStore.source.updateData {
-                val onBg = foreGroundColor(color)
+            val onBg = foregroundColor(color)
+            val customTheme = customThemeDataStore.source.updateData {
                 it.copy(
                     theme = 1,
-                    surfaceVariant = color,
+                    surfaceContainerLow = color,
                     onSurfaceVariant = onBg.toArgb()
                 )
             }
+
+            themeDataStore.source.updateData { customTheme }
+
         }
     }
 
     fun setBackground(color: Int) {
         launch {
-            themeDataStore.source.updateData {
-                val onBg = foreGroundColor(color)
+            val onBg = foregroundColor(color)
+            val customTheme = customThemeDataStore.source.updateData {
                 it.copy(
                     theme = 1,
                     background = color,
                     onBackground = onBg.toArgb(),
                 )
             }
+
+            themeDataStore.source.updateData { customTheme }
+
         }
     }
 
-    private fun foreGroundColor(color: Int): Color {
+    fun seedColor(color: Int, isDarkTheme: Boolean) {
+        launch {
+            val colorScheme = dynamicColorScheme(seedColor = Color(color), isDark = isDarkTheme)
+
+
+            val customTheme = customThemeDataStore.source.updateData {
+                with(colorScheme) {
+                    it.copy(
+                        theme = 1,
+                        primary = primary.toArgb(),
+                        onPrimary = onPrimary.toArgb(),
+                        primaryContainer = primaryContainer.toArgb(),
+                        onPrimaryContainer = onPrimaryContainer.toArgb(),
+                        background = background.toArgb(),
+                        onBackground = onBackground.toArgb(),
+                        surfaceContainerLow = surfaceContainerLow.toArgb(),
+                        surfaceContainer = surfaceContainer.toArgb(),
+                        onSurfaceVariant = onSurfaceVariant.toArgb(),
+                        seedColor = color
+                    )
+                }
+            }
+            themeDataStore.source.updateData { customTheme }
+
+        }
+    }
+
+    private fun foregroundColor(color: Int): Color {
         val bg = Color(color)
         val bgHct = bg.toHct()
         val isDark = isColorDark(bg)

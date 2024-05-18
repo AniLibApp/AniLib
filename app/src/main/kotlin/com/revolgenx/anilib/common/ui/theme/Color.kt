@@ -8,214 +8,127 @@ import com.revolgenx.anilib.common.data.store.theme.ThemeData
 
 val default_primary = Color(0xFF02A4F8)
 val default_onPrimary = Color(0xFFFFFFFF)
-val default_primaryContainer = Color(0xFFc5ebff)
+val default_primaryContainer = Color(0xFFCDE5FF)
 val default_onPrimaryContainer = Color(0xFF001D32)
-val default_surface = Color(0xFFf1f4f9)
-val default_surface_container = Color(0xFFebeef3)
-val default_onSurface = Color(0xFF181c20)
-val default_surfaceVariant = Color(0xFFDAEAF3)
-val default_onSurfaceVariant = Color(0xff42474e)
+val default_surface = Color(0xFFF7F9FF)
+val default_surface_container = Color(0xFFEBEEF3)
+val default_onSurface = Color(0xFF181C20)
+val default_surfaceContainerLow = Color(0xFFF1F4F9)
+val default_onSurfaceVariant = Color(0xFF42474E)
 
-val default_dark_primary = Color(0xFF94CCFF)
+val default_dark_primary = Color(0xFF9ACBFA)
 val default_dark_onPrimary = Color(0xFF003352)
-val default_dark_primaryContainer = Color(0xFF004B74)
+val default_dark_primaryContainer = Color(0xFF0A4A72)
 val default_dark_onPrimaryContainer = Color(0xFFCDE5FF)
-val default_dark_surface = Color(0xFF001119)
-val default_dark_surface_container = Color(0xFF001a25)
-val default_dark_onSurface = Color(0xFFfcfeff)
-val default_dark_surfaceVariant = Color(0xFF002232)
-val default_dark_onSurfaceVariant = Color(0xFFe6f7ff)
+val default_dark_surface = Color(0xFF101418)
+val default_dark_surface_container = Color(0xFF1C2024)
+val default_dark_onSurface = Color(0xFFE0E2E8)
+val default_dark_surfaceContainerLow = Color(0xFF181C20)
+val default_dark_onSurfaceVariant = Color(0xFFC2C7CF)
 
-val midnight_primary = Color(0xFF5c0b78)
+val midnight_primary = Color(0xFF774F83)
 val midnight_onPrimary = Color(0xFFFFFFFF)
-val midnight_primaryContainer = Color(0xFFECC3F9)
-val midnight_onPrimaryContainer = Color(0xFF0C0110)
-val midnight_surface = Color(0xFFFCF6FE)
-val midnight_surface_container = Color(0xFFF9EDFD)
-val midnight_onSurface = Color(0xFF181c20)
-val midnight_surfaceVariant = Color(0xFFf4ebf2)
-val midnight_onSurfaceVariant = Color(0xff42474e)
+val midnight_primaryContainer = Color(0xFFFAD7FF)
+val midnight_onPrimaryContainer = Color(0xFF2E0A3B)
+val midnight_surface = Color(0xFFFFF7FB)
+val midnight_surface_container = Color(0xFFF5EBF2)
+val midnight_onSurface = Color(0xFF1F1A1F)
+val midnight_surfaceContainerLow = Color(0xFFFBF1F8)
+val midnight_onSurfaceVariant = Color(0xFF4C444D)
 
-val midnight_dark_primary = Color(0xFF800FA6)
-val midnight_dark_onPrimary = Color(0xFF003352)
-val midnight_dark_primaryContainer = Color(0xFF004B74)
-val midnight_dark_onPrimaryContainer = Color(0xFFCDE5FF)
-val midnight_dark_surface = Color(0xFF001119)
-val midnight_dark_surface_container = Color(0xFF001a25)
-val midnight_dark_onSurface = Color(0xFFfcfeff)
-val midnight_dark_surfaceVariant = Color(0xFF002232)
-val midnight_dark_onSurfaceVariant = Color(0xFFe6f7ff)
+val midnight_dark_primary = Color(0xFFE6B6F1)
+val midnight_dark_onPrimary = Color(0xFF452152)
+val midnight_dark_primaryContainer = Color(0xFF5E386A)
+val midnight_dark_onPrimaryContainer = Color(0xFFFAD7FF)
+val midnight_dark_surface = Color(0xFF161217)
+val midnight_dark_surface_container = Color(0xFF231E23)
+val midnight_dark_onSurface = Color(0xFFEAE0E7)
+val midnight_dark_surfaceContainerLow = Color(0xFF1F1A1F)
+val midnight_dark_onSurfaceVariant = Color(0xFFCFC3CD)
 
-val bee_primary = Color(0xFF02A4F8)
+val bee_primary = Color(0xFF685F12)
 val bee_onPrimary = Color(0xFFFFFFFF)
-val bee_primaryContainer = Color(0xFFc5ebff)
-val bee_onPrimaryContainer = Color(0xFF001D32)
-val bee_surface = Color(0xFFf1f4f9)
-val bee_surface_container = Color(0xFFebeef3)
-val bee_onSurface = Color(0xFF181c20)
-val bee_surfaceVariant = Color(0xFFDAEAF3)
-val bee_onSurfaceVariant = Color(0xff42474e)
+val bee_primaryContainer = Color(0xFFF1E48A)
+val bee_onPrimaryContainer = Color(0xFF201C00)
+val bee_surface = Color(0xFFFFF9EB)
+val bee_surface_container = Color(0xFFF3EEE0)
+val bee_onSurface = Color(0xFF1D1C13)
+val bee_surfaceContainerLow = Color(0xFFF9F3E5)
+val bee_onSurfaceVariant = Color(0xFF4A473A)
 
-val bee_dark_primary = Color(0xFF94CCFF)
-val bee_dark_onPrimary = Color(0xFF003352)
-val bee_dark_primaryContainer = Color(0xFF004B74)
-val bee_dark_onPrimaryContainer = Color(0xFFCDE5FF)
-val bee_dark_surface = Color(0xFF001119)
-val bee_dark_surface_container = Color(0xFF001a25)
-val bee_dark_onSurface = Color(0xFFfcfeff)
-val bee_dark_surfaceVariant = Color(0xFF002232)
-val bee_dark_onSurfaceVariant = Color(0xFFe6f7ff)
+val bee_dark_primary = Color(0xFFD4C871)
+val bee_dark_onPrimary = Color(0xFF363100)
+val bee_dark_primaryContainer = Color(0xFF4F4800)
+val bee_dark_onPrimaryContainer = Color(0xFFF1E48A)
+val bee_dark_surface = Color(0xFF15130C)
+val bee_dark_surface_container = Color(0xFF212017)
+val bee_dark_onSurface = Color(0xFFE7E2D5)
+val bee_dark_surfaceContainerLow = Color(0xFF1D1C13)
+val bee_dark_onSurfaceVariant = Color(0xFFCBC6B5)
 
-val strawberry_primary = Color(0xFF02A4F8)
+val strawberry_primary = Color(0xFF8F4A4C)
 val strawberry_onPrimary = Color(0xFFFFFFFF)
-val strawberry_primaryContainer = Color(0xFFc5ebff)
-val strawberry_onPrimaryContainer = Color(0xFF001D32)
-val strawberry_surface = Color(0xFFf1f4f9)
-val strawberry_surface_container = Color(0xFFebeef3)
-val strawberry_onSurface = Color(0xFF181c20)
-val strawberry_surfaceVariant = Color(0xFFDAEAF3)
-val strawberry_onSurfaceVariant = Color(0xff42474e)
+val strawberry_primaryContainer = Color(0xFFFFDAD9)
+val strawberry_onPrimaryContainer = Color(0xFF3B080E)
+val strawberry_surface = Color(0xFFFFF8F7)
+val strawberry_surface_container = Color(0xFFFCEAE9)
+val strawberry_onSurface = Color(0xFF221919)
+val strawberry_surfaceContainerLow = Color(0xFFFFF0F0)
+val strawberry_onSurfaceVariant = Color(0xff524343)
 
-val strawberry_dark_primary = Color(0xFF94CCFF)
-val strawberry_dark_onPrimary = Color(0xFF003352)
-val strawberry_dark_primaryContainer = Color(0xFF004B74)
-val strawberry_dark_onPrimaryContainer = Color(0xFFCDE5FF)
-val strawberry_dark_surface = Color(0xFF001119)
-val strawberry_dark_surface_container = Color(0xFF001a25)
-val strawberry_dark_onSurface = Color(0xFFfcfeff)
-val strawberry_dark_surfaceVariant = Color(0xFF002232)
-val strawberry_dark_onSurfaceVariant = Color(0xFFe6f7ff)
+val strawberry_dark_primary = Color(0xFFFFB3B3)
+val strawberry_dark_onPrimary = Color(0xFF561D21)
+val strawberry_dark_primaryContainer = Color(0xFF733336)
+val strawberry_dark_onPrimaryContainer = Color(0xFFFFDAD9)
+val strawberry_dark_surface = Color(0xFF1A1111)
+val strawberry_dark_surface_container = Color(0xFF271D1D)
+val strawberry_dark_onSurface = Color(0xFFF0DEDE)
+val strawberry_dark_surfaceContainerLow = Color(0xFF221919)
+val strawberry_dark_onSurfaceVariant = Color(0xFFD7C1C1)
 
-val tako_primary = Color(0xFF02A4F8)
-val tako_onPrimary = Color(0xFFFFFFFF)
-val tako_primaryContainer = Color(0xFFc5ebff)
-val tako_onPrimaryContainer = Color(0xFF001D32)
-val tako_surface = Color(0xFFf1f4f9)
-val tako_surface_container = Color(0xFFebeef3)
-val tako_onSurface = Color(0xFF181c20)
-val tako_surfaceVariant = Color(0xFFDAEAF3)
-val tako_onSurfaceVariant = Color(0xff42474e)
-
-val tako_dark_primary = Color(0xFF94CCFF)
-val tako_dark_onPrimary = Color(0xFF003352)
-val tako_dark_primaryContainer = Color(0xFF004B74)
-val tako_dark_onPrimaryContainer = Color(0xFFCDE5FF)
-val tako_dark_surface = Color(0xFF001119)
-val tako_dark_surface_container = Color(0xFF001a25)
-val tako_dark_onSurface = Color(0xFFfcfeff)
-val tako_dark_surfaceVariant = Color(0xFF002232)
-val tako_dark_onSurfaceVariant = Color(0xFFe6f7ff)
-
-val teal_primary = Color(0xFF02A4F8)
+val teal_primary = Color(0xFF00696F)
 val teal_onPrimary = Color(0xFFFFFFFF)
-val teal_primaryContainer = Color(0xFFc5ebff)
-val teal_onPrimaryContainer = Color(0xFF001D32)
-val teal_surface = Color(0xFFf1f4f9)
-val teal_surface_container = Color(0xFFebeef3)
-val teal_onSurface = Color(0xFF181c20)
-val teal_surfaceVariant = Color(0xFFDAEAF3)
-val teal_onSurfaceVariant = Color(0xff42474e)
+val teal_primaryContainer = Color(0xFF9DF0F7)
+val teal_onPrimaryContainer = Color(0xFF002022)
+val teal_surface = Color(0xFFF4FAFB)
+val teal_surface_container = Color(0xFFE9EFEF)
+val teal_onSurface = Color(0xFF161D1D)
+val teal_surfaceContainerLow = Color(0xFFEFF5F5)
+val teal_onSurfaceVariant = Color(0xFF3F4849)
 
-val teal_dark_primary = Color(0xFF94CCFF)
-val teal_dark_onPrimary = Color(0xFF003352)
-val teal_dark_primaryContainer = Color(0xFF004B74)
-val teal_dark_onPrimaryContainer = Color(0xFFCDE5FF)
-val teal_dark_surface = Color(0xFF001119)
-val teal_dark_surface_container = Color(0xFF001a25)
-val teal_dark_onSurface = Color(0xFFfcfeff)
-val teal_dark_surfaceVariant = Color(0xFF002232)
-val teal_dark_onSurfaceVariant = Color(0xFFe6f7ff)
+val teal_dark_primary = Color(0xFF80D4DB)
+val teal_dark_onPrimary = Color(0xFF00363A)
+val teal_dark_primaryContainer = Color(0xFF004F54)
+val teal_dark_onPrimaryContainer = Color(0xFF9DF0F7)
+val teal_dark_surface = Color(0xFF0E1415)
+val teal_dark_surface_container = Color(0xFF1A2121)
+val teal_dark_onSurface = Color(0xFFDDE4E4)
+val teal_dark_surfaceContainerLow = Color(0xFF161D1D)
+val teal_dark_onSurfaceVariant = Color(0xFFBEC8C9)
 
-val green_apple_primary = Color(0xFF02A4F8)
+val green_apple_primary = Color(0xFF306A42)
 val green_apple_onPrimary = Color(0xFFFFFFFF)
-val green_apple_primaryContainer = Color(0xFFc5ebff)
-val green_apple_onPrimaryContainer = Color(0xFF001D32)
-val green_apple_surface = Color(0xFFf1f4f9)
-val green_apple_surface_container = Color(0xFFebeef3)
-val green_apple_onSurface = Color(0xFF181c20)
-val green_apple_surfaceVariant = Color(0xFFDAEAF3)
-val green_apple_onSurfaceVariant = Color(0xff42474e)
+val green_apple_primaryContainer = Color(0xFFB3F1BF)
+val green_apple_onPrimaryContainer = Color(0xFF00210D)
+val green_apple_surface = Color(0xFFF6FBF3)
+val green_apple_surface_container = Color(0xFFEBEFE7)
+val green_apple_onSurface = Color(0xFF181D18)
+val green_apple_surfaceContainerLow = Color(0xFFF0F5ED)
+val green_apple_onSurfaceVariant = Color(0xFF414941)
 
-val green_apple_dark_primary = Color(0xFF94CCFF)
-val green_apple_dark_onPrimary = Color(0xFF003352)
-val green_apple_dark_primaryContainer = Color(0xFF004B74)
-val green_apple_dark_onPrimaryContainer = Color(0xFFCDE5FF)
-val green_apple_dark_surface = Color(0xFF001119)
-val green_apple_dark_surface_container = Color(0xFF001a25)
-val green_apple_dark_onSurface = Color(0xFFfcfeff)
-val green_apple_dark_surfaceVariant = Color(0xFF002232)
-val green_apple_dark_onSurfaceVariant = Color(0xFFe6f7ff)
+val green_apple_dark_primary = Color(0xFF98D5A4)
+val green_apple_dark_onPrimary = Color(0xFF00391A)
+val green_apple_dark_primaryContainer = Color(0xFF15512C)
+val green_apple_dark_onPrimaryContainer = Color(0xFFB3F1BF)
+val green_apple_dark_surface = Color(0xFF101510)
+val green_apple_dark_surface_container = Color(0xFF1C211C)
+val green_apple_dark_onSurface = Color(0xFFDFE4DC)
+val green_apple_dark_surfaceContainerLow = Color(0xFF181D18)
+val green_apple_dark_onSurfaceVariant = Color(0xFFC1C9BF)
 
-
-//val default_onSurfaceVariant = default_onSurface.copy(SecondaryItemAlpha)
-
-val default_secondary = Color(0xFF51606F)
-val default_onSecondary = Color(0xFFFFFFFF)
-//val default_secondaryContainer = colorAtElevation(
-//    default_surface_container,
-//    default_primary,
-//    ElevationTokens.Level3
-//)
-//val default_onSecondaryContainer = colorAtElevation(
-//    default_onSurfaceVariant,
-//    default_primary,
-//    ElevationTokens.Level3
-//)
-
-val default_tertiary = Color(0xFF7C5800)
-val default_onTertiary = Color(0xFFFFFFFF)
-val default_tertiaryContainer = Color(0xFFFFDEA8)
-
-val default_onTertiaryContainer = Color(0xFF271900)
-val default_error = Color(0xFFBA1A1A)
-val default_errorContainer = Color(0xFFFFDAD6)
-val default_onError = Color(0xFFFFFFFF)
-
-val default_onErrorContainer = Color(0xFF410002)
-val default_background = Color(0xFFFCFCFF)
-
-val default_onBackground = Color(0xFF1A1C1E)
-
-val default_outline = Color(0xFF72787E)
-val default_inverseOnSurface = Color(0xFFF0F0F4)
-val default_inverseSurface = Color(0xFF2F3033)
-val default_inversePrimary = Color(0xFF94CCFF)
-val default_shadow = Color(0xFF000000)
-val default_surfaceTint = Color(0xFF006399)
-val default_outlineVariant = Color(0xFFC2C7CF)
-val default_scrim = Color(0x4D000000)
-
-val default_dark_secondary = Color(0xFFB9C8DA)
-val default_dark_onSecondary = Color(0xFF233240)
-//val default_dark_secondaryContainer =
-//    colorAtElevation(default_dark_surface_container, default_dark_primary, ElevationTokens.Level3)
-//val default_dark_onSecondaryContainer =
-//    colorAtElevation(default_dark_onSurface, default_dark_primary, ElevationTokens.Level3)
-
-val default_dark_tertiary = Color(0xFFFABC41)
-val default_dark_onTertiary = Color(0xFF422D00)
-val default_dark_tertiaryContainer = Color(0xFF5E4200)
-val default_dark_onTertiaryContainer = Color(0xFFFFDEA8)
-val default_dark_error = Color(0xFFFFB4AB)
-val default_dark_errorContainer = Color(0xFF93000A)
-val default_dark_onError = Color(0xFF690005)
-val default_dark_onErrorContainer = Color(0xFFFFDAD6)
-val default_dark_background = Color(0xFF1A1C1E)
-val default_dark_onBackground = Color(0xFFE2E2E5)
-val default_dark_outline = Color(0xFF8C9198)
-val default_dark_inverseOnSurface = Color(0xFF1A1C1E)
-val default_dark_inverseSurface = Color(0xFFE2E2E5)
-val default_dark_inversePrimary = Color(0xFF006399)
-val default_dark_shadow = Color(0xFF000000)
-val default_dark_surfaceTint = Color(0xFF94CCFF)
-val default_dark_outlineVariant = Color(0xFF42474E)
-val default_dark_scrim = Color(0x4D000000)
 
 val review_list_gradient_top = Color(0x0)
 val review_list_gradient_bottom = Color(0xB3000000)
-
-val seed = Color(0xFF02A4F8)
-
 
 val status_current = Color(0xFF42A5F5)
 val status_planning = Color(0xFFF09967)
@@ -260,7 +173,7 @@ val defaultTheme by lazy {
         onPrimaryContainer = default_onPrimaryContainer.toArgb(),
         background = default_surface.toArgb(),
         onBackground = default_onSurface.toArgb(),
-        surfaceVariant = default_surfaceVariant.toArgb(),
+        surfaceContainerLow = default_surfaceContainerLow.toArgb(),
         onSurfaceVariant = default_onSurfaceVariant.toArgb(),
         surfaceContainer = default_surface_container.toArgb()
     )
@@ -275,7 +188,7 @@ val defaultDarkTheme by lazy {
         onPrimaryContainer = default_dark_onPrimaryContainer.toArgb(),
         background = default_dark_surface.toArgb(),
         onBackground = default_dark_onSurface.toArgb(),
-        surfaceVariant = default_dark_surfaceVariant.toArgb(),
+        surfaceContainerLow = default_dark_surfaceContainerLow.toArgb(),
         onSurfaceVariant = default_dark_onSurfaceVariant.toArgb(),
         surfaceContainer = default_dark_surface_container.toArgb()
     )
@@ -290,7 +203,7 @@ val midnightTheme by lazy {
         onPrimaryContainer = midnight_onPrimaryContainer.toArgb(),
         background = midnight_surface.toArgb(),
         onBackground = midnight_onSurface.toArgb(),
-        surfaceVariant = midnight_surfaceVariant.toArgb(),
+        surfaceContainerLow = midnight_surfaceContainerLow.toArgb(),
         onSurfaceVariant = midnight_onSurfaceVariant.toArgb(),
         surfaceContainer = midnight_surface_container.toArgb()
     )
@@ -305,7 +218,7 @@ val midnightDarkTheme by lazy {
         onPrimaryContainer = midnight_dark_onPrimaryContainer.toArgb(),
         background = midnight_dark_surface.toArgb(),
         onBackground = midnight_dark_onSurface.toArgb(),
-        surfaceVariant = midnight_dark_surfaceVariant.toArgb(),
+        surfaceContainerLow = midnight_dark_surfaceContainerLow.toArgb(),
         onSurfaceVariant = midnight_dark_onSurfaceVariant.toArgb(),
         surfaceContainer = midnight_dark_surface_container.toArgb()
     )
@@ -320,7 +233,7 @@ val beeTheme by lazy {
         onPrimaryContainer = bee_onPrimaryContainer.toArgb(),
         background = bee_surface.toArgb(),
         onBackground = bee_onSurface.toArgb(),
-        surfaceVariant = bee_surfaceVariant.toArgb(),
+        surfaceContainerLow = bee_surfaceContainerLow.toArgb(),
         onSurfaceVariant = bee_onSurfaceVariant.toArgb(),
         surfaceContainer = bee_surface_container.toArgb()
     )
@@ -334,7 +247,7 @@ val beeDarkTheme by lazy {
         onPrimaryContainer = bee_dark_onPrimaryContainer.toArgb(),
         background = bee_dark_surface.toArgb(),
         onBackground = bee_dark_onSurface.toArgb(),
-        surfaceVariant = bee_dark_surfaceVariant.toArgb(),
+        surfaceContainerLow = bee_dark_surfaceContainerLow.toArgb(),
         onSurfaceVariant = bee_dark_onSurfaceVariant.toArgb(),
         surfaceContainer = bee_dark_surface_container.toArgb()
     )
@@ -349,7 +262,7 @@ val strawberryTheme by lazy {
         onPrimaryContainer = strawberry_onPrimaryContainer.toArgb(),
         background = strawberry_surface.toArgb(),
         onBackground = strawberry_onSurface.toArgb(),
-        surfaceVariant = strawberry_surfaceVariant.toArgb(),
+        surfaceContainerLow = strawberry_surfaceContainerLow.toArgb(),
         onSurfaceVariant = strawberry_onSurfaceVariant.toArgb(),
         surfaceContainer = strawberry_surface_container.toArgb()
     )
@@ -363,94 +276,155 @@ val strawberryDarkTheme by lazy {
         onPrimaryContainer = strawberry_dark_onPrimaryContainer.toArgb(),
         background = strawberry_dark_surface.toArgb(),
         onBackground = strawberry_dark_onSurface.toArgb(),
-        surfaceVariant = strawberry_dark_surfaceVariant.toArgb(),
+        surfaceContainerLow = strawberry_dark_surfaceContainerLow.toArgb(),
         onSurfaceVariant = strawberry_dark_onSurfaceVariant.toArgb(),
         surfaceContainer = strawberry_dark_surface_container.toArgb()
     )
 }
 
-val takoTheme by lazy {
-    ThemeData(
-        theme = 5,
-        primary = tako_primary.toArgb(),
-        onPrimary = tako_onPrimary.toArgb(),
-        primaryContainer = tako_primaryContainer.toArgb(),
-        onPrimaryContainer = tako_onPrimaryContainer.toArgb(),
-        background = tako_surface.toArgb(),
-        onBackground = tako_onSurface.toArgb(),
-        surfaceVariant = tako_surfaceVariant.toArgb(),
-        onSurfaceVariant = tako_onSurfaceVariant.toArgb(),
-        surfaceContainer = tako_surface_container.toArgb()
-    )
-}
-val takoDarkTheme by lazy {
-    ThemeData(
-        theme = 5,
-        primary = tako_dark_primary.toArgb(),
-        onPrimary = tako_dark_onPrimary.toArgb(),
-        primaryContainer = tako_dark_primaryContainer.toArgb(),
-        onPrimaryContainer = tako_dark_onPrimaryContainer.toArgb(),
-        background = tako_dark_surface.toArgb(),
-        onBackground = tako_dark_onSurface.toArgb(),
-        surfaceVariant = tako_dark_surfaceVariant.toArgb(),
-        onSurfaceVariant = tako_dark_onSurfaceVariant.toArgb(),
-        surfaceContainer = tako_dark_surface_container.toArgb()
-    )
-}
 val tealTheme by lazy {
     ThemeData(
-        theme = 6,
+        theme = 5,
         primary = teal_primary.toArgb(),
         onPrimary = teal_onPrimary.toArgb(),
         primaryContainer = teal_primaryContainer.toArgb(),
         onPrimaryContainer = teal_onPrimaryContainer.toArgb(),
         background = teal_surface.toArgb(),
         onBackground = teal_onSurface.toArgb(),
-        surfaceVariant = teal_surfaceVariant.toArgb(),
+        surfaceContainerLow = teal_surfaceContainerLow.toArgb(),
         onSurfaceVariant = teal_onSurfaceVariant.toArgb(),
         surfaceContainer = teal_surface_container.toArgb()
     )
 }
 val tealDarkTheme by lazy {
     ThemeData(
-        theme = 6,
+        theme = 5,
         primary = teal_dark_primary.toArgb(),
         onPrimary = teal_dark_onPrimary.toArgb(),
         primaryContainer = teal_dark_primaryContainer.toArgb(),
         onPrimaryContainer = teal_dark_onPrimaryContainer.toArgb(),
         background = teal_dark_surface.toArgb(),
         onBackground = teal_dark_onSurface.toArgb(),
-        surfaceVariant = teal_dark_surfaceVariant.toArgb(),
+        surfaceContainerLow = teal_dark_surfaceContainerLow.toArgb(),
         onSurfaceVariant = teal_dark_onSurfaceVariant.toArgb(),
         surfaceContainer = teal_dark_surface_container.toArgb()
     )
 }
 val greenAppleTheme by lazy {
     ThemeData(
-        theme = 7,
+        theme = 6,
         primary = green_apple_primary.toArgb(),
         onPrimary = green_apple_onPrimary.toArgb(),
         primaryContainer = green_apple_primaryContainer.toArgb(),
         onPrimaryContainer = green_apple_onPrimaryContainer.toArgb(),
         background = green_apple_surface.toArgb(),
         onBackground = green_apple_onSurface.toArgb(),
-        surfaceVariant = green_apple_surfaceVariant.toArgb(),
+        surfaceContainerLow = green_apple_surfaceContainerLow.toArgb(),
         onSurfaceVariant = green_apple_onSurfaceVariant.toArgb(),
         surfaceContainer = green_apple_surface_container.toArgb()
     )
 }
 val greenAppleDarkTheme by lazy {
     ThemeData(
-        theme = 7,
+        theme = 6,
         primary = green_apple_dark_primary.toArgb(),
         onPrimary = green_apple_dark_onPrimary.toArgb(),
         primaryContainer = green_apple_dark_primaryContainer.toArgb(),
         onPrimaryContainer = green_apple_dark_onPrimaryContainer.toArgb(),
         background = green_apple_dark_surface.toArgb(),
         onBackground = green_apple_dark_onSurface.toArgb(),
-        surfaceVariant = green_apple_dark_surfaceVariant.toArgb(),
+        surfaceContainerLow = green_apple_dark_surfaceContainerLow.toArgb(),
         onSurfaceVariant = green_apple_dark_onSurfaceVariant.toArgb(),
         surfaceContainer = green_apple_dark_surface_container.toArgb()
     )
 }
 
+val surfaceColors by lazy {
+    listOf(
+        default_surface,
+        midnight_surface,
+        bee_surface,
+        strawberry_surface,
+        teal_surface,
+        green_apple_surface,
+        default_dark_surface,
+        midnight_dark_surface,
+        bee_dark_surface,
+        strawberry_dark_surface,
+        teal_dark_surface,
+        green_apple_dark_surface,
+    ).map { it.toArgb() }
+}
+
+
+
+val surfaceContainerLowColors by lazy {
+    listOf(
+        default_surfaceContainerLow,
+        midnight_surfaceContainerLow,
+        bee_surfaceContainerLow,
+        strawberry_surfaceContainerLow,
+        teal_surfaceContainerLow,
+        green_apple_surfaceContainerLow,
+        default_dark_surfaceContainerLow,
+        midnight_dark_surfaceContainerLow,
+        bee_dark_surfaceContainerLow,
+        strawberry_dark_surfaceContainerLow,
+        teal_dark_surfaceContainerLow,
+        green_apple_dark_surfaceContainerLow
+    ).map { it.toArgb() }
+}
+
+
+val surfaceContainerColors by lazy {
+    listOf(
+        default_surface_container,
+        midnight_surface_container,
+        bee_surface_container,
+        strawberry_surface_container,
+        teal_surface_container,
+        green_apple_surface_container,
+        default_dark_surface_container,
+        midnight_dark_surface_container,
+        bee_dark_surface_container,
+        strawberry_dark_surface_container,
+        teal_dark_surface_container,
+        green_apple_dark_surface_container,
+    ).map { it.toArgb() }
+}
+
+
+val primaryColors by lazy {
+    listOf(
+        default_primary,
+        midnight_primary,
+        bee_primary,
+        strawberry_primary,
+        teal_primary,
+        green_apple_primary,
+        default_dark_primary,
+        midnight_dark_primary,
+        bee_dark_primary,
+        strawberry_dark_primary,
+        teal_dark_primary,
+        green_apple_dark_primary,
+    ).map { it.toArgb() }
+}
+
+
+val primaryContainerColors by lazy {
+    listOf(
+        default_primaryContainer,
+        midnight_primaryContainer,
+        bee_primaryContainer,
+        strawberry_primaryContainer,
+        teal_primaryContainer,
+        green_apple_primaryContainer,
+        default_dark_primaryContainer,
+        midnight_dark_primaryContainer,
+        bee_dark_primaryContainer,
+        strawberry_dark_primaryContainer,
+        teal_dark_primaryContainer,
+        green_apple_dark_primaryContainer,
+    ).map { it.toArgb() }
+}

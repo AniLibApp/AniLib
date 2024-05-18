@@ -22,6 +22,8 @@ class MainActivityViewModel(preferencesDataStore: PreferencesDataStore) : ViewMo
     var openSpoilerBottomSheet = mutableStateOf(false)
     var spoilerSpanned by mutableStateOf<Spanned?>(null)
 
+    var isNotificationPermissionChecked = false
+
     init {
         launch {
             preferencesDataStore.data.collect {

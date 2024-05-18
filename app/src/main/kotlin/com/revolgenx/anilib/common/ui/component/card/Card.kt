@@ -21,6 +21,7 @@ fun Card(
     onClick: OnClick? = null,
     onLongClick: OnLongClick? = null,
     colors: CardColors = CardDefaults.cardColors(
+        containerColor = MaterialTheme.colorScheme.surfaceContainerLow,
         contentColor = MaterialTheme.colorScheme.onSurface
     ),
     content: @Composable ColumnScope.() -> Unit
@@ -28,6 +29,7 @@ fun Card(
     Card(
         modifier = modifier,
         colors = colors,
+        elevation = CardDefaults.elevatedCardElevation()
     ) {
         Column(
             modifier = Modifier.let {

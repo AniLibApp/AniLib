@@ -506,7 +506,6 @@
     <!--Theme-->
     <string name="theme">Theme</string>
     <string name="color">Color</string>
-    <string name="primary_color">Primary Color</string>
     <string name="themes">Themes</string>
     <string name="midnight">Midnight</string>
     <string name="bee">Bee</string>
@@ -518,10 +517,19 @@
     <string name="seed_color">Seed Color</string>
     <string name="_default">Default</string>
     <string name="custom">Custom</string>
+
+    <string name="primary_color">Primary Color</string>
+    <string name="primary_color_desc">High-emphasis fills, texts, etc</string>
     <string name="primary_container_color">Primary Container Color</string>
-    <string name="surface_container_color">Surface Container Color</string>
+    <string name="primary_container_color_desc">Floating Action Button, etc</string>
     <string name="surface_color">Surface Color</string>
-    <string name="surface_variant_color">Surface Variant Color</string>
+    <string name="surface_color_desc">Backgrounds</string>
+    <string name="surface_container_color">Surface Container Color</string>
+    <string name="surface_container_color_desc">Navigation Bar, Appbar, etc</string>
+    <string name="surface_container_low_color">Surface Container Low Color</string>
+    <string name="surface_container_low_color_desc">Card, etc</string>
+    <string name="grant_notification_permission_message">Please grant notification permission to show notifications</string>
+
     <!--Theme-->
 
 </resources>

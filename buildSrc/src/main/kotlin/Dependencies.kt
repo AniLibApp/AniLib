@@ -16,7 +16,7 @@ object Versions{
     const val composeFoundation = "1.6.6"
     const val composeMaterial = "1.2.1"
     const val composeActivity = "1.8.2"
-    const val voyager = "1.0.0"
+    const val voyager = "1.1.0-alpha04"
     const val timber = "5.0.1"
     const val koin = "3.5.3"
     const val coil = "2.4.0"
@@ -31,6 +31,7 @@ object Versions{
     const val splashscreen = "1.1.0-alpha02"
     const val coreKtx = "1.12.0"
     const val sheetsM3 = "0.5.4"
+    const val accompanistPermissions = "0.34.0" //compose ui 1.6
 }
 
 object Dependencies {
@@ -95,6 +96,7 @@ object Dependencies {
 
     const val sheetsM3 = "io.github.dokar3:sheets-m3:${Versions.sheetsM3}"
 
+    const val accompanistPermissions = "com.google.accompanist:accompanist-permissions:${Versions.accompanistPermissions}"
 }
 
 
@@ -184,3 +186,6 @@ fun DependencyHandler.sheetsM3() {
     implementation(Dependencies.sheetsM3)
 }
 
+fun DependencyHandler.accompanist() {
+    implementation(Dependencies.accompanistPermissions)
+}

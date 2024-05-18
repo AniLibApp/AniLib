@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.auth0.android.jwt.JWT
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
+import com.revolgenx.anilib.notification.data.store.NotificationDataStore
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
@@ -58,6 +59,7 @@ class AuthPreferencesDataStore(val dataStore: PreferencesDataStore) {
         dataStore.edit { pref ->
             pref.remove(authTokenKey)
             pref.remove(userIdKey)
+            pref.remove(NotificationDataStore.lastShownNotificationIdKey)
             pref.remove(MediaSettingsPreferencesDataStore.displayAdultContentKey)
             pref[MediaSettingsPreferencesDataStore.mediaTitleTypeKey] = MediaTitleModel.type_romaji
         }

@@ -3,6 +3,7 @@ package com.revolgenx.anilib.common.ui.screen.image
 import android.os.Build
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -46,7 +47,10 @@ private var imageLoader: ImageLoader? = null
 private fun ImageViewerScreenContent(imageUrl: String) {
     val activity = componentActivity()
     val themeDataStore: ThemeDataStore = koinInject()
-    val darkTheme = themeDataStore.collectAsState().value.isDarkTheme()
+    val themeData = themeDataStore.collectAsState().value
+
+    val isSystemInDarkMode = isSystemInDarkTheme()
+    val darkTheme = themeData.darkMode ?: isSystemInDarkMode
 
 
     DisposableEffect(darkTheme) {

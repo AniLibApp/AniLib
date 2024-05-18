@@ -10,7 +10,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import com.revolgenx.anilib.app.ui.screen.MainActivityScreen
-import com.revolgenx.anilib.common.ui.activity.BaseActivity
+import com.revolgenx.anilib.common.ui.activity.BaseMainActivity
 import com.revolgenx.anilib.common.ui.composition.GlobalViewModelStoreOwner
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalMediaState
@@ -25,14 +25,14 @@ import com.revolgenx.anilib.common.ui.theme.AppTheme
 *
 * todo: get user setting of media title type
 * */
-class MainActivity : BaseActivity() {
+class MainActivity : BaseMainActivity() {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
         setContent {
-            AppTheme() {
+            AppTheme {
                 Navigator(
                     screen = MainActivityScreen,
                     disposeBehavior = NavigatorDisposeBehavior(false)
@@ -61,4 +61,5 @@ class MainActivity : BaseActivity() {
         }
     }
 }
+
 

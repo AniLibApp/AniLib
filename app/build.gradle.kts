@@ -144,6 +144,7 @@ dependencies {
     prettytime()
     chart()
     sheetsM3()
+    accompanist()
 
     implementation("com.materialkolor:material-kolor:1.4.4")
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.3.0")

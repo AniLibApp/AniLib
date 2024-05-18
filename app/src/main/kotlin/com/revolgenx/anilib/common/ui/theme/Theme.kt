@@ -9,6 +9,7 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import com.revolgenx.anilib.common.data.store.theme.ThemeData
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.componentActivity
@@ -100,8 +101,8 @@ fun AppTheme(
 ) {
     val themeDataStore: ThemeDataStore = koinInject()
     val themeData = themeDataStore.collectAsState().value
-    val darkTheme = themeData.isDarkTheme()
-
+    val isSystemInDarkMode = isSystemInDarkTheme()
+    val darkTheme = themeData.darkMode ?: isSystemInDarkMode
     val colorScheme = themeData.colorScheme(darkTheme)
 
 //    val colorScheme = when {
@@ -115,7 +116,7 @@ fun AppTheme(
 //    }
 
     val activity = componentActivity()
-    DisposableEffect(darkTheme) {
+    LaunchedEffect(darkTheme) {
         activity?.enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(
                 android.graphics.Color.TRANSPARENT,
@@ -132,7 +133,6 @@ fun AppTheme(
                 )
             },
         )
-        onDispose {}
     }
 
     MaterialTheme(
