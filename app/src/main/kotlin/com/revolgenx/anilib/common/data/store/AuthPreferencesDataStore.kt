@@ -32,7 +32,9 @@ class AuthPreferencesDataStore(val dataStore: PreferencesDataStore) {
     val isLoggedIn = userId.data.map { it != null }
 
     @Composable
-    fun isLoggedIn(): Boolean =userId.collectAsState().value != null
+    fun isLoggedIn(): Boolean {
+        return userId.collectAsState().value != null
+    }
 
     fun continueIfLoggedIn(
         scope: CoroutineScope,

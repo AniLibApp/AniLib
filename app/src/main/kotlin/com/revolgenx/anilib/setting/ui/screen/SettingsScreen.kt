@@ -61,6 +61,7 @@ import com.revolgenx.anilib.common.ui.theme.logout_color
 import com.revolgenx.anilib.common.ui.theme.support_color
 import com.revolgenx.anilib.common.util.versionName
 import com.revolgenx.anilib.setting.ui.component.TextPreferenceItem
+import com.revolgenx.anilib.setting.ui.screen.about.AboutSettingsScreen
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -195,7 +196,7 @@ fun SettingScreenContent(isTab: Boolean) {
                 title = stringResource(I18nR.string.settings_anime_and_manga),
                 subtitle = stringResource(I18nR.string.settings_anime_and_manga_desc)
             ) {
-                navigator.push(MediaSettingsScreen())
+                navigator.push(MediaSettingsScreen)
             }
 
             ShowIfLoggedIn {
@@ -203,14 +204,16 @@ fun SettingScreenContent(isTab: Boolean) {
                     icon = AppIcons.IcList,
                     title = stringResource(I18nR.string.settings_lists),
                     subtitle = stringResource(I18nR.string.settings_list_desc)
-                )
+                ) {
+                    navigator.push(MediaListSettingsScreen)
+                }
 
                 TextPreferenceItem(
                     icon = AppIcons.IcNotification,
                     title = stringResource(I18nR.string.notifications),
                     subtitle = stringResource(I18nR.string.settings_notifications_desc)
                 ) {
-                    navigator.push(NotificationSettingsScreen())
+                    navigator.push(NotificationSettingsScreen)
                 }
             }
 
@@ -237,7 +240,9 @@ fun SettingScreenContent(isTab: Boolean) {
                 title = stringResource(I18nR.string.about),
                 subtitle = stringResource(I18nR.string.settings_about_desc)
                     .format(versionName)
-            )
+            ) {
+                navigator.push(AboutSettingsScreen)
+            }
 
             ShowIfLoggedIn {
                 TextPreferenceItem(

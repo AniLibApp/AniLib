@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name" translatable="false">AniLib</string>
+    <string name="app_desc">For managing, tracking, and browsing Anime and Manga. AniLib stands out for its features and user-friendly interfaces.</string>
+    <string name="app_anilist_client_desc">By the power of AniList</string>
+    <string name="app_anilib_site">AniLib Site</string>
+    <string name="app_anilib_site_desc">Visit AniLib</string>
 
     <string name="home">Home</string>
     <string name="list">List</string>
@@ -372,6 +376,13 @@
     <string name="settings_about_desc">AniLib %1$s</string>
     <string name="settings_lists">Lists</string>
     <string name="settings_list_desc">Scoring system, advanced scoring</string>
+    <string name="settings_scoring_system">Scoring System</string>
+    <string name="settings_default_list_order">Default List Order</string>
+    <string name="settings_split_completed_list_section_by_format">Split Completed List Section By Format.</string>
+    <string name="settings_custom_anime_lists">Custom Anime Lists</string>
+    <string name="settings_custom_manga_lists">Custom Manga Lists</string>
+    <string name="settings_anime_list">Anime List</string>
+    <string name="settings_manga_list">Manga List.</string>
     <string name="settings_notifications_desc">Activity subscriptions, social, site data changes</string>
     <string name="settings_are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
     <string name="settings_support">Support</string>
@@ -530,6 +541,17 @@
     <string name="surface_container_low_color_desc">Card, etc</string>
     <string name="grant_notification_permission_message">Please grant notification permission to show notifications</string>
     <string name="support">Support</string>
+    <string name="settings_list_100_point">100 Point (55/100)</string>
+    <string name="settings_list_10_point_decimal">10 Point Decimal (5.5/10)</string>
+    <string name="settings_list_10_point">10 Point (5/10)</string>
+    <string name="settings_list_5_star">5 Star (3/5)</string>
+    <string name="settings_list_3_star">3 Point Smiley :)</string>
+    <string name="licenses">Licenses</string>
+    <string name="translators">Translators</string>
+    <string name="github">Github</string>
+    <string name="github_source_desc">View source on Github.</string>
+    <string name="license_apache_2">APACHE 2.0</string>
+    <string name="license_apache_desc">View full license.</string>
 
     <!--Theme-->
 

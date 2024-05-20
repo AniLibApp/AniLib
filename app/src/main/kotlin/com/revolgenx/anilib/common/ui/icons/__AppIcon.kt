@@ -44,6 +44,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFire
 import com.revolgenx.anilib.common.ui.icons.appicon.IcForum
 import com.revolgenx.anilib.common.ui.icons.appicon.IcForumOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcGithub
 import com.revolgenx.anilib.common.ui.icons.appicon.IcGroup
 import com.revolgenx.anilib.common.ui.icons.appicon.IcGroupOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHappy
@@ -172,7 +173,6 @@ val AppIcons.AllIcons: ____KtList<ImageVector>
             IcInfo,
             IcInfoOutline,
             IcLibraryBooks,
-            IcList,
             IcLogin,
             IcLogout,
             IcMarkdownGif,
@@ -239,7 +239,8 @@ val AppIcons.AllIcons: ____KtList<ImageVector>
             IcCenter,
             IcQuote,
             IcCode,
-            IcPencil
+            IcPencil,
+            IcGithub
         )
         return __AllIcons!!
     }
