@@ -48,7 +48,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
-object AppearanceSettingsScreen : PreferencesScreen() {
+object AppearanceScreen : PreferencesScreen() {
     override val titleRes: Int = I18nR.string.settings_appearance
 
     @Composable

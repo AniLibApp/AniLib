@@ -94,10 +94,8 @@ object SettingScreen : BaseTabScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingScreenContent(isTab: Boolean) {
-
     val viewModel: SettingsViewModel = koinViewModel()
     val context = localContext()
-    var snackbarHostState: SnackbarHostState? = null
     val scope = rememberCoroutineScope()
     val navigator = localNavigator()
 
@@ -123,8 +121,7 @@ fun SettingScreenContent(isTab: Boolean) {
             }
         },
         contentWindowInsets = if (isTab) WindowInsets.statusBars else ScaffoldDefaults.contentWindowInsets
-    ) {
-        snackbarHostState = localSnackbarHostState()
+    ) { snackbarHostState ->
         Column(
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
@@ -190,7 +187,7 @@ fun SettingScreenContent(isTab: Boolean) {
                 title = stringResource(I18nR.string.settings_appearance),
                 subtitle = stringResource(I18nR.string.settings_appearance_desc)
             ) {
-                navigator.push(AppearanceSettingsScreen)
+                navigator.push(AppearanceScreen)
             }
 
             TextPreferenceItem(
@@ -229,7 +226,10 @@ fun SettingScreenContent(isTab: Boolean) {
                 title = stringResource(I18nR.string.settings_support),
                 subtitle = stringResource(I18nR.string.settings_support_desc)
                     .format(versionName),
-                iconTint = support_color
+                iconTint = support_color,
+                onClick = {
+                    navigator.push(SupportScreen)
+                }
             )
 
             TextPreferenceItem(
@@ -249,41 +249,46 @@ fun SettingScreenContent(isTab: Boolean) {
                 }
             }
         }
-    }
 
 
-    ConfirmationDialog(
-        openDialog = openLoginDialog,
-        message = stringResource(id = I18nR.string.settings_login_signup_notice),
-        title = stringResource(id = I18nR.string.settings_important_to_know)
-    ) {
-        login(context)
-    }
+        ConfirmationDialog(
+            openDialog = openLoginDialog,
+            message = stringResource(id = I18nR.string.settings_login_signup_notice),
+            title = stringResource(id = I18nR.string.settings_important_to_know)
+        ) {
+            login(context)
+        }
 
 
-    ConfirmationDialog(
-        openDialog = openRegisterDialog,
-        message = stringResource(id = I18nR.string.settings_login_signup_notice),
-        title = stringResource(id = I18nR.string.settings_important_to_know)
-    ) {
-        context.openLink(Config.SIGN_UP_URL, scope = scope, snackbarHostState = snackbarHostState)
-    }
+        ConfirmationDialog(
+            openDialog = openRegisterDialog,
+            message = stringResource(id = I18nR.string.settings_login_signup_notice),
+            title = stringResource(id = I18nR.string.settings_important_to_know)
+        ) {
+            context.openLink(
+                Config.SIGN_UP_URL,
+                scope = scope,
+                snackbarHostState = snackbarHostState
+            )
+        }
 
-    ConfirmationDialog(
-        openDialog = openLogoutDialog,
-        message = stringResource(id = I18nR.string.settings_are_you_sure_you_want_to_log_out),
-        title = stringResource(id = I18nR.string.logout)
-    ) {
-        scope.launch {
-            viewModel.authPreferencesDataStore.logout()
-            context.startActivity(Intent(context, MainActivity::class.java).apply {
-                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            })
-            if (context is MainActivity) {
-                context.finish()
+        ConfirmationDialog(
+            openDialog = openLogoutDialog,
+            message = stringResource(id = I18nR.string.settings_are_you_sure_you_want_to_log_out),
+            title = stringResource(id = I18nR.string.logout)
+        ) {
+            scope.launch {
+                viewModel.authPreferencesDataStore.logout()
+                context.startActivity(Intent(context, MainActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                })
+                if (context is MainActivity) {
+                    context.finish()
+                }
             }
         }
     }
+
 
 }
 

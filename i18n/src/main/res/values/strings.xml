@@ -529,6 +529,7 @@
     <string name="surface_container_low_color">Surface Container Low Color</string>
     <string name="surface_container_low_color_desc">Card, etc</string>
     <string name="grant_notification_permission_message">Please grant notification permission to show notifications</string>
+    <string name="support">Support</string>
 
     <!--Theme-->
 

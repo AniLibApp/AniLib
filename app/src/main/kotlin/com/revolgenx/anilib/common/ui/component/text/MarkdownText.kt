@@ -97,7 +97,7 @@ fun MarkdownText(
                             oldBottom: Int
                         ) {
                             textView.removeOnLayoutChangeListener(this);
-                            onLineCount?.invoke(textView.lineCount);
+                            onLineCount.invoke(textView.lineCount);
                         }
                     })
                 }

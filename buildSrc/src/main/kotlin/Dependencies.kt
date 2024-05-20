@@ -12,14 +12,14 @@ object PackagingOptions {
 }
 
 object Versions{
-    const val composeUi = "1.6.6"
-    const val composeFoundation = "1.6.6"
+    const val composeUi = "1.6.7"
+    const val composeFoundation = "1.6.7"
     const val composeMaterial = "1.2.1"
-    const val composeActivity = "1.8.2"
+    const val composeActivity = "1.9.0"
     const val voyager = "1.1.0-alpha04"
     const val timber = "5.0.1"
     const val koin = "3.5.3"
-    const val coil = "2.4.0"
+    const val coil = "2.6.0"
     const val desugar = "1.1.5"
     const val paging = "3.2.0"
     const val dataStore = "1.0.0"
@@ -29,7 +29,7 @@ object Versions{
     const val prettytime = "5.0.4.Final"
     const val vico = "1.7.1"
     const val splashscreen = "1.1.0-alpha02"
-    const val coreKtx = "1.12.0"
+    const val coreKtx = "1.13.0"
     const val sheetsM3 = "0.5.4"
     const val accompanistPermissions = "0.34.0" //compose ui 1.6
 }
