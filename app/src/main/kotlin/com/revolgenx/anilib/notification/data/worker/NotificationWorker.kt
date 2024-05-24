@@ -73,7 +73,8 @@ class NotificationWorker(
 
             val field = NotificationField(
                 userId = authPreferencesDataStore.userId.get(),
-                resetNotificationCount = false
+                resetNotificationCount = false,
+                includeNotificationCount = true
             ).also { it.perPage = 5 }
 
             val notifications = notificationService.getNotificationList(field)
@@ -83,11 +84,15 @@ class NotificationWorker(
                 }.single()
                 .data ?: return Result.success()
 
+            val unreadNotificationCount = field.unreadNotificationCount ?: 0
+
             val lastNotificationId = notificationDataStore.lastShownNotificationId.get()
 
             notifications.firstOrNull()?.let {
                 notificationDataStore.lastShownNotificationId.set(it.id)
             }
+
+            if(unreadNotificationCount == 0) return Result.success()
 
             if (lastNotificationId == null) {
                 return Result.success()
@@ -97,9 +102,9 @@ class NotificationWorker(
                 notifications.indexOfFirst { it.id == lastNotificationId }
 
             val newNotifications = if (previousNotificationIndex > -1) {
-                notifications.subList(0, previousNotificationIndex)
+                notifications.subList(0, previousNotificationIndex).take(unreadNotificationCount)
             } else {
-                notifications
+                notifications.take(unreadNotificationCount)
             }
 
             newNotifications.reversed().forEach {
@@ -236,7 +241,7 @@ class NotificationWorker(
         val intent = Intent(Intent.ACTION_VIEW, null, context, this::class.java).also {
             it.putExtra(
                 LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
-                LauncherShortcuts.NOTIFICATION
+                LauncherShortcuts.NOTIFICATION.ordinal
             )
             it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }

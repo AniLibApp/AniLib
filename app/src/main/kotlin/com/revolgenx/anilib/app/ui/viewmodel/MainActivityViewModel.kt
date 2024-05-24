@@ -15,6 +15,17 @@ import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel.Companion.type_romaji
 import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore.Companion.mediaTitleTypeKey
 
+enum class DeepLinkPath {
+    ANIME,
+    MANGA,
+    USER,
+    CHARACTER,
+    STAFF,
+    STUDIO,
+    ACTIVITY,
+    NOTIFICATION
+}
+
 class MainActivityViewModel(preferencesDataStore: PreferencesDataStore) : ViewModel() {
     var userState by mutableStateOf(UserState())
     var mediaState by mutableStateOf(MediaState())
@@ -24,12 +35,15 @@ class MainActivityViewModel(preferencesDataStore: PreferencesDataStore) : ViewMo
 
     var isNotificationPermissionChecked = false
 
+    val deepLinkPath = mutableStateOf<Pair<DeepLinkPath, Any>?>(null)
+
     init {
         launch {
             preferencesDataStore.data.collect {
                 val userId = it[userIdKey]
                 val mediaTitleType = it[mediaTitleTypeKey] ?: type_romaji
-                val mediaCoverImageType = it[mediaCoverImageTypeKey] ?: MediaCoverImageModel.type_large
+                val mediaCoverImageType =
+                    it[mediaCoverImageTypeKey] ?: MediaCoverImageModel.type_large
                 userState = userState.copy(userId = userId)
                 mediaState = mediaState.copy(
                     titleType = mediaTitleType,

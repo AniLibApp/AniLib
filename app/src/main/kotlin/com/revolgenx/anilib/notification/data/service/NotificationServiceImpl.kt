@@ -22,13 +22,15 @@ class NotificationServiceImpl(
         }
         return field.toQuery().map {
             val data = it.dataAssertNoErrors
+
+            field.unreadNotificationCount =
+                field.unreadNotificationCount ?: data.User?.unreadNotificationCount
+
             data.page.let { page ->
                 PageModel(
                     pageInfo = page.pageInfo.pageInfo,
                     data = page.notifications?.mapNotNull { notification ->
                         notification?.toModel()?.also {
-                            field.unreadNotificationCount =
-                                field.unreadNotificationCount ?: data.User?.unreadNotificationCount
                             it.unreadNotificationCount = field.unreadNotificationCount ?: 0
                             field.includeNotificationCount = false
                         }

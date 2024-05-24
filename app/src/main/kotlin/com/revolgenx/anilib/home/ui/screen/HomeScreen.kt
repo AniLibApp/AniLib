@@ -16,6 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.common.ext.browseScreen
+import com.revolgenx.anilib.common.ext.notificationScreen
 import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
@@ -95,7 +96,7 @@ fun HomeScreenContent() {
             }
             ShowIfLoggedIn {
                 ActionMenu(icon = AppIcons.IcNotification) {
-                    navigator.push(NotificationScreen())
+                    navigator.notificationScreen()
                 }
             }
         },

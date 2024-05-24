@@ -62,7 +62,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
-class NotificationScreen : AndroidScreen() {
+object NotificationScreen : AndroidScreen() {
     @Composable
     override fun Content() {
         NotificationScreenContent()

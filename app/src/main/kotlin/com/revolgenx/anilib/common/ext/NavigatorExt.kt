@@ -9,6 +9,7 @@ import com.revolgenx.anilib.common.ui.screen.image.ImageViewerScreen
 import com.revolgenx.anilib.entry.ui.screen.MediaListEntryEditorScreen
 import com.revolgenx.anilib.list.ui.screen.UserMediaListScreen
 import com.revolgenx.anilib.media.ui.screen.MediaScreen
+import com.revolgenx.anilib.notification.ui.screen.NotificationScreen
 import com.revolgenx.anilib.relation.ui.screen.UserSocialRelationScreen
 import com.revolgenx.anilib.review.ui.screen.ReviewScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityScreen
@@ -78,3 +79,8 @@ fun Navigator.browseGenreScreen(genre: String){
 fun Navigator.browseTagScreen(tag: String){
     browseScreen(BrowseFilterData(tagsIn = listOf(tag)))
 }
+
+fun Navigator.notificationScreen(){
+    push(NotificationScreen)
+}
+
