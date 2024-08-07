@@ -15,7 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 
 @Composable
@@ -47,6 +49,7 @@ fun SegmentedButton(
                         Text(
                             modifier = Modifier.align(Alignment.Center),
                             text = item,
+                            fontSize = 13.sp,
                             style = MaterialTheme.typography.labelLarge,
                             color = if (index == selectedPosition) colorScheme.onSecondaryContainer else colorScheme.onSurface
                         )

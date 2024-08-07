@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.GeneralPreferencesDataStore
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.setting.data.field.NotificationSettingsField
 import com.revolgenx.anilib.setting.data.field.SaveNotificationSettingsField
@@ -18,6 +19,7 @@ import kotlinx.coroutines.flow.onEach
 
 class NotificationSettingsViewModel(
     authPreferencesDataStore: AuthPreferencesDataStore,
+    val generalPreferencesDataStore: GeneralPreferencesDataStore,
     private val settingsService: SettingsService
 ) : ResourceViewModel<Map<NotificationType, MutableState<Boolean>>, NotificationSettingsField>(){
     override val field: NotificationSettingsField = NotificationSettingsField().also {

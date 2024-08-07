@@ -56,6 +56,7 @@ import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.AppearanceSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.GeneralSettingsViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.MediaListSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.MediaSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.NotificationSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
@@ -222,7 +223,7 @@ val viewModelModules = module {
     viewModel { NotificationViewModel(get(), get()) }
 
     //editor
-    viewModel { MediaListEntryEditorViewModel(get(),get(), get()) }
+    viewModel { MediaListEntryEditorViewModel(get(), get(), get()) }
 
     //list
     viewModel { AnimeListViewModel(get(), get(), animeListFilterDataStore()) }
@@ -231,7 +232,13 @@ val viewModelModules = module {
     viewModel { MangaListFilterViewModel() }
 
     //activity union
-    viewModel { MainActivityUnionViewModel(get(), get<Context>().activityUnionFilterDataStore, get()) }
+    viewModel {
+        MainActivityUnionViewModel(
+            get(),
+            get<Context>().activityUnionFilterDataStore,
+            get()
+        )
+    }
     viewModel { ActivityUnionViewModel(get(), get()) }
     viewModel { ActivityComposerViewModel(get()) }
     viewModel { ActivityUnionFilterViewModel(get<Context>().activityUnionFilterDataStore) }
@@ -254,7 +261,7 @@ val viewModelModules = module {
     viewModel { ReviewListViewModel(get()) }
     viewModel { ReviewListFilterViewModel() }
     viewModel { ReviewViewModel(get()) }
-    viewModel { ReviewComposerViewModel(get(), get())}
+    viewModel { ReviewComposerViewModel(get(), get()) }
 
     //recommendations
     viewModel { RecommendationViewModel(get()) }
@@ -265,7 +272,8 @@ val viewModelModules = module {
     viewModel { GeneralSettingsViewModel(get()) }
     viewModel { AppearanceSettingsViewModel(get(), get()) }
     viewModel { MediaSettingsViewModel(get(), get(), get()) }
-    viewModel { NotificationSettingsViewModel(get(), get()) }
+    viewModel { NotificationSettingsViewModel(get(), get(), get()) }
+    viewModel { MediaListSettingsViewModel(get(), get()) }
 
     //explore
     viewModelOf(::ExploreAiringViewModel)

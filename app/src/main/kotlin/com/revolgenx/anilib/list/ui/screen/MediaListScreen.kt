@@ -38,6 +38,7 @@ import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
+import com.revolgenx.anilib.common.ui.component.chip.ClearAssistChip
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -152,24 +153,15 @@ private fun MediaListScreenContent(
                             }
                         }
                     ) {
-                        AssistChip(
-                            onClick = {
-                                viewModel.search = "hello"
-                                viewModel.searchNow()
-                            },
-                            label = { Text(text = "hello") },
-                            colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = MaterialTheme.colorScheme.onSurface),
-                            trailingIcon = {
-                                Icon(
-                                    modifier = Modifier
-                                        .size(20.dp)
-                                        .clickable {
+                        ClearAssistChip(
+                            text = "hello",
+                            onClear = {
 
-                                        },
-                                    imageVector = AppIcons.IcCancel,
-                                    contentDescription = stringResource(id = I18nR.string.clear)
-                                )
-                            })
+                            }
+                        ) {
+                            viewModel.search = "hello"
+                            viewModel.searchNow()
+                        }
                     }
                 }
             }

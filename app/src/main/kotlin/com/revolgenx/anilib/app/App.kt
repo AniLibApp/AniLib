@@ -2,6 +2,8 @@ package com.revolgenx.anilib.app
 
 import android.app.Application
 import coil.Coil
+import coil.util.DebugLogger
+import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.common.data.repository.repositoryModules
 import com.revolgenx.anilib.common.data.service.serviceModules
 import com.revolgenx.anilib.common.data.store.storeModules
@@ -37,8 +39,14 @@ class App : Application() {
         }
 
         Timber.plant(Timber.DebugTree())
-        AlMarkdownFactory.init(this, themeStore.get().primary.toInt(), AlMarkdownCallbackImpl())
-        Coil.setImageLoader(Coil.imageLoader(this).newBuilder().crossfade(true).build())
+        AlMarkdownFactory.init(this, themeStore.get().primary, AlMarkdownCallbackImpl())
+        Coil.setImageLoader(
+            Coil.imageLoader(this).newBuilder().crossfade(true).apply {
+                if (BuildConfig.DEBUG) {
+                    logger(DebugLogger())
+                }
+            }.build()
+        )
     }
 
 

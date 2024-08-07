@@ -5,7 +5,6 @@ import com.revolgenx.anilib.character.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
-import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.PageInfo

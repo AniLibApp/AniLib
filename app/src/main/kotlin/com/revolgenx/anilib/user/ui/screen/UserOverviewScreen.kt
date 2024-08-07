@@ -83,7 +83,7 @@ private fun UserGenreOverviewSection(userModel: UserModel) {
     userModel.statistics?.media?.genres?.let {
         UserOverviewHeader(stringResource(id = I18nR.string.genre_overview))
 
-        Card {
+        OutlinedCard {
             LazyRow {
                 items(it) {
                     Column(

@@ -4,17 +4,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import anilib.i18n.R
-import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
-import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -22,10 +20,12 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcSave
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.setting.ui.component.GroupPreferenceItem
+import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
+import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
-import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import com.revolgenx.anilib.setting.ui.viewmodel.NotificationSettingsViewModel
 import com.revolgenx.anilib.type.NotificationType
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -52,7 +52,6 @@ object NotificationSettingsScreen : AndroidScreen() {
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
                 ResourceScreen(viewModel = viewModel) {
-                    SaveResourceState(viewModel)
                     NotificationScreenContent(viewModel = viewModel)
                 }
             }
@@ -64,34 +63,35 @@ object NotificationSettingsScreen : AndroidScreen() {
 @Composable
 private fun NotificationScreenContent(viewModel: NotificationSettingsViewModel) {
     val resourceValue = viewModel.resource.value?.stateValue ?: emptyMap()
+    NotificationRefreshInterval(viewModel)
     ActivitySubscriptionsGroup(resourceValue)
     SocialGroup(resourceValue)
     SiteDataChangesGroup(resourceValue)
 }
 
 @Composable
-private fun SaveResourceState(viewModel: NotificationSettingsViewModel) {
-    val snackbar = localSnackbarHostState()
-    when (viewModel.saveResource) {
-        is ResourceState.Error -> {
-            val failedToSave = stringResource(id = I18nR.string.failed_to_save)
-            val retry = stringResource(id = I18nR.string.retry)
-            LaunchedEffect(viewModel) {
-                when (snackbar.showSnackbar(
-                    failedToSave, retry, duration = SnackbarDuration.Long
-                )) {
-                    SnackbarResult.Dismissed -> {
-                        viewModel.saveResource = null
-                    }
+private fun NotificationRefreshInterval(viewModel: NotificationSettingsViewModel) {
+    val context = localContext()
+    val scope = rememberCoroutineScope()
 
-                    SnackbarResult.ActionPerformed -> {
-                        viewModel.save()
-                    }
-                }
+    GroupPreferenceItem(title = stringResource(id = I18nR.string.refresh_interval)) {
+        val notificationIntervalPref =
+            viewModel.generalPreferencesDataStore.notificationRefreshInterval
+        val notificationInterval = notificationIntervalPref.collectAsState().value
+        val notificationEntry = remember {
+            listOf(15, 20, 25, 30).map {
+                ListPreferenceEntry(context.getString(R.string.s_min).format(it), it)
             }
         }
-
-        else -> {}
+        ListPreferenceItem(
+            value = notificationInterval,
+            title = stringResource(id = R.string.notification_refresh_interval),
+            entries = notificationEntry
+        ) {
+            scope.launch {
+                notificationIntervalPref.set(it!!)
+            }
+        }
     }
 }
 

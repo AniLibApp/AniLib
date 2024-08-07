@@ -29,6 +29,8 @@ import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
 import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import com.revolgenx.anilib.setting.ui.viewmodel.MediaSettingsViewModel
+import com.revolgenx.anilib.user.ui.model.getUserTitleLanguage
+import com.revolgenx.anilib.user.ui.model.toMediaTitleType
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
@@ -64,7 +66,6 @@ object MediaSettingsScreen : AndroidScreen() {
                         viewModel.getResource()
                     }
                     ResourceScreen(viewModel = viewModel) {
-                        SaveResourceState(viewModel)
                         MediaSettingsScreenContent(viewModel, isLoggedIn = isLoggedIn)
                     }
                 } else {
@@ -80,20 +81,22 @@ object MediaSettingsScreen : AndroidScreen() {
 private fun MediaSettingsScreenContent(viewModel: MediaSettingsViewModel, isLoggedIn: Boolean) {
     val context = localContext()
     val scope = rememberCoroutineScope()
-    val resourceValue = viewModel.resource.value?.stateValue
     val mediaSettingsDataStore = viewModel.mediaSettingsPreferencesDataStore
-
 
     val mediaTitleList = remember {
         mediaTitlePrefEntry(context)
     }
+
     if (isLoggedIn) {
+        val userOptionsState = viewModel.getData()?.options ?: return
+        val userOptions = userOptionsState.value
+
         ListPreferenceItem(
-            value = resourceValue?.titleLanguage?.value,
+            value = userOptions.titleLanguage.toMediaTitleType(),
             title = stringResource(id = I18nR.string.settings_title_language),
             entries = mediaTitleList
         ) {
-            resourceValue?.titleLanguage?.value = it!!
+            userOptionsState.value = userOptions.copy(titleLanguage = getUserTitleLanguage(it))
         }
 
         val activityMergeList = remember {
@@ -101,21 +104,21 @@ private fun MediaSettingsScreenContent(viewModel: MediaSettingsViewModel, isLogg
         }
 
         ListPreferenceItem(
-            value = resourceValue?.activityMergeTime?.intValue,
+            value = userOptions.activityMergeTime,
             title = stringResource(id = I18nR.string.settings_activity_merge_time),
             entries = activityMergeList
         ) {
-            resourceValue?.activityMergeTime?.intValue = it!!
+            userOptionsState.value = userOptions.copy(activityMergeTime = it!!)
         }
 
         SwitchPreferenceItem(
-            checked = resourceValue?.airingNotifications?.value == true,
+            checked = userOptions.airingNotifications,
             title = stringResource(id = I18nR.string.settings_airing_anime_notifications),
         ) {
-            resourceValue?.airingNotifications?.value = it
+            userOptionsState.value = userOptions.copy(airingNotifications = it)
         }
 
-        if (resourceValue?.displayAdultContent?.value == true) {
+        if (userOptions.displayAdultContent) {
             SwitchPreferenceItem(
                 checked = mediaSettingsDataStore.displayAdultContent.collectAsState().value == true,
                 title = stringResource(id = I18nR.string.settings_adult_content),
@@ -126,6 +129,7 @@ private fun MediaSettingsScreenContent(viewModel: MediaSettingsViewModel, isLogg
                 }
             }
         }
+
     } else {
         ListPreferenceItem(
             value = mediaSettingsDataStore.mediaTitleType.collectAsState().value,
@@ -136,68 +140,5 @@ private fun MediaSettingsScreenContent(viewModel: MediaSettingsViewModel, isLogg
                 mediaSettingsDataStore.mediaTitleType.set(it)
             }
         }
-    }
-
-    val prefList = mutableListOf<PreferenceModel>()
-
-    if (isLoggedIn) {
-        val activityMergeList = remember {
-            activityMergeTimePrefEntry(context)
-        }
-        prefList.add(PreferenceModel.ListPreferenceModel(
-            title = stringResource(id = I18nR.string.settings_activity_merge_time),
-            prefState = resourceValue?.activityMergeTime,
-            entries = activityMergeList,
-            onValueChanged = {
-                resourceValue?.activityMergeTime?.intValue = it!!
-                true
-            }
-        ))
-        prefList.add(
-            PreferenceModel.SwitchPreference(
-                prefState = resourceValue?.airingNotifications,
-                title = stringResource(id = I18nR.string.settings_airing_anime_notifications),
-            ) {
-                resourceValue?.airingNotifications?.value = it
-                true
-            }
-        )
-
-        if (resourceValue?.displayAdultContent?.value == true) {
-            prefList.add(
-                PreferenceModel.SwitchPreference(
-                    pref = mediaSettingsDataStore.displayAdultContent,
-                    title = stringResource(id = I18nR.string.settings_adult_content),
-                    subtitle = stringResource(id = I18nR.string.show_adult_content_desc)
-                )
-            )
-        }
-    }
-}
-
-
-@Composable
-private fun SaveResourceState(viewModel: MediaSettingsViewModel) {
-    val snackbar = localSnackbarHostState()
-    when (viewModel.saveResource) {
-        is ResourceState.Error -> {
-            val failedToSave = stringResource(id = I18nR.string.failed_to_save)
-            val retry = stringResource(id = I18nR.string.retry)
-            LaunchedEffect(viewModel) {
-                when (snackbar.showSnackbar(
-                    failedToSave, retry, duration = SnackbarDuration.Long
-                )) {
-                    SnackbarResult.Dismissed -> {
-                        viewModel.saveResource = null
-                    }
-
-                    SnackbarResult.ActionPerformed -> {
-                        viewModel.save()
-                    }
-                }
-            }
-        }
-
-        else -> {}
     }
 }

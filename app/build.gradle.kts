@@ -44,11 +44,6 @@ android {
                 "CLIENT_ID",
                 secretPropslistOf(secretProps, "client_id")
             )
-            buildConfigField(
-                "String",
-                "REDIRECT_URI",
-                secretPropslistOf(secretProps, "redirect_uri")
-            )
         }
         named("release") {
             isMinifyEnabled = false
@@ -65,26 +60,10 @@ android {
                 "CLIENT_ID",
                 secretPropslistOf(secretProps, "client_id")
             )
-            buildConfigField(
-                "String",
-                "REDIRECT_URI",
-                secretPropslistOf(secretProps, "redirect_uri")
-            )
         }
         create("alpha") {
             initWith(getByName("debug"))
             applicationIdSuffix = ".alpha"
-        }
-    }
-
-    flavorDimensions.add("default")
-    productFlavors {
-        create("production") {
-            dimension = "default"
-        }
-        create("develop") {
-            resourceConfigurations += listOf("en", "xxhdpi")
-            dimension = "default"
         }
     }
 

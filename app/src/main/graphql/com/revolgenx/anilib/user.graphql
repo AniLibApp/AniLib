@@ -248,11 +248,13 @@ fragment userMediaListOptions on MediaListOptions{
     scoreFormat
     rowOrder
     animeList{
+        splitCompletedSectionByFormat
         advancedScoringEnabled
         advancedScoring
         customLists
     }
     mangaList{
+        splitCompletedSectionByFormat
         advancedScoringEnabled
         advancedScoring
         customLists
