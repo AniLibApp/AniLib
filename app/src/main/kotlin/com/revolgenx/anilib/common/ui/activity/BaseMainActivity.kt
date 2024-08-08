@@ -217,7 +217,6 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
     private fun setAppShortcuts(isLoggedIn: Boolean) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N_MR1) return
         val it = getSystemService(ShortcutManager::class.java) ?: return
-        if (it.dynamicShortcuts.size != 0) return
 
         val anilibShortcuts = mutableListOf<ShortcutInfo>()
         val homeShortcut = createShortcut(
@@ -288,7 +287,9 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
         @DrawableRes drawRes: Int,
         intent: Intent
     ): ShortcutInfo {
-        return ShortcutInfo.Builder(this, id).setShortLabel(label).setLongLabel(label)
+        return ShortcutInfo.Builder(this, id)
+            .setShortLabel(label)
+            .setLongLabel(label)
             .setIcon(Icon.createWithResource(this, drawRes))
             .setIntent(intent)
             .build()

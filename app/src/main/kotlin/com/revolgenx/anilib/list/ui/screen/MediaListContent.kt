@@ -13,7 +13,6 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,9 +28,7 @@ import com.dokar.sheets.m3.BottomSheet
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.hideBottomSheet
-import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -49,13 +46,12 @@ import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.sort.MediaListSortType
-import com.revolgenx.anilib.list.ui.model.MediaListModel
+import com.revolgenx.anilib.list.ui.component.MediaListItem
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
 import com.revolgenx.anilib.type.MediaFormat
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -127,15 +123,6 @@ fun MediaListContent(
         viewModel.updateFilter(it)
     }
 
-}
-
-
-@Composable
-private fun MediaListItem(list: MediaListModel) {
-    val media = list.media ?: return
-    Box(modifier = Modifier.padding(16.dp)) {
-        Text(text = media.title?.userPreferred.naText())
-    }
 }
 
 
