@@ -7,7 +7,7 @@ data class MediaListOptionTypeModel(
     val advancedScoring: List<String>? = null,
     val customLists: List<String>? = null,
     val sectionOrder: List<String>? = null,
-    val splitCompletedSectionByFormat: Boolean? = null
+    val splitCompletedSectionByFormat: Boolean = false
 )
 
 private val completedOrders = listOf(

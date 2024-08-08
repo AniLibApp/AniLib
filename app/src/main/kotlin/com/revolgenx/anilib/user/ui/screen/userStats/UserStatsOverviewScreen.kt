@@ -27,6 +27,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
+import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.marker.Marker
@@ -239,7 +240,7 @@ private fun UserStatsMediaCountSection(
         ColumnChart(
             marker = marker,
             model = entryModel,
-            bottomAxis = bottomAxis(
+            bottomAxis = rememberBottomAxis(
                 valueFormatter = { value, _ ->
                     stats.lengths?.get(value.toInt())?.length ?: unknown
                 }
@@ -308,18 +309,12 @@ private fun UserStatsInfoSection(
             StatsNumberData(
                 icon = if (isAnime) AppIcons.IcCalendar else AppIcons.IcBook,
                 label = currentLabel,
-                value = if (isAnime) String.format(
-                    "%.2f",
-                    stats.daysWatched
-                ) else stats.volumesRead.toString()
+                value = if (isAnime) "%.2f".format(stats.daysWatched) else stats.volumesRead.toString()
             ),
             StatsNumberData(
                 icon = AppIcons.IcHourglass,
                 label = plannedLabel,
-                value = if (isAnime) String.format(
-                    "%.2f",
-                    stats.daysPlanned
-                ) else stats.chaptersPlanned.toString()
+                value = if (isAnime) "%.2f".format(stats.daysPlanned) else stats.chaptersPlanned.toString()
             ),
             StatsNumberData(
                 icon = AppIcons.IcPercent,
@@ -371,7 +366,8 @@ private fun StatsNumberText(icon: ImageVector, label: String, value: String) {
         ) {
             Icon(
                 modifier = Modifier
-                    .align(Alignment.CenterEnd),
+                    .align(Alignment.CenterEnd)
+                    .size(20.dp),
                 imageVector = icon,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
@@ -391,7 +387,7 @@ private fun StatsNumberText(icon: ImageVector, label: String, value: String) {
                 text = label,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontWeight = FontWeight.Medium,
-                fontSize = 14.sp
+                fontSize = 13.sp
             )
         }
     }

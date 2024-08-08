@@ -4,7 +4,6 @@ import com.revolgenx.anilib.MediaListCollectionQuery
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
-import com.revolgenx.anilib.user.ui.model.MediaListOptionTypeModel
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.model.getRowOrder
 import com.revolgenx.anilib.user.ui.model.toModel

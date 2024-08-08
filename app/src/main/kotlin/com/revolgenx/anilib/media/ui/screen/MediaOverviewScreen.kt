@@ -572,7 +572,7 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean, context: Context) {
                 title = if (isAnime) context.getString(I18nR.string.duration) else context.getString(
                     I18nR.string.volumes
                 ),
-                value = if (isAnime) context.getString(I18nR.string.min_s)
+                value = if (isAnime) context.getString(I18nR.string.s_min)
                     .format(media.duration?.toString() ?: naString) else media.volumes?.toString()
                     ?: naString
             ),

@@ -69,10 +69,5 @@ abstract class ResourceViewModel<M : Any, F : BaseField<*>> : BaseViewModel<F>()
             }.launchIn(viewModelScope)
     }
 
-    fun getData(): M? {
-        val state = resource.value
-        return if (state is ResourceState.Success) state.data else null
-    }
-
-
+    fun getData() = resource.value?.stateValue
 }

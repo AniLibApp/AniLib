@@ -334,7 +334,7 @@
     <string name="season_dot_year">%1$s · %2$s</string>
     <string name="episode_airing_date">E: %1$s · %2$s</string>
     <string name="source">Source</string>
-    <string name="min_s">%1$s min</string>
+    <string name="s_min">%1$s min</string>
     <string name="_native">Native</string>
     <string name="english">English</string>
     <string name="romaji">Romaji</string>
@@ -379,6 +379,7 @@
     <string name="settings_scoring_system">Scoring System</string>
     <string name="settings_default_list_order">Default List Order</string>
     <string name="settings_split_completed_list_section_by_format">Split Completed List Section By Format.</string>
+    <string name="settings_advanced_scoring">Advanced Scoring</string>
     <string name="settings_custom_anime_lists">Custom Anime Lists</string>
     <string name="settings_custom_manga_lists">Custom Manga Lists</string>
     <string name="settings_anime_list">Anime List</string>
@@ -554,5 +555,10 @@
     <string name="license_apache_desc">View full license.</string>
 
     <!--Theme-->
+
+    <string name="enabled">Enabled</string>
+    <string name="saved_successfully">Saved Successfully</string>
+    <string name="refresh_interval">Refresh Interval</string>
+    <string name="notification_refresh_interval">Notification Refresh Interval</string>
 
 </resources>

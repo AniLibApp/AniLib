@@ -4,6 +4,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
+import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
+import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.startAxis
 import com.patrykandpatrick.vico.compose.chart.Chart
 import com.patrykandpatrick.vico.compose.chart.column.columnChart
@@ -30,10 +32,10 @@ fun ColumnChart(
             innerSpacing = 2.dp
         ),
         model = model,
-        startAxis = startAxis(
+        startAxis = rememberStartAxis(
             valueFormatter = { value, _ -> value.toInt().toString() }
         ),
-        bottomAxis = bottomAxis ?: bottomAxis()
+        bottomAxis = bottomAxis ?: rememberBottomAxis()
     )
 }
 
@@ -52,7 +54,7 @@ fun LineChart(
             axisValuesOverrider = AxisValuesOverrider.adaptiveYValues(yFraction = 1.2f)
         ),
         model = model,
-        startAxis = startAxis(
+        startAxis = rememberStartAxis(
             valueFormatter = { value, _ -> value.toInt().toString() }
         ),
         bottomAxis = bottomAxis ?: bottomAxis(),

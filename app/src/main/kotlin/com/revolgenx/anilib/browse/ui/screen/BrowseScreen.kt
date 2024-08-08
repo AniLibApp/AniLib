@@ -56,6 +56,7 @@ import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
+import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
@@ -239,9 +240,10 @@ fun BrowseScreenTopAppbar(
             Box(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                RowDockedSearchBar(modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(8.dp),
+                RowDockedSearchBar(
+                    modifier = Modifier
+                        .align(Alignment.TopCenter)
+                        .padding(8.dp),
                     query = viewModel.query,
                     onQueryChange = { viewModel.searchQuery = it },
                     onSearch = {
@@ -254,13 +256,19 @@ fun BrowseScreenTopAppbar(
                         active = it
                     },
                     placeholder = {
-                        Text(text = stringResource(id = I18nR.string.search))
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(text = stringResource(id = I18nR.string.search))
+                            Icon(
+                                modifier = Modifier.padding(horizontal = 4.dp).size(16.dp),
+                                imageVector = AppIcons.IcSearch,
+                                contentDescription = stringResource(id = I18nR.string.search)
+                            )
+                        }
                     },
                     leadingIcon = {
-                        Icon(
-                            imageVector = AppIcons.IcSearch,
-                            contentDescription = stringResource(id = I18nR.string.search)
-                        )
+                        NavigationIcon()
                     },
                     trailingIcon = {
                         Row {

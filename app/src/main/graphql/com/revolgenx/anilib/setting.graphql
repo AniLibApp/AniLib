@@ -21,12 +21,6 @@ query UserMediaOptionsQuery($id:Int, $name:String){
 query UserMediaListOptionsQuery($id:Int, $name:String){
     user: User(id:$id, name:$name){
         mediaListOptions{
-            animeList {
-                splitCompletedSectionByFormat
-            }
-            mangaList {
-                splitCompletedSectionByFormat
-            }
             ... userMediaListOptions
         }
     }

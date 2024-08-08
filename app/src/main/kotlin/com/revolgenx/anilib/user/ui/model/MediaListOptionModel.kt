@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.user.ui.model
 
+import com.revolgenx.anilib.fragment.UserMediaListOptions
 import com.revolgenx.anilib.type.ScoreFormat
 
 
@@ -20,23 +21,40 @@ data class MediaListOptionModel(
 
 }
 
-enum class RowOrder {
-    SCORE, TITLE, LAST_UPDATED, LAST_ADDED
-}
+enum class RowOrder(val value: String) {
+    SCORE("score"), TITLE("title"), LAST_UPDATED("updatedAt"), LAST_ADDED("id");
 
-fun getRowOrder(rowOrder: String?): RowOrder {
-    return when (rowOrder) {
-        "score" -> {
-            RowOrder.SCORE
-        }
-        "title" -> {
-            RowOrder.TITLE
-        }
-        "updatedAt" -> {
-            RowOrder.LAST_UPDATED
-        }
-        else -> {
-            RowOrder.LAST_ADDED
+    companion object {
+        fun fromValue(value: String?): RowOrder? {
+            return entries.find { it.value == value }
         }
     }
 }
+
+fun getRowOrder(rowOrder: String?): RowOrder {
+    return RowOrder.fromValue(rowOrder) ?: RowOrder.LAST_ADDED
+}
+
+
+fun UserMediaListOptions.toModel() = MediaListOptionModel(
+    rowOrder = getRowOrder(rowOrder ?: RowOrder.TITLE.value),
+    scoreFormat = scoreFormat ?: ScoreFormat.POINT_100,
+    animeList = animeList?.let {
+        MediaListOptionTypeModel(
+            advancedScoringEnabled = it.advancedScoringEnabled == true,
+            advancedScoring =
+            it.advancedScoring?.filterNotNull()?.toMutableList(),
+            customLists = it.customLists?.filterNotNull(),
+            splitCompletedSectionByFormat = it.splitCompletedSectionByFormat == true
+        )
+    },
+    mangaList = mangaList?.let {
+        MediaListOptionTypeModel(
+            advancedScoringEnabled = it.advancedScoringEnabled == true,
+            advancedScoring =
+            it.advancedScoring?.filterNotNull()?.toMutableList(),
+            customLists = it.customLists?.filterNotNull(),
+            splitCompletedSectionByFormat = it.splitCompletedSectionByFormat == true
+        )
+    }
+)
