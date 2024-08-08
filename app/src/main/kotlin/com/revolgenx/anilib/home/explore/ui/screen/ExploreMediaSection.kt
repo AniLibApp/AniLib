@@ -11,7 +11,7 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
-import com.revolgenx.anilib.media.ui.component.MediaCardBox
+import com.revolgenx.anilib.media.ui.component.MediaItemColumnCompositeCard
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -47,7 +47,7 @@ private fun ExploreMediaItem(
     media: MediaModel,
     mediaComponentState: MediaComponentState
 ) {
-    MediaCardBox(
+    MediaItemColumnCompositeCard(
         media = media,
         mediaComponentState = mediaComponentState,
         width = ExploreMediaCardWidth,

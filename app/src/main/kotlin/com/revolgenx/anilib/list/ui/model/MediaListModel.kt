@@ -58,7 +58,11 @@ data class MediaListModel(
 
     var media: MediaModel? = null,
     val user: UserModel? = null,
-) : BaseModel
+) : BaseModel{
+    val isHappy get()= score == 3.0
+    val isNeutral get()= score == 2.0
+    val isSad get() = score == 1.0
+}
 
 fun MediaListEntry.toModel() = MediaListModel(
     id = id,
@@ -76,7 +80,7 @@ fun MediaListEntry.toModel() = MediaListModel(
     updatedAt = updatedAt,
     createdAt = createdAt,
     startedAt = startedAt?.fuzzyDate?.toModel(),
-    completedAt = completedAt?.fuzzyDate?.toModel()
+    completedAt = completedAt?.fuzzyDate?.toModel(),
 )
 
 fun MediaListEntryQuery.MediaListEntry.toModel(): MediaListModel {

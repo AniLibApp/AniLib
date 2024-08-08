@@ -80,7 +80,7 @@ import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
-import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaItemColumnCard
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaConnectionModel
@@ -195,7 +195,7 @@ fun MediaRecommendation(
     LazyRow {
         items(items = medias) {
             val media = it.mediaRecommendation ?: return@items
-            MediaCard(width = 140.dp, media = media, mediaComponentState = mediaComponentState)
+            MediaItemColumnCard(width = 140.dp, media = media, mediaComponentState = mediaComponentState)
         }
     }
 }
@@ -221,7 +221,7 @@ fun MediaRelationCard(
 ) {
     val media = mediaEdgeModel.node ?: return
 
-    MediaCard(
+    MediaItemColumnCard(
         media = media,
         width = 140.dp,
         footerContent = {

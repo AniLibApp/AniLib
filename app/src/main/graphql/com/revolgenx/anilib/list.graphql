@@ -15,6 +15,9 @@ query MediaListCollectionQuery(
                 media {
                     ... media
                     synonyms
+                    nextAiringEpisode {
+                        episode
+                    }
                 }
             }
         }

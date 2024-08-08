@@ -560,5 +560,6 @@
     <string name="saved_successfully">Saved Successfully</string>
     <string name="refresh_interval">Refresh Interval</string>
     <string name="notification_refresh_interval">Notification Refresh Interval</string>
+    <string name="score_s">Score: %1$s</string>
 
 </resources>

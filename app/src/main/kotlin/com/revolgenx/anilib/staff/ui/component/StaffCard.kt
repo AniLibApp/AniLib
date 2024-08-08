@@ -27,7 +27,7 @@ import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnClickWithValue
-import com.revolgenx.anilib.media.ui.component.MediaRowContent
+import com.revolgenx.anilib.media.ui.component.MediaRowCommonContent
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
@@ -129,7 +129,7 @@ fun StaffMediaCharacterCard(
                     .fillMaxWidth(),
 
                 ) {
-                MediaRowContent(media = mediaModel, mediaComponentState = mediaComponentState)
+                MediaRowCommonContent(media = mediaModel, mediaComponentState = mediaComponentState)
             }
 
             character ?: return@Row

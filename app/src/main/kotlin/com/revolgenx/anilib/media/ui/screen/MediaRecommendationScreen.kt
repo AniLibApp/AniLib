@@ -8,7 +8,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaItemColumnCard
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
 
@@ -30,6 +30,6 @@ fun MediaRecommendationScreen(
         }
     ) { recommendationModel ->
         val media = recommendationModel?.mediaRecommendation ?: return@LazyPagingList
-        MediaCard(media = media, mediaComponentState = mediaComponentState)
+        MediaItemColumnCard(media = media, mediaComponentState = mediaComponentState)
     }
 }

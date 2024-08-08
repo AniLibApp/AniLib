@@ -73,6 +73,7 @@ data class MediaModel(
     val meanScore: Int? = null,
     val mediaListEntry: MediaListModel? = null,
     val nextAiringEpisode: AiringScheduleModel? = null,
+    val currentEpisode: Int? = null,
     val popularity: Int? = null,
 //    val rankings: List<MediaRankModel>? = null,
     val recommendations: RecommendationConnectionModel? = null,
@@ -101,7 +102,7 @@ data class MediaModel(
     val type: MediaType? = null,
     val updatedAt: Int? = null,
     val volumes: Int? = null,
-
+    val totalEpisodesOrChapters: Int? = if(type.isAnime) episodes else chapters,
     // for StudioScreen
     var studio: StudioModel? = null,
     var character: CharacterModel? = null,

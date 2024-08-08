@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.list.ui.model
 
 import com.revolgenx.anilib.MediaListCollectionQuery
+import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
@@ -47,13 +48,15 @@ fun MediaListCollectionQuery.Data.toModel(field: MediaListCollectionField): Medi
                     entries = group.entries?.mapNotNull { entry ->
                         entry
                             ?.takeIf { if (field.canShowAdult) true else it.media?.media?.isAdult == false }
-                            ?.mediaListEntry?.toModel()
+                            ?.mediaListEntry
+                            ?.toModel()
                             ?.let { entryModel ->
                                 entryModel.copy(
                                     userId = userModel?.id ?: -1,
                                     user = userModel,
                                     media = entry.media?.media?.toModel()?.copy(
-                                        synonyms = entryModel.media?.synonyms
+                                        synonyms = entry.media.synonyms?.filterNotNull(),
+                                        currentEpisode = entry.media.nextAiringEpisode?.episode?.minus(1)
                                     )
                                 ).also {
                                     if ((isCustomList.not() && entryModel.hiddenFromStatusLists.not()) || (isCustomList && entryModel.hiddenFromStatusLists)) {

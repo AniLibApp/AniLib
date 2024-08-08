@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.media.ui.component
+package com.revolgenx.anilib.home.season.ui.component
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -28,18 +28,23 @@ import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.RegularText
 import com.revolgenx.anilib.common.util.OnMediaClick
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
+import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.component.MediaStatsBadge
+import com.revolgenx.anilib.media.ui.component.MediaTitleType
+import com.revolgenx.anilib.media.ui.component.onMediaClickHandler
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
 
 
 @Composable
-fun MediaCardRow(
+fun SeasonRowCard(
     media: MediaModel,
     mediaComponentState: MediaComponentState,
     footerContent: (@Composable () -> Unit)? = null,
 ) {
-    MediaCardRowContent(
+    SeasonRowCardContent(
         media = media,
         footerContent = footerContent,
         onMediaClick = onMediaClickHandler(mediaComponentState),
@@ -48,7 +53,7 @@ fun MediaCardRow(
 }
 
 @Composable
-private fun MediaCardRowContent(
+private fun SeasonRowCardContent(
     media: MediaModel,
     footerContent: (@Composable () -> Unit)?,
     onMediaClick: OnMediaClick,
@@ -82,7 +87,7 @@ private fun MediaCardRowContent(
                     )
                 }
 
-                MediaInfoBadge(
+                MediaStatsBadge(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(4.dp),
@@ -94,7 +99,7 @@ private fun MediaCardRowContent(
                     .fillMaxSize()
                     .padding(horizontal = 8.dp)
                     .padding(bottom = 4.dp, top = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(3.dp)
+                verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
                 MediaTitleType { type ->
                     MediumText(

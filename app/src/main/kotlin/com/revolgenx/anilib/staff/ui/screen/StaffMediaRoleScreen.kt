@@ -48,7 +48,7 @@ import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
-import com.revolgenx.anilib.media.ui.component.MediaRowContent
+import com.revolgenx.anilib.media.ui.component.MediaRowCommonContent
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
@@ -160,7 +160,7 @@ private fun StaffMediaRoleItem(
             .height(124.dp)
             .padding(6.dp)
     ) {
-        MediaRowContent(
+        MediaRowCommonContent(
             media = model,
             content = {
                 Box(modifier = Modifier.fillMaxHeight()) {

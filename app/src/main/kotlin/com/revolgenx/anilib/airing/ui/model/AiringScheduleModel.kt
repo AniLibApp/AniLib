@@ -16,7 +16,7 @@ data class AiringScheduleModel(
     val airingAt: Int = -1,
     val airingAtModel: AiringAtModel,
     val episode: Int = -1,
-    val lastEpisode: Int? = null,
+    val currentEpisode: Int? = null,
     val media: MediaModel? = null,
     val mediaId: Int = -1,
     val timeUntilAiring: Int = -1,
@@ -37,7 +37,7 @@ fun AiringScheduleQuery.AiringSchedule.toModel(): AiringScheduleModel {
             )
         ),
         episode = episode,
-        lastEpisode = (episode - 1).takeIf { it > 0 },
+        currentEpisode = (episode - 1).takeIf { it > 0 },
         mediaId = mediaId,
         media = media?.media?.toModel(),
         timeUntilAiring = timeUntilAiring,

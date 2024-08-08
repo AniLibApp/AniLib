@@ -53,7 +53,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
 import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaItemColumnCard
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -197,7 +197,7 @@ private fun StudioPagingContent(
             }
 
             is MediaModel -> {
-                MediaCard(media = baseModel, mediaComponentState = mediaCardState)
+                MediaItemColumnCard(media = baseModel, mediaComponentState = mediaCardState)
             }
         }
     }

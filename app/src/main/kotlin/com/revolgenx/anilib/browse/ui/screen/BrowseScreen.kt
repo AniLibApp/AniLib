@@ -74,7 +74,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithId
-import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaItemColumnCard
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -155,7 +155,7 @@ private fun BrowsePagingContent(
     ) { browseModel ->
         when (browseModel) {
             is MediaModel -> {
-                MediaCard(
+                MediaItemColumnCard(
                     media = browseModel, mediaComponentState = mediaComponentState
                 )
             }

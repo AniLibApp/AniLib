@@ -1,11 +1,7 @@
 package com.revolgenx.anilib.character.ui.screen
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -27,7 +23,6 @@ import com.revolgenx.anilib.character.data.field.CharacterMediaField
 import com.revolgenx.anilib.character.data.field.CharacterMediaSort
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaFilterViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -42,7 +37,7 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaItemColumnCard
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
@@ -105,7 +100,7 @@ private fun CharacterMediaPagingContent(
         gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
     ) { model ->
         model ?: return@LazyPagingList
-        MediaCard(media = model, mediaComponentState = mediaComponentState)
+        MediaItemColumnCard(media = model, mediaComponentState = mediaComponentState)
     }
 }
 

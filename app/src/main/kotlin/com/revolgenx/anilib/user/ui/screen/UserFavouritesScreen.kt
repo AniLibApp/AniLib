@@ -26,7 +26,6 @@ import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.character.ui.component.CharacterCard
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.common.ext.characterScreen
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.hideBottomSheet
 import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
@@ -41,7 +40,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
-import com.revolgenx.anilib.media.ui.component.MediaCard
+import com.revolgenx.anilib.media.ui.component.MediaItemColumnCard
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.staff.ui.component.StaffCard
@@ -154,7 +153,7 @@ private fun UserFavouritePageScreen(viewModel: UserFavouriteContentViewModel) {
     ) { favModel ->
         when (favModel) {
             is MediaModel -> {
-                MediaCard(favModel, mediaComponentState = mediaComponentState)
+                MediaItemColumnCard(favModel, mediaComponentState = mediaComponentState)
             }
 
             is CharacterModel -> {

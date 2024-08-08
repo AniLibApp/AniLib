@@ -46,7 +46,7 @@ import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.sort.MediaListSortType
-import com.revolgenx.anilib.list.ui.component.MediaListItem
+import com.revolgenx.anilib.list.ui.component.MediaListRowCard
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
@@ -99,7 +99,7 @@ fun MediaListContent(
                     }
                 ) { mediaList ->
                     mediaList ?: return@LazyPagingList
-                    MediaListItem(list = mediaList)
+                    MediaListRowCard(list = mediaList)
                 }
             }
 

@@ -18,7 +18,7 @@ data class FuzzyDateModel(val day: Int?, val month: Int?, val year: Int?) {
         } ${day?.let { "$it," } ?: ""} ${year ?: ""}"
 
     override fun toString(): String {
-        return "${year ?: ""}-${month ?: ""}-${day ?: ""}"
+        return "${year ?: ""}${month?.let { "-$it" } ?: ""}${day?.let { "-$it" } ?: ""}"
     }
 
     fun isEmpty() = year == null && month == null && day == null

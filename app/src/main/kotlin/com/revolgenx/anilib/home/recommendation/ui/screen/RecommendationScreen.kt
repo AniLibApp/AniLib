@@ -54,8 +54,8 @@ import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationFilterViewModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
-import com.revolgenx.anilib.media.ui.component.MediaRowContent
-import com.revolgenx.anilib.media.ui.component.MediaRowItemContentEnd
+import com.revolgenx.anilib.media.ui.component.MediaRowCommonContent
+import com.revolgenx.anilib.media.ui.component.MediaRowCommonContentEnd
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.type.RecommendationRating
 import kotlinx.coroutines.launch
@@ -158,7 +158,7 @@ fun RecommendationItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     model.media?.let {
-                        MediaRowContent(media = it, mediaComponentState = mediaComponentState)
+                        MediaRowCommonContent(media = it, mediaComponentState = mediaComponentState)
                     }
                 }
 
@@ -166,7 +166,7 @@ fun RecommendationItem(
                     modifier = Modifier.weight(1f)
                 ) {
                     model.mediaRecommendation?.let {
-                        MediaRowItemContentEnd(
+                        MediaRowCommonContentEnd(
                             media = it,
                             mediaComponentState = mediaComponentState
                         )

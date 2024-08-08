@@ -1032,7 +1032,7 @@ type Media {
   """
   The media's next episode airing schedule
   """
-  nextAiringEpisode: AiringSchedule
+   nextAiringEpisode: AiringSchedule
 
   """
   The media's entire airing schedule

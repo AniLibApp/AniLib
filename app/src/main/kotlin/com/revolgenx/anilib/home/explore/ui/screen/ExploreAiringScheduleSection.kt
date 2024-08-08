@@ -43,7 +43,7 @@ import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringViewModel
-import com.revolgenx.anilib.media.ui.component.MediaCardBox
+import com.revolgenx.anilib.media.ui.component.MediaItemColumnCompositeCard
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.toStringRes
@@ -126,16 +126,14 @@ private fun AiringScheduleItem(
     context: Context
 ) {
     val media = airingScheduleModel.media ?: return
-    MediaCardBox(
+    MediaItemColumnCompositeCard(
         media = media,
         mediaComponentState = mediaComponentState,
         width = ExploreMediaCardWidth,
         height = ExploreMediaCardHeight,
         footerContent = {
             val progressBehind = media.mediaListEntry?.progress?.let { progress ->
-                airingScheduleModel.lastEpisode?.let { lastEpisode ->
-                    lastEpisode - progress
-                }
+                airingScheduleModel.currentEpisode?.minus(progress)
             }?.takeIf { it > 0 }
 
             if (progressBehind != null) {
