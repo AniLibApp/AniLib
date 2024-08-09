@@ -10,15 +10,15 @@ import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ext.maybeLocalSnackbarHostState
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
-import com.revolgenx.anilib.common.util.OnClick
 
 @Composable
 fun <M : Any, F : BaseField<*>> ResourceScreen(
     viewModel: ResourceViewModel<M, F>,
+    showRetry: Boolean = true,
     content: @Composable (data: M) -> Unit
 ) {
     ResourceLoadingSection(viewModel)
-    ResourceSaveSection(viewModel)
+    ResourceSaveSection(viewModel, showRetry)
     ResourceScreenContent(viewModel, content)
 }
 
@@ -53,7 +53,10 @@ private fun <M : Any, F : BaseField<*>> ResourceLoadingSection(viewModel: Resour
 
 
 @Composable
-private fun <M : Any, F : BaseField<*>> ResourceSaveSection(viewModel: ResourceViewModel<M, F>) {
+private fun <M : Any, F : BaseField<*>> ResourceSaveSection(
+    viewModel: ResourceViewModel<M, F>,
+    showRetry: Boolean
+) {
     when (viewModel.saveResource) {
         is ResourceState.Error -> {
             val snackbar = maybeLocalSnackbarHostState()
@@ -66,7 +69,7 @@ private fun <M : Any, F : BaseField<*>> ResourceSaveSection(viewModel: ResourceV
             val retry = stringResource(id = anilib.i18n.R.string.retry)
             LaunchedEffect(viewModel) {
                 when (snackbar.showSnackbar(
-                    failedToSave, retry, duration = SnackbarDuration.Long
+                    failedToSave, if(showRetry) retry else null, duration = SnackbarDuration.Long
                 )) {
                     SnackbarResult.Dismissed -> {
                         viewModel.saveResource = null

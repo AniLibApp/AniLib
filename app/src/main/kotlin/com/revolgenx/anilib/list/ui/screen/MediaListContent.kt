@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
@@ -13,6 +14,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +31,11 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
 import com.revolgenx.anilib.common.ext.hideBottomSheet
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
+import com.revolgenx.anilib.common.ext.mediaScreen
+import com.revolgenx.anilib.common.ext.showLoginMsg
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -41,12 +48,19 @@ import com.revolgenx.anilib.common.ui.component.menu.SortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.radio.TextRadioButton
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
+import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.sort.MediaListSortType
+import com.revolgenx.anilib.list.ui.component.MediaListColumnCard
+import com.revolgenx.anilib.list.ui.component.MediaListCompactColumnCard
 import com.revolgenx.anilib.list.ui.component.MediaListRowCard
+import com.revolgenx.anilib.list.ui.component.MediaListSmallRowCard
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
@@ -68,8 +82,13 @@ fun MediaListContent(
     val groupNameBottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = true
     )
-
-    viewModel.getResource()
+    LaunchedEffect(viewModel) {
+        viewModel.getResource()
+    }
+    val navigator = localNavigator()
+    val scope = rememberCoroutineScope()
+    val context = localContext()
+    val snackbar = localSnackbarHostState()
 
     ScreenScaffold(
         topBar = {},
@@ -86,20 +105,81 @@ fun MediaListContent(
         }
     ) {
         ResourceScreen(
-            viewModel = viewModel
+            viewModel = viewModel,
+            showRetry = false
         ) {
             Box(
                 modifier = Modifier.nestedScroll(bottomNestedScrollConnection),
             ) {
+                val openEditorScreen = viewModel.openMediaListEntryEditor.collectAsState()
+                val isLoggedIn = localUser().isLoggedIn
                 LazyPagingList(
                     items = viewModel.mediaListCollection,
+                    type = ListPagingListType.GRID,
+                    gridOptions = GridOptions(GridCells.Adaptive(168.dp/*180.dp*/)),
                     pullRefresh = true,
                     onRefresh = {
                         viewModel.refresh()
                     }
                 ) { mediaList ->
                     mediaList ?: return@LazyPagingList
-                    MediaListRowCard(list = mediaList)
+
+                    val openMediaListEditorScreen = {
+                        if(isLoggedIn){
+                            navigator.mediaListEntryEditorScreen(mediaId = mediaList.mediaId)
+                        }else{
+                            snackbar.showLoginMsg(context = context, scope = scope)
+                        }
+                    }
+
+                    val onMediaClick ={
+                        if(openEditorScreen.value== true){
+                           openMediaListEditorScreen()
+                        }else{
+                            navigator.mediaScreen(mediaId = mediaList.mediaId, type = mediaList.media?.type)
+                        }
+                    }
+
+                    val onMediaLongClick = {
+                        if(openEditorScreen.value == true){
+                            navigator.mediaScreen(mediaId = mediaList.mediaId, type = mediaList.media?.type)
+                        }else{
+                            openMediaListEditorScreen()
+                        }
+                    }
+
+                    val increaseProgress = {
+                        viewModel.increaseProgress(mediaList)
+                    }
+
+//                    MediaListRowCard(
+//                        list = mediaList,
+//                        increaseProgress = increaseProgress,
+//                        onClick = onMediaClick,
+//                        onLongClick = onMediaLongClick
+//                    )
+
+//                    MediaListSmallRowCard(
+//                        list = mediaList,
+//                        increaseProgress = increaseProgress,
+//                        onClick = onMediaClick,
+//                        onLongClick = onMediaLongClick
+//                    )
+
+//                    MediaListColumnCard(
+//                        list = mediaList,
+//                        increaseProgress = increaseProgress,
+//                        onClick = onMediaClick,
+//                        onLongClick = onMediaLongClick
+//                    )
+
+                    MediaListCompactColumnCard(
+                        list = mediaList,
+                        increaseProgress = increaseProgress,
+                        onClick = onMediaClick,
+                        onLongClick = onMediaLongClick
+
+                    )
                 }
             }
 

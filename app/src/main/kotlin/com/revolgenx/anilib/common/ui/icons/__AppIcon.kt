@@ -60,6 +60,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcImage
 import com.revolgenx.anilib.common.ui.icons.appicon.IcInfo
 import com.revolgenx.anilib.common.ui.icons.appicon.IcInfoOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcItalics
+import com.revolgenx.anilib.common.ui.icons.appicon.IcLayoutStyle
 import com.revolgenx.anilib.common.ui.icons.appicon.IcLibraryBooks
 import com.revolgenx.anilib.common.ui.icons.appicon.IcLink
 import com.revolgenx.anilib.common.ui.icons.appicon.IcList
@@ -119,13 +120,12 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcWatch
 import com.revolgenx.anilib.common.ui.icons.appicon.IcWatching
 import com.revolgenx.anilib.common.ui.icons.appicon.IcWinter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcYoutube
-import kotlin.collections.List as ____KtList
 
 object AppIcons
 
-private var __AllIcons: ____KtList<ImageVector>? = null
+private var __AllIcons: List<ImageVector>? = null
 
-val AppIcons.AllIcons: ____KtList<ImageVector>
+val AppIcons.AllIcons: List<ImageVector>
     get() {
         if (__AllIcons != null) {
             return __AllIcons!!
@@ -240,14 +240,15 @@ val AppIcons.AllIcons: ____KtList<ImageVector>
             IcQuote,
             IcCode,
             IcPencil,
-            IcGithub
+            IcGithub,
+            IcLayoutStyle
         )
         return __AllIcons!!
     }
 
 
 @OptIn(ExperimentalLayoutApi::class)
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun AppIconPreview() {
     FlowRow {

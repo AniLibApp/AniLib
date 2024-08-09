@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.list.ui.model
 
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.MediaListCollectionQuery
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
@@ -54,6 +56,7 @@ fun MediaListCollectionQuery.Data.toModel(field: MediaListCollectionField): Medi
                                 entryModel.copy(
                                     userId = userModel?.id ?: -1,
                                     user = userModel,
+                                    progressState = mutableStateOf(entryModel.progress),
                                     media = entry.media?.media?.toModel()?.copy(
                                         synonyms = entry.media.synonyms?.filterNotNull(),
                                         currentEpisode = entry.media.nextAiringEpisode?.episode?.minus(1)

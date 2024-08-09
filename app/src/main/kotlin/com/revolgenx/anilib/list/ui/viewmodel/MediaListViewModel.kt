@@ -7,12 +7,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
 import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.GeneralPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.MediaListFilterDataStore
-import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
+import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
+import com.revolgenx.anilib.entry.data.service.MediaListEntryService
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.service.MediaListService
@@ -20,12 +23,16 @@ import com.revolgenx.anilib.list.data.sort.MediaListCollectionSortComparator
 import com.revolgenx.anilib.list.ui.model.MediaListCollectionModel
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 abstract class MediaListViewModel(
     private val mediaListService: MediaListService,
+    private val mediaListEntryService: MediaListEntryService,
     private val authPreferencesDataStore: AuthPreferencesDataStore,
-    private val mediaListDataStore: MediaListFilterDataStore
+    private val mediaListDataStore: MediaListFilterDataStore,
+    private val generalPreferencesDataStore: GeneralPreferencesDataStore
 ) :
     ResourceViewModel<MediaListCollectionModel, MediaListCollectionField>() {
 
@@ -35,6 +42,7 @@ abstract class MediaListViewModel(
     private var loggedInUserId = authPreferencesDataStore.userId.get()
     private val isLoggedInUser get() = field.userId == loggedInUserId
 
+    val openMediaListEntryEditor get() = generalPreferencesDataStore.openMediaListEntryEditorOnClick
 
     var filter: MediaListCollectionFilter? by mutableStateOf(null)
     var mediaListCollection = mutableStateListOf<MediaListModel>()
@@ -200,5 +208,25 @@ abstract class MediaListViewModel(
             this@MediaListViewModel.filter = filter
             onFilterUpdate()
         }
+    }
+
+    fun increaseProgress(mediaList: MediaListModel) {
+        val oldProgress = mediaList.progress
+        val newProgress = (oldProgress ?: 0) + 1
+        val episodesOrChapters = mediaList.media?.totalEpisodesOrChapters
+
+        if (episodesOrChapters != null && newProgress > episodesOrChapters) return
+
+        val progressSaveField = SaveMediaListEntryField().also {
+            it.id = mediaList.id
+            it.progress = newProgress
+        }
+        mediaListEntryService.saveMediaListEntry(progressSaveField)
+            .onEach {
+                mediaList.progress = it?.progress
+                mediaList.progressState?.value = it?.progress
+            }.catch {
+                saveFailed(it)
+            }.launchIn(viewModelScope)
     }
 }

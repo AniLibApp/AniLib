@@ -19,6 +19,7 @@ import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,11 +38,9 @@ import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.RegularText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
-import com.revolgenx.anilib.common.ui.icons.appicon.IcHappy
-import com.revolgenx.anilib.common.ui.icons.appicon.IcNeutral
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPlus
-import com.revolgenx.anilib.common.ui.icons.appicon.IcSad
-import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
+import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.OnLongClick
 import com.revolgenx.anilib.list.ui.model.MediaListModel
 import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
 import com.revolgenx.anilib.media.ui.component.MediaStatsBadge
@@ -49,22 +48,22 @@ import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
-import com.revolgenx.anilib.type.ScoreFormat
 
 @Composable
-fun MediaListRowCard(list: MediaListModel) {
+fun MediaListRowCard(
+    list: MediaListModel,
+    increaseProgress: OnClick,
+    onLongClick: OnLongClick,
+    onClick: OnClick,
+) {
     val media = list.media ?: return
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .height(166.dp),
-        onClick = {
-
-        },
-        onLongClick = {
-
-        }
+            .height(160.dp),
+        onClick = onClick,
+        onLongClick = onLongClick
     ) {
         Row {
             Box {
@@ -97,29 +96,15 @@ fun MediaListRowCard(list: MediaListModel) {
                 verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    MediaTitleType { type ->
-                        MediumText(
-                            modifier = Modifier.weight(1f),
-                            text = media.title?.title(type).naText(),
-                            fontSize = 16.sp,
-                            lineHeight = 20.sp,
-                        )
-                    }
 
-                    Box(modifier = Modifier.clickable {  /*TODO*/ }) {
-                        Icon(
-                            modifier = Modifier
-                                .padding(3.dp)
-                                .size(20.dp),
-                            imageVector = AppIcons.IcPlus,
-                            contentDescription = null
-                        )
-                    }
+                MediaTitleType { type ->
+                    MediumText(
+                        text = media.title?.title(type).naText(),
+                        fontSize = 16.sp,
+                        lineHeight = 20.sp,
+                    )
                 }
+
 
                 Row(
                     modifier = Modifier.padding(PaddingValues(vertical = 2.dp)),
@@ -142,15 +127,15 @@ fun MediaListRowCard(list: MediaListModel) {
                     RegularText(
                         stringResource(id = media.format.toStringRes()),
                         color = MaterialTheme.colorScheme.primary,
-                        fontSize = 12.sp,
+                        fontSize = 11.sp,
                     )
 
-                    RegularText(text = "~")
+                    RegularText(text = "~", fontSize = 11.sp)
 
                     RegularText(
                         stringResource(id = media.status.toStringRes()),
                         color = media.status.toColor(),
-                        fontSize = 12.sp,
+                        fontSize = 11.sp,
                     )
                 }
 
@@ -159,56 +144,11 @@ fun MediaListRowCard(list: MediaListModel) {
                     text = "${media.startDate?.toString().naText()} ~ ${
                         media.endDate?.toString().naText()
                     }",
-                    fontSize = 12.sp,
+                    fontSize = 11.sp,
                 )
 
 
-                val scoreFormat = list.user?.mediaListOptions?.scoreFormat
-                val score = list.score?.takeIf { it != 0.0 }
-
-                score?.let {
-                    val userScore = score.let {
-                        when (scoreFormat) {
-                            ScoreFormat.POINT_10_DECIMAL -> it.toString()
-                            ScoreFormat.POINT_3 -> ""
-                            else -> it.toInt().toString()
-                        }
-                    }
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        RegularText(
-                            stringResource(id = anilib.i18n.R.string.score_s).format(
-                                userScore
-                            ),
-                            fontSize = 12.sp,
-                        )
-
-                        val scoreIcon = when (scoreFormat) {
-                            ScoreFormat.POINT_5 -> {
-                                AppIcons.IcStar
-                            }
-
-                            ScoreFormat.POINT_3 -> {
-                                if (list.isSad) AppIcons.IcSad else if (list.isNeutral) AppIcons.IcNeutral else AppIcons.IcHappy
-                            }
-
-                            else -> {
-                                null
-                            }
-                        }
-                        scoreIcon?.let {
-                            Icon(
-                                modifier = Modifier.size(18.dp),
-                                imageVector = it,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
-
-                    }
-                }
+                MediaListEntryScore(list)
 
 
                 Spacer(modifier = Modifier.weight(1f))
@@ -218,18 +158,7 @@ fun MediaListRowCard(list: MediaListModel) {
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    val progressBehind = list.progress?.let { progress ->
-                        media.currentEpisode?.minus(progress)
-                    }?.takeIf { it > 0 }
-
-                    progressBehind?.let {
-                        LightText(
-                            text = pluralStringResource(
-                                id = anilib.i18n.R.plurals.s_episodes_behind,
-                                progressBehind
-                            ).format(progressBehind)
-                        )
-                    }
+                    MediaListEntryProgressBehind(list = list)
 
                     Spacer(
                         modifier = Modifier
@@ -237,21 +166,27 @@ fun MediaListRowCard(list: MediaListModel) {
                             .weight(1f)
                     )
                     RegularText(
-                        text = "${list.progress.naText()} / ${media.totalEpisodesOrChapters.naText()}",
+                        text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
                         fontSize = 13.sp
                     )
 
+
+                    Box(modifier = Modifier.clickable {
+                        increaseProgress()
+                    }) {
+                        Icon(
+                            modifier = Modifier
+                                .padding(3.dp)
+                                .size(20.dp),
+                            imageVector = AppIcons.IcPlus,
+                            contentDescription = null
+                        )
+                    }
+
                 }
 
-                val progress = remember {
-                    list.progress?.toFloat()
-                        ?.div(media.totalEpisodesOrChapters?.takeIf { it != 0 }?.toFloat() ?: 1f)
-                }
-                LinearProgressIndicator(
-                    modifier = Modifier.fillMaxWidth(),
-                    progress = { progress ?: 0f },
-                    trackColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+
+                MediaListEntryLinearProgressIndicator(list = list)
             }
         }
     }
@@ -264,7 +199,10 @@ private fun MediaListRowCardPreview() {
     MaterialTheme {
         Surface {
             MediaListRowCard(
-                list = MediaListModel(media = MediaModel())
+                list = MediaListModel(media = MediaModel()),
+                onClick = {},
+                onLongClick = {},
+                increaseProgress = {}
             )
         }
     }

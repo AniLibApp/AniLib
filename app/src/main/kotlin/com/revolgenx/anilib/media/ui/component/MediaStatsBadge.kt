@@ -11,7 +11,10 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.list.ui.model.toColor
 import com.revolgenx.anilib.list.ui.model.toImageVector
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -19,7 +22,9 @@ import com.revolgenx.anilib.media.ui.model.MediaModel
 @Composable
 fun MediaStatsBadge(
     modifier: Modifier = Modifier,
-    media: MediaModel
+    media: MediaModel,
+    iconSize: Dp = 15.dp,
+    fontSize: TextUnit = 12.sp
 ) {
     if (media.averageScore == null && media.mediaListEntry == null) return
     Surface(
@@ -34,12 +39,12 @@ fun MediaStatsBadge(
             verticalAlignment = Alignment.CenterVertically
         ) {
             media.averageScore?.let { score ->
-                MediaScore(score = score)
+                MediaScore(score = score, iconSize = iconSize, fontSize = fontSize)
             }
 
             media.mediaListEntry?.let {
                 Icon(
-                    modifier = Modifier.size(15.dp),
+                    modifier = Modifier.size(iconSize),
                     imageVector = it.status.value.toImageVector(),
                     tint = it.status.value.toColor(),
                     contentDescription = null

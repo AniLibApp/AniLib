@@ -561,5 +561,8 @@
     <string name="refresh_interval">Refresh Interval</string>
     <string name="notification_refresh_interval">Notification Refresh Interval</string>
     <string name="score_s">Score: %1$s</string>
+    <string name="list_compact">List Compact</string>
+    <string name="grid">Grid</string>
+    <string name="grid_compact">Grid Compact</string>
 
 </resources>

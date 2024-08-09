@@ -36,6 +36,9 @@ import androidx.compose.ui.unit.dp
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.topWindowInsets
+import com.revolgenx.anilib.common.ui.component.action.ActionMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.chip.ClearAssistChip
@@ -44,6 +47,8 @@ import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcLayoutStyle
+import com.revolgenx.anilib.common.ui.icons.appicon.IcList
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
@@ -135,6 +140,26 @@ private fun MediaListScreenContent(
                                             imageVector = AppIcons.IcCancel,
                                             contentDescription = stringResource(id = I18nR.string.clear)
                                         )
+                                    }
+                                }
+
+                                OverflowMenu(
+                                    icon = AppIcons.IcLayoutStyle
+                                ) {
+                                    OverflowMenuItem(textRes = anilib.i18n.R.string.list) {
+
+                                    }
+
+                                    OverflowMenuItem(textRes = anilib.i18n.R.string.list_compact) {
+
+                                    }
+
+                                    OverflowMenuItem(textRes = anilib.i18n.R.string.grid) {
+
+                                    }
+
+                                    OverflowMenuItem(textRes = anilib.i18n.R.string.grid_compact) {
+
                                     }
                                 }
                                 IconButton(onClick = {

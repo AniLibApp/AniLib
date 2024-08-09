@@ -144,7 +144,7 @@ fun componentActivity() = localContext().componentActivity()
 fun <T> Flow<T>.get() = runBlocking { first() }
 fun <T> DataStore<T>.get() = data.get()
 
-fun SnackbarHostState.showLoginMsg(context: Context,scope: CoroutineScope){
+fun SnackbarHostState.showLoginMsg(context: Context, scope: CoroutineScope){
     scope.launch {
         showSnackbar(message = context.getString(anilib.i18n.R.string.please_log_in))
     }
