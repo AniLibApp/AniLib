@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.exception.ApolloException
-import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.tuples.MutablePair
 import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
@@ -26,14 +26,14 @@ import kotlin.math.roundToInt
 
 class MediaListEntryEditorViewModel(
     private val mediaListEntryService: MediaListEntryService,
-    private val authPreferencesDataStore: AuthPreferencesDataStore,
+    private val appPreferencesDataStore: AppPreferencesDataStore,
     private val mediaListEntryEventStore: MediaListEntryEventStore
 ) :
     ResourceViewModel<UserMediaModel, MediaListEntryField>() {
 
 
     override val field: MediaListEntryField = MediaListEntryField().also {
-        it.userId = authPreferencesDataStore.userId.get()
+        it.userId = appPreferencesDataStore.userId.get()
     }
 
     val saveField = SaveMediaListEntryField()

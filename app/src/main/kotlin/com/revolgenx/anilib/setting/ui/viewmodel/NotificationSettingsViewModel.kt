@@ -3,9 +3,7 @@ package com.revolgenx.anilib.setting.ui.viewmodel
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.revolgenx.anilib.common.data.state.ResourceState
-import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
-import com.revolgenx.anilib.common.data.store.GeneralPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.setting.data.field.NotificationSettingsField
 import com.revolgenx.anilib.setting.data.field.SaveNotificationSettingsField
@@ -18,12 +16,12 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 
 class NotificationSettingsViewModel(
-    authPreferencesDataStore: AuthPreferencesDataStore,
-    val generalPreferencesDataStore: GeneralPreferencesDataStore,
+    appPreferencesDataStore: AppPreferencesDataStore,
+    val generalPreferencesDataStore: AppPreferencesDataStore,
     private val settingsService: SettingsService
 ) : ResourceViewModel<Map<NotificationType, MutableState<Boolean>>, NotificationSettingsField>(){
     override val field: NotificationSettingsField = NotificationSettingsField().also {
-        it.userId = authPreferencesDataStore.userId.get()
+        it.userId = appPreferencesDataStore.userId.get()
     }
 
     init {

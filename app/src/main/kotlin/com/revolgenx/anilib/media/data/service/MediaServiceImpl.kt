@@ -7,6 +7,7 @@ import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.data.service.ToggleService
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.model.toModel
 import com.revolgenx.anilib.media.data.field.MediaCharacterField
@@ -22,7 +23,6 @@ import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
 import com.revolgenx.anilib.staff.ui.model.toModel
 import com.revolgenx.anilib.type.MediaType
@@ -31,10 +31,10 @@ import kotlinx.coroutines.flow.map
 
 class MediaServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore,
+    appPreferencesDataStore: AppPreferencesDataStore,
     private val toggleService: ToggleService
 ) :
-    MediaService, BaseService(apolloRepository, mediaSettingsPreferencesDataStore) {
+    MediaService, BaseService(apolloRepository, appPreferencesDataStore) {
     override fun getMediaList(field: MediaField): Flow<PageModel<MediaModel>> =
         field.toQuery().map {
             it.dataAssertNoErrors.page.let {

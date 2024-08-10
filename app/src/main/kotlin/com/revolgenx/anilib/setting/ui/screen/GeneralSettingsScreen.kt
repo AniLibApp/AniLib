@@ -10,12 +10,10 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.res.stringResource
 import androidx.core.os.LocaleListCompat
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.util.getDisplayName
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
-import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import com.revolgenx.anilib.setting.ui.viewmodel.GeneralSettingsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -30,7 +28,7 @@ object GeneralSettingsScreen : PreferencesScreen() {
         val scope = rememberCoroutineScope()
         val viewModel: GeneralSettingsViewModel = koinViewModel()
 
-        val appDataStore = viewModel.generalPreferencesDataStore
+        val appDataStore = viewModel.appPreferencesDataStore
         val langs = remember { getLangs(context) }
 
         val currentLanguage = remember {

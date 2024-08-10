@@ -11,7 +11,7 @@ import com.revolgenx.anilib.browse.data.field.BrowseTypes
 import com.revolgenx.anilib.browse.data.service.BrowseService
 import com.revolgenx.anilib.browse.data.source.BrowsePagingSource
 import com.revolgenx.anilib.browse.data.store.BrowseFilterData
-import com.revolgenx.anilib.browse.data.store.BrowsePreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.model.BaseModel
@@ -19,7 +19,7 @@ import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 
 class BrowseViewModel(
     private val browseService: BrowseService,
-    private val browsePreferencesDataStore: BrowsePreferencesDataStore
+    private val appPreferencesDataStore: AppPreferencesDataStore
 ) :
     PagingViewModel<BaseModel, BrowseField, BrowsePagingSource>() {
 
@@ -55,7 +55,7 @@ class BrowseViewModel(
 
     init {
         launch {
-            browsePreferencesDataStore.browseHistory.collect {
+            appPreferencesDataStore.browseHistory.collect {
                 searchHistory.value =
                     it!!.takeIf { it.isNotBlank() }?.split(searchSplitKeyword) ?: emptyList()
             }
@@ -76,7 +76,7 @@ class BrowseViewModel(
             history.removeLast()
         }
         launch {
-            browsePreferencesDataStore.browseHistory.set(history.joinToString(searchSplitKeyword))
+            appPreferencesDataStore.browseHistory.set(history.joinToString(searchSplitKeyword))
         }
     }
 
@@ -84,7 +84,7 @@ class BrowseViewModel(
         val history = searchHistory.value.toMutableList()
         history.remove(value)
         launch {
-            browsePreferencesDataStore.browseHistory.set(history.joinToString(searchSplitKeyword))
+            appPreferencesDataStore.browseHistory.set(history.joinToString(searchSplitKeyword))
         }
     }
 

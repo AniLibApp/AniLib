@@ -2,7 +2,7 @@ package com.revolgenx.anilib.common.data.service
 
 import com.revolgenx.anilib.common.data.field.ToggleFavoriteField
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
-import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.social.data.field.ToggleActivitySubscriptionField
 import com.revolgenx.anilib.social.data.field.ToggleLikeV2Field
 import com.revolgenx.anilib.social.ui.model.LikeableUnionModel
@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.map
 
 class ToggleServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
-) : ToggleService, BaseService(apolloRepository, mediaSettingsPreferencesDataStore) {
+    appPreferencesDataStore: AppPreferencesDataStore
+) : ToggleService, BaseService(apolloRepository, appPreferencesDataStore) {
 
     override fun toggleLikeV2(field: ToggleLikeV2Field): Flow<LikeableUnionModel?> {
         return field.toMutation().map {

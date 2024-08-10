@@ -35,6 +35,7 @@ import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
+import com.revolgenx.anilib.common.ui.component.chip.ClearAssistChip
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -196,15 +197,12 @@ fun MediaListCommonContent(
                     onQueryChange = { viewModel.search = it },
                     onSearch = {
                         active = false
+                        viewModel.updateSearchHistory()
                         viewModel.searchNow()
                     },
                     active = active,
                     onActiveChange = {
-                        active = if (it && viewModel.searchHistory.isNotEmpty()) {
-                            it
-                        } else {
-                            false
-                        }
+                        active = it
                     },
                     placeholder = { Text(text = stringResource(id = I18nR.string.search)) },
                     trailingIcon = {
@@ -221,24 +219,24 @@ fun MediaListCommonContent(
                         }
                     }
                 ) {
-                    AssistChip(
-                        onClick = {
-                            viewModel.search = "hello"
-                            viewModel.searchNow()
-                        },
-                        label = { Text(text = "hello") },
-                        colors = AssistChipDefaults.assistChipColors(leadingIconContentColor = MaterialTheme.colorScheme.onSurface),
-                        trailingIcon = {
-                            Icon(
-                                modifier = Modifier
-                                    .size(20.dp)
-                                    .clickable {
-
-                                    },
-                                imageVector = AppIcons.IcCancel,
-                                contentDescription = stringResource(id = I18nR.string.clear)
-                            )
+                    val searchHistory = viewModel.searchHistory.value
+                    if (searchHistory.isEmpty()) {
+                        AssistChip(onClick = {}, label = {
+                            Text(text = stringResource(id = anilib.i18n.R.string.empty))
                         })
+                    } else {
+                        searchHistory.forEach { search ->
+                            ClearAssistChip(
+                                text = search,
+                                onClick = {
+                                    viewModel.search = search
+                                    viewModel.searchNow()
+                                }, onClear = {
+                                    viewModel.deleteSearchHistory(search)
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }

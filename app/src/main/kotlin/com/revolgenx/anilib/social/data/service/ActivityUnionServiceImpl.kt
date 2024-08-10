@@ -6,7 +6,7 @@ import com.revolgenx.anilib.DeleteActivityReplyMutation
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
-import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.social.data.field.ActivityReplyField
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.data.field.SaveActivityReplyField
@@ -20,8 +20,8 @@ import kotlinx.coroutines.flow.map
 
 class ActivityUnionServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
-) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
+    appPreferencesDataStore: AppPreferencesDataStore
+) : BaseService(apolloRepository, appPreferencesDataStore),
     ActivityUnionService {
     override fun getActivityUnion(field: ActivityUnionField): Flow<PageModel<ActivityModel>> {
         return field.toQuery().map {

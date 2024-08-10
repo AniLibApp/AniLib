@@ -34,11 +34,14 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.common.data.store.MediaListDisplayMode
+import com.revolgenx.anilib.common.data.store.toStringRes
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
+import com.revolgenx.anilib.common.ui.component.action.OverflowRadioMenuItem
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.chip.ClearAssistChip
@@ -116,6 +119,7 @@ private fun MediaListScreenContent(
                         onQueryChange = { viewModel.search = it },
                         onSearch = {
                             active = false
+                            viewModel.updateSearchHistory()
                             viewModel.searchNow()
                         },
                         active = active,
@@ -143,23 +147,22 @@ private fun MediaListScreenContent(
                                     }
                                 }
 
+                                val displayModePref = viewModel.displayMode
+                                val displayMode = displayModePref.collectAsState()
+
                                 OverflowMenu(
                                     icon = AppIcons.IcLayoutStyle
-                                ) {
-                                    OverflowMenuItem(textRes = anilib.i18n.R.string.list) {
-
-                                    }
-
-                                    OverflowMenuItem(textRes = anilib.i18n.R.string.list_compact) {
-
-                                    }
-
-                                    OverflowMenuItem(textRes = anilib.i18n.R.string.grid) {
-
-                                    }
-
-                                    OverflowMenuItem(textRes = anilib.i18n.R.string.grid_compact) {
-
+                                ) { isOpen ->
+                                    MediaListDisplayMode.entries.forEach {
+                                        OverflowRadioMenuItem(
+                                            text = stringResource(id = it.toStringRes()),
+                                            selected = displayMode.value == it.value
+                                        ) {
+                                            isOpen.value = false
+                                            scope.launch {
+                                                displayModePref.set(it.value)
+                                            }
+                                        }
                                     }
                                 }
                                 IconButton(onClick = {
@@ -178,14 +181,23 @@ private fun MediaListScreenContent(
                             }
                         }
                     ) {
-                        ClearAssistChip(
-                            text = "hello",
-                            onClear = {
-
+                        val searchHistory = viewModel.searchHistory.value
+                        if (searchHistory.isEmpty()) {
+                            AssistChip(onClick = {}, label = {
+                                Text(text = stringResource(id = anilib.i18n.R.string.empty))
+                            })
+                        } else {
+                            searchHistory.forEach { search ->
+                                ClearAssistChip(
+                                    text = search,
+                                    onClick = {
+                                        viewModel.search = search
+                                        viewModel.searchNow()
+                                    }, onClear = {
+                                        viewModel.deleteSearchHistory(search)
+                                    }
+                                )
                             }
-                        ) {
-                            viewModel.search = "hello"
-                            viewModel.searchNow()
                         }
                     }
                 }

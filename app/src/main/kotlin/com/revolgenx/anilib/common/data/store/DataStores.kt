@@ -123,9 +123,8 @@ val Context.activityUnionFilterDataStore by dataStore(
     fileName = "activity_union_filter_data_store.json",
     serializer = ActivityUnionFilterDataSerializer()
 )
-typealias PreferencesDataStore = DataStore<Preferences>
 
-val Context.preferencesDataStore: PreferencesDataStore by preferencesDataStore(name = "preferences_data_store.json")
+val Context.preferencesDataStore: DataStore<Preferences> by preferencesDataStore(name = "preferences_data_store.json")
 
 val Context.themeDataStore: DataStore<ThemeData>
     get() {

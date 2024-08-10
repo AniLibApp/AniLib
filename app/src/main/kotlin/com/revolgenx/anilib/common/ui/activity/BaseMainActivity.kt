@@ -37,7 +37,7 @@ import com.revolgenx.anilib.common.data.event.OpenSpoilerEvent
 import com.revolgenx.anilib.common.data.event.OpenUserScreenEvent
 import com.revolgenx.anilib.common.data.event.registerForEvent
 import com.revolgenx.anilib.common.data.event.unRegisterForEvent
-import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.imageViewerScreen
@@ -57,7 +57,7 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
     protected val viewModel by viewModel<MainActivityViewModel>()
     protected var navigator: Navigator? = null
     private val themeDataStore: ThemeDataStore by inject()
-    private val authDataStore: AuthPreferencesDataStore by inject()
+    private val authDataStore: AppPreferencesDataStore by inject()
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)

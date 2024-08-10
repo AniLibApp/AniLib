@@ -5,9 +5,9 @@ import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.data.service.ToggleService
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.studio.data.field.StudioField
 import com.revolgenx.anilib.studio.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
@@ -15,9 +15,9 @@ import kotlinx.coroutines.flow.map
 
 class StudioServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore,
+    appPreferencesDataStore: AppPreferencesDataStore,
     private val toggleService: ToggleService
-) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
+) : BaseService(apolloRepository, appPreferencesDataStore),
     StudioService {
     override fun getStudioMedia(field: StudioField): Flow<PageModel<MediaModel>> {
         return field.toQuery().map {

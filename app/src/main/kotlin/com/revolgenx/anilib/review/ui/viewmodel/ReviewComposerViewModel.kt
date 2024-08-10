@@ -11,7 +11,7 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.exception.ApolloException
 import com.apollographql.apollo3.exception.ApolloHttpException
-import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.field.SaveReviewField
@@ -26,10 +26,10 @@ import kotlinx.coroutines.flow.onEach
 
 class ReviewComposerViewModel(
     private val reviewService: ReviewService,
-    authPreferencesDataStore: AuthPreferencesDataStore
+    appPreferencesDataStore: AppPreferencesDataStore
 ) : ResourceViewModel<ReviewModel, ReviewField>() {
     override val field: ReviewField = ReviewField(
-        userId = authPreferencesDataStore.userId.get()
+        userId = appPreferencesDataStore.userId.get()
     )
 
     var reviewId by mutableIntStateOf(-1)

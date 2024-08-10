@@ -16,7 +16,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ScaffoldDefaults
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -32,7 +31,6 @@ import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.openLink
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
@@ -283,7 +281,7 @@ fun SettingScreenContent(isTab: Boolean) {
             title = stringResource(id = I18nR.string.logout)
         ) {
             scope.launch {
-                viewModel.authPreferencesDataStore.logout()
+                viewModel.appPreferencesDataStore.logout()
                 context.startActivity(Intent(context, MainActivity::class.java).apply {
                     flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 })

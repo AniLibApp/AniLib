@@ -2,7 +2,7 @@ package com.revolgenx.anilib.media.ui.viewmodel
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
-import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -48,7 +48,7 @@ private typealias MediaScreenPage = PagerScreen<MediaScreenPageType>
 class MediaViewModel(
     private val mediaService: MediaService,
     private val mediaListEntryService: MediaListEntryService,
-    private val authPreferencesDataStore: AuthPreferencesDataStore,
+    private val appPreferencesDataStore: AppPreferencesDataStore,
     private val mediaListEntryEventStore: MediaListEntryEventStore
 ) :
     ResourceViewModel<MediaModel, MediaOverviewField>() {
@@ -95,7 +95,7 @@ class MediaViewModel(
 
     init {
         launch {
-            authPreferencesDataStore.isLoggedIn.collect {
+            appPreferencesDataStore.isLoggedIn.collect {
                 socialPage.isVisible.value = it
             }
         }

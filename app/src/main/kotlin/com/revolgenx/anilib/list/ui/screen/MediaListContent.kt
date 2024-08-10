@@ -16,6 +16,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -29,6 +30,7 @@ import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
+import com.revolgenx.anilib.common.data.store.MediaListDisplayMode
 import com.revolgenx.anilib.common.data.tuples.to
 import com.revolgenx.anilib.common.ext.hideBottomSheet
 import com.revolgenx.anilib.common.ext.localContext
@@ -113,10 +115,19 @@ fun MediaListContent(
             ) {
                 val openEditorScreen = viewModel.openMediaListEntryEditor.collectAsState()
                 val isLoggedIn = localUser().isLoggedIn
+                val displayModeState = viewModel.displayMode.collectAsState()
+                val displayMode = MediaListDisplayMode.fromValue(displayModeState.value!!)
+                val gridOptions = when (displayMode) {
+                    MediaListDisplayMode.GRID, MediaListDisplayMode.GRID_COMPACT -> {
+                        GridOptions(GridCells.Adaptive(168.dp))
+                    }
+
+                    else -> null
+                }
                 LazyPagingList(
                     items = viewModel.mediaListCollection,
-                    type = ListPagingListType.GRID,
-                    gridOptions = GridOptions(GridCells.Adaptive(168.dp/*180.dp*/)),
+                    type = if (gridOptions != null) ListPagingListType.GRID else ListPagingListType.COLUMN,
+                    gridOptions = gridOptions,
                     pullRefresh = true,
                     onRefresh = {
                         viewModel.refresh()
@@ -125,25 +136,31 @@ fun MediaListContent(
                     mediaList ?: return@LazyPagingList
 
                     val openMediaListEditorScreen = {
-                        if(isLoggedIn){
+                        if (isLoggedIn) {
                             navigator.mediaListEntryEditorScreen(mediaId = mediaList.mediaId)
-                        }else{
+                        } else {
                             snackbar.showLoginMsg(context = context, scope = scope)
                         }
                     }
 
-                    val onMediaClick ={
-                        if(openEditorScreen.value== true){
-                           openMediaListEditorScreen()
-                        }else{
-                            navigator.mediaScreen(mediaId = mediaList.mediaId, type = mediaList.media?.type)
+                    val onMediaClick = {
+                        if (openEditorScreen.value == true) {
+                            openMediaListEditorScreen()
+                        } else {
+                            navigator.mediaScreen(
+                                mediaId = mediaList.mediaId,
+                                type = mediaList.media?.type
+                            )
                         }
                     }
 
                     val onMediaLongClick = {
-                        if(openEditorScreen.value == true){
-                            navigator.mediaScreen(mediaId = mediaList.mediaId, type = mediaList.media?.type)
-                        }else{
+                        if (openEditorScreen.value == true) {
+                            navigator.mediaScreen(
+                                mediaId = mediaList.mediaId,
+                                type = mediaList.media?.type
+                            )
+                        } else {
                             openMediaListEditorScreen()
                         }
                     }
@@ -152,34 +169,45 @@ fun MediaListContent(
                         viewModel.increaseProgress(mediaList)
                     }
 
-//                    MediaListRowCard(
-//                        list = mediaList,
-//                        increaseProgress = increaseProgress,
-//                        onClick = onMediaClick,
-//                        onLongClick = onMediaLongClick
-//                    )
+                    when (displayMode) {
+                        MediaListDisplayMode.LIST -> {
+                            MediaListRowCard(
+                                list = mediaList,
+                                increaseProgress = increaseProgress,
+                                onClick = onMediaClick,
+                                onLongClick = onMediaLongClick
+                            )
+                        }
 
-//                    MediaListSmallRowCard(
-//                        list = mediaList,
-//                        increaseProgress = increaseProgress,
-//                        onClick = onMediaClick,
-//                        onLongClick = onMediaLongClick
-//                    )
+                        MediaListDisplayMode.LIST_COMPACT -> {
+                            MediaListSmallRowCard(
+                                list = mediaList,
+                                increaseProgress = increaseProgress,
+                                onClick = onMediaClick,
+                                onLongClick = onMediaLongClick
+                            )
+                        }
 
-//                    MediaListColumnCard(
-//                        list = mediaList,
-//                        increaseProgress = increaseProgress,
-//                        onClick = onMediaClick,
-//                        onLongClick = onMediaLongClick
-//                    )
+                        MediaListDisplayMode.GRID -> {
+                            MediaListColumnCard(
+                                list = mediaList,
+                                increaseProgress = increaseProgress,
+                                onClick = onMediaClick,
+                                onLongClick = onMediaLongClick
+                            )
+                        }
 
-                    MediaListCompactColumnCard(
-                        list = mediaList,
-                        increaseProgress = increaseProgress,
-                        onClick = onMediaClick,
-                        onLongClick = onMediaLongClick
+                        MediaListDisplayMode.GRID_COMPACT -> {
+                            MediaListCompactColumnCard(
+                                list = mediaList,
+                                increaseProgress = increaseProgress,
+                                onClick = onMediaClick,
+                                onLongClick = onMediaLongClick
+                            )
+                        }
+                    }
 
-                    )
+
                 }
             }
 

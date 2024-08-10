@@ -1,12 +1,10 @@
 package com.revolgenx.anilib.common.data.store
 
 import android.content.Context
-import com.revolgenx.anilib.browse.data.store.BrowsePreferencesDataStore
 import com.revolgenx.anilib.common.data.store.theme.CustomThemeDataStore
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.list.data.store.MediaListEntryEventStore
 import com.revolgenx.anilib.notification.data.store.NotificationDataStore
-import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
@@ -17,10 +15,7 @@ val storeModules = module {
     single(named("theme_data_store")) { androidContext().themeDataStore }
     single { ThemeDataStore(get(named("theme_data_store"))) }
     single { CustomThemeDataStore(androidContext().customThemeDataStore(get(named("theme_data_store")))) }
-    single { GeneralPreferencesDataStore(get()) }
-    single { AuthPreferencesDataStore(get()) }
-    single { MediaSettingsPreferencesDataStore(get()) }
-    single { BrowsePreferencesDataStore(get()) }
+    single { AppPreferencesDataStore(get()) }
     single { MediaListEntryEventStore() }
     single { NotificationDataStore(get()) }
 }

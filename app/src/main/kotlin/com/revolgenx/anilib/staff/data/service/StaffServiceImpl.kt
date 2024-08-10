@@ -8,10 +8,10 @@ import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.data.service.ToggleService
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.fragment.PageInfo
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.staff.data.field.StaffField
 import com.revolgenx.anilib.staff.data.field.StaffMediaCharacterField
 import com.revolgenx.anilib.staff.data.field.StaffMediaRoleField
@@ -22,10 +22,10 @@ import kotlinx.coroutines.flow.map
 
 class StaffServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore,
+    appPreferencesDataStore: AppPreferencesDataStore,
     private val toggleService: ToggleService
 ) : StaffService,
-    BaseService(apolloRepository, mediaSettingsPreferencesDataStore) {
+    BaseService(apolloRepository, appPreferencesDataStore) {
     override fun getStaff(field: StaffField): Flow<StaffModel?> {
         return field.toQuery().map { it.dataAssertNoErrors.staff?.toModel() }
             

@@ -226,8 +226,8 @@ val viewModelModules = module {
     viewModel { MediaListEntryEditorViewModel(get(), get(), get()) }
 
     //list
-    viewModel { AnimeListViewModel(get(), get(), get(), animeListFilterDataStore(), get()) }
-    viewModel { MangaListViewModel(get(), get(), get(), mangaListFilterDataStore(), get()) }
+    viewModel { AnimeListViewModel(get(), get(), get(), animeListFilterDataStore()) }
+    viewModel { MangaListViewModel(get(), get(), get(), mangaListFilterDataStore()) }
     viewModel { AnimeListFilterViewModel() }
     viewModel { MangaListFilterViewModel() }
 

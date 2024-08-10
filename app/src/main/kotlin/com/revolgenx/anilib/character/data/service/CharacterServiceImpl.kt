@@ -10,9 +10,9 @@ import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.data.service.ToggleService
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.StaffNameModel
 import com.revolgenx.anilib.staff.ui.model.toModel
@@ -21,9 +21,9 @@ import kotlinx.coroutines.flow.map
 
 class CharacterServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore,
+    appPreferencesDataStore: AppPreferencesDataStore,
     private val toggleService: ToggleService
-) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore),
+) : BaseService(apolloRepository, appPreferencesDataStore),
     CharacterService {
 
     override fun getCharacter(field: CharacterField): Flow<CharacterModel?> {

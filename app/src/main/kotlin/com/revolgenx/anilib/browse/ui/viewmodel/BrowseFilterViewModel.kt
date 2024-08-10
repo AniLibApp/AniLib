@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.revolgenx.anilib.browse.data.field.BrowseField
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.BrowseFilterDataStore
 import com.revolgenx.anilib.common.data.store.GenreCollectionDataStore
 import com.revolgenx.anilib.common.data.store.MediaTagCollectionDataStore
@@ -17,7 +18,6 @@ import com.revolgenx.anilib.common.ui.component.menu.SelectType
 import com.revolgenx.anilib.common.ui.viewmodel.BaseViewModel
 import com.revolgenx.anilib.media.ui.model.MediaExternalLinkModel
 import com.revolgenx.anilib.media.ui.model.MediaTagModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import kotlinx.coroutines.flow.first
 
 class BrowseFilterViewModel(
@@ -26,13 +26,13 @@ class BrowseFilterViewModel(
     streamingOnCollectionDataStore: StreamingOnCollectionDataStore,
     readableOnCollectionDataStore: ReadableOnCollectionDataStore,
     private val browseFilterDataStore: BrowseFilterDataStore,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
+    appPreferencesDataStore: AppPreferencesDataStore
 ) : BaseViewModel<BrowseField>() {
 
     override var field: BrowseField by mutableStateOf(BrowseField())
 
     val canShowAdultContent =
-        mutableStateOf(mediaSettingsPreferencesDataStore.displayAdultContent.get())
+        mutableStateOf(appPreferencesDataStore.displayAdultContent.get())
     val selectStreamingOnCollections =
         mutableStateOf(emptyList<MultiSelectModel<MediaExternalLinkModel>>())
     val selectReadableOnCollections =
@@ -50,7 +50,7 @@ class BrowseFilterViewModel(
 
     init {
         launch {
-            mediaSettingsPreferencesDataStore.displayAdultContent.data.collect { canShowAdult ->
+            appPreferencesDataStore.displayAdultContent.data.collect { canShowAdult ->
                 canShowAdultContent.value = canShowAdult
 
                 launch {

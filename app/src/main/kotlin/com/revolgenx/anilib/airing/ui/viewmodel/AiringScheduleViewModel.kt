@@ -7,7 +7,7 @@ import com.revolgenx.anilib.airing.data.field.AiringScheduleField
 import com.revolgenx.anilib.airing.data.service.AiringScheduleService
 import com.revolgenx.anilib.airing.data.source.AiringSchedulePagingSource
 import com.revolgenx.anilib.common.data.store.AiringScheduleFilterDataStore
-import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.model.BaseModel
@@ -23,7 +23,7 @@ import java.util.Locale
 open class AiringScheduleViewModel(
     private val service: AiringScheduleService,
     private val airingScheduleFilterDataStore: AiringScheduleFilterDataStore,
-    private val authPreferencesDataStore: AuthPreferencesDataStore
+    private val authPreferencesDataStore: AppPreferencesDataStore
 ) :
     PagingViewModel<BaseModel, AiringScheduleField, AiringSchedulePagingSource>() {
 

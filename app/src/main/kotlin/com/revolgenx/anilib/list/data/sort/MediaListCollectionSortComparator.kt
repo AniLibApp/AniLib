@@ -2,20 +2,23 @@ package com.revolgenx.anilib.list.data.sort
 
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.list.ui.model.MediaListModel
+import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 
-class MediaListCollectionSortComparator: Comparator<MediaListModel> {
+class MediaListCollectionSortComparator(
+    @MediaTitleModel.Companion.MediaTitleType var titleType: Int
+): Comparator<MediaListModel> {
     var type: MediaListSortType = MediaListSortType.TITLE
     override fun compare(item1: MediaListModel, item2: MediaListModel): Int {
         val media1 = item1.media!!
         val media2 = item2.media!!
         return when (type) {
             MediaListSortType.TITLE -> {
-                media1.title?.userPreferred.orEmpty()
-                    .compareTo(media2.title?.userPreferred.orEmpty())
+                media1.title?.title(titleType).orEmpty()
+                    .compareTo(media2.title?.title(titleType).orEmpty())
             }
             MediaListSortType.TITLE_DESC -> {
-                media2.title?.userPreferred.orEmpty()
-                    .compareTo(media1.title?.userPreferred.orEmpty())
+                media2.title?.title(titleType).orEmpty()
+                    .compareTo(media1.title?.title(titleType).orEmpty())
             }
             MediaListSortType.SCORE -> {
                 (item1.score.orZero()).compareTo(item2.score.orZero())

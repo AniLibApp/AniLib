@@ -4,18 +4,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SnackbarDuration
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import com.revolgenx.anilib.common.data.state.ResourceState
+import com.revolgenx.anilib.common.data.store.activityMergeTimePrefEntry
+import com.revolgenx.anilib.common.data.store.mediaTitlePrefEntry
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -23,11 +21,8 @@ import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSave
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
-import com.revolgenx.anilib.setting.data.store.activityMergeTimePrefEntry
-import com.revolgenx.anilib.setting.data.store.mediaTitlePrefEntry
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
-import com.revolgenx.anilib.setting.ui.model.PreferenceModel
 import com.revolgenx.anilib.setting.ui.viewmodel.MediaSettingsViewModel
 import com.revolgenx.anilib.user.ui.model.getUserTitleLanguage
 import com.revolgenx.anilib.user.ui.model.toMediaTitleType
@@ -58,7 +53,7 @@ object MediaSettingsScreen : AndroidScreen() {
             Column(
                 modifier = Modifier.verticalScroll(rememberScrollState())
             ) {
-                val authDataStore = viewModel.authPreferencesDataStore
+                val authDataStore = viewModel.appPreferencesDataStore
                 val isLoggedIn = authDataStore.isLoggedIn()
 
                 if (isLoggedIn) {

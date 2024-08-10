@@ -256,16 +256,7 @@ fun BrowseScreenTopAppbar(
                         active = it
                     },
                     placeholder = {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(text = stringResource(id = I18nR.string.search))
-                            Icon(
-                                modifier = Modifier.padding(horizontal = 4.dp).size(16.dp),
-                                imageVector = AppIcons.IcSearch,
-                                contentDescription = stringResource(id = I18nR.string.search)
-                            )
-                        }
+                        Text(text = stringResource(id = I18nR.string.search))
                     },
                     leadingIcon = {
                         NavigationIcon()

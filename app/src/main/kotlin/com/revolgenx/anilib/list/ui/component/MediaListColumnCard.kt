@@ -55,7 +55,7 @@ fun MediaListColumnCard(
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .width(180.dp)
+            .width(160.dp)
             .height(270.dp),
         onClick = onClick,
         onLongClick = onLongClick

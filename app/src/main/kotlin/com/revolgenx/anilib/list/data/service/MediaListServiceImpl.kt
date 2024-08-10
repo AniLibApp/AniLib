@@ -2,19 +2,19 @@ package com.revolgenx.anilib.list.data.service
 
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.field.MediaListCollectionIdField
 import com.revolgenx.anilib.list.ui.model.MediaListCollectionModel
 import com.revolgenx.anilib.list.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class MediaListServiceImpl(
     apolloRepository: ApolloRepository,
-    mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore
+    appPreferencesDataStore: AppPreferencesDataStore
 ) : MediaListService,
-    BaseService(apolloRepository, mediaSettingsPreferencesDataStore) {
+    BaseService(apolloRepository, appPreferencesDataStore) {
 
     override fun getMediaListCollectionsIds(field: MediaListCollectionIdField): Flow<List<Int>> {
         return field.toQuery().map {

@@ -3,6 +3,7 @@ package com.revolgenx.anilib.review.data.service
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.review.data.field.DeleteReviewField
 import com.revolgenx.anilib.review.data.field.RateReviewField
@@ -12,12 +13,11 @@ import com.revolgenx.anilib.review.data.field.SaveReviewField
 import com.revolgenx.anilib.review.ui.model.RateReviewModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.model.toModel
-import com.revolgenx.anilib.setting.data.store.MediaSettingsPreferencesDataStore
 import com.revolgenx.anilib.type.ReviewRating
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-class ReviewServiceImpl(apolloRepository: ApolloRepository, mediaSettingsPreferencesDataStore: MediaSettingsPreferencesDataStore) : BaseService(apolloRepository, mediaSettingsPreferencesDataStore), ReviewService {
+class ReviewServiceImpl(apolloRepository: ApolloRepository, appPreferencesDataStore: AppPreferencesDataStore) : BaseService(apolloRepository, appPreferencesDataStore), ReviewService {
     override fun getReviewList(field: ReviewListField): Flow<PageModel<ReviewModel>> {
         return field.toQuery().map {
             it.dataAssertNoErrors.page.let { page ->

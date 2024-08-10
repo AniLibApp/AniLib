@@ -2,14 +2,13 @@ package com.revolgenx.anilib.user.ui.viewmodel
 
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
-import com.revolgenx.anilib.common.data.store.AuthPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.user.data.field.UserField
 import com.revolgenx.anilib.user.data.service.UserService
 import com.revolgenx.anilib.user.ui.model.UserModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 import anilib.i18n.R as I18nR
 
 
@@ -26,13 +25,13 @@ enum class UserScreenPageType {
 
 class UserViewModel(
     private val userService: UserService,
-    val authPreferencesDataStore: AuthPreferencesDataStore
+    val appPreferencesDataStore: AppPreferencesDataStore
 ) :
     ResourceViewModel<UserModel, UserField>() {
     override val field: UserField = UserField()
 
 
-    private var loggedInUserId = authPreferencesDataStore.userId.get()
+    private var loggedInUserId = appPreferencesDataStore.userId.get()
 
     val isLoggedInUser = derivedStateOf {
         userId.value == loggedInUserId
