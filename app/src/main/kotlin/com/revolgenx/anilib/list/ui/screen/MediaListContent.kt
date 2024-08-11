@@ -115,7 +115,11 @@ fun MediaListContent(
             ) {
                 val openEditorScreen = viewModel.openMediaListEntryEditor.collectAsState()
                 val isLoggedIn = localUser().isLoggedIn
-                val displayModeState = viewModel.displayMode.collectAsState()
+                val displayModeState =  if (viewModel.isLoggedInUserList) {
+                    viewModel.displayMode.collectAsState()
+                }else{
+                    viewModel.otherDisplayMode.collectAsState()
+                }
                 val displayMode = MediaListDisplayMode.fromValue(displayModeState.value!!)
                 val gridOptions = when (displayMode) {
                     MediaListDisplayMode.GRID, MediaListDisplayMode.GRID_COMPACT -> {

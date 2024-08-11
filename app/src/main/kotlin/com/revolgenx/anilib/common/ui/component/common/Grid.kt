@@ -59,3 +59,49 @@ fun <T> Grid(
         }
     }
 }
+
+
+@Composable
+fun <T> GridRow(
+    modifier: Modifier = Modifier,
+    items: List<T>,
+    rows: Int = 2,
+    columnSpacing: Dp = 2.dp,
+    rowSpacing: Dp = 2.dp,
+    itemView: @Composable (T) -> Unit,
+) {
+    val columns = items.chunked(rows)
+    val extraSpacings = columns.size.minus(1).times(columnSpacing.value)
+
+    BoxWithConstraints(
+        modifier = modifier,
+        contentAlignment = Alignment.Center
+    ) {
+        val itemHeight = Dp(maxHeight.value.minus(extraSpacings).div(columns.size))
+        Row(
+            modifier = Modifier,
+            horizontalArrangement = Arrangement.spacedBy(columnSpacing),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            columns.forEach { columnItems ->
+                Column(
+                    modifier = Modifier.heightIn(max = itemHeight),
+                    verticalArrangement = Arrangement.spacedBy(rowSpacing),
+                ) {
+                    columnItems.forEach { item ->
+                       itemView(item)
+                    }
+                    // Add a filler column if the row has less columns than the total number of columns
+                    if (columnItems.size < rows) {
+                        repeat(rows - columnItems.size) {
+                            Row(
+                                modifier = Modifier.weight(1f, true),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -23,6 +23,8 @@ abstract class ResourceViewModel<M : Any, F : BaseField<*>> : BaseViewModel<F>()
     open var saveResource by mutableStateOf<ResourceState<Any>?>(null)
     var errorMsg by mutableStateOf<Int?>(null)
 
+    val isSuccess get() = resource.value is ResourceState.Success
+
 
     protected abstract fun load(): Flow<M?>
     

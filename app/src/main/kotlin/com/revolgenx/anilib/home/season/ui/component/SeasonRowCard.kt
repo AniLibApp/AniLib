@@ -62,7 +62,7 @@ private fun SeasonRowCardContent(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
+            .height(172.dp)
             .padding(8.dp),
         onClick = {
             onMediaClick(media.id, media.type)

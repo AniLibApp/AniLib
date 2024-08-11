@@ -19,7 +19,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
-class AppPreferencesDataStore(private val dataStore: DataStore<Preferences>) {
+class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
 
     companion object {
         val authTokenKey = stringPreferencesKey("auth_token_key")
@@ -33,6 +33,7 @@ class AppPreferencesDataStore(private val dataStore: DataStore<Preferences>) {
         val mediaTitleTypeKey = intPreferencesKey("media_title_type_key")
         val displayAdultContentKey = booleanPreferencesKey("display_adult_content_key")
         val mediaListDisplayModeKey = intPreferencesKey("media_list_display_mode_key")
+        val otherMediaListDisplayModeKey = intPreferencesKey("other_media_list_display_mode_key")
     }
 
 
@@ -93,6 +94,11 @@ class AppPreferencesDataStore(private val dataStore: DataStore<Preferences>) {
     val mediaListDisplayMode = PreferencesDataStore(
         dataStore = dataStore,
         prefKey = mediaListDisplayModeKey,
+        defaultValue = 0
+    )
+   val otherMediaListDisplayMode = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = otherMediaListDisplayModeKey,
         defaultValue = 0
     )
 

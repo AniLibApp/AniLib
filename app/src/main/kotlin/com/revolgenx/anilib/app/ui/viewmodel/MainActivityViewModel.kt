@@ -9,12 +9,15 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.common.data.state.MediaState
 import com.revolgenx.anilib.common.data.state.UserState
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.mediaCoverImageTypeKey
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.mediaTitleTypeKey
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.userIdKey
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel.Companion.type_romaji
+import kotlinx.coroutines.flow.map
 
 enum class DeepLinkPath {
     ANIME,
@@ -27,9 +30,15 @@ enum class DeepLinkPath {
     NOTIFICATION
 }
 
-class MainActivityViewModel(preferencesDataStore: DataStore<Preferences>) : ViewModel() {
-    var userState by mutableStateOf(UserState())
-    var mediaState by mutableStateOf(MediaState())
+class MainActivityViewModel(private val preferencesDataStore: AppPreferencesDataStore) :
+    ViewModel() {
+    var userState by mutableStateOf(UserState(userId = preferencesDataStore.userId.get()))
+    var mediaState by mutableStateOf(
+        MediaState(
+            titleType = preferencesDataStore.mediaTitleType.get()!!,
+            coverImageType = preferencesDataStore.mediaCoverImageType.get()!!
+        )
+    )
 
     var openSpoilerBottomSheet = mutableStateOf(false)
     var spoilerSpanned by mutableStateOf<Spanned?>(null)
@@ -40,7 +49,7 @@ class MainActivityViewModel(preferencesDataStore: DataStore<Preferences>) : View
 
     init {
         launch {
-            preferencesDataStore.data.collect {
+            preferencesDataStore.dataStore.data.collect {
                 val userId = it[userIdKey]
                 val mediaTitleType = it[mediaTitleTypeKey] ?: type_romaji
                 val mediaCoverImageType =

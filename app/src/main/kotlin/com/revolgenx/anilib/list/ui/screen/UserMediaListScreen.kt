@@ -32,9 +32,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.common.data.store.MediaListDisplayMode
+import com.revolgenx.anilib.common.data.store.toStringRes
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowRadioMenuItem
 import com.revolgenx.anilib.common.ui.component.chip.ClearAssistChip
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
@@ -42,6 +46,7 @@ import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBook
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
+import com.revolgenx.anilib.common.ui.icons.appicon.IcLayoutStyle
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
@@ -116,19 +121,38 @@ private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
                     1 -> mangaSearchBar.value = !mangaSearchBar.value
                 }
             }
+
+            val displayModePref = animeListViewModel.otherDisplayMode
+            val displayMode = displayModePref.collectAsState()
+
+            OverflowMenu(
+                icon = AppIcons.IcLayoutStyle
+            ) { isOpen ->
+                MediaListDisplayMode.entries.forEach {
+                    OverflowRadioMenuItem(
+                        text = stringResource(id = it.toStringRes()),
+                        selected = displayMode.value == it.value
+                    ) {
+                        isOpen.value = false
+                        scope.launch {
+                            displayModePref.set(it.value)
+                        }
+                    }
+                }
+            }
             ActionMenu(icon = AppIcons.IcFilter) {
                 scope.launch {
                     when (pagerState.currentPage) {
                         0 -> {
-                            animeListViewModel.filter?.let {
-                                animeListFilterViewModel.filter = it.copy()
+                            if(animeListViewModel.isSuccess){
+                                animeListFilterViewModel.filter = animeListViewModel.filter.copy()
                                 filterBottomSheetState.expand()
                             }
                         }
 
                         1 -> {
-                            mangaListViewModel.filter?.let {
-                                mangaListFilterViewModel.filter = it.copy()
+                            if(mangaListViewModel.isSuccess) {
+                                mangaListFilterViewModel.filter = mangaListViewModel.filter.copy()
                                 filterBottomSheetState.expand()
                             }
                         }

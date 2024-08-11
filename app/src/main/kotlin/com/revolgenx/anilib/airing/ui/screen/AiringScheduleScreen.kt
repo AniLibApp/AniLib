@@ -247,7 +247,7 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(180.dp)
+            .height(160.dp)
             .padding(8.dp)
     ) {
         Row(modifier = Modifier.clickable {

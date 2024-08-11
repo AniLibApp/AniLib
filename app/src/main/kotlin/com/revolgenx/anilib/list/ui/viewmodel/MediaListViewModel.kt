@@ -10,6 +10,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.MediaListFilterDataStore
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ext.naText
@@ -60,12 +61,13 @@ abstract class MediaListViewModel(
         MediaListCollectionSortComparator(appPreferencesDataStore.mediaTitleType.get()!!)
 
     private var loggedInUserId = appPreferencesDataStore.userId.get()
-    private val isLoggedInUser get() = field.userId == loggedInUserId
+    val isLoggedInUserList get() = field.userId == loggedInUserId
 
     val openMediaListEntryEditor get() = appPreferencesDataStore.openMediaListEntryEditorOnClick
     val displayMode get() = appPreferencesDataStore.mediaListDisplayMode
+    val otherDisplayMode get() = appPreferencesDataStore.otherMediaListDisplayMode
 
-    var filter: MediaListCollectionFilter? by mutableStateOf(null)
+    var filter: MediaListCollectionFilter by mutableStateOf(MediaListCollectionFilter())
     var mediaListCollection = mutableStateListOf<MediaListModel>()
 
 
@@ -94,48 +96,37 @@ abstract class MediaListViewModel(
     }
 
     override fun onInit() {
-        if (isLoggedInUser) {
-            launch {
+        launch {
+            if (isLoggedInUserList) {
+                filter = mediaListDataStore.get()
                 mediaListDataStore.data.collect {
-                    filter = it
-                    onFilterUpdate()
+                    if (filter != it) {
+                        filter = it
+                        onFilterUpdate()
+                    }
                 }
             }
-        } else {
-            filter = MediaListCollectionFilter()
-            onFilterUpdate()
         }
     }
 
-
     override fun onComplete() {
-        getGroupNameWithCount()
-        filterData()
+        updateGroupNamesWithCount()
+        onFilterUpdate()
     }
 
     override fun load(): Flow<MediaListCollectionModel?> {
         return mediaListService.getMediaListCollection(field)
     }
 
-    private fun updateCurrentGroupNameWithCount() {
-        groupNamesWithCount.getOrDefault(currentGroupNameWithCount.first, null)?.let {
-            currentGroupNameWithCount = currentGroupNameWithCount.first to it
-        }
-    }
-
     private fun onFilterUpdate() {
-        filter?.groupName?.let { name ->
-            groupNamesWithCount.firstNotNullOfOrNull { m -> if (m.key == name) m else null }
-                ?.let { currentGroupNameWithCount = it.toPair() }
-        }
-        updateCurrentGroupNameWithCount()
+        groupNamesWithCount.firstNotNullOfOrNull { m -> if (m.key == filter.groupName) m else null }
+            ?.let { currentGroupNameWithCount = it.toPair() }
         filterData()
     }
 
     private fun filterData() {
-        filter ?: return
         val mediaList =
-            getData()?.lists?.firstOrNull { it.name == currentGroupNameWithCount.first }
+            getData()?.lists?.firstOrNull { it.name == filter.groupName }
                 ?: let {
                     if (currentGroupNameWithCount.first != "All") {
                         launch {
@@ -153,7 +144,7 @@ abstract class MediaListViewModel(
     }
 
     private fun getFilteredList(listCollection: List<MediaListModel>): List<MediaListModel> {
-        val mediaListFilter = filter ?: return emptyList()
+        val mediaListFilter = filter
 
         return listCollection.parallelStream()
             .filter { model ->
@@ -192,29 +183,26 @@ abstract class MediaListViewModel(
     }
 
 
-    private fun getGroupNameWithCount() {
+    private fun updateGroupNamesWithCount() {
         val lists = getData()?.lists ?: return
-        val groupNameMap = lists.associate { it.name.naText() to it.count }
-        groupNamesWithCount = groupNameMap
-        updateCurrentGroupNameWithCount()
+        groupNamesWithCount = lists.associate { it.name.naText() to it.count }
     }
 
     fun updateCurrentGroupName(groupName: String) {
-        filter ?: return
-        if (isLoggedInUser) {
+        if (isLoggedInUserList) {
             launch {
                 mediaListDataStore.updateData {
                     it.copy(groupName = groupName)
                 }
             }
         } else {
-            filter = filter?.copy(groupName = groupName)
+            filter = filter.copy(groupName = groupName)
             onFilterUpdate()
         }
     }
 
     fun updateFilter(filter: MediaListCollectionFilter) {
-        if (isLoggedInUser) {
+        if (isLoggedInUserList) {
             launch {
                 mediaListDataStore.updateData {
                     filter

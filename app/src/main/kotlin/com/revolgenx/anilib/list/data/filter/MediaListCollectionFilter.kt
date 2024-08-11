@@ -12,6 +12,6 @@ data class MediaListCollectionFilter(
     val genre: String? = null,
     val sort: MediaListSortType? = null,
     val year: Int? = null,
-    val groupName: String? = null,
+    val groupName: String = "All",
     val isHentai: Boolean? = null
 )
