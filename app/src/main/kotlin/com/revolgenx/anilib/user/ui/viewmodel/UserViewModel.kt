@@ -32,6 +32,7 @@ class UserViewModel(
 
 
     private var loggedInUserId = appPreferencesDataStore.userId.get()
+    val showAbout = appPreferencesDataStore.showUserAbout.get()!!
 
     val isLoggedInUser = derivedStateOf {
         userId.value == loggedInUserId

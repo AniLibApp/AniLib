@@ -50,7 +50,10 @@ fun MediaWatchScreen(viewModel: MediaViewModel) {
         LazyPagingList(
             items = it.streamingEpisodes.orEmpty(),
             type = ListPagingListType.GRID,
-            gridOptions = GridOptions(GridCells.Adaptive(168.dp))
+            gridOptions = GridOptions(GridCells.Adaptive(168.dp)),
+            onRefresh = {
+                viewModel.refresh()
+            }
         ) { ep ->
             ep ?: return@LazyPagingList
             MediaWatchItem(streamingEpisode = ep) { link ->

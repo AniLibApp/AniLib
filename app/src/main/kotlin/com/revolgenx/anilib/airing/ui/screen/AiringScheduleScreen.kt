@@ -16,7 +16,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -57,7 +56,6 @@ import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumLargeText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -189,7 +187,6 @@ private fun AiringScreenContent() {
 
         LazyPagingList(
             pagingItems = pagingItems,
-            pullRefresh = true,
             onRefresh = {
                 viewModel.refresh()
             },

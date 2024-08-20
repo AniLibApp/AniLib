@@ -61,9 +61,9 @@ private fun AboutScreenContent() {
                 .padding(8.dp)
         ) {
             when (pages[page].type) {
-                CharacterScreenPageType.ABOUT -> AboutScreen()
-                CharacterScreenPageType.LICENSES -> AboutScreen()
-                CharacterScreenPageType.TRANSLATORS -> AboutScreen()
+                CharacterScreenPageType.ABOUT -> AppAboutScreen()
+                CharacterScreenPageType.LICENSES -> AppLibrariesScreen()
+                CharacterScreenPageType.TRANSLATORS -> AppAboutScreen()
             }
         }
     }

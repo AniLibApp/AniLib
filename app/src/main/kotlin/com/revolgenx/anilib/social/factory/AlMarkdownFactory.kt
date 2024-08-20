@@ -6,7 +6,16 @@ import com.revolgenx.anilib.social.markdown.AlMarkdown
 
 @SuppressLint("StaticFieldLeak")
 object AlMarkdownFactory {
-    fun init(context: Context, primaryColor: Int, alMarkdownCallback: AlMarkdownCallback) {
-        AlMarkdown.init(context, primaryColor, alMarkdownCallback)
+    fun init(
+        context: Context,
+        primaryColor: Int,
+        autoPlayGif: Boolean,
+        alMarkdownCallback: AlMarkdownCallback
+    ) {
+        AlMarkdown.init(context, primaryColor, autoPlayGif, alMarkdownCallback)
+    }
+
+    fun destroy(){
+        AlMarkdown.destroy()
     }
 }

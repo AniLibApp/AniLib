@@ -41,4 +41,9 @@ class PreferencesDataStore<T>(
     override fun collectAsState(): State<T?> {
         return data.collectAsState(initial = get())
     }
+
+    @Composable
+    override fun <R> collectAsState(transform: (value: T?) -> R): State<R?> {
+        return data.map { transform(it) }.collectAsState(initial = transform(get()))
+    }
 }

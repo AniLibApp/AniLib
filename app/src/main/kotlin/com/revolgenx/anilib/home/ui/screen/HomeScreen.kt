@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.home.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.rememberPagerState
@@ -32,7 +31,6 @@ import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.home.explore.ui.screen.ExploreScreen
 import com.revolgenx.anilib.home.recommendation.ui.screen.RecommendationScreen
 import com.revolgenx.anilib.home.season.ui.screen.SeasonScreen
-import com.revolgenx.anilib.notification.ui.screen.NotificationScreen
 import com.revolgenx.anilib.review.ui.screen.ReviewListScreen
 import anilib.i18n.R as I18nR
 
@@ -75,10 +73,7 @@ private val pages = listOf(
 )
 
 
-@OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalFoundationApi::class
-)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreenContent() {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())

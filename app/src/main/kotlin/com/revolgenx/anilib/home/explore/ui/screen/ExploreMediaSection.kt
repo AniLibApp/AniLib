@@ -11,7 +11,8 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
-import com.revolgenx.anilib.media.ui.component.MediaItemColumnCompositeCard
+import com.revolgenx.anilib.home.explore.component.ExploreMediaCard
+import com.revolgenx.anilib.home.explore.component.ExploreMediaCardHeight
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -34,7 +35,8 @@ private fun ExploreMediaContent(viewModel: ExploreMediaViewModel) {
     ) {
         LazyPagingList(
             pagingItems = pagingItems,
-            type = ListPagingListType.ROW
+            type = ListPagingListType.ROW,
+            onPullRefresh = false
         ) { model ->
             model ?: return@LazyPagingList
             ExploreMediaItem(media = model, mediaComponentState = mediaComponentState)
@@ -47,11 +49,9 @@ private fun ExploreMediaItem(
     media: MediaModel,
     mediaComponentState: MediaComponentState
 ) {
-    MediaItemColumnCompositeCard(
+    ExploreMediaCard(
         media = media,
         mediaComponentState = mediaComponentState,
-        width = ExploreMediaCardWidth,
-        height = ExploreMediaCardHeight,
     )
 }
 

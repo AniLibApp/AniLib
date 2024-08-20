@@ -70,7 +70,6 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
-import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithId
@@ -147,7 +146,6 @@ private fun BrowsePagingContent(
     LazyPagingList(
         pagingItems = pagingItems,
         type = viewModel.listType.value,
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },

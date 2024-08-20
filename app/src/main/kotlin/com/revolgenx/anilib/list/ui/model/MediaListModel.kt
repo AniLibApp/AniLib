@@ -6,6 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.res.stringArrayResource
 import com.revolgenx.anilib.MediaListEntryQuery
+import com.revolgenx.anilib.MediaListPageQuery
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.tuples.MutablePair
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -30,6 +31,7 @@ import com.revolgenx.anilib.fragment.MediaListEntry
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.model.isManga
+import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.UserModel
@@ -64,6 +66,17 @@ data class MediaListModel(
     val isNeutral get()= score == 2.0
     val isSad get() = score == 1.0
 }
+
+fun MediaListPageQuery.MediaList.toModel() = MediaListModel(
+    id = id,
+    media = media?.media?.toModel(),
+    mediaId = media?.media?.id ?: -1,
+    score = score,
+    progress = progress,
+    progressState = mutableStateOf(progress),
+    startedAt = startedAt?.fuzzyDate?.toModel(),
+    completedAt = completedAt?.fuzzyDate?.toModel(),
+)
 
 fun MediaListEntry.toModel() = MediaListModel(
     id = id,

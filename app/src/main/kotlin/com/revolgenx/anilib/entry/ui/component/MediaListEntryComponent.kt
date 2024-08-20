@@ -182,6 +182,12 @@ fun DoubleCountEditor(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(3.dp)
     ) {
+        val textStyle = LocalTextStyle.current
+
+        val textColor = textStyle.color.takeOrElse {
+            LocalContentColor.current
+        }
+
         IconButton(onClick = { decreaseScore() }) {
             Icon(imageVector = AppIcons.IcArrowDown, contentDescription = null)
         }
@@ -216,7 +222,7 @@ fun DoubleCountEditor(
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-            textStyle = LocalTextStyle.current.copy(textAlign = TextAlign.Center)
+            textStyle = textStyle.merge(textAlign = TextAlign.Center, color = textColor)
         )
         IconButton(onClick = { increaseScore() }) {
             Icon(imageVector = AppIcons.IcArrowUp, contentDescription = null)

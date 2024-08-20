@@ -104,6 +104,7 @@ fun ActivityReplyContent(
 
         LazyPagingList(
             pagingItems = pagingItems,
+            onPullRefresh = false,
             divider = {
 //                HorizontalDivider(
 //                    modifier = Modifier

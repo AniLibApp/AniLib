@@ -24,6 +24,7 @@ import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.SortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.SortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
+import com.revolgenx.anilib.home.season.ui.viewmodel.SeasonFilterViewModel
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.model.toMediaSeason
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
@@ -52,6 +53,7 @@ fun MediaFilterBottomSheet(
     BottomSheet(state = bottomSheetState, skipPeeked = true) {
         MediaFilterBottomSheetContent(
             field = viewModel.field,
+            showSort = viewModel is SeasonFilterViewModel,
             onPositiveClicked = {
                 viewModel.updateFilter()
             }
@@ -69,6 +71,7 @@ fun MediaFilterBottomSheet(
 private fun MediaFilterBottomSheetContent(
     modifier: Modifier = Modifier,
     field: MediaField,
+    showSort: Boolean,
     onNegativeClicked: (() -> Unit)? = null,
     onPositiveClicked: (() -> Unit)? = null,
     dismiss: (() -> Unit)? = null
@@ -78,11 +81,11 @@ private fun MediaFilterBottomSheetContent(
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
-            confirmClicked = {
+            onConfirm = {
                 onPositiveClicked?.invoke()
                 dismiss?.invoke()
             },
-            dismissClicked = {
+            onDismiss = {
                 onNegativeClicked?.invoke()
                 dismiss?.invoke()
             }
@@ -131,44 +134,50 @@ private fun MediaFilterBottomSheetContent(
             ) { selectedItem ->
                 field.season = selectedItem.takeIf { it > -1 }?.toMediaSeason()
             }
-            val sort = field.sort
-            var selectedSortIndex: Int? = null
-            var selectedSortOrder: SortOrder = SortOrder.NONE
 
-            if (sort != null) {
-                val isDesc = sort.rawValue.endsWith("_DESC")
-                val alMediaSort =
-                    AlMediaSort.from(if (isDesc) sort.ordinal - 1 else sort.ordinal)
-                selectedSortIndex = alMediaSort?.ordinal
-                selectedSortOrder = if (isDesc) SortOrder.DESC else SortOrder.ASC
-            }
+            if (showSort) {
 
-            val sortMenus =
-                stringArrayResource(id = R.array.media_sort).mapIndexed { index, s ->
-                    SortMenuItem(
-                        s,
-                        if (index == selectedSortIndex) selectedSortOrder else SortOrder.NONE
-                    )
+                val sort = field.sort
+                var selectedSortIndex: Int? = null
+                var selectedSortOrder: SortOrder = SortOrder.NONE
+
+                if (sort != null) {
+                    val isDesc = sort.rawValue.endsWith("_DESC")
+                    val alMediaSort =
+                        AlMediaSort.from(if (isDesc) sort.ordinal - 1 else sort.ordinal)
+                    selectedSortIndex = alMediaSort?.ordinal
+                    selectedSortOrder = if (isDesc) SortOrder.DESC else SortOrder.ASC
                 }
 
-            SortSelectMenu(
-                label = stringResource(id = I18nR.string.sort),
-                entries = sortMenus,
-            ) { index, selectedItem ->
-                var mediaSort: MediaSort? = null
-
-                if (selectedItem != null) {
-                    val alMediaSort = AlMediaSort.entries[index].sort
-                    val selectedSort = if (selectedItem.order == SortOrder.DESC) {
-                        alMediaSort + 1
-                    } else {
-                        alMediaSort
+                val sortMenus =
+                    stringArrayResource(id = R.array.media_sort).mapIndexed { index, s ->
+                        SortMenuItem(
+                            s,
+                            if (index == selectedSortIndex) selectedSortOrder else SortOrder.NONE
+                        )
                     }
-                    mediaSort = MediaSort.entries.toTypedArray()[selectedSort]
+
+                SortSelectMenu(
+                    label = stringResource(id = I18nR.string.sort),
+                    entries = sortMenus,
+                ) { index, selectedItem ->
+                    var mediaSort: MediaSort? = null
+
+                    if (selectedItem != null) {
+                        val alMediaSort = AlMediaSort.entries[index].sort
+                        val selectedSort = if (selectedItem.order == SortOrder.DESC) {
+                            alMediaSort + 1
+                        } else {
+                            alMediaSort
+                        }
+                        mediaSort = MediaSort.entries.toTypedArray()[selectedSort]
+                    }
+
+                    field.sort = mediaSort
                 }
 
-                field.sort = mediaSort
             }
+
             SelectMenu(
                 label = stringResource(id = I18nR.string.year),
                 entries = yearList,

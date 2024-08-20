@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import anilib.i18n.R
 import com.auth0.android.jwt.JWT
@@ -14,12 +15,16 @@ import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.notification.data.store.NotificationDataStore
+import com.revolgenx.anilib.common.data.constant.AdsInterval
+import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
+    val data get() = dataStore.data
 
     companion object {
         val authTokenKey = stringPreferencesKey("auth_token_key")
@@ -34,6 +39,24 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val displayAdultContentKey = booleanPreferencesKey("display_adult_content_key")
         val mediaListDisplayModeKey = intPreferencesKey("media_list_display_mode_key")
         val otherMediaListDisplayModeKey = intPreferencesKey("other_media_list_display_mode_key")
+        val displayAdsIntervalKey = intPreferencesKey("display_ads_interval_key")
+        val adsDisplayedDateTimeKey = longPreferencesKey("ads_displayed_date_time_key")
+        val autoPlayGifKey = booleanPreferencesKey("auto_play_gif_key")
+        val showUserAboutKey = booleanPreferencesKey("show_user_about_key")
+        val exploreAiringOrderKey = intPreferencesKey("explore_airing_order_key")
+        val exploreTrendingOrderKey = intPreferencesKey("explore_trending_order_key")
+        val explorePopularOrderKey = intPreferencesKey("explore_popular_order_key")
+        val exploreNewlyAddedOrderKey = intPreferencesKey("explore_newly_added_order_key")
+        val exploreWatchingOrderKey = intPreferencesKey("explore_watching_order_key")
+        val exploreReadingOrderKey = intPreferencesKey("explore_reading_order_key")
+        val exploreAiringEnabledKey = booleanPreferencesKey("explore_airing_enabled_key")
+        val exploreTrendingEnabledKey = booleanPreferencesKey("explore_trending_enabled_key")
+        val explorePopularEnabledKey = booleanPreferencesKey("explore_popular_enabled_key")
+        val exploreNewlyAddedEnabledKey = booleanPreferencesKey("explore_newly_added_enabled_key")
+        val exploreWatchingEnabledKey = booleanPreferencesKey("explore_watching_enabled_key")
+        val exploreReadingEnabledKey = booleanPreferencesKey("explore_reading_enabled_key")
+        val exploreWatchingSortKey = intPreferencesKey("explore_watching_sort_key")
+        val exploreReadingSortKey = intPreferencesKey("explore_reading_sort_key")
     }
 
 
@@ -96,10 +119,34 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         prefKey = mediaListDisplayModeKey,
         defaultValue = 0
     )
-   val otherMediaListDisplayMode = PreferencesDataStore(
+    val otherMediaListDisplayMode = PreferencesDataStore(
         dataStore = dataStore,
         prefKey = otherMediaListDisplayModeKey,
         defaultValue = 0
+    )
+
+    val displayAdsInterval = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = displayAdsIntervalKey,
+        defaultValue = AdsInterval.EVERY_8_HR.value
+    )
+
+    val adsDisplayedDateTime = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = adsDisplayedDateTimeKey,
+        defaultValue = null
+    )
+
+    val autoPlayGif = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = autoPlayGifKey,
+        defaultValue = false
+    )
+
+    val showUserAbout = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = showUserAboutKey,
+        defaultValue = false
     )
 
 
@@ -109,6 +156,56 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     fun isLoggedIn(): Boolean {
         return userId.collectAsState().value != null
     }
+
+
+    fun getExploreSectionOrder(exploreSectionOrder: ExploreSectionOrder): Int {
+        return when(exploreSectionOrder){
+            ExploreSectionOrder.AIRING -> data.map { it[exploreAiringOrderKey] ?: 0 }.get()
+            ExploreSectionOrder.TRENDING -> data.map { it[exploreTrendingOrderKey] ?: 1 }.get()
+            ExploreSectionOrder.POPULAR -> data.map { it[explorePopularOrderKey] ?: 2 }.get()
+            ExploreSectionOrder.NEWLY_ADDED -> data.map { it[exploreNewlyAddedOrderKey] ?: 3 }.get()
+            ExploreSectionOrder.WATCHING -> data.map { it[exploreWatchingOrderKey] ?: 4 }.get()
+            ExploreSectionOrder.READING -> data.map { it[exploreReadingOrderKey] ?: 5 }.get()
+        }
+    }
+
+    suspend fun setExploreSectionOrder(exploreSectionOrder: ExploreSectionOrder, order: Int){
+        dataStore.edit {
+            when(exploreSectionOrder){
+                ExploreSectionOrder.AIRING -> it[exploreAiringOrderKey] = order
+                ExploreSectionOrder.TRENDING -> it[exploreTrendingOrderKey] = order
+                ExploreSectionOrder.POPULAR -> it[explorePopularOrderKey] = order
+                ExploreSectionOrder.NEWLY_ADDED -> it[exploreNewlyAddedOrderKey] = order
+                ExploreSectionOrder.WATCHING -> it[exploreWatchingOrderKey] = order
+                ExploreSectionOrder.READING -> it[exploreReadingOrderKey] = order
+            }
+        }
+    }
+
+    fun isExploreSectionEnabled(exploreSectionOrder: ExploreSectionOrder): Boolean {
+        return when(exploreSectionOrder){
+            ExploreSectionOrder.AIRING -> data.map { it[exploreAiringEnabledKey] ?: true }.get()
+            ExploreSectionOrder.TRENDING -> data.map { it[exploreTrendingEnabledKey] ?: true }.get()
+            ExploreSectionOrder.POPULAR -> data.map { it[explorePopularEnabledKey] ?: true }.get()
+            ExploreSectionOrder.NEWLY_ADDED -> data.map { it[exploreNewlyAddedEnabledKey] ?: true }.get()
+            ExploreSectionOrder.WATCHING -> data.map { it[exploreWatchingEnabledKey] ?: true }.get()
+            ExploreSectionOrder.READING -> data.map { it[exploreReadingEnabledKey] ?: true }.get()
+        }
+    }
+
+    suspend fun setExploreSectionEnabled(exploreSectionOrder: ExploreSectionOrder,enabled: Boolean){
+        dataStore.edit {
+            when(exploreSectionOrder){
+                ExploreSectionOrder.AIRING -> it[exploreAiringEnabledKey] = enabled
+                ExploreSectionOrder.TRENDING -> it[exploreTrendingEnabledKey] = enabled
+                ExploreSectionOrder.POPULAR -> it[explorePopularEnabledKey] = enabled
+                ExploreSectionOrder.NEWLY_ADDED -> it[exploreNewlyAddedEnabledKey] = enabled
+                ExploreSectionOrder.WATCHING -> it[exploreWatchingEnabledKey] = enabled
+                ExploreSectionOrder.READING -> it[exploreReadingEnabledKey] = enabled
+            }
+        }
+    }
+
 
     fun continueIfLoggedIn(
         scope: CoroutineScope,
@@ -153,7 +250,7 @@ enum class MediaListDisplayMode(val value: Int) {
 }
 
 fun MediaListDisplayMode.toStringRes(): Int {
-    return when(this){
+    return when (this) {
         MediaListDisplayMode.LIST -> R.string.list
         MediaListDisplayMode.LIST_COMPACT -> R.string.list_compact
         MediaListDisplayMode.GRID -> R.string.grid

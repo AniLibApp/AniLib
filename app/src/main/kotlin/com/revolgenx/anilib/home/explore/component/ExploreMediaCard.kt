@@ -1,4 +1,4 @@
-package com.revolgenx.anilib.media.ui.component
+package com.revolgenx.anilib.home.explore.component
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,16 +32,22 @@ import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.common.util.OnMediaClick
+import com.revolgenx.anilib.media.ui.component.MediaCardTitleBottomPadding
+import com.revolgenx.anilib.media.ui.component.MediaComponentState
+import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.component.MediaInfoHorizontalPadding
+import com.revolgenx.anilib.media.ui.component.MediaInfoVerticalPadding
+import com.revolgenx.anilib.media.ui.component.MediaStatsBadge
+import com.revolgenx.anilib.media.ui.component.MediaTitleType
+import com.revolgenx.anilib.media.ui.component.onMediaClickHandler
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import kotlinx.coroutines.launch
 
 @Composable
-fun MediaItemColumnCompositeCard(
+fun ExploreMediaCard(
     media: MediaModel,
-    width: Dp? = null,
-    height: Dp = 248.dp,
     mediaComponentState: MediaComponentState,
     footerContent: @Composable (ColumnScope.() -> Unit)? = null
 ) {
@@ -53,9 +59,7 @@ fun MediaItemColumnCompositeCard(
         userId
     ) = mediaComponentState
 
-    MediaColumnCompositeCardContent(
-        width,
-        height,
+    ExploreMediaCardContent(
         media = media,
         footerContent = footerContent,
         onMediaClick = onMediaClickHandler(mediaComponentState),
@@ -78,9 +82,7 @@ fun MediaItemColumnCompositeCard(
 }
 
 @Composable
-private fun MediaColumnCompositeCardContent(
-    width: Dp?,
-    height: Dp,
+private fun ExploreMediaCardContent(
     media: MediaModel,
     onMediaClick: OnMediaClick,
     onMediaLongClick: OnMediaClick,
@@ -89,15 +91,9 @@ private fun MediaColumnCompositeCardContent(
 ) {
     Card(
         modifier = Modifier
-            .let {
-                if (width != null) {
-                    it.width(width)
-                } else {
-                    it.fillMaxWidth()
-                }
-            }
-            .height(height)
-            .padding(4.dp),
+            .padding(4.dp)
+            .width(ExploreMediaCardWidth)
+            .height(ExploreMediaCardHeight),
         onClick = {
             onMediaClick(media.id, media.type)
         },
@@ -193,3 +189,7 @@ private fun MediaColumnCompositeCardContent(
         }
     }
 }
+
+
+internal val ExploreMediaCardWidth = 160.dp
+internal val ExploreMediaCardHeight = 248.dp

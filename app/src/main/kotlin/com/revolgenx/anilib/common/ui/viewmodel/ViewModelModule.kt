@@ -21,7 +21,6 @@ import com.revolgenx.anilib.common.data.store.exploreNewlyAddedDataStore
 import com.revolgenx.anilib.common.data.store.explorePopularDataStore
 import com.revolgenx.anilib.common.data.store.exploreTrendingDataStore
 import com.revolgenx.anilib.common.data.store.genreCollectionDataStore
-import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationViewModel
 import com.revolgenx.anilib.common.data.store.seasonFilterDataStore
@@ -34,9 +33,14 @@ import com.revolgenx.anilib.common.data.store.readableOnCollectionDataStore
 import com.revolgenx.anilib.common.data.store.streamingOnCollectionDataStore
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaListFilterViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaListViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreWatchingViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreReadingViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreNewlyAddedFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExplorePopularFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreTrendingFilterViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreViewModel
 import com.revolgenx.anilib.home.recommendation.ui.viewmodel.RecommendationFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListFilterViewModel
@@ -86,7 +90,6 @@ import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeMediaType
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsVoiceActorsViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
-import org.koin.androidx.viewmodel.dsl.viewModelOf
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -103,6 +106,7 @@ val viewModelModules = module {
         )
     }
     viewModel { AiringScheduleFilterViewModel(get<Context>().airingScheduleFilterDataStore) }
+    viewModel { ExploreViewModel(get()) }
     viewModel {
         ExploreAiringScheduleViewModel(
             get(),
@@ -111,6 +115,7 @@ val viewModelModules = module {
         )
     }
     viewModel { ExploreAiringScheduleFilterViewModel(get<Context>().exploreAiringScheduleFilterDataStore) }
+    viewModel { ExploreMediaListFilterViewModel() }
 
     // media
     viewModel { MediaViewModel(get(), get(), get(), get()) }
@@ -276,7 +281,6 @@ val viewModelModules = module {
     viewModel { MediaListSettingsViewModel(get(), get()) }
 
     //explore
-    viewModelOf(::ExploreAiringViewModel)
     viewModel {
         ExploreMediaViewModel.ExploreTrendingViewModel(
             get(),
@@ -298,6 +302,8 @@ val viewModelModules = module {
     viewModel { ExploreTrendingFilterViewModel(get<Context>().exploreTrendingDataStore) }
     viewModel { ExplorePopularFilterViewModel(get<Context>().explorePopularDataStore) }
     viewModel { ExploreNewlyAddedFilterViewModel(get<Context>().exploreNewlyAddedDataStore) }
+    viewModel { ExploreWatchingViewModel(get(), get(), get()) }
+    viewModel { ExploreReadingViewModel(get(), get(), get()) }
 
 
 }

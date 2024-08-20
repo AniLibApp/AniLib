@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -59,11 +58,11 @@ private fun AiringScheduleFilterBottomSheetContent(
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
-            confirmClicked = {
+            onConfirm = {
                 onPositiveClicked?.invoke()
                 dismiss?.invoke()
             },
-            dismissClicked = {
+            onDismiss = {
                 onNegativeClicked?.invoke()
                 dismiss?.invoke()
             }

@@ -2,7 +2,6 @@ package com.revolgenx.anilib.character.ui.screen
 
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
 import com.revolgenx.anilib.common.ext.naText
@@ -30,6 +29,9 @@ fun CharacterActorScreen(characterId: Int) {
             items = staffModels,
             type = ListPagingListType.GRID,
             gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
+            onRefresh = {
+                viewModel.refresh()
+            }
         ) { staff ->
             staff ?: return@LazyPagingList
             CharacterOrStaffCard(

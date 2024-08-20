@@ -10,6 +10,7 @@ import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
@@ -38,6 +39,8 @@ import com.revolgenx.anilib.common.data.event.OpenUserScreenEvent
 import com.revolgenx.anilib.common.data.event.registerForEvent
 import com.revolgenx.anilib.common.data.event.unRegisterForEvent
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.notificationRefreshIntervalKey
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.userIdKey
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.imageViewerScreen
@@ -45,6 +48,8 @@ import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.openLink
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.notification.data.worker.NotificationWorker
+import com.revolgenx.anilib.social.factory.AlMarkdownCallbackImpl
+import com.revolgenx.anilib.social.factory.AlMarkdownFactory
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -57,7 +62,7 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
     protected val viewModel by viewModel<MainActivityViewModel>()
     protected var navigator: Navigator? = null
     private val themeDataStore: ThemeDataStore by inject()
-    private val authDataStore: AppPreferencesDataStore by inject()
+    private val appPreferencesDataStore: AppPreferencesDataStore by inject()
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
@@ -94,8 +99,19 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         setupNotification()
+        setupMarkdown()
         checkIntent(intent)
+    }
+
+    private fun setupMarkdown() {
+        AlMarkdownFactory.init(
+            this,
+            themeDataStore.get().primary,
+            appPreferencesDataStore.autoPlayGif.get()!!,
+            AlMarkdownCallbackImpl()
+        )
     }
 
     override fun onNewIntent(intent: Intent) {
@@ -183,9 +199,11 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
 
     private fun createNotificationWorker() {
         lifecycleScope.launch {
-            authDataStore.isLoggedIn.flowWithLifecycle(lifecycle).collect { isLoggedIn ->
+            appPreferencesDataStore.dataStore.data.flowWithLifecycle(lifecycle).collect{
+                val isLoggedIn = it[userIdKey] != null
+
                 if (isLoggedIn) {
-                    val interval = 15
+                    val interval = it[notificationRefreshIntervalKey] ?: 15
                     val constraints = Constraints.Builder()
                         .setRequiredNetworkType(NetworkType.CONNECTED)
                         .build()
@@ -206,7 +224,6 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
                     WorkManager.getInstance(this@BaseMainActivity)
                         .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
                 }
-
                 setAppShortcuts(isLoggedIn = isLoggedIn)
             }
         }
@@ -330,6 +347,11 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        AlMarkdownFactory.destroy()
+        super.onDestroy()
     }
 
 }

@@ -65,7 +65,7 @@ private fun <M : Any, F : BaseField<*>> ResourceSaveSection(
                 return
             }
 
-            val failedToSave = stringResource(id = anilib.i18n.R.string.failed_to_save)
+            val failedToSave = stringResource(id = R.string.failed_to_save)
             val retry = stringResource(id = anilib.i18n.R.string.retry)
             LaunchedEffect(viewModel) {
                 when (snackbar.showSnackbar(

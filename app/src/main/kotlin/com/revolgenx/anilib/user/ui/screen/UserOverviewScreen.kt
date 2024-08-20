@@ -70,7 +70,7 @@ fun UserOverviewScreen(viewModel: UserViewModel) {
                 .verticalScroll(rememberScrollState())
                 .padding(8.dp),
         ) {
-            UserDescriptionSection(userModel)
+            UserDescriptionSection(userModel, viewModel.showAbout)
             UserActivityHistorySection(userModel, scope)
             UserStatisticSection(userModel, context)
             UserGenreOverviewSection(userModel)
@@ -328,8 +328,8 @@ private fun UserOverviewHeader(text: String) {
 
 /*todo: add scroll handler*/
 @Composable
-private fun UserDescriptionSection(userModel: UserModel) {
-    val showUserDescription = remember { mutableStateOf(false) }
+private fun UserDescriptionSection(userModel: UserModel, showAbout: Boolean) {
+    val showUserDescription = remember { mutableStateOf(showAbout) }
     val hasDescription = userModel.about.isNullOrBlank().not()
     if (hasDescription && showUserDescription.value.not()) {
         Button(onClick = { showUserDescription.value = true }) {

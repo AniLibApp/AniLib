@@ -16,7 +16,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -132,7 +131,6 @@ fun MediaListContent(
                     items = viewModel.mediaListCollection,
                     type = if (gridOptions != null) ListPagingListType.GRID else ListPagingListType.COLUMN,
                     gridOptions = gridOptions,
-                    pullRefresh = true,
                     onRefresh = {
                         viewModel.refresh()
                     }
@@ -320,11 +318,11 @@ fun MediaListFilterBottomSheetContent(
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
-            confirmClicked = {
+            onConfirm = {
                 onFilter.invoke(viewModel.filter)
                 dismiss()
             },
-            dismissClicked = {
+            onDismiss = {
                 dismiss()
             }
         )

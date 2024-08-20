@@ -227,4 +227,23 @@
         <item>@string/green_apple</item>
     </string-array>
 
+    <string-array name="media_list_sort">
+        <item>@string/media_id</item>
+        <item>@string/score</item>
+        <item>@string/status</item>
+        <item>@string/progress</item>
+        <item>@string/progress_volumes</item>
+        <item>@string/repeat</item>
+        <item>@string/priority</item>
+        <item>@string/started_on</item>
+        <item>@string/finished_on</item>
+        <item>@string/added</item>
+        <item>@string/updated</item>
+        <item>@string/title_romaji</item>
+        <item>@string/title_english</item>
+        <item>@string/title_native</item>
+        <item>@string/popularity</item>
+    </string-array>
+
+
 </resources>

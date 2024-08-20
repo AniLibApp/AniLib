@@ -24,7 +24,6 @@ fun MediaRecommendationScreen(
         pagingItems = pagingItems,
         type = ListPagingListType.GRID,
         gridOptions = GridOptions(GridCells.Adaptive(120.dp)),
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         }

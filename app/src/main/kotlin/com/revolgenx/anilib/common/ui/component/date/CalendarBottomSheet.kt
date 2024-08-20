@@ -43,10 +43,10 @@ fun CalendarBottomSheet(
             Column(verticalArrangement = Arrangement.SpaceBetween) {
                 BottomSheetConfirmation(
                     confirmEnabled = confirmEnabled.value,
-                    dismissClicked = {
+                    onDismiss = {
                         openBottomSheet.value = false
                     },
-                    confirmClicked = {
+                    onConfirm = {
                         openBottomSheet.value = false
                         onDateSelected(datePickerState.selectedDateMillis!!)
                     }
@@ -84,10 +84,10 @@ fun CalendarRangeBottomSheet(
             Column(verticalArrangement = Arrangement.SpaceBetween) {
                 BottomSheetConfirmation(
                     confirmEnabled = confirmEnabled.value,
-                    dismissClicked = {
+                    onDismiss = {
                         openBottomSheet.value = false
                     },
-                    confirmClicked = {
+                    onConfirm = {
                         openBottomSheet.value = false
                         onDateRangeSelected(
                             datePickerState.selectedStartDateMillis!!,

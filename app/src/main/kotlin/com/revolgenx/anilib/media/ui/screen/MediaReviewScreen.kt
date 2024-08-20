@@ -26,7 +26,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.reviewScreen
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
@@ -43,7 +42,6 @@ fun MediaReviewScreen(viewModel: MediaReviewViewModel) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
     LazyPagingList(
         pagingItems = pagingItems,
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         }

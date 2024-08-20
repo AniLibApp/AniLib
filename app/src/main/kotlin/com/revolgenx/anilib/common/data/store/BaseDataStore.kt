@@ -23,4 +23,6 @@ interface BasePreferenceDataStore<T> {
 
     @Composable
     fun collectAsState(): State<T?>
+    @Composable
+    fun <R>collectAsState(transform: (value: T?) -> R): State<R?>
 }

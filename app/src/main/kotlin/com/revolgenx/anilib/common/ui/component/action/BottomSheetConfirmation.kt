@@ -2,7 +2,6 @@ package com.revolgenx.anilib.common.ui.component.action
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -22,8 +21,8 @@ fun BottomSheetConfirmation(
     @StringRes positiveTextRes: Int = I18nR.string.filter,
     @StringRes negativeTextRes: Int = I18nR.string.cancel,
     confirmEnabled: Boolean = true,
-    dismissClicked: OnClick,
-    confirmClicked: OnClick
+    onDismiss: OnClick,
+    onConfirm: OnClick
 ) {
     Row(
         modifier = Modifier
@@ -32,11 +31,11 @@ fun BottomSheetConfirmation(
             .padding(bottom = 8.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        OutlinedButton(onClick = dismissClicked) {
+        OutlinedButton(onClick = onDismiss) {
             Text(stringResource(id = negativeTextRes))
         }
         Button(
-            onClick = confirmClicked,
+            onClick = onConfirm,
             enabled = confirmEnabled
         ) {
             Text(stringResource(id = positiveTextRes))

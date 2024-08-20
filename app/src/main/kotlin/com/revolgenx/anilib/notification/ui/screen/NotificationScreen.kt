@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -17,6 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.VerticalDivider
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -89,7 +91,6 @@ private fun NotificationScreenContent(
 
         LazyPagingList(
             pagingItems = pagingItems,
-            pullRefresh = true,
             onRefresh = {
                 viewModel.refresh()
             },
@@ -265,12 +266,13 @@ private fun NotificationItem(
 ) {
     Card(
         modifier = Modifier
+            .padding(8.dp)
             .fillMaxWidth()
             .height(130.dp)
-            .padding(8.dp)
     ) {
-        Row {
-
+        Row(
+            modifier = Modifier.fillMaxWidth()
+        ) {
             ImageAsync(
                 modifier = Modifier
                     .fillMaxHeight()
@@ -334,8 +336,8 @@ private fun NotificationItem(
             }
 
             if (isUnread) {
-                HorizontalDivider(
-                    modifier = Modifier.padding(4.dp),
+                VerticalDivider(
+                    thickness = 8.dp,
                     color = MaterialTheme.colorScheme.primary
                 )
             }

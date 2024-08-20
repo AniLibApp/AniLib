@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.setting.ui.screen.about
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,10 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
@@ -29,21 +30,28 @@ import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcGithub
 import com.revolgenx.anilib.common.ui.icons.appicon.IcList
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMainInline
 
 data class InfoData(
     val title: String,
     val subTitle: String,
-    val imageVector: ImageVector?,
-    val painterResource: Painter? = null
+    val imageVector: ImageVector,
+    val link: String? = null,
 )
 
 @Composable
-fun AboutScreen(modifier: Modifier = Modifier) {
+fun AppAboutScreen(modifier: Modifier = Modifier) {
+    AboutScreenContent()
+}
+
+@Composable
+private fun AboutScreenContent() {
     val context = localContext()
+
     Card(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier.padding(17.dp),
-            verticalArrangement = Arrangement.spacedBy(18.dp)
+            verticalArrangement = Arrangement.spacedBy(20.dp)
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -76,14 +84,12 @@ fun AboutScreen(modifier: Modifier = Modifier) {
                 }
             }
 
-            val mainIcon = painterResource(id = R.drawable.ic_main)
             val appInfo = remember {
                 listOf(
                     InfoData(
                         title = context.getString(anilib.i18n.R.string.app_anilib_site),
                         subTitle = context.getString(anilib.i18n.R.string.app_anilib_site_desc),
-                        painterResource = mainIcon,
-                        imageVector = null
+                        imageVector = AppIcons.IcMainInline
                     ),
                     InfoData(
                         title = context.getString(anilib.i18n.R.string.github),
@@ -97,26 +103,22 @@ fun AboutScreen(modifier: Modifier = Modifier) {
                     )
                 )
             }
-            Grid(items = appInfo, columns = 2, columnSpacing = 16.dp) {
+
+            Grid(items = appInfo, columns = 2, columnSpacing = 16.dp, rowSpacing = 16.dp) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable {
+
+                        },
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    if (it.imageVector != null) {
-                        Icon(
-                            modifier = Modifier.size(32.dp),
-                            imageVector = it.imageVector,
-                            contentDescription = null
-                        )
-                    }
-                    if (it.painterResource != null) {
-                        Icon(
-                            modifier = Modifier.size(32.dp),
-                            painter = it.painterResource,
-                            contentDescription = null
-                        )
-                    }
+                    Icon(
+                        modifier = Modifier.size(32.dp),
+                        imageVector = it.imageVector,
+                        contentDescription = null
+                    )
 
                     Column {
                         MediumText(text = it.title)
@@ -131,4 +133,10 @@ fun AboutScreen(modifier: Modifier = Modifier) {
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun AboutSettingsScreenPreview() {
+    AboutScreenContent()
 }

@@ -85,7 +85,7 @@ private val pages = listOf(
     MediaListScreenPage(MediaListScreenPageType.MANGA, I18nR.string.manga, AppIcons.IcBook),
 )
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
     val pagerState = rememberPagerState() { pages.size }

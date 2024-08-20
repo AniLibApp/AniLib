@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
@@ -21,22 +20,22 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.State
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.screen.state.EmptyScreen
 import com.revolgenx.anilib.common.ui.screen.state.ErrorScreen
@@ -53,7 +52,6 @@ enum class ListPagingListType {
 
 data class GridOptions(val columns: GridCells)
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <M : BaseModel> LazyPagingList(
     modifier: Modifier = Modifier,
@@ -63,24 +61,17 @@ fun <M : BaseModel> LazyPagingList(
     span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     gridOptions: GridOptions? = null,
     showRefreshButton: MutableState<Boolean>? = null,
-    pullRefresh: Boolean = false,
+    onPullRefresh: Boolean = true,
     onRefresh: OnClick? = null,
     divider: @Composable (() -> Unit)? = null,
     itemContentIndex: (@Composable Any.(index: Int, value: M?) -> Unit)? = null,
     itemContent: (@Composable Any.(value: M?) -> Unit)? = null
 ) {
-    val state = rememberPullToRefreshState()
-
-    if (state.isRefreshing) {
-        LaunchedEffect(true) {
-            onRefresh?.invoke()
-            state.endRefresh()
-        }
-    }
-
-    Box(modifier.let {
-        it.takeIf { onRefresh.isNotNull() }?.nestedScroll(state.nestedScrollConnection) ?: it
-    }) {
+    LazyPagingListBox(
+        modifier = modifier,
+        onPullRefresh = onPullRefresh,
+        onRefresh = onRefresh
+    ) {
         when (type) {
             ListPagingListType.COLUMN -> LazyColumnLayout(
                 items = items,
@@ -106,40 +97,40 @@ fun <M : BaseModel> LazyPagingList(
                 itemContentIndex = itemContentIndex
             )
         }
-
-        if (pullRefresh) {
-            PullToRefreshContainer(
-                modifier = Modifier.align(Alignment.TopCenter),
-                state = state,
-            )
-        }
-
-        RefreshButton(visible = showRefreshButton) {
-            onRefresh?.invoke()
-        }
     }
 }
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun BoxScope.RefreshButton(
-    modifier: Modifier = Modifier,
-    visible: State<Boolean>?,
-    onClick: OnClick
+private fun LazyPagingListBox(
+    modifier: Modifier,
+    onPullRefresh: Boolean,
+    onRefresh: OnClick?,
+    content: @Composable BoxScope.() -> Unit
 ) {
-    if (visible?.value == true) {
-        Button(
-            modifier = modifier
-                .align(Alignment.TopCenter)
-                .padding(10.dp),
-            onClick = onClick
-        ) {
-            Text(
-                text = stringResource(id = anilib.i18n.R.string.refresh),
-                fontSize = 14.sp
-            )
+    if (onPullRefresh) {
+        var isRefreshing by remember {
+            mutableStateOf(false)
         }
+
+        if (isRefreshing) {
+            SideEffect {
+                isRefreshing = false
+            }
+        }
+        PullToRefreshBox(
+            modifier = modifier,
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                onRefresh?.invoke()
+            },
+            content = content
+        )
+    } else {
+        Box(modifier = modifier, content = content)
     }
+
 }
 
 @Composable

@@ -124,7 +124,6 @@ private fun ReviewListScreenContent(
 
     LazyPagingList(
         pagingItems = pagingItems,
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },
@@ -314,11 +313,11 @@ private fun ReviewListFilterBottomSheetContent(
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
-            confirmClicked = {
+            onConfirm = {
                 onFilter(field)
                 dismiss()
             },
-            dismissClicked = {
+            onDismiss = {
                 dismiss()
             }
         )

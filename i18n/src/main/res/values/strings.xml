@@ -1,6 +1,6 @@
 <resources>
     <string name="app_name" translatable="false">AniLib</string>
-    <string name="app_desc">For managing, tracking, and browsing Anime and Manga. AniLib stands out for its features and user-friendly interfaces.</string>
+    <string name="app_desc">Your to be favourite place to manage, track and browse your anime and manga, and more.</string>
     <string name="app_anilist_client_desc">By the power of AniList</string>
     <string name="app_anilib_site">AniLib Site</string>
     <string name="app_anilib_site_desc">Visit AniLib</string>
@@ -189,6 +189,7 @@
     <string name="none">None</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
+    <string name="done">Done</string>
     <string name="overview">Overview</string>
     <string name="character">Character</string>
     <string name="watch">Watch</string>
@@ -229,6 +230,7 @@
     <string name="search_anime">Search Anime</string>
     <string name="title">Title</string>
     <string name="progress">Progress</string>
+    <string name="progress_volumes">Progress Volumes</string>
     <string name="last_updated">Last Updated</string>
     <string name="last_added">Last Added</string>
     <string name="completed_date">Completed Date</string>
@@ -399,6 +401,9 @@
     <string name="settings_adult_content">18+ Content</string>
     <string name="settings_airing_anime_notifications">Airing Anime Notifications</string>
     <string name="settings_activity_merge_time">Activity Merge Time</string>
+    <string name="settings_explore_page_order">Explore Page Order</string>
+    <string name="settings_change_explore_section_order">Change explore section order</string>
+
 
     <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
     <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>
@@ -436,6 +441,13 @@
     <string name="low">Low</string>
     <string name="medium">Medium</string>
     <string name="show_adult_content_desc">Changing this won\'t change setting in AniList. It depends on AniList, so disabling users preference on AniList would remove this setting.</string>
+    <string name="settings_list_editor_on_single_tap">Open List Editor on Single Tap</string>
+    <string name="settings_list_editor_on_single_tap_desc">Single tap on Lists opens Media List Editor</string>
+    <string name="settings_auto_play_gif">Auto Play GIF Images</string>
+    <string name="settings_play_gif_desc">Automatically play GIF Images in Activity</string>
+    <string name="settings_show_users_about">Show User’s About</string>
+    <string name="settings_show_users_about_desc">Directly load user’s about section</string>
+
     <!--Settings-->
 
     <string name="open_in_browser">Open in browser</string>
@@ -489,6 +501,12 @@
     <string name="lowest_rated">Lowest Rated</string>
     <string name="rating">Rating</string>
     <string name="created_at">Created At</string>
+    <string name="repeat">Repeat</string>
+    <string name="priority">Priority</string>
+    <string name="started_on">Started On</string>
+    <string name="finished_on">Finished On</string>
+    <string name="added">Added</string>
+    <string name="updated">Updated</string>
     <!--Sort-->
 
     <string name="operation_failed">Operation failed.</string>
@@ -564,5 +582,15 @@
     <string name="list_compact">List Compact</string>
     <string name="grid">Grid</string>
     <string name="grid_compact">Grid Compact</string>
+
+    <!--Ads-->
+    <string name="change_ads_interval">Change Ads Interval</string>
+    <string name="ads_8_every_hour">Every 8 Hours</string>
+    <string name="ads_once_a_day">Once a Day</string>
+    <string name="ads_every_other_day">Every Other Day</string>
+    <string name="ads_end_of_every_week">End of Every Week</string>
+    <string name="ads_once_every_month">Once Every Month</string>
+    <string name="never">Never</string>
+    <!--Ads-->
 
 </resources>

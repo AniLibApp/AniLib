@@ -120,7 +120,6 @@ private fun RecommendationPagingContent(
 
     LazyPagingList(
         pagingItems = pagingItems,
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },
@@ -280,11 +279,11 @@ private fun RecommendationFilterBottomSheetContent(
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
-            confirmClicked = {
+            onConfirm = {
                 onFilter(field)
                 dismiss()
             },
-            dismissClicked = {
+            onDismiss = {
                 dismiss()
             }
         )

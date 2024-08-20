@@ -8,6 +8,7 @@ plugins {
     kotlin("plugin.serialization")
     id("com.apollographql.apollo3") version "3.7.3"
     kotlin("plugin.parcelize")
+    id("com.mikepenz.aboutlibraries.plugin")
 }
 
 
@@ -124,6 +125,8 @@ dependencies {
     chart()
     sheetsM3()
     accompanist()
+    aboutLibraries()
+    reorderable()
 
     implementation("com.materialkolor:material-kolor:1.4.4")
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.3.0")

@@ -167,7 +167,6 @@ private fun StudioPagingContent(
     LazyPagingList(
         type = ListPagingListType.GRID,
         pagingItems = pagingItems,
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },
@@ -241,11 +240,11 @@ private fun StudioScreenBottomSheetContent(
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
-            confirmClicked = {
+            onConfirm = {
                 onFilter(field)
                 dismiss()
             },
-            dismissClicked = {
+            onDismiss = {
                 dismiss()
             }
         )

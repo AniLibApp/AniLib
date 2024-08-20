@@ -71,7 +71,6 @@ fun SeasonScreen() {
 
         LazyPagingList(
             pagingItems = pagingItems,
-            pullRefresh = true,
             onRefresh = {
                 viewModel.refresh()
             }

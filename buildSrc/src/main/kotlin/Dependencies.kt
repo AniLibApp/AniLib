@@ -14,7 +14,7 @@ object PackagingOptions {
 object Versions{
     const val composeUi = "1.6.8"
     const val composeFoundation = "1.6.8"
-    const val composeMaterial = "1.2.1"
+    const val composeMaterial = "1.3.0-beta05"
     const val composeActivity = "1.9.1"
     const val voyager = "1.1.0-beta02"
     const val timber = "5.0.1"
@@ -32,6 +32,8 @@ object Versions{
     const val coreKtx = "1.13.1"
     const val sheetsM3 = "0.5.4"
     const val accompanistPermissions = "0.34.0" //compose ui 1.6
+    const val aboutLibraries = "11.2.2"
+    const val reorderable = "2.3.0"
 }
 
 object Dependencies {
@@ -97,6 +99,10 @@ object Dependencies {
     const val sheetsM3 = "io.github.dokar3:sheets-m3:${Versions.sheetsM3}"
 
     const val accompanistPermissions = "com.google.accompanist:accompanist-permissions:${Versions.accompanistPermissions}"
+
+    const val aboutLibraries = "com.mikepenz:aboutlibraries-compose-m3:${Versions.aboutLibraries}"
+
+    const val reorderable = "sh.calvin.reorderable:reorderable:${Versions.reorderable}"
 }
 
 
@@ -188,4 +194,12 @@ fun DependencyHandler.sheetsM3() {
 
 fun DependencyHandler.accompanist() {
     implementation(Dependencies.accompanistPermissions)
+}
+
+fun DependencyHandler.aboutLibraries() {
+    implementation(Dependencies.aboutLibraries)
+}
+
+fun DependencyHandler.reorderable() {
+    implementation(Dependencies.reorderable)
 }

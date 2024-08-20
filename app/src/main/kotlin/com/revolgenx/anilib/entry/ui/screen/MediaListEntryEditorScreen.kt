@@ -1,6 +1,8 @@
 package com.revolgenx.anilib.entry.ui.screen
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
@@ -25,6 +28,7 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -35,6 +39,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -72,6 +78,7 @@ import com.revolgenx.anilib.list.ui.model.getStatusFromAlMediaListStatus
 import com.revolgenx.anilib.list.ui.model.toAlMediaListStatus
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.type.ScoreFormat
+import kotlinx.coroutines.coroutineScope
 import org.koin.androidx.compose.koinViewModel
 import java.time.Instant
 import java.time.ZoneId
@@ -193,6 +200,7 @@ private fun MediaListEditScreenContent(
         Box(
             modifier = Modifier
                 .fillMaxSize()
+                .imePadding()
                 .verticalScroll(rememberScrollState())
                 .padding(8.dp)
         ) {
@@ -212,8 +220,17 @@ private fun MediaListEditScreenContent(
                     }
                 }
 
+                val focusManager = LocalFocusManager.current
                 Column(
+                    modifier = Modifier.pointerInput (Unit) {
+                        coroutineScope {
+                            detectTapGestures {
+                                focusManager.clearFocus()
+                            }
+                        }
+                    },
                     verticalArrangement = Arrangement.spacedBy(6.dp)
+
                 ) {
 
                     Row(
@@ -352,11 +369,12 @@ private fun MediaListEditScreenContent(
                     CardHeaderContent(
                         heading = stringResource(I18nR.string.notes), fixedCardHeight = false
                     ) {
-                        BasicTextField(modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp, vertical = 14.dp),
+                        TextField(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 8.dp)
+                                .padding(bottom = 12.dp),
                             value = entryField.notes ?: "",
-                            textStyle = LocalTextStyle.current,
                             onValueChange = {
                                 entryField.notes = it
                             })

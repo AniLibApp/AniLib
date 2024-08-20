@@ -114,7 +114,6 @@ private fun StaffMediaRolePagingContent(
         type = ListPagingListType.GRID,
         gridOptions = GridOptions(GridCells.Adaptive(168.dp)),
         pagingItems = pagingItems,
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },
@@ -219,11 +218,11 @@ private fun StaffMediaRoleFilterBottomSheetContent(
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
-            confirmClicked = {
+            onConfirm = {
                 onFilter(field)
                 dismiss()
             },
-            dismissClicked = {
+            onDismiss = {
                 dismiss()
             }
         )

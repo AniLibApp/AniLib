@@ -50,7 +50,10 @@ fun UserStatsTypeScreen(type: MediaType, viewModel: UserStatsTypeViewModel) {
 
     ResourceScreen(viewModel = viewModel) {
         LazyPagingList(
-            items = it
+            items = it,
+            onRefresh = {
+                viewModel.refresh()
+            }
         ) {
             val item = it ?: return@LazyPagingList
             UserStatsTypeItem(isAnime, item)

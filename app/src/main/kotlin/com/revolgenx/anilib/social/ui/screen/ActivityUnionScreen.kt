@@ -33,7 +33,6 @@ import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
-import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCreate
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
@@ -183,11 +182,11 @@ private fun ActivityUnionFilterBottomSheetContent(
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
-            confirmClicked = {
+            onConfirm = {
                 onPositiveClicked?.invoke()
                 dismiss?.invoke()
             },
-            dismissClicked = {
+            onDismiss = {
                 onNegativeClicked?.invoke()
                 dismiss?.invoke()
             }

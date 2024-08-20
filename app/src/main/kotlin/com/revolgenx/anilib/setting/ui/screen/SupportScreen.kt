@@ -11,15 +11,23 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import anilib.i18n.R
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
+import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
+import com.revolgenx.anilib.common.data.constant.AdsInterval
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
 import com.revolgenx.anilib.setting.ui.model.PreferenceItemModel
+import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 object SupportScreen : AndroidScreen() {
     @Composable
@@ -31,8 +39,11 @@ object SupportScreen : AndroidScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SupportSettingScreen(modifier: Modifier = Modifier) {
+    val viewModel: SettingsViewModel = koinViewModel()
+    val context = localContext()
+    val scope = rememberCoroutineScope()
     ScreenScaffold(
-        title = stringResource(id = anilib.i18n.R.string.support),
+        title = stringResource(id = R.string.support),
         actions = {},
         contentWindowInsets = horizontalBottomWindowInsets()
     ) {
@@ -49,19 +60,24 @@ fun SupportSettingScreen(modifier: Modifier = Modifier) {
                 )
             }
 
+            val displayAdsInterval = viewModel.appPreferencesDataStore.displayAdsInterval
+            val displayAdsIntervalState = displayAdsInterval.collectAsState{ AdsInterval.fromValue(it!!)}
             OutlinedCard {
                 ListPreferenceItem(
-                    value = 0, title = "Change Ads Interval", entries = listOf(
-                        ListPreferenceEntry("Every hour", 0),
-                        ListPreferenceEntry("Every 2 hours", 1),
-                        ListPreferenceEntry("Every 4 hours", 2),
-                        ListPreferenceEntry("Once a day", 3),
-                        ListPreferenceEntry("Twice a month", 4),
-                        ListPreferenceEntry("Once a month", 5),
-                        ListPreferenceEntry("Never", -1),
-                    )
+                    value = displayAdsIntervalState.value, title = stringResource(id = R.string.change_ads_interval), entries = remember {
+                        listOf(
+                            ListPreferenceEntry(context.getString(R.string.ads_8_every_hour), AdsInterval.EVERY_8_HR),
+                            ListPreferenceEntry(context.getString(R.string.ads_once_a_day), AdsInterval.EVERY_DAY),
+                            ListPreferenceEntry(context.getString(R.string.ads_every_other_day), AdsInterval.EVERY_OTHER_DAY),
+                            ListPreferenceEntry(context.getString(R.string.ads_end_of_every_week), AdsInterval.EVERY_WEEK),
+                            ListPreferenceEntry(context.getString(R.string.ads_once_every_month), AdsInterval.EVERY_MONTH),
+                            ListPreferenceEntry(context.getString(R.string.never), AdsInterval.NEVER),
+                        )
+                    }
                 ) {
-
+                    scope.launch {
+                        displayAdsInterval.set(it!!.value)
+                    }
                 }
             }
 

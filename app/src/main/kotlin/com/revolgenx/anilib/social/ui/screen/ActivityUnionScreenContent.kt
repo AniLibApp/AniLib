@@ -90,7 +90,6 @@ fun ActivityUnionScreenContent(
 
     LazyPagingList(
         pagingItems = pagingItems,
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },

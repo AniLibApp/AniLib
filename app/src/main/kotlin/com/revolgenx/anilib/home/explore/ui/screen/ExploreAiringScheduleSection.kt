@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.home.explore.ui.screen
 
-import IcAiring
 import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -37,13 +36,12 @@ import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleViewModel
-import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringViewModel
-import com.revolgenx.anilib.media.ui.component.MediaItemColumnCompositeCard
+import com.revolgenx.anilib.home.explore.component.ExploreMediaCard
+import com.revolgenx.anilib.home.explore.component.ExploreMediaCardHeight
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.toStringRes
@@ -52,11 +50,8 @@ import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
 @Composable
-fun ExploreAiringScheduleSection() {
-    val viewModel: ExploreAiringScheduleViewModel = koinViewModel()
+fun ExploreAiringScheduleSection(viewModel: ExploreAiringScheduleViewModel) {
     val filterViewModel: ExploreAiringScheduleFilterViewModel = koinViewModel()
-    val exploreAiringViewModel: ExploreAiringViewModel = koinViewModel()
-
     val filterBottomSheetState = rememberBottomSheetState()
 
     val scope = rememberCoroutineScope()
@@ -66,7 +61,6 @@ fun ExploreAiringScheduleSection() {
     Column {
         ExploreScreenHeader(
             text = stringResource(id = I18nR.string.airing),
-            icon = AppIcons.IcAiring,
             onFilter = {
                 scope.launch {
                     filterBottomSheetState.expand()
@@ -76,7 +70,7 @@ fun ExploreAiringScheduleSection() {
                 navigator.airingScheduleScreen()
             }
         )
-        ExploreAiringHeader(exploreAiringViewModel) { startDate ->
+        ExploreAiringHeader(viewModel) { startDate ->
             viewModel.updateStartDate(startDate)
         }
         ExploreAiringScheduleContent(
@@ -106,7 +100,8 @@ private fun ExploreAiringScheduleContent(
     ) {
         LazyPagingList(
             pagingItems = pagingItems,
-            type = ListPagingListType.ROW
+            type = ListPagingListType.ROW,
+            onPullRefresh = false
         ) { model ->
             if (model == null || model !is AiringScheduleModel) return@LazyPagingList
             AiringScheduleItem(
@@ -126,11 +121,9 @@ private fun AiringScheduleItem(
     context: Context
 ) {
     val media = airingScheduleModel.media ?: return
-    MediaItemColumnCompositeCard(
+    ExploreMediaCard(
         media = media,
         mediaComponentState = mediaComponentState,
-        width = ExploreMediaCardWidth,
-        height = ExploreMediaCardHeight,
         footerContent = {
             val progressBehind = media.mediaListEntry?.progress?.let { progress ->
                 airingScheduleModel.currentEpisode?.minus(progress)
@@ -209,7 +202,7 @@ private fun AiringScheduleTimer(
 
 @Composable
 private fun ExploreAiringHeader(
-    exploreAiringViewModel: ExploreAiringViewModel,
+    exploreAiringViewModel: ExploreAiringScheduleViewModel,
     onDaySelected: OnClickWithValue<Long>
 ) {
     val weekDays = exploreAiringViewModel.weekDaysFromToday.value

@@ -1,11 +1,7 @@
 package com.revolgenx.anilib.staff.ui.screen
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,7 +19,6 @@ import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.characterScreen
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -95,7 +90,6 @@ private fun StaffMediaCharacterPagingContent(
     val pagingItems = viewModel.collectAsLazyPagingItems()
     LazyPagingList(
         pagingItems = pagingItems,
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },
@@ -149,11 +143,11 @@ private fun StaffMediaCharacterFilterBottomSheetContent(
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
-            confirmClicked = {
+            onConfirm = {
                 onFilter(field)
                 dismiss()
             },
-            dismissClicked = {
+            onDismiss = {
                 dismiss()
             }
         )

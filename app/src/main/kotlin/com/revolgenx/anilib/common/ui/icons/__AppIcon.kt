@@ -66,6 +66,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcLink
 import com.revolgenx.anilib.common.ui.icons.appicon.IcList
 import com.revolgenx.anilib.common.ui.icons.appicon.IcLogin
 import com.revolgenx.anilib.common.ui.icons.appicon.IcLogout
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMainInline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMarkdownGif
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMarkdownMediaPlay
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMarkdownYoutube
@@ -92,6 +93,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcPin
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPlanning
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPlay
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPlus
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPublic
 import com.revolgenx.anilib.common.ui.icons.appicon.IcQuestionMark
 import com.revolgenx.anilib.common.ui.icons.appicon.IcQuote
 import com.revolgenx.anilib.common.ui.icons.appicon.IcRecommendation
@@ -114,6 +116,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTime
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTune
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTv
+import com.revolgenx.anilib.common.ui.icons.appicon.IcUnfold
 import com.revolgenx.anilib.common.ui.icons.appicon.IcVideo
 import com.revolgenx.anilib.common.ui.icons.appicon.IcVoice
 import com.revolgenx.anilib.common.ui.icons.appicon.IcWatch
@@ -241,7 +244,10 @@ val AppIcons.AllIcons: List<ImageVector>
             IcCode,
             IcPencil,
             IcGithub,
-            IcLayoutStyle
+            IcLayoutStyle,
+            IcMainInline,
+            IcPublic,
+            IcUnfold
         )
         return __AllIcons!!
     }

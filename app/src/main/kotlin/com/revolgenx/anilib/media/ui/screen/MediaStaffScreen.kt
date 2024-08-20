@@ -3,7 +3,6 @@ package com.revolgenx.anilib.media.ui.screen
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
@@ -14,12 +13,10 @@ import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
-import com.revolgenx.anilib.common.util.OnLongClickWithValue
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.staff.ui.component.StaffRowCard
 import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MediaStaffScreen(
@@ -33,7 +30,6 @@ fun MediaStaffScreen(
         type = ListPagingListType.GRID,
         gridOptions = GridOptions(GridCells.Adaptive(168.dp)),
         pagingItems = pagingItems,
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         }

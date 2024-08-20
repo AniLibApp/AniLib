@@ -8,6 +8,8 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import com.revolgenx.anilib.app.ui.screen.MainActivityScreen
@@ -20,6 +22,7 @@ import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.activity.BaseMainActivity
+import com.revolgenx.anilib.common.ui.ads.ShowAds
 import com.revolgenx.anilib.common.ui.composition.GlobalViewModelStoreOwner
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalMediaState
@@ -27,6 +30,8 @@ import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import com.revolgenx.anilib.common.ui.screen.spoiler.SpoilerBottomSheet
 import com.revolgenx.anilib.common.ui.screen.transition.SlideTransition
 import com.revolgenx.anilib.common.ui.theme.AppTheme
+import com.revolgenx.anilib.social.factory.AlMarkdownCallbackImpl
+import com.revolgenx.anilib.social.factory.AlMarkdownFactory
 import com.revolgenx.anilib.type.MediaType
 
 /*
@@ -39,8 +44,6 @@ class MainActivity : BaseMainActivity() {
     @OptIn(ExperimentalMaterial3Api::class, ExperimentalAnimationApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        enableEdgeToEdge()
         setContent {
             AppTheme {
                 Navigator(
@@ -59,6 +62,7 @@ class MainActivity : BaseMainActivity() {
                     CheckDeepLinkNavigation(navigator)
                 }
 
+                ShowAds(viewModel = viewModel)
                 val bottomSheetState = rememberModalBottomSheetState(
                     skipPartiallyExpanded = true
                 )

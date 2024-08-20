@@ -2,22 +2,47 @@ package com.revolgenx.anilib.setting.ui.screen
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
+import anilib.i18n.R
+import com.revolgenx.anilib.common.data.constant.toStringRes
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
+import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcUnfold
 import com.revolgenx.anilib.common.util.getDisplayName
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
+import com.revolgenx.anilib.setting.ui.component.GroupPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
+import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
+import com.revolgenx.anilib.setting.ui.component.TextPreferenceItem
 import com.revolgenx.anilib.setting.ui.viewmodel.GeneralSettingsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.xmlpull.v1.XmlPullParser
+import sh.calvin.reorderable.ReorderableColumn
 import anilib.i18n.R as I18nR
 
 object GeneralSettingsScreen : PreferencesScreen() {
@@ -51,7 +76,11 @@ object GeneralSettingsScreen : PreferencesScreen() {
             AppCompatDelegate.setApplicationLocales(locale)
         }
 
-        ListPreferenceItem(value = currentLanguage.value, title = stringResource(anilib.i18n.R.string.settings_general_app_language), entries = langs) { newValue->
+        ListPreferenceItem(
+            value = currentLanguage.value,
+            title = stringResource(R.string.settings_general_app_language),
+            entries = langs
+        ) { newValue ->
             currentLanguage.value = newValue!!
         }
 
@@ -59,14 +88,120 @@ object GeneralSettingsScreen : PreferencesScreen() {
 
         ListPreferenceItem(
             value = mediaCoverImageType.value,
-            title = stringResource(anilib.i18n.R.string.cover_image_quality),
+            title = stringResource(R.string.cover_image_quality),
             entries = imageQualityEntry
-        ) { newValue->
-            scope.launch{
+        ) { newValue ->
+            scope.launch {
                 appDataStore.mediaCoverImageType.set(newValue)
             }
         }
 
+        val openMediaListEntryEditorOnClick =
+            appDataStore.openMediaListEntryEditorOnClick.collectAsState()
+        SwitchPreferenceItem(
+            title = stringResource(id = R.string.settings_list_editor_on_single_tap),
+            subtitle = stringResource(id = R.string.settings_list_editor_on_single_tap_desc),
+            checked = openMediaListEntryEditorOnClick.value!!
+        ) {
+            scope.launch {
+                appDataStore.openMediaListEntryEditorOnClick.set(it)
+            }
+        }
+
+
+        val loadGif = appDataStore.autoPlayGif.collectAsState()
+        SwitchPreferenceItem(
+            title = stringResource(id = R.string.settings_auto_play_gif),
+            subtitle = stringResource(id = R.string.settings_play_gif_desc),
+            checked = loadGif.value!!
+        ) {
+            scope.launch {
+                appDataStore.autoPlayGif.set(it)
+            }
+        }
+
+        val showUserAbout = appDataStore.showUserAbout.collectAsState()
+
+        SwitchPreferenceItem(
+            title = stringResource(id = R.string.settings_show_users_about),
+            subtitle = stringResource(id = R.string.settings_show_users_about_desc),
+            checked = showUserAbout.value!!
+        ) {
+            scope.launch {
+                appDataStore.showUserAbout.set(it)
+            }
+        }
+
+
+        val showExploreSortingDialog = remember {
+            mutableStateOf(false)
+        }
+
+        GroupPreferenceItem(title = stringResource(id = I18nR.string.refresh_interval)) {
+            TextPreferenceItem(
+                title = stringResource(id = R.string.settings_explore_page_order),
+                subtitle = stringResource(id = R.string.settings_change_explore_section_order)
+            ) {
+                viewModel.exploreSectionOrderState = viewModel.sectionOrder.map { it.copy() }
+                showExploreSortingDialog.value = true
+            }
+
+            ConfirmationDialog(
+                openDialog = showExploreSortingDialog,
+                title = stringResource(id = R.string.settings_explore_page_order),
+                text = {
+                    ReorderableColumn(
+                        modifier = Modifier.verticalScroll(rememberScrollState()),
+                        list = viewModel.exploreSectionOrderState,
+                        onSettle = { from, to ->
+                            viewModel.exploreSectionOrderState =
+                                viewModel.exploreSectionOrderState.toMutableList().apply {
+                                    add(to, removeAt(from))
+                                }
+                        }
+                    ) { _, item, _ ->
+                        key(item) {
+                            val interactionSource = remember { MutableInteractionSource() }
+                            Card(
+                                modifier = Modifier.padding(vertical = 4.dp),
+                                onClick = {},
+                                interactionSource = interactionSource,
+                            ) {
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    MediumText(
+                                        stringResource(id = item.exploreSectionOrder.toStringRes()),
+                                        Modifier.padding(horizontal = 8.dp)
+                                    )
+                                    Spacer(modifier = Modifier.weight(1f))
+                                    val isEnabled = remember { mutableStateOf(item.isEnabled) }
+                                    Switch(checked = isEnabled.value, onCheckedChange = {
+                                        isEnabled.value = it
+                                        item.isEnabled = it
+                                    })
+                                    IconButton(
+                                        modifier = Modifier.draggableHandle(
+                                            interactionSource = interactionSource,
+                                        ),
+                                        onClick = {},
+                                    ) {
+                                        Icon(
+                                            imageVector = AppIcons.IcUnfold,
+                                            contentDescription = "Reorder"
+                                        )
+                                    }
+                                }
+
+                            }
+                        }
+                    }
+                },
+            ) {
+                viewModel.updateExploreSectionSettings()
+            }
+        }
     }
 
     override val titleRes: Int = I18nR.string.settings_general
@@ -111,7 +246,7 @@ object GeneralSettingsScreen : PreferencesScreen() {
         langs.add(
             0,
             ListPreferenceEntry(
-                title = context.getString(anilib.i18n.R.string.settings_default),
+                title = context.getString(R.string.settings_default),
                 value = ""
             )
         )

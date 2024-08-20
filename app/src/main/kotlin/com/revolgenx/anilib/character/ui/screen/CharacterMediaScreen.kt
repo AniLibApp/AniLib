@@ -93,7 +93,6 @@ private fun CharacterMediaPagingContent(
     LazyPagingList(
         pagingItems = pagingItems,
         type = ListPagingListType.GRID,
-        pullRefresh = true,
         onRefresh = {
             viewModel.refresh()
         },
@@ -141,11 +140,11 @@ private fun CharacterMediaScreenBottomSheetContent(
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
-            confirmClicked = {
+            onConfirm = {
                 onFilter(field)
                 dismiss()
             },
-            dismissClicked = {
+            onDismiss = {
                 dismiss()
             }
         )

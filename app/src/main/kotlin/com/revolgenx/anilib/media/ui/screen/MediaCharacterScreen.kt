@@ -1,11 +1,7 @@
 package com.revolgenx.anilib.media.ui.screen
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -24,7 +20,6 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.component.CharacterStaffCard
 import com.revolgenx.anilib.character.ui.model.CharacterEdgeModel
 import com.revolgenx.anilib.common.ext.characterScreen
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.staffScreen
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
@@ -42,7 +37,6 @@ import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterFilterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
-import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.StaffLanguage
 import kotlinx.coroutines.launch
@@ -79,7 +73,6 @@ fun MediaCharacterScreen(
         val pagingItems = viewModel.collectAsLazyPagingItems()
         LazyPagingList(
             pagingItems = pagingItems,
-            pullRefresh = true,
             onRefresh = {
                 viewModel.refresh()
             },
@@ -137,11 +130,11 @@ private fun MediaCharacterFilterBottomSheet(
                 .padding(bottom = 4.dp)
         ) {
             BottomSheetConfirmation(
-                confirmClicked = {
+                onConfirm = {
                     onFilter()
                     onDismiss()
                 },
-                dismissClicked = {
+                onDismiss = {
                     onDismiss()
                 }
             )
