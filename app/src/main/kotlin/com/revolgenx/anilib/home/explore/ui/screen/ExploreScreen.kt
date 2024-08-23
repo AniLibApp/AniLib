@@ -97,9 +97,9 @@ fun ExploreScreen() {
     }
 
     val refresh = {
-        viewModel.exploreSectionOrderState.forEach {
+        viewModel.exploreSectionContentOrderData.forEach {
             if (!it.isEnabled) return@forEach
-            when (it.exploreSectionOrder) {
+            when (it.value) {
                 ExploreSectionOrder.AIRING -> {
                     exploreAiringScheduleViewModel.refreshWeekDaysFromToday()
                     exploreAiringScheduleViewModel.refresh()
@@ -124,10 +124,10 @@ fun ExploreScreen() {
             modifier = Modifier.verticalScroll(rememberScrollState())
         ) {
 
-            viewModel.exploreSectionOrderState.forEach {
+            viewModel.exploreSectionContentOrderData.forEach {
                 if (!it.isEnabled) return@forEach
 
-                when (it.exploreSectionOrder) {
+                when (it.value) {
                     ExploreSectionOrder.AIRING -> {
                         ExploreAiringScheduleSection(exploreAiringScheduleViewModel)
                     }

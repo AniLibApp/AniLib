@@ -15,6 +15,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,12 +26,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.os.LocaleListCompat
 import anilib.i18n.R
-import com.revolgenx.anilib.common.data.constant.toStringRes
+import com.revolgenx.anilib.common.data.constant.ContentOrder
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcUnfold
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.getDisplayName
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.setting.ui.component.GroupPreferenceItem
@@ -39,6 +42,7 @@ import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.TextPreferenceItem
 import com.revolgenx.anilib.setting.ui.viewmodel.GeneralSettingsViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.ContentOrderData
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.xmlpull.v1.XmlPullParser
@@ -51,6 +55,7 @@ object GeneralSettingsScreen : PreferencesScreen() {
     override fun PreferencesContent() {
         val context = localContext()
         val scope = rememberCoroutineScope()
+        val snackbar = localSnackbarHostState()
         val viewModel: GeneralSettingsViewModel = koinViewModel()
 
         val appDataStore = viewModel.appPreferencesDataStore
@@ -133,75 +138,131 @@ object GeneralSettingsScreen : PreferencesScreen() {
         }
 
 
-        val showExploreSortingDialog = remember {
+        val showExploreOrderDialog = remember {
             mutableStateOf(false)
         }
 
-        GroupPreferenceItem(title = stringResource(id = I18nR.string.refresh_interval)) {
+        val showMainPageOrderDialog = remember {
+            mutableStateOf(false)
+        }
+
+        GroupPreferenceItem(title = stringResource(id = I18nR.string.settings_change_order)) {
             TextPreferenceItem(
-                title = stringResource(id = R.string.settings_explore_page_order),
-                subtitle = stringResource(id = R.string.settings_change_explore_section_order)
+                title = stringResource(id = R.string.settings_explore_section_order),
+                subtitle = stringResource(id = R.string.settings_explore_section_order_desc)
             ) {
-                viewModel.exploreSectionOrderState = viewModel.sectionOrder.map { it.copy() }
-                showExploreSortingDialog.value = true
+                viewModel.exploreSectionOrderState = viewModel.exploreSectionOrder.map { it.copy() }
+                showExploreOrderDialog.value = true
             }
 
-            ConfirmationDialog(
-                openDialog = showExploreSortingDialog,
-                title = stringResource(id = R.string.settings_explore_page_order),
-                text = {
-                    ReorderableColumn(
-                        modifier = Modifier.verticalScroll(rememberScrollState()),
-                        list = viewModel.exploreSectionOrderState,
-                        onSettle = { from, to ->
-                            viewModel.exploreSectionOrderState =
-                                viewModel.exploreSectionOrderState.toMutableList().apply {
-                                    add(to, removeAt(from))
-                                }
+            ReorderDialog(
+                showOrderingDialog = showExploreOrderDialog,
+                list = viewModel.exploreSectionOrderState,
+                canDisable = true,
+                onSettle = { from, to ->
+                    viewModel.exploreSectionOrderState =
+                        viewModel.exploreSectionOrderState.toMutableList().apply {
+                            add(to, removeAt(from))
                         }
-                    ) { _, item, _ ->
-                        key(item) {
-                            val interactionSource = remember { MutableInteractionSource() }
-                            Card(
-                                modifier = Modifier.padding(vertical = 4.dp),
-                                onClick = {},
-                                interactionSource = interactionSource,
+                },
+                onConfirm = {
+                    viewModel.updateExploreSectionSettings()
+                    scope.launch { 
+                        snackbar.showSnackbar(message = context.getString(R.string.restart_required_msg), withDismissAction = true)
+                    }
+                }
+            )
+
+            TextPreferenceItem(
+                title = stringResource(id = R.string.settings_main_page_order),
+                subtitle = stringResource(id = R.string.settings_main_page_order_desc)
+            ) {
+                viewModel.mainPageOrderState = viewModel.mainPageOrder.map { it.copy() }
+                showMainPageOrderDialog.value = true
+            }
+
+            ReorderDialog(
+                showOrderingDialog = showMainPageOrderDialog,
+                list = viewModel.mainPageOrderState,
+                canDisable = false,
+                onSettle = { from, to ->
+                    viewModel.mainPageOrderState =
+                        viewModel.mainPageOrderState.toMutableList().apply {
+                            add(to, removeAt(from))
+                        }
+                },
+                onConfirm = {
+                    viewModel.updateMainPageSettings()
+                    scope.launch {
+                        snackbar.showSnackbar(message = context.getString(R.string.restart_required_msg), withDismissAction = true)
+                    }
+                }
+            )
+
+        }
+    }
+
+    @Composable
+    private fun <T: ContentOrder> ReorderDialog(
+        showOrderingDialog: MutableState<Boolean>,
+        list: List<ContentOrderData<T>>,
+        canDisable: Boolean,
+        onSettle: (fromIndex: Int, toIndex: Int) -> Unit,
+        onConfirm: OnClick
+    ) {
+        ConfirmationDialog(
+            openDialog = showOrderingDialog,
+            title = stringResource(id = R.string.settings_explore_section_order),
+            text = {
+                ReorderableColumn(
+                    modifier = Modifier.verticalScroll(rememberScrollState()),
+                    list = list,
+                    onSettle = onSettle
+                ) { _, item, _ ->
+                    key(item) {
+                        val interactionSource = remember { MutableInteractionSource() }
+                        Card(
+                            modifier = Modifier.padding(vertical = 4.dp),
+                            onClick = {},
+                            interactionSource = interactionSource,
+                        ) {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    MediumText(
-                                        stringResource(id = item.exploreSectionOrder.toStringRes()),
-                                        Modifier.padding(horizontal = 8.dp)
-                                    )
-                                    Spacer(modifier = Modifier.weight(1f))
+                                MediumText(
+                                    stringResource(id = item.value.toStringRes()),
+                                    Modifier.padding(horizontal = 8.dp)
+                                )
+                                Spacer(modifier = Modifier.weight(1f))
+
+                                if(canDisable){
                                     val isEnabled = remember { mutableStateOf(item.isEnabled) }
                                     Switch(checked = isEnabled.value, onCheckedChange = {
                                         isEnabled.value = it
                                         item.isEnabled = it
                                     })
-                                    IconButton(
-                                        modifier = Modifier.draggableHandle(
-                                            interactionSource = interactionSource,
-                                        ),
-                                        onClick = {},
-                                    ) {
-                                        Icon(
-                                            imageVector = AppIcons.IcUnfold,
-                                            contentDescription = "Reorder"
-                                        )
-                                    }
                                 }
 
+                                IconButton(
+                                    modifier = Modifier.draggableHandle(
+                                        interactionSource = interactionSource,
+                                    ),
+                                    onClick = {},
+                                ) {
+                                    Icon(
+                                        imageVector = AppIcons.IcUnfold,
+                                        contentDescription = "Reorder"
+                                    )
+                                }
                             }
+
                         }
                     }
-                },
-            ) {
-                viewModel.updateExploreSectionSettings()
-            }
-        }
+                }
+            },
+            onConfirm = onConfirm
+        )
     }
 
     override val titleRes: Int = I18nR.string.settings_general

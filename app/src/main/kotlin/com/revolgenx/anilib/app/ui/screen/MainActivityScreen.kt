@@ -9,7 +9,6 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.NavigationBarItem
@@ -29,10 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import anilib.i18n.R
-import cafe.adriel.voyager.androidx.AndroidScreenLifecycleOwner
-import cafe.adriel.voyager.core.annotation.ExperimentalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
-import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.TabDisposable
@@ -42,15 +38,17 @@ import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
+import com.revolgenx.anilib.app.ui.viewmodel.SharedActivityViewModel
+import com.revolgenx.anilib.common.data.constant.MainPageOrder
+import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.componentActivity
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.localSnackbarHostState
-import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.LocalMainTabNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
-import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
 import com.revolgenx.anilib.list.ui.screen.MangaListScreen
@@ -85,8 +83,20 @@ private fun MainActivityScreenContent() {
         mutableStateOf(false)
     }
 
+    val localUser = localUser()
+    val mainPageScreen = remember {
+        viewModel.mainPageOrder.first().let {
+            when(it.value){
+                MainPageOrder.HOME -> HomeScreen
+                MainPageOrder.ANIME -> AnimeListScreen
+                MainPageOrder.MANGA -> MangaListScreen
+                MainPageOrder.ACTIVITY -> ActivityUnionScreen
+            }
+        }
+    }
+
     TabNavigator(
-        tab = HomeScreen,
+        tab = mainPageScreen,
         tabDisposable = {
             if (dispose.value) {
                 TabDisposable(
@@ -107,21 +117,26 @@ private fun MainActivityScreenContent() {
             snackbarHost = { SnackbarHost(snackbarHostState) },
             bottomBar = {
                 NavigationBar {
-                    TabNavigationItem(tab = HomeScreen)
-                    ShowIfLoggedIn {
-                        TabNavigationItem(tab = AnimeListScreen)
-                        TabNavigationItem(tab = MangaListScreen)
-                        TabNavigationItem(tab = ActivityUnionScreen)
-                    }
-                    ShowIfLoggedIn(
-                        orElse = {
-                            SettingScreen.isTab = true
-                            TabNavigationItem(tab = SettingScreen)
-                        },
-                        content = { userId ->
-                            TabNavigationItem(tab = userScreen.also { it.id = userId })
+                    viewModel.mainPageOrder.forEach {
+                        if (it.value == MainPageOrder.HOME) {
+                            TabNavigationItem(tab = HomeScreen)
+                        } else {
+                            if (localUser.isLoggedIn.not()) return@forEach
+                            when (it.value) {
+                                MainPageOrder.ANIME -> TabNavigationItem(tab = AnimeListScreen)
+                                MainPageOrder.MANGA -> TabNavigationItem(tab = MangaListScreen)
+                                MainPageOrder.ACTIVITY -> TabNavigationItem(tab = ActivityUnionScreen)
+                                else -> {}
+                            }
                         }
-                    )
+                    }
+
+                    if (localUser.isLoggedIn) {
+                        TabNavigationItem(tab = userScreen.also { it.id = localUser.userId })
+                    } else {
+                        SettingScreen.isTab = true
+                        TabNavigationItem(tab = SettingScreen)
+                    }
                 }
             },
             contentWindowInsets = NavigationBarDefaults.windowInsets,
@@ -147,7 +162,9 @@ private fun RowScope.TabNavigationItem(tab: BaseTabScreen) {
 
     NavigationBarItem(
         selected = selected,
-        onClick = { tabNavigator.current = tab },
+        onClick = {
+            tabNavigator.current = tab
+        },
         icon = {
             Icon(
                 imageVector = if (selected) tab.selectedIcon else tab.tabIcon,

@@ -15,9 +15,11 @@ import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.data.field.MediaOverviewField
 import com.revolgenx.anilib.media.data.field.MediaRecommendationField
 import com.revolgenx.anilib.media.data.field.MediaReviewField
+import com.revolgenx.anilib.media.data.field.MediaSocialFollowingField
 import com.revolgenx.anilib.media.data.field.MediaStaffField
 import com.revolgenx.anilib.media.data.field.MediaStatsField
 import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.media.ui.model.MediaSocialFollowingModel
 import com.revolgenx.anilib.media.ui.model.MediaStatsModel
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.model.toModel
@@ -99,5 +101,16 @@ class MediaServiceImpl(
                 mangaId = if (isAnime) null else mediaId
             )
         )
+    }
+
+    override fun getMediaSocialFollowingList(field: MediaSocialFollowingField): Flow<PageModel<MediaSocialFollowingModel>> {
+        return field.toQuery().map {
+            it.dataAssertNoErrors.page.let { page ->
+                PageModel(
+                    pageInfo = page.pageInfo.pageInfo,
+                    data = page.mediaList?.mapNotNull { it?.toModel() }
+                )
+            }
+        }
     }
 }

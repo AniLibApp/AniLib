@@ -115,7 +115,7 @@ fun UserStatsScreen(userId: Int?, type: MediaType) {
         bottomSheetState = rememberModalBottomSheetState(
             skipPartiallyExpanded = true
         ),
-        userStatsTypes = UserStatsType.values()
+        userStatsTypes = UserStatsType.entries
             .filter { if (isAnime) true else it != UserStatsType.STUDIO && it != UserStatsType.VOICE_ACTORS }
             .associateBy { stringResource(id = it.res) },
         selectedUserStatsType = viewModel.statsScreenType.value,

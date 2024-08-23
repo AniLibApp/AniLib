@@ -73,7 +73,4 @@ class TimeUntilAiringModel(time: Long) {
         }
     }
 
-    override fun hashCode(): Int {
-        return time.hashCode()
-    }
 }

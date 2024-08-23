@@ -82,6 +82,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcCheck
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPencil
 import com.revolgenx.anilib.common.ui.icons.appicon.IcReview
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
 import com.revolgenx.anilib.common.util.OnClick
@@ -120,7 +121,7 @@ class MediaScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MediaScreenContent(
     mediaId: Int,
@@ -133,7 +134,6 @@ private fun MediaScreenContent(
     val viewModel: MediaViewModel = koinViewModel()
     val recommendationViewModel: MediaRecommendationViewModel = koinViewModel()
     val statsViewModel: MediaStatsViewModel = koinViewModel()
-    val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
     val reviewViewModel: MediaReviewViewModel = koinViewModel()
     val staffViewModel: MediaStaffViewModel = koinViewModel()
     val characterViewModel: MediaCharacterViewModel = koinViewModel()
@@ -156,10 +156,7 @@ private fun MediaScreenContent(
     reviewViewModel.field.mediaId = mediaId
     staffViewModel.field.mediaId = mediaId
     characterViewModel.field.mediaId = mediaId
-    activityUnionViewModel.field.also {
-        it.mediaId = mediaId
-        it.type = ActivityType.MEDIA_LIST
-    }
+
 
     reviewComposerViewModel.field.mediaId = mediaId
     viewModel.getResource()
@@ -214,6 +211,13 @@ private fun MediaScreenContent(
                     continueIfLoggedIn {
                         viewModel.updateEntryStatus(listStatus)
                     }
+                },
+                onEdit = {
+                    continueIfLoggedIn {
+                        mediaModel?.let {
+                            navigator.mediaListEntryEditorScreen(it.id)
+                        }
+                    }
                 }
             )
         },
@@ -263,7 +267,8 @@ private fun MediaScreenContent(
                     MediaScreenPageType.STAFF -> MediaStaffScreen(staffViewModel)
                     MediaScreenPageType.REVIEW -> MediaReviewScreen(reviewViewModel)
                     MediaScreenPageType.STATS -> MediaStatsScreen(statsViewModel, mediaType)
-                    MediaScreenPageType.SOCIAL -> MediaActivityUnionScreen(activityUnionViewModel)
+                    MediaScreenPageType.SOCIAL -> {MediaSocialScreen(mediaId = mediaId)
+                    }
                 }
 
                 when (visiblePages[page].type) {
@@ -298,7 +303,8 @@ private fun MediaScreenTopAppBar(
     onReviewClick: OnClick,
     onFavouriteClick: OnClick,
     onMoreClick: OnClick,
-    onMediaListStatusChange: OnClickWithValue<MediaListStatus>
+    onMediaListStatusChange: OnClickWithValue<MediaListStatus>,
+    onEdit: OnClick
 ) {
     val containerHeight = 320.dp
     CollapsingAppbar(
@@ -331,6 +337,12 @@ private fun MediaScreenTopAppBar(
             }
         },
         actions = { isCollapsed ->
+
+            if(isCollapsed){
+                ActionMenu(icon = AppIcons.IcPencil, onClick = onEdit)
+                ActionMenu(icon = if(mediaModel?.isFavourite?.value == true) AppIcons.IcHeart else AppIcons.IcHeartOutline, onClick = onFavouriteClick)
+            }
+
             mediaModel?.siteUrl?.let { site ->
                 OverflowMenu(
                     tonalButton = !isCollapsed
@@ -339,6 +351,7 @@ private fun MediaScreenTopAppBar(
                     ShareOverflowMenu(text = site)
                 }
             }
+
         }
     )
 }

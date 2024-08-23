@@ -4,6 +4,7 @@ import android.content.Context
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
+import com.revolgenx.anilib.app.ui.viewmodel.SharedActivityViewModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseFilterViewModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
@@ -48,6 +49,8 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterFilterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaSocialFollowingScreenViewModel
+import com.revolgenx.anilib.media.ui.viewmodel.MediaSocialScreenViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
@@ -96,6 +99,7 @@ import org.koin.dsl.module
 val viewModelModules = module {
     //main activity
     viewModel { MainActivityViewModel(get()) }
+    viewModel { SharedActivityViewModel() }
 
     //airing
     viewModel {
@@ -125,6 +129,8 @@ val viewModelModules = module {
     viewModel { MediaStaffViewModel(get()) }
     viewModel { MediaReviewViewModel(get()) }
     viewModel { MediaStatsViewModel(get()) }
+    viewModel { MediaSocialScreenViewModel() }
+    viewModel { MediaSocialFollowingScreenViewModel(get()) }
 
     // season
     viewModel { SeasonViewModel(get(), get<Context>().seasonFilterDataStore) }

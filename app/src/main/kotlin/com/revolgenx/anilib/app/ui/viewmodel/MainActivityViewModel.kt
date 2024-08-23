@@ -1,15 +1,12 @@
 package com.revolgenx.anilib.app.ui.viewmodel
 
-import android.os.Handler
-import android.os.Looper
 import android.text.Spanned
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.common.data.constant.AdsInterval
+import com.revolgenx.anilib.common.data.constant.MainPageOrder
 import com.revolgenx.anilib.common.data.constant.showAds
 import com.revolgenx.anilib.common.data.state.MediaState
 import com.revolgenx.anilib.common.data.state.UserState
@@ -17,14 +14,12 @@ import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.mediaCoverImageTypeKey
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.mediaTitleTypeKey
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.userIdKey
-import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel.Companion.type_romaji
-import kotlinx.coroutines.flow.map
+import com.revolgenx.anilib.setting.ui.viewmodel.ContentOrderData
+import kotlinx.coroutines.delay
 import java.time.Instant
-import java.time.ZonedDateTime
-import java.time.temporal.ChronoUnit
 
 enum class DeepLinkPath {
     ANIME,
@@ -47,10 +42,16 @@ class MainActivityViewModel(private val preferencesDataStore: AppPreferencesData
         )
     )
 
-    private val handler  = Handler(Looper.getMainLooper())
-
     private val displayAdsInterval = preferencesDataStore.displayAdsInterval
     private val adsDisplayedDateTime = preferencesDataStore.adsDisplayedDateTime
+    val mainPageOrder = MainPageOrder.entries.map { p ->
+        ContentOrderData(
+            value = p,
+            order = preferencesDataStore.getMainPageOrder(p),
+            isEnabled = true
+        )
+    }.sortedBy { it.order }
+
     val showAdsDialog = mutableStateOf(false)
 
     var openSpoilerBottomSheet = mutableStateOf(false)
@@ -75,25 +76,23 @@ class MainActivityViewModel(private val preferencesDataStore: AppPreferencesData
             }
         }
 
-        handler.postDelayed({
-            launch {
-                val currentEpochSecond = Instant.now().epochSecond
-                if(adsDisplayedDateTime.get() == null){
+
+        launch {
+            delay(5000)
+            val currentEpochSecond = Instant.now().epochSecond
+            if (adsDisplayedDateTime.get() == null) {
+                adsDisplayedDateTime.set(currentEpochSecond)
+            } else {
+                val showAds = showAds(
+                    AdsInterval.fromValue(displayAdsInterval.get()!!),
+                    currentEpochSecond,
+                    adsDisplayedDateTime.get()!!
+                )
+                if (showAds) {
+                    showAdsDialog.value = true
                     adsDisplayedDateTime.set(currentEpochSecond)
-                }else{
-                    val showAds = showAds(AdsInterval.fromValue(displayAdsInterval.get()!!), currentEpochSecond, adsDisplayedDateTime.get()!!)
-                    if(showAds){
-                        showAdsDialog.value = true
-                        adsDisplayedDateTime.set(currentEpochSecond)
-                    }
                 }
-
             }
-        }, 5000)
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        handler.removeCallbacksAndMessages(null)
+        }
     }
 }

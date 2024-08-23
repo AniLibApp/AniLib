@@ -23,6 +23,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -59,6 +60,7 @@ import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.isAnime
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import timber.log.Timber
 import anilib.i18n.R as I18nR
 
 abstract class MediaListScreen : BaseTabScreen() {
@@ -67,6 +69,13 @@ abstract class MediaListScreen : BaseTabScreen() {
         val viewModel = mediaListViewModel()
         val filterViewModel = mediaListFilterViewModel()
         MediaListScreenContent(viewModel, filterViewModel)
+
+        DisposableEffect(key1 = viewModel) {
+            Timber.d("I am created just now")
+            onDispose {
+                Timber.d("I am disposed")
+            }
+        }
     }
 
     @Composable

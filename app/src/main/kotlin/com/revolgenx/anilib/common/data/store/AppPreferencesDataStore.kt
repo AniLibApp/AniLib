@@ -17,6 +17,7 @@ import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.notification.data.store.NotificationDataStore
 import com.revolgenx.anilib.common.data.constant.AdsInterval
 import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
+import com.revolgenx.anilib.common.data.constant.MainPageOrder
 import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import kotlinx.coroutines.CoroutineScope
@@ -57,6 +58,12 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val exploreReadingEnabledKey = booleanPreferencesKey("explore_reading_enabled_key")
         val exploreWatchingSortKey = intPreferencesKey("explore_watching_sort_key")
         val exploreReadingSortKey = intPreferencesKey("explore_reading_sort_key")
+
+        val homePageOrderKey = intPreferencesKey("home_page_order_key")
+        val animePageOrderKey = intPreferencesKey("anime_page_order_key")
+        val mangaPageOrderKey = intPreferencesKey("manga_page_order_key")
+        val activityPageOrderKey = intPreferencesKey("activity_page_order_key")
+
     }
 
 
@@ -155,6 +162,26 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     @Composable
     fun isLoggedIn(): Boolean {
         return userId.collectAsState().value != null
+    }
+
+    fun getMainPageOrder(mainPageOrder: MainPageOrder): Int {
+        return when(mainPageOrder){
+            MainPageOrder.HOME -> data.map { it[homePageOrderKey] ?: 0 }.get()
+            MainPageOrder.ANIME -> data.map { it[animePageOrderKey] ?: 1 }.get()
+            MainPageOrder.MANGA -> data.map { it[mangaPageOrderKey] ?: 2 }.get()
+            MainPageOrder.ACTIVITY -> data.map { it[activityPageOrderKey] ?: 3 }.get()
+        }
+    }
+
+    suspend fun setMainPageOrder(mainPageOrder: MainPageOrder, order: Int){
+        dataStore.edit {
+            when(mainPageOrder){
+                MainPageOrder.HOME -> it[homePageOrderKey] = order
+                MainPageOrder.ANIME -> it[animePageOrderKey] = order
+                MainPageOrder.MANGA -> it[mangaPageOrderKey] = order
+                MainPageOrder.ACTIVITY -> it[activityPageOrderKey] = order
+            }
+        }
     }
 
 

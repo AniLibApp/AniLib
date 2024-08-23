@@ -216,7 +216,10 @@ query MediaSocialFollowingQuery(
     $perPage:Int,
     $mediaId:Int
 ){
-    page: Page(page:$page, perPage:$perPage){
+    page: Page(page:$page, perPage:$perPage) @nonnull{
+        pageInfo @nonnull{
+            ... pageInfo
+        }
         mediaList(mediaId:$mediaId, isFollowing:true, sort:[UPDATED_TIME_DESC]){
             id
             status

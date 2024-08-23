@@ -401,10 +401,13 @@
     <string name="settings_adult_content">18+ Content</string>
     <string name="settings_airing_anime_notifications">Airing Anime Notifications</string>
     <string name="settings_activity_merge_time">Activity Merge Time</string>
-    <string name="settings_explore_page_order">Explore Page Order</string>
-    <string name="settings_change_explore_section_order">Change explore section order</string>
+    <string name="settings_explore_section_order">Explore Section Order</string>
+    <string name="settings_main_page_order">Main Page Order</string>
+    <string name="settings_explore_section_order_desc">Change explore section order</string>
+    <string name="settings_main_page_order_desc">Change main page order</string>
+    <string name="settings_change_order">Change Order</string>
 
-
+    <string name="restart_required_msg">Restart is required for changes to take effect.</string>
     <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
     <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>
     <string name="when_someone_follows_me">When someone follows me</string>

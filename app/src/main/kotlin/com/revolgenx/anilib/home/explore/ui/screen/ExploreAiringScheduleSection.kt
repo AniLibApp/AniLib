@@ -15,6 +15,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -45,6 +50,7 @@ import com.revolgenx.anilib.home.explore.component.ExploreMediaCardHeight
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.toStringRes
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
@@ -177,20 +183,29 @@ private fun AiringScheduleTimer(
     airingScheduleModel: AiringScheduleModel,
     context: Context,
 ) {
+    val scope = rememberCoroutineScope()
     val airingScheduleTimer = airingScheduleModel.airingScheduleTimer!!
     val airingAtModel = airingScheduleModel.airingAtModel
     val episode = airingScheduleModel.episode
 
-    DisposableEffect(airingScheduleTimer) {
+    val timeUntilAired = remember {
+        mutableStateOf(airingScheduleTimer.timeUntilAiringModel.formatString(context))
+    }
+
+    LaunchedEffect(Unit) {
         airingScheduleTimer.start()
-        onDispose {
-            airingScheduleTimer.stop()
+        while (true) {
+            if (airingScheduleTimer.timeUntilAiringModel.alreadyAired) break
+            delay(1000)
+            timeUntilAired.value = airingScheduleTimer.timeUntilAiringModel.formatString(context)
+            airingScheduleTimer.run()
         }
     }
+
     val scheduleTimeText = if (airingScheduleTimer.timeUntilAiringModel.alreadyAired) {
         airingAtModel.airedAt
     } else {
-        airingScheduleTimer.timeLeft.value.formatString(context)
+        timeUntilAired.value
     }
     MediumText(
         text = stringResource(id = I18nR.string.ep_s_s).format(episode, scheduleTimeText),

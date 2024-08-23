@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.common.data.constant
 
-import androidx.annotation.StringRes
 import java.time.Instant
 import java.time.temporal.ChronoUnit
 
@@ -11,38 +10,63 @@ const val DAILYMOTION_URL = "https://www.dailymotion.com/video/"
 const val YOUTUBE = "youtube"
 const val DAILYMOTION = "dailymotion"
 
-object Config{
+object Config {
     const val API_URL = "https://graphql.anilist.co"
     const val SIGN_UP_URL = "https://anilist.co/signup"
     const val AUTH_ENDPOINT = "https://anilist.co/api/v2/oauth/authorize"
 }
 
-enum class AdsInterval(val value: Int){
-    EVERY_8_HR(0),EVERY_DAY(1),EVERY_OTHER_DAY(2),EVERY_WEEK(3),EVERY_MONTH(4),NEVER(-1);
-    companion object{
+enum class AdsInterval(val value: Int) {
+    EVERY_8_HR(0), EVERY_DAY(1), EVERY_OTHER_DAY(2), EVERY_WEEK(3), EVERY_MONTH(4), NEVER(-1);
+
+    companion object {
         fun fromValue(value: Int): AdsInterval {
             return entries.first { it.value == value }
         }
     }
 }
 
-fun showAds(adsInterval: AdsInterval, currentEpochSecond: Long, adsDisplayedDateTime: Long): Boolean {
-    return when(adsInterval){
+fun showAds(
+    adsInterval: AdsInterval,
+    currentEpochSecond: Long,
+    adsDisplayedDateTime: Long
+): Boolean {
+    return when (adsInterval) {
         AdsInterval.EVERY_8_HR -> {
-            ChronoUnit.HOURS.between(Instant.ofEpochSecond(adsDisplayedDateTime), Instant.ofEpochSecond(currentEpochSecond)) >= 8
+            ChronoUnit.HOURS.between(
+                Instant.ofEpochSecond(adsDisplayedDateTime),
+                Instant.ofEpochSecond(currentEpochSecond)
+            ) >= 8
         }
+
         AdsInterval.EVERY_DAY -> {
-            ChronoUnit.DAYS.between(Instant.ofEpochSecond(adsDisplayedDateTime), Instant.ofEpochSecond(currentEpochSecond)) >= 1
+            ChronoUnit.DAYS.between(
+                Instant.ofEpochSecond(adsDisplayedDateTime),
+                Instant.ofEpochSecond(currentEpochSecond)
+            ) >= 1
         }
+
         AdsInterval.EVERY_OTHER_DAY -> {
-            ChronoUnit.DAYS.between(Instant.ofEpochSecond(adsDisplayedDateTime), Instant.ofEpochSecond(currentEpochSecond)) >= 2
+            ChronoUnit.DAYS.between(
+                Instant.ofEpochSecond(adsDisplayedDateTime),
+                Instant.ofEpochSecond(currentEpochSecond)
+            ) >= 2
         }
+
         AdsInterval.EVERY_WEEK -> {
-            ChronoUnit.WEEKS.between(Instant.ofEpochSecond(adsDisplayedDateTime), Instant.ofEpochSecond(currentEpochSecond)) >= 1
+            ChronoUnit.WEEKS.between(
+                Instant.ofEpochSecond(adsDisplayedDateTime),
+                Instant.ofEpochSecond(currentEpochSecond)
+            ) >= 1
         }
+
         AdsInterval.EVERY_MONTH -> {
-            ChronoUnit.MONTHS.between(Instant.ofEpochSecond(adsDisplayedDateTime), Instant.ofEpochSecond(currentEpochSecond)) >= 1
+            ChronoUnit.MONTHS.between(
+                Instant.ofEpochSecond(adsDisplayedDateTime),
+                Instant.ofEpochSecond(currentEpochSecond)
+            ) >= 1
         }
+
         AdsInterval.NEVER -> {
             false
         }
@@ -77,23 +101,39 @@ enum class AlMediaSort(val sort: Int) {
     UPDATED_AT(32),
     FAVOURITES(35);
 
-    companion object{
+    companion object {
         fun from(sort: Int) = entries.firstOrNull { it.sort == sort }
     }
 }
 
-enum class ExploreSectionOrder {
-    AIRING, TRENDING, POPULAR, NEWLY_ADDED, WATCHING, READING
+interface ContentOrder {
+    fun toStringRes(): Int
 }
 
+enum class ExploreSectionOrder : ContentOrder {
+    AIRING, TRENDING, POPULAR, NEWLY_ADDED, WATCHING, READING;
 
-fun ExploreSectionOrder.toStringRes(): Int {
-    return when(this){
-        ExploreSectionOrder.AIRING -> anilib.i18n.R.string.airing
-        ExploreSectionOrder.TRENDING -> anilib.i18n.R.string.trending
-        ExploreSectionOrder.POPULAR -> anilib.i18n.R.string.popular
-        ExploreSectionOrder.NEWLY_ADDED -> anilib.i18n.R.string.newly_added
-        ExploreSectionOrder.WATCHING -> anilib.i18n.R.string.watching
-        ExploreSectionOrder.READING -> anilib.i18n.R.string.reading
+    override fun toStringRes(): Int {
+        return when (this) {
+            AIRING -> anilib.i18n.R.string.airing
+            TRENDING -> anilib.i18n.R.string.trending
+            POPULAR -> anilib.i18n.R.string.popular
+            NEWLY_ADDED -> anilib.i18n.R.string.newly_added
+            WATCHING -> anilib.i18n.R.string.watching
+            READING -> anilib.i18n.R.string.reading
+        }
+    }
+}
+
+enum class MainPageOrder : ContentOrder {
+    HOME, ANIME, MANGA, ACTIVITY;
+
+    override fun toStringRes(): Int {
+        return when (this) {
+            HOME -> anilib.i18n.R.string.home
+            ANIME -> anilib.i18n.R.string.anime
+            MANGA -> anilib.i18n.R.string.manga
+            ACTIVITY -> anilib.i18n.R.string.activity
+        }
     }
 }

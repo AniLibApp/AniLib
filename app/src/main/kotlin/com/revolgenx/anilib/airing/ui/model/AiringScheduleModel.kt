@@ -43,7 +43,6 @@ fun AiringScheduleQuery.AiringSchedule.toModel(): AiringScheduleModel {
         timeUntilAiring = timeUntilAiring,
         timeUntilAiringModel = timeUntilAiringModel,
         airingScheduleTimer = AiringScheduleTimer(
-            Handler(Looper.getMainLooper()),
             airingAt,
             timeUntilAiringModel
         )

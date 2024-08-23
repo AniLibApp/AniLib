@@ -8,15 +8,15 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
-import com.revolgenx.anilib.setting.ui.viewmodel.ExploreSectionState
+import com.revolgenx.anilib.setting.ui.viewmodel.ContentOrderData
 
 class ExploreViewModel(appPreferencesDataStore: AppPreferencesDataStore): ViewModel(), Runnable {
     private val handler = Handler(Looper.getMainLooper())
     var showRefreshButton by mutableStateOf(false)
 
-    val exploreSectionOrderState = ExploreSectionOrder.entries.map {
-        ExploreSectionState(
-            exploreSectionOrder = it,
+    val exploreSectionContentOrderData = ExploreSectionOrder.entries.map {
+        ContentOrderData(
+            value = it,
             order = appPreferencesDataStore.getExploreSectionOrder(it),
             isEnabled = appPreferencesDataStore.isExploreSectionEnabled(it)
         )

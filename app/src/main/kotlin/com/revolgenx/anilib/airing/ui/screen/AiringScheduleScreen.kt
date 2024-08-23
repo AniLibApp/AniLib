@@ -19,6 +19,8 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -71,6 +73,7 @@ import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.media.ui.model.toStringRes
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.time.ZoneOffset
@@ -341,16 +344,24 @@ private fun AiringScheduleTimer(
     airingScheduleTimer: AiringScheduleTimer
 ) {
     val context = localContext()
-    DisposableEffect(airingScheduleTimer) {
+    val timeUntilAired = remember {
+        mutableStateOf(airingScheduleTimer.timeUntilAiringModel.formatString(context))
+    }
+
+    LaunchedEffect(Unit) {
         airingScheduleTimer.start()
-        onDispose {
-            airingScheduleTimer.stop()
+        while (true) {
+            if (airingScheduleTimer.timeUntilAiringModel.alreadyAired) break
+            delay(1000)
+            timeUntilAired.value = airingScheduleTimer.timeUntilAiringModel.formatString(context)
+            airingScheduleTimer.run()
         }
     }
+
     val scheduleTimeText = if (airingScheduleTimer.timeUntilAiringModel.alreadyAired) {
         airingAtModel.airedAt
     } else {
-        airingScheduleTimer.timeLeft.value.formatString(context)
+        timeUntilAired.value
     }
     MediumLargeText(
         text = scheduleTimeText,
