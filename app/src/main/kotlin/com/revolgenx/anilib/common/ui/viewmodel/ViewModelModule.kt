@@ -35,7 +35,6 @@ import com.revolgenx.anilib.common.data.store.streamingOnCollectionDataStore
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaListFilterViewModel
-import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaListViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreWatchingViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreReadingViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreNewlyAddedFilterViewModel
@@ -68,10 +67,13 @@ import com.revolgenx.anilib.setting.ui.viewmodel.MediaSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.NotificationSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.BaseActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionFilterViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.MainActivityUnionViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.MessageComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ReplyComposerViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterFilterViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
@@ -252,6 +254,8 @@ val viewModelModules = module {
     }
     viewModel { ActivityUnionViewModel(get(), get()) }
     viewModel { ActivityComposerViewModel(get()) }
+    viewModel { MessageComposerViewModel(get()) }
+    viewModel { ReplyComposerViewModel(get()) }
     viewModel { ActivityUnionFilterViewModel(get<Context>().activityUnionFilterDataStore) }
     viewModel { parameters -> ActivityReplyViewModel(parameters.get(), get(), get()) }
 

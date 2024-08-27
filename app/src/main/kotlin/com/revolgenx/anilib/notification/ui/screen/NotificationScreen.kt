@@ -268,7 +268,7 @@ private fun NotificationItem(
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
-            .height(130.dp)
+            .height(100.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth()
@@ -305,9 +305,7 @@ private fun NotificationItem(
                         onTitleClick()
                     },
                     text = notificationTitle,
-                    maxLines = 3,
-                    fontSize = 16.sp,
-                    lineHeight = 20.sp,
+                    maxLines = 2,
                 )
                 Column {
                     reason?.let {

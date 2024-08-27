@@ -14,10 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -183,26 +180,25 @@ private fun AiringScheduleTimer(
     airingScheduleModel: AiringScheduleModel,
     context: Context,
 ) {
-    val scope = rememberCoroutineScope()
-    val airingScheduleTimer = airingScheduleModel.airingScheduleTimer!!
+    val timeUntilAiringModel = airingScheduleModel.timeUntilAiringModel
     val airingAtModel = airingScheduleModel.airingAtModel
     val episode = airingScheduleModel.episode
 
     val timeUntilAired = remember {
-        mutableStateOf(airingScheduleTimer.timeUntilAiringModel.formatString(context))
+        mutableStateOf(timeUntilAiringModel.formatString(context))
     }
 
     LaunchedEffect(Unit) {
-        airingScheduleTimer.start()
+        timeUntilAiringModel.renew()
         while (true) {
-            if (airingScheduleTimer.timeUntilAiringModel.alreadyAired) break
+            if (timeUntilAiringModel.alreadyAired) break
             delay(1000)
-            timeUntilAired.value = airingScheduleTimer.timeUntilAiringModel.formatString(context)
-            airingScheduleTimer.run()
+            timeUntilAired.value = timeUntilAiringModel.formatString(context)
+            timeUntilAiringModel.tick()
         }
     }
 
-    val scheduleTimeText = if (airingScheduleTimer.timeUntilAiringModel.alreadyAired) {
+    val scheduleTimeText = if (timeUntilAiringModel.alreadyAired) {
         airingAtModel.airedAt
     } else {
         timeUntilAired.value

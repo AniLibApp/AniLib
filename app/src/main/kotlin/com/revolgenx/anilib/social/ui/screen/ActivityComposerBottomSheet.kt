@@ -1,12 +1,12 @@
 package com.revolgenx.anilib.social.ui.screen
 
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -32,11 +32,13 @@ import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
+import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
 import com.revolgenx.anilib.common.ui.icons.AppIcons
-import com.revolgenx.anilib.common.ui.icons.appicon.IcDelete
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSend
 import com.revolgenx.anilib.social.ui.component.MarkdownEditor
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.BaseActivityComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityType
 import kotlinx.coroutines.launch
 import anilib.i18n.R as I18nR
 
@@ -55,7 +57,7 @@ private val pages = listOf(
 @Composable
 fun ActivityComposerBottomSheet(
     bottomSheetState: BottomSheetState,
-    viewModel: ActivityComposerViewModel
+    viewModel: BaseActivityComposerViewModel
 ) {
     val scope = rememberCoroutineScope()
     if (bottomSheetState.visible) {
@@ -76,12 +78,12 @@ fun ActivityComposerBottomSheet(
 }
 
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ActivityComposerScreenContent(
-    viewModel: ActivityComposerViewModel
+    viewModel: BaseActivityComposerViewModel
 ) {
-    val pagerState = rememberPagerState() { pages.size }
+    val pagerState = rememberPagerState { pages.size }
 
     PagerScreenScaffold(
         navigationIcon = {},
@@ -89,7 +91,7 @@ private fun ActivityComposerScreenContent(
             ActionMenu(
                 icon = AppIcons.IcSend
             ) {
-
+                viewModel.save()
             }
         },
         userScrollEnabled = false,
@@ -116,36 +118,55 @@ private fun ActivityComposerScreenContent(
 
 
 @Composable
-private fun ActivityComposerStatusScreen(viewModel: ActivityComposerViewModel) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        MarkdownEditor {
-            viewModel.appendString(it)
-        }
-        TextField(
-            modifier = Modifier.fillMaxWidth(),
-            value = viewModel.textFieldValue.value,
-            onValueChange = { viewModel.textFieldValue.value = it },
-            label = { Text(text = stringResource(id = I18nR.string.write_a_status)) },
-            colors = TextFieldDefaults.colors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
+private fun ActivityComposerStatusScreen(viewModel: BaseActivityComposerViewModel) {
+    Box(modifier = Modifier) {
+        Column(
+            modifier = Modifier.padding(top = 8.dp).imePadding().verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            if(viewModel.activityType == ActivityType.MESSAGE){
+                TextSwitch(text = stringResource(I18nR.string._private), checked = viewModel.private) {
+                    viewModel.private = it
+                }
+            }
+            TextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = viewModel.textFieldValue,
+                onValueChange = {
+                    if(viewModel.isError){
+                        viewModel.isError = viewModel.textFieldValue.text.isBlank()
+                    }
+                    viewModel.textFieldValue = it
+                },
+                supportingText = {
+                    if (viewModel.isError) {
+                        Text(text = stringResource(id = I18nR.string.text_field_required))
+                    }
+                },
+                label = { Text(text = stringResource(id = I18nR.string.write_a_status)) },
+                isError = viewModel.isError,
+                colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent
+                )
             )
-        )
 
-        Box(modifier = Modifier.fillMaxWidth()) {
-            Text(
-                modifier = Modifier.align(Alignment.CenterEnd),
-                text = stringResource(id = I18nR.string.activity_posting_guidelines)
-            )
+            MarkdownEditor {
+                viewModel.appendString(it)
+            }
+            Box(modifier = Modifier.fillMaxWidth()) {
+                Text(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    text = stringResource(id = I18nR.string.activity_posting_guidelines)
+                )
+            }
         }
     }
 }
 
 @Composable
-private fun ActivityComposerPreviewScreen(viewModel: ActivityComposerViewModel) {
-    LaunchedEffect(viewModel.textFieldValue.value) {
+private fun ActivityComposerPreviewScreen(viewModel: BaseActivityComposerViewModel) {
+    LaunchedEffect(viewModel.textFieldValue) {
         viewModel.toMarkdown()
     }
 
@@ -157,7 +178,7 @@ private fun ActivityComposerPreviewScreen(viewModel: ActivityComposerViewModel) 
     ) {
         MarkdownText(
             modifier = Modifier.fillMaxWidth(),
-            spanned = viewModel.spannedText.value
+            spanned = viewModel.spannedText
         )
     }
 

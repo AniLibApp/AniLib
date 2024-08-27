@@ -1,7 +1,5 @@
 package com.revolgenx.anilib.airing.ui.model
 
-import android.os.Handler
-import android.os.Looper
 import com.revolgenx.anilib.AiringScheduleQuery
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.media.ui.model.MediaModel
@@ -21,11 +19,9 @@ data class AiringScheduleModel(
     val mediaId: Int = -1,
     val timeUntilAiring: Int = -1,
     val timeUntilAiringModel: TimeUntilAiringModel,
-    val airingScheduleTimer: AiringScheduleTimer? = null
 ) : BaseModel
 
 fun AiringScheduleQuery.AiringSchedule.toModel(): AiringScheduleModel {
-    val timeUntilAiringModel = TimeUntilAiringModel(timeUntilAiring.toLong())
     return AiringScheduleModel(
         id = id,
         airingAt = airingAt,
@@ -41,10 +37,6 @@ fun AiringScheduleQuery.AiringSchedule.toModel(): AiringScheduleModel {
         mediaId = mediaId,
         media = media?.media?.toModel(),
         timeUntilAiring = timeUntilAiring,
-        timeUntilAiringModel = timeUntilAiringModel,
-        airingScheduleTimer = AiringScheduleTimer(
-            airingAt,
-            timeUntilAiringModel
-        )
+        timeUntilAiringModel = TimeUntilAiringModel(timeUntilAired = timeUntilAiring.toLong(), airingAt = airingAt.toLong()),
     )
 }

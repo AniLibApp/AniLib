@@ -34,6 +34,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,6 +68,8 @@ import com.revolgenx.anilib.common.ui.component.common.HeaderBox
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.MediumText
+import com.revolgenx.anilib.common.ui.component.text.RegularText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -96,6 +99,7 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.studio.ui.model.StudioConnectionModel
 import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.type.MediaType
+import kotlinx.coroutines.delay
 import anilib.i18n.R as I18nR
 
 @Composable
@@ -139,6 +143,7 @@ private fun MediaOverview(
             .padding(horizontal = 8.dp)
             .verticalScroll(rememberScrollState())
     ) {
+        MediaNextAiringEpisode(media)
         MediaDescription(media)
         MediaInfo(media, isAnime, context)
         MediaGenre(media.genres) {
@@ -161,7 +166,7 @@ private fun MediaOverview(
             },
             mediaComponentState = mediaComponentState
         )
-        MediaTag(media.tags, media.tagsWithoutSpoiler ?: emptyList()){
+        MediaTag(media.tags, media.tagsWithoutSpoiler ?: emptyList()) {
             navigator.browseTagScreen(it)
         }
         MediaExternalLink(media.externalLinks) {
@@ -195,7 +200,11 @@ fun MediaRecommendation(
     LazyRow {
         items(items = medias) {
             val media = it.mediaRecommendation ?: return@items
-            MediaItemColumnCard(width = 140.dp, media = media, mediaComponentState = mediaComponentState)
+            MediaItemColumnCard(
+                width = 140.dp,
+                media = media,
+                mediaComponentState = mediaComponentState
+            )
         }
     }
 }
@@ -677,6 +686,72 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean, context: Context) {
         }
     }
 
+}
+
+
+@Composable
+private fun MediaNextAiringEpisode(media: MediaModel) {
+    media.nextAiringEpisode?.let { nextEp ->
+        var timeUntilAiring by remember {
+            mutableStateOf( nextEp.timeUntilAiringModel.copy())
+        }
+        LaunchedEffect(media) {
+            nextEp.timeUntilAiringModel.renew()
+            while(true){
+                delay(1000)
+                nextEp.timeUntilAiringModel.tick()
+                timeUntilAiring = nextEp.timeUntilAiringModel.copy()
+                if(nextEp.timeUntilAiringModel.alreadyAired) break
+            }
+        }
+        Card(
+            modifier = Modifier
+                .padding(top = 10.dp),
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp, vertical = 12.dp)
+            ) {
+                Row(
+                    modifier = Modifier.align(Alignment.Center),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    MediumText(
+                        text = stringResource(id = anilib.i18n.R.string.ep_s).format(nextEp.episode),
+                        fontSize = 15.sp,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+                    NextEpisodeTime(
+                        dateTimeType = stringResource(id = anilib.i18n.R.string.datetime_days),
+                        dateTimeValue = timeUntilAiring.day.toString()
+                    )
+                    NextEpisodeTime(
+                        dateTimeType = stringResource(id = anilib.i18n.R.string.datetime_hour),
+                        dateTimeValue = timeUntilAiring.hour.toString()
+                    )
+                    NextEpisodeTime(
+                        dateTimeType = stringResource(id = anilib.i18n.R.string.datetime_min),
+                        dateTimeValue = timeUntilAiring.min.toString()
+                    )
+                    NextEpisodeTime(
+                        dateTimeType = stringResource(id = anilib.i18n.R.string.datetime_sec),
+                        dateTimeValue = timeUntilAiring.sec.toString()
+                    )
+                }
+
+            }
+        }
+    }
+}
+
+@Composable
+private fun NextEpisodeTime(dateTimeType: String, dateTimeValue: String) {
+    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+        RegularText(text = dateTimeValue, fontSize = 15.sp)
+        MediumText(text = dateTimeType, fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
+    }
 }
 
 @Composable

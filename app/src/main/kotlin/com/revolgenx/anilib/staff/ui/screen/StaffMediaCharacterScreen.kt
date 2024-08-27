@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.staff.ui.screen
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -175,7 +176,8 @@ private fun StaffMediaCharacterFilterBottomSheetContent(
             }
 
             TextSwitch(
-                title = stringResource(id = anilib.i18n.R.string.on_list),
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = anilib.i18n.R.string.on_list),
                 checked = field.onList,
                 onCheckedChanged = {
                     field.onList = it

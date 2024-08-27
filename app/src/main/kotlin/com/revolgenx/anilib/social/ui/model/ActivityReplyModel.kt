@@ -28,6 +28,7 @@ data class ActivityReplyModel(
     val text: String = "",
     val anilifiedText: String = "",
     val textSpanned: Spanned? = null,
+    val isDeleted: MutableState<Boolean> = mutableStateOf(false)
 ) : BaseModel
 
 fun ActivityReply.toModel(): ActivityReplyModel {

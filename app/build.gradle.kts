@@ -6,8 +6,9 @@ plugins {
     id("com.android.application")
     kotlin("android")
     kotlin("plugin.serialization")
-    id("com.apollographql.apollo3") version "3.7.3"
     kotlin("plugin.parcelize")
+    kotlin("plugin.compose")
+    id("com.apollographql.apollo3") version "3.7.3"
     id("com.mikepenz.aboutlibraries.plugin")
 }
 
@@ -78,9 +79,6 @@ android {
         buildConfig = true
     }
 
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.5"
-    }
     kotlin {
         sourceSets.all {
             languageSettings {
@@ -127,6 +125,7 @@ dependencies {
     accompanist()
     aboutLibraries()
     reorderable()
+    glance()
 
     implementation("com.materialkolor:material-kolor:1.4.4")
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.3.0")

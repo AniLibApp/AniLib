@@ -158,6 +158,7 @@ object GeneralSettingsScreen : PreferencesScreen() {
             ReorderDialog(
                 showOrderingDialog = showExploreOrderDialog,
                 list = viewModel.exploreSectionOrderState,
+                title = stringResource(id = R.string.settings_explore_section_order),
                 canDisable = true,
                 onSettle = { from, to ->
                     viewModel.exploreSectionOrderState =
@@ -184,6 +185,7 @@ object GeneralSettingsScreen : PreferencesScreen() {
             ReorderDialog(
                 showOrderingDialog = showMainPageOrderDialog,
                 list = viewModel.mainPageOrderState,
+                title = stringResource(id = R.string.settings_main_page_order),
                 canDisable = false,
                 onSettle = { from, to ->
                     viewModel.mainPageOrderState =
@@ -206,13 +208,14 @@ object GeneralSettingsScreen : PreferencesScreen() {
     private fun <T: ContentOrder> ReorderDialog(
         showOrderingDialog: MutableState<Boolean>,
         list: List<ContentOrderData<T>>,
+        title: String,
         canDisable: Boolean,
         onSettle: (fromIndex: Int, toIndex: Int) -> Unit,
         onConfirm: OnClick
     ) {
         ConfirmationDialog(
             openDialog = showOrderingDialog,
-            title = stringResource(id = R.string.settings_explore_section_order),
+            title = title,
             text = {
                 ReorderableColumn(
                     modifier = Modifier.verticalScroll(rememberScrollState()),

@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.social.ui.screen
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -40,8 +41,10 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcForum
 import com.revolgenx.anilib.common.ui.icons.appicon.IcForumOutline
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionFilterViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.MainActivityUnionViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ReplyComposerViewModel
 import com.revolgenx.anilib.type.ActivityType
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -78,7 +81,12 @@ object ActivityUnionScreen : BaseTabScreen() {
         val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
 
         val activityReplyBottomSheetState = rememberBottomSheetState()
+
         val activityComposerBottomSheetState = rememberBottomSheetState()
+        val replyComposerBottomSheetState = rememberBottomSheetState()
+
+        val activityComposerViewModel: ActivityComposerViewModel = koinViewModel()
+        val replyComposerViewModel: ReplyComposerViewModel = koinViewModel()
 
         ScreenScaffold(
             topBar = {
@@ -111,6 +119,7 @@ object ActivityUnionScreen : BaseTabScreen() {
                     icon = AppIcons.IcCreate
                 ) {
                     scope.launch {
+                        activityComposerViewModel.forText(null, null)
                         activityComposerBottomSheetState.peek()
                     }
                 }
@@ -120,12 +129,16 @@ object ActivityUnionScreen : BaseTabScreen() {
         ) {
             ActivityUnionScreenContent(
                 viewModel = viewModel,
-                onReplyClick = {
+                onShowReplies = {
                     scope.launch {
-                        viewModel.activityId.intValue = it
+                        viewModel.activityId = it
                         activityReplyBottomSheetState.peek()
                     }
-                })
+                },
+                onEditTextActivity = {
+
+                },
+                onEditMessageActivity = {})
             ActivityUnionFilterBottomSheet(
                 bottomSheetState = filterBottomSheetState,
                 viewModel = filterViewModel
@@ -135,12 +148,31 @@ object ActivityUnionScreen : BaseTabScreen() {
         ActivityReplyBottomSheet(
             activityId = viewModel.activityId,
             bottomSheetState = activityReplyBottomSheetState,
-            activityComposerBottomSheetState = activityComposerBottomSheetState,
+            onReplyCompose = {
+                scope.launch {
+                    replyComposerViewModel.forReply(viewModel.activityId, null, null)
+                    replyComposerBottomSheetState.peek()
+                }
+            },
+            onReplyEdit = {replyModel->
+                scope.launch {
+                    replyModel.activityId?.let {
+                        replyComposerViewModel.forReply(replyModel.activityId, replyModel.id, replyModel.text)
+                        replyComposerBottomSheetState.peek()
+                    }
+                }
+            }
         )
 
         ActivityComposerBottomSheet(
             bottomSheetState = activityComposerBottomSheetState,
-            viewModel = koinViewModel()
+            viewModel = activityComposerViewModel
+        )
+
+
+        ActivityComposerBottomSheet(
+            bottomSheetState = replyComposerBottomSheetState,
+            viewModel = replyComposerViewModel
         )
 
     }
@@ -217,7 +249,8 @@ private fun ActivityUnionFilterBottomSheetContent(
             }
 
             TextSwitch(
-                title = stringResource(id = anilib.i18n.R.string.following),
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = anilib.i18n.R.string.following),
                 checked = field.isFollowing,
                 onCheckedChanged = {
                     field.isFollowing = it

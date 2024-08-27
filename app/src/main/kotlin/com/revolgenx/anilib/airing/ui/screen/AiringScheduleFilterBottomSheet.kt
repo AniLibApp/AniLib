@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.airing.ui.screen
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -74,21 +75,24 @@ private fun AiringScheduleFilterBottomSheetContent(
         ) {
             AiringSortMenu(field)
             TextSwitch(
-                title = stringResource(id = R.string.include_already_aired),
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = R.string.include_already_aired),
                 checked = !field.notYetAired,
                 onCheckedChanged = {
                     field.notYetAired = !it
                 })
             ShowIfLoggedIn {
                 TextSwitch(
-                    title = stringResource(id = R.string.show_only_from_your_watching_list),
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.show_only_from_your_watching_list),
                     checked = field.showOnlyWatching,
                     onCheckedChanged = {
                         field.showOnlyWatching = it
                     })
 
                 TextSwitch(
-                    title = stringResource(id = R.string.show_only_from_your_planning_list),
+                    modifier = Modifier.fillMaxWidth(),
+                    text = stringResource(id = R.string.show_only_from_your_planning_list),
                     checked = field.showOnlyPlanning,
                     onCheckedChanged = {
                         field.showOnlyPlanning = it

@@ -70,7 +70,9 @@ import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 @Composable
 fun ActivityUnionScreenContent(
     viewModel: ActivityUnionViewModel,
-    onReplyClick: OnClickWithId,
+    onShowReplies: OnClickWithId,
+    onEditTextActivity: (model: TextActivityModel) -> Unit,
+    onEditMessageActivity: (model: MessageActivityModel) -> Unit,
 ) {
     val navigator = localNavigator()
     val pagingItems = viewModel.collectAsLazyPagingItems()
@@ -78,13 +80,23 @@ fun ActivityUnionScreenContent(
     val context = localContext()
     val user = localUser()
 
-    LaunchedEffect(viewModel.showToggleErrorMsg.value) {
-        if (viewModel.showToggleErrorMsg.value) {
+    LaunchedEffect(viewModel.showToggleError) {
+        if (viewModel.showToggleError) {
             snackbarHostState.showSnackbar(
                 context.getString(anilib.i18n.R.string.operation_failed),
                 withDismissAction = true
             )
-            viewModel.showToggleErrorMsg.value = false
+            viewModel.showToggleError = false
+        }
+    }
+
+    LaunchedEffect(viewModel.showDeleteError) {
+        if (viewModel.showDeleteError) {
+            snackbarHostState.showSnackbar(
+                context.getString(anilib.i18n.R.string.failed_to_delete),
+                withDismissAction = true
+            )
+            viewModel.showDeleteError = false
         }
     }
 
@@ -100,72 +112,73 @@ fun ActivityUnionScreenContent(
         ) {
             if (activityModel.isDeleted.value) {
                 ActivityDeletedItem()
-            }else{
-                when (activityModel) {
-                    is ListActivityModel -> {
-                        ListActivityItem(
-                            model = activityModel,
-                            loggedInUserId = user.userId,
-                            onUserClick = {
-                                navigator.userScreen(it)
-                            },
-                            onSubscribeClick = {
-                                viewModel.toggleSubscription(activityModel)
-                            },
-                            onLikeClick = {
-                                viewModel.toggleLike(activityModel)
-                            },
-                            onReplyClick = onReplyClick,
-                            onDelete = {
+                return@Box
+            }
 
-                            })
-                    }
+            when (activityModel) {
+                is ListActivityModel -> {
+                    ListActivityItem(
+                        model = activityModel,
+                        loggedInUserId = user.userId,
+                        onUserClick = {
+                            navigator.userScreen(it)
+                        },
+                        onSubscribeClick = {
+                            viewModel.toggleSubscription(activityModel)
+                        },
+                        onLikeClick = {
+                            viewModel.toggleLike(activityModel)
+                        },
+                        onShowReplies = onShowReplies,
+                        onDelete = {
+                            viewModel.delete(model = activityModel)
+                        })
+                }
 
-                    is MessageActivityModel -> {
-                        MessageActivityItem(
-                            model = activityModel,
-                            loggedInUserId = user.userId,
-                            onUserClick = {
-                                navigator.userScreen(it)
-                            },
-                            onSubscribeClick = {
-                                viewModel.toggleSubscription(activityModel)
-                            },
-                            onLikeClick = {
-                                viewModel.toggleLike(activityModel)
-                            },
-                            onReplyClick = onReplyClick,
-                            onEdit = {
+                is MessageActivityModel -> {
+                    MessageActivityItem(
+                        model = activityModel,
+                        loggedInUserId = user.userId,
+                        onUserClick = {
+                            navigator.userScreen(it)
+                        },
+                        onSubscribeClick = {
+                            viewModel.toggleSubscription(activityModel)
+                        },
+                        onLikeClick = {
+                            viewModel.toggleLike(activityModel)
+                        },
+                        onShowReplies = onShowReplies,
+                        onEdit = {
+                            onEditMessageActivity(activityModel)
+                        },
+                        onDelete = {
+                            viewModel.delete(model = activityModel)
+                        }
+                    )
+                }
 
-                            },
-                            onDelete = {
-
-                            }
-                        )
-                    }
-
-                    is TextActivityModel -> {
-                        TextActivityItem(
-                            model = activityModel,
-                            loggedInUserId = user.userId,
-                            onUserClick = {
-                                navigator.userScreen(it)
-                            },
-                            onSubscribeClick = {
-                                viewModel.toggleSubscription(activityModel)
-                            },
-                            onLikeClick = {
-                                viewModel.toggleLike(activityModel)
-                            },
-                            onReplyClick = onReplyClick,
-                            onEdit = {
-
-                            },
-                            onDelete = {
-
-                            }
-                        )
-                    }
+                is TextActivityModel -> {
+                    TextActivityItem(
+                        model = activityModel,
+                        loggedInUserId = user.userId,
+                        onUserClick = {
+                            navigator.userScreen(it)
+                        },
+                        onSubscribeClick = {
+                            viewModel.toggleSubscription(activityModel)
+                        },
+                        onLikeClick = {
+                            viewModel.toggleLike(activityModel)
+                        },
+                        onShowReplies = onShowReplies,
+                        onEdit = {
+                            onEditTextActivity(activityModel)
+                        },
+                        onDelete = {
+                            viewModel.delete(model = activityModel)
+                        }
+                    )
                 }
             }
         }
@@ -179,7 +192,7 @@ fun ListActivityItem(
     loggedInUserId: Int?,
     onUserClick: OnClickWithId,
     onSubscribeClick: OnClick,
-    onReplyClick: OnClickWithId,
+    onShowReplies: OnClickWithId,
     onLikeClick: OnClick,
     onDelete: OnClick
 ) {
@@ -231,7 +244,7 @@ fun ListActivityItem(
                 }
                 ActivityItemBottom(
                     model = model,
-                    onReplyClick = onReplyClick,
+                    onReplyClick = onShowReplies,
                     onLikeClick = onLikeClick
                 )
             }
@@ -245,7 +258,7 @@ fun MessageActivityItem(
     loggedInUserId: Int?,
     onUserClick: OnClickWithId,
     onSubscribeClick: OnClick,
-    onReplyClick: OnClickWithId,
+    onShowReplies: OnClickWithId,
     onLikeClick: OnClick,
     onEdit: OnClick,
     onDelete: OnClick
@@ -270,7 +283,7 @@ fun MessageActivityItem(
                 modifier = Modifier.fillMaxWidth(),
                 spanned = model.messageSpanned
             )
-            ActivityItemBottom(model, onReplyClick = onReplyClick, onLikeClick = onLikeClick)
+            ActivityItemBottom(model, onReplyClick = onShowReplies, onLikeClick = onLikeClick)
         }
     }
 }
@@ -282,7 +295,7 @@ fun TextActivityItem(
     loggedInUserId: Int?,
     onUserClick: OnClickWithId,
     onSubscribeClick: OnClick,
-    onReplyClick: OnClickWithId,
+    onShowReplies: OnClickWithId,
     onLikeClick: OnClick,
     onEdit: OnClick,
     onDelete: OnClick,
@@ -307,7 +320,7 @@ fun TextActivityItem(
                 modifier = Modifier.fillMaxWidth(),
                 spanned = model.textSpanned
             )
-            ActivityItemBottom(model, onReplyClick = onReplyClick, onLikeClick = onLikeClick)
+            ActivityItemBottom(model, onReplyClick = onShowReplies, onLikeClick = onLikeClick)
         }
     }
 }
@@ -369,7 +382,7 @@ fun ActivityItemTop(
             }
 
             OverflowMenu {
-                loggedInUserId?.takeIf { loggedInUserId == model.userId }?.let {
+                loggedInUserId?.takeIf { it == model.userId }?.let {
                     onEdit?.let {
                         OverflowMenuItem(
                             textRes = anilib.i18n.R.string.edit,
@@ -379,7 +392,7 @@ fun ActivityItemTop(
                     }
 
                     OverflowMenuItem(
-                        textRes = anilib.i18n.R.string.edit,
+                        textRes = anilib.i18n.R.string.delete,
                         icon = AppIcons.IcDelete,
                         onClick = onDelete
                     )

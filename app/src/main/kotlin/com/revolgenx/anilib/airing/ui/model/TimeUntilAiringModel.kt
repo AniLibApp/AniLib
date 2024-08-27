@@ -1,53 +1,52 @@
 package com.revolgenx.anilib.airing.ui.model
 
 import android.content.Context
-import com.revolgenx.anilib.R
-import timber.log.Timber
+import java.time.Instant
 import java.util.concurrent.TimeUnit
 import anilib.i18n.R as I18nR
 
 
-class TimeUntilAiringModel(time: Long) {
-    var oldTime: Long = 0
-    var time: Long = 0
-        set(value) {
-            field = value
-            day = value
-            hour = value
-            min = value
-            sec = value
-        }
-
-    val alreadyAired get() = time < 1
-
-    var day: Long = 0
-        private set(value) {
-            field = if (value > 0) TimeUnit.SECONDS.toDays(value) else 0
-        }
-
-    var hour: Long = 0
-        private set(value) {
-            field = if (value > 0) TimeUnit.SECONDS.toHours(value) - TimeUnit.DAYS.toHours(
-                TimeUnit.SECONDS.toDays(value)
-            ) else 0
-        }
-    var min: Long = 0
-        private set(value) {
-            field = if (value > 0) TimeUnit.SECONDS.toMinutes(value) - TimeUnit.HOURS.toMinutes(
-                TimeUnit.SECONDS.toHours(value)
-            ) else 0
-        }
+data class TimeUntilAiringModel(
+    val airingAt: Long,
+    var timeUntilAired: Long,
+    var day: Long = 0,
+    var hour: Long = 0,
+    var min: Long = 0,
     var sec: Long = 0
-        private set(value) {
-            field =
-                if (value > 0) value - TimeUnit.MINUTES.toSeconds(TimeUnit.SECONDS.toMinutes(value)) else 0
-        }
-
+) {
+    val alreadyAired get() = timeUntilAired < 1
 
     init {
-        this.time = time
-        this.oldTime = time
+        updateDateTime()
     }
+
+    private fun updateDateTime() {
+        day = if (timeUntilAired > 0) TimeUnit.SECONDS.toDays(timeUntilAired) else 0
+        hour =
+            if (timeUntilAired > 0) TimeUnit.SECONDS.toHours(timeUntilAired) - TimeUnit.DAYS.toHours(
+                TimeUnit.SECONDS.toDays(timeUntilAired)
+            ) else 0
+        min =
+            if (timeUntilAired > 0) TimeUnit.SECONDS.toMinutes(timeUntilAired) - TimeUnit.HOURS.toMinutes(
+                TimeUnit.SECONDS.toHours(timeUntilAired)
+            ) else 0
+        sec = if (timeUntilAired > 0) timeUntilAired - TimeUnit.MINUTES.toSeconds(
+            TimeUnit.SECONDS.toMinutes(timeUntilAired)
+        ) else 0
+    }
+
+    fun tick() {
+        if (alreadyAired) return
+        timeUntilAired -= 1
+        updateDateTime()
+    }
+
+    fun renew() {
+        if (alreadyAired) return
+        timeUntilAired = airingAt.minus(Instant.now().epochSecond)
+        updateDateTime()
+    }
+
 
     fun getFormattedTime() = "${day}d ${hour}h ${min}m ${sec}s"
 

@@ -42,6 +42,7 @@ import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
 import com.revolgenx.anilib.media.ui.component.MediaStatsBadge
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.media.ui.model.MediaModel
+import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
 
@@ -88,8 +89,7 @@ fun MediaListRowCard(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(horizontal = 8.dp)
-                    .padding(bottom = 4.dp, top = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(1.dp)
+                    .padding(bottom = 4.dp, top = 6.dp)
             ) {
 
 
@@ -103,7 +103,7 @@ fun MediaListRowCard(
 
 
                 Row(
-                    modifier = Modifier.padding(PaddingValues(vertical = 2.dp)),
+                    modifier = Modifier.padding(vertical = 2.dp),
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
                     media.genres?.take(4)?.map { genre ->
@@ -195,7 +195,7 @@ private fun MediaListRowCardPreview() {
     MaterialTheme {
         Surface {
             MediaListRowCard(
-                list = MediaListModel(media = MediaModel()),
+                list = MediaListModel(media = MediaModel(title = MediaTitleModel(romaji = "1234444444444444444444444444444444444"))),
                 onClick = {},
                 onLongClick = {},
                 increaseProgress = {}

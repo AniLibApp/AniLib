@@ -19,14 +19,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.model.MediaSocialFollowingModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaSocialFollowingScreenViewModel
@@ -39,6 +42,7 @@ import com.revolgenx.anilib.user.ui.model.UserModel
 @Composable
 fun MediaSocialFollowingScreen(viewModel: MediaSocialFollowingScreenViewModel) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
+    val navigator = localNavigator()
     LazyPagingList(
         pagingItems = pagingItems,
         onRefresh = {
@@ -46,14 +50,19 @@ fun MediaSocialFollowingScreen(viewModel: MediaSocialFollowingScreenViewModel) {
         },
     ) { following ->
         following ?: return@LazyPagingList
-        MediaSocialFollowingItem(following)
+        MediaSocialFollowingItem(following){
+            following.user?.id?.let {
+                navigator.userScreen(it)
+            }
+        }
     }
 }
 
 @Composable
-private fun MediaSocialFollowingItem(followingModel: MediaSocialFollowingModel) {
+private fun MediaSocialFollowingItem(followingModel: MediaSocialFollowingModel, onClick: OnClick) {
     Card(
-        modifier = Modifier.padding(4.dp)
+        modifier = Modifier.padding(4.dp),
+        onClick = onClick
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -164,5 +173,5 @@ private fun MediaSocialFollowingItemPreview() {
             status = MediaListStatus.COMPLETED,
             score = 10.0
         )
-    )
+    ){}
 }

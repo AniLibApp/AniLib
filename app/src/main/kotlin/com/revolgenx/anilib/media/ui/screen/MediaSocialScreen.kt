@@ -20,35 +20,40 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.ext.hideBottomSheet
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.radio.TextRadioButton
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.viewmodel.MediaSocialFollowingScreenViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaSocialScreenType
 import com.revolgenx.anilib.media.ui.viewmodel.MediaSocialScreenViewModel
+import com.revolgenx.anilib.social.ui.screen.ActivityComposerBottomSheet
+import com.revolgenx.anilib.social.ui.screen.ActivityReplyBottomSheet
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
-import com.revolgenx.anilib.type.ActivityType
+import com.revolgenx.anilib.social.ui.viewmodel.ReplyComposerViewModel
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MediaSocialScreen(mediaId: Int) {
-    val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
-    val mediaSocialFollowingViewModel: MediaSocialFollowingScreenViewModel = koinViewModel()
-
-    activityUnionViewModel.field.also {
-        it.mediaId = mediaId
-        it.type = ActivityType.MEDIA_LIST
-    }
-
-    mediaSocialFollowingViewModel.field.mediaId = mediaId
+fun MediaSocialScreen(
+    activityUnionViewModel: ActivityUnionViewModel,
+    mediaSocialFollowingViewModel: MediaSocialFollowingScreenViewModel,
+) {
+    val viewModel: MediaSocialScreenViewModel = koinViewModel()
 
     val scope = rememberCoroutineScope()
+    val activityReplyBottomSheetState = rememberBottomSheetState()
+
+    val replyComposerBottomSheetState = rememberBottomSheetState()
+    val replyComposerViewModel: ReplyComposerViewModel = koinViewModel()
 
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
     val bottomScrollConnection =
@@ -57,7 +62,7 @@ fun MediaSocialScreen(mediaId: Int) {
     val mediaSocialFilterTypeBottomSheet = remember {
         mutableStateOf(false)
     }
-    val viewModel: MediaSocialScreenViewModel = koinViewModel()
+
 
     ScreenScaffold(
         floatingActionButton = {
@@ -79,16 +84,59 @@ fun MediaSocialScreen(mediaId: Int) {
         bottomNestedScrollConnection = bottomScrollConnection,
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            when(viewModel.screenType){
+            when (viewModel.screenType) {
                 MediaSocialScreenType.ACTIVITY -> {
-                    MediaSocialActivityScreen(viewModel = activityUnionViewModel)
+                    MediaSocialActivityScreen(
+                        viewModel = activityUnionViewModel,
+                        onShowReplies = { activityId ->
+                            scope.launch {
+                                activityUnionViewModel.activityId = activityId
+                                activityReplyBottomSheetState.peek()
+                            }
+                        },
+                        onEditTextActivity = {
+
+                        },
+                        onEditMessageActivity = {}
+                    )
                 }
+
                 MediaSocialScreenType.FOLLOWING -> {
                     MediaSocialFollowingScreen(viewModel = mediaSocialFollowingViewModel)
                 }
             }
         }
     }
+
+
+    ActivityReplyBottomSheet(
+        activityId = activityUnionViewModel.activityId,
+        bottomSheetState = activityReplyBottomSheetState,
+        onReplyCompose = {
+            scope.launch {
+                replyComposerViewModel.forReply(activityUnionViewModel.activityId, null, null)
+                replyComposerBottomSheetState.peek()
+            }
+        },
+        onReplyEdit = { replyModel ->
+            scope.launch {
+                replyModel.activityId?.let {
+                    replyComposerViewModel.forReply(
+                        replyModel.activityId,
+                        replyModel.id,
+                        replyModel.text
+                    )
+                    replyComposerBottomSheetState.peek()
+                }
+            }
+        }
+    )
+
+
+    ActivityComposerBottomSheet(
+        bottomSheetState = replyComposerBottomSheetState,
+        viewModel = replyComposerViewModel
+    )
 
     MediaSocialTypeBottomSheet(
         openBottomSheet = mediaSocialFilterTypeBottomSheet,

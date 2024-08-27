@@ -425,7 +425,6 @@ private fun MediaListEditScreenContent(
 
                     user.mediaListOptions?.takeIf { if (media.isAnime) it.isAnimeAdvancedScoreEnabled else it.isMangaAdvancedScoreEnabled }
                         ?.let {
-
                             HorizontalDivider(modifier = Modifier.padding(4.dp))
                             TextHeaderContent(
                                 heading = stringResource(id = I18nR.string.advanced_scores),

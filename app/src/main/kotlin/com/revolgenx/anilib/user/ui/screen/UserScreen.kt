@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.user.ui.screen
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,6 +26,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +39,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.tab.TabOptions
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
@@ -72,12 +73,18 @@ import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
 import com.revolgenx.anilib.list.ui.screen.MangaListScreen
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
+import com.revolgenx.anilib.social.ui.screen.ActivityComposerBottomSheet
+import com.revolgenx.anilib.social.ui.screen.ActivityReplyBottomSheet
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.MessageComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ReplyComposerViewModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.screen.userStats.UserStatsScreen
 import com.revolgenx.anilib.user.ui.viewmodel.UserScreenPageType
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -108,7 +115,7 @@ class UserScreen(
 }
 
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun UserScreenContent(
     userId: Int?,
@@ -118,7 +125,7 @@ private fun UserScreenContent(
     val viewModel: UserViewModel = koinViewModel()
     val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
 
-    if(userId != null){
+    if (userId != null) {
         viewModel.userId.value = userId
     }
     viewModel.field.userName = userName
@@ -171,10 +178,7 @@ private fun UserScreenContent(
             ) {
                 when (pages[page].type) {
                     UserScreenPageType.OVERVIEW -> UserOverviewScreen(viewModel)
-                    UserScreenPageType.ACTIVITY -> UserActivityUnionScreen(
-                        activityUnionViewModel
-                    )
-
+                    UserScreenPageType.ACTIVITY -> UserActivityUnionScreen(activityUnionViewModel)
                     UserScreenPageType.FAVOURITES -> UserFavouritesScreen(viewModel.userId.value)
                     UserScreenPageType.ANIME_STATS -> UserStatsScreen(
                         viewModel.userId.value,
@@ -197,7 +201,10 @@ private fun UserScreenContent(
                 }
             }
         }
+
+
     }
+
 }
 
 
@@ -221,8 +228,8 @@ private fun UserScreenTopAppbar(
         maxAlpha = 1f,
         alphaFraction = 0.7f,
         collapseFraction = 0.7f,
-        windowInsets = if(isTab) topWindowInsets() else TopAppBarDefaults.windowInsets,
-        contentWindowInsets = if(isTab) topWindowInsets() else TopAppBarDefaults.windowInsets,
+        windowInsets = if (isTab) topWindowInsets() else TopAppBarDefaults.windowInsets,
+        contentWindowInsets = if (isTab) topWindowInsets() else TopAppBarDefaults.windowInsets,
         containerContent = { _ ->
             Column(
                 modifier = Modifier

@@ -14,7 +14,7 @@ object PackagingOptions {
 object Versions{
     const val composeUi = "1.6.8"
     const val composeFoundation = "1.6.8"
-    const val composeMaterial = "1.3.0-beta05"
+    const val composeMaterial = "1.3.0-rc01"
     const val composeActivity = "1.9.1"
     const val voyager = "1.1.0-beta02"
     const val timber = "5.0.1"
@@ -34,6 +34,7 @@ object Versions{
     const val accompanistPermissions = "0.34.0" //compose ui 1.6
     const val aboutLibraries = "11.2.2"
     const val reorderable = "2.3.0"
+    const val glance = "1.1.0"
 }
 
 object Dependencies {
@@ -103,6 +104,10 @@ object Dependencies {
     const val aboutLibraries = "com.mikepenz:aboutlibraries-compose-m3:${Versions.aboutLibraries}"
 
     const val reorderable = "sh.calvin.reorderable:reorderable:${Versions.reorderable}"
+
+    //widget
+    const val glance = "androidx.glance:glance-appwidget:${Versions.glance}"
+    const val glanceMaterial3 = "androidx.glance:glance-material3:${Versions.glance}"
 }
 
 
@@ -202,4 +207,9 @@ fun DependencyHandler.aboutLibraries() {
 
 fun DependencyHandler.reorderable() {
     implementation(Dependencies.reorderable)
+}
+
+fun DependencyHandler.glance(){
+    implementation(Dependencies.glance)
+    implementation(Dependencies.glanceMaterial3)
 }

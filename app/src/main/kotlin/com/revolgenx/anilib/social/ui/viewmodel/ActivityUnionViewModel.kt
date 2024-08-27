@@ -1,7 +1,10 @@
 package com.revolgenx.anilib.social.ui.viewmodel
 
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.viewModelScope
 import com.revolgenx.anilib.common.data.service.ToggleService
 import com.revolgenx.anilib.common.data.store.ActivityUnionFilterDataStore
 import com.revolgenx.anilib.common.ext.get
@@ -15,7 +18,7 @@ import com.revolgenx.anilib.social.data.source.ActivityUnionPagingSource
 import com.revolgenx.anilib.social.ui.model.ActivityModel
 import com.revolgenx.anilib.type.LikeableType
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.single
 
@@ -27,12 +30,13 @@ open class ActivityUnionViewModel(
 
     override val field: ActivityUnionField = ActivityUnionField()
 
-    val showToggleErrorMsg = mutableStateOf(false)
+    var showToggleError by mutableStateOf(false)
+    var showDeleteError by mutableStateOf(false)
 
     override val pagingSource: ActivityUnionPagingSource
         get() = ActivityUnionPagingSource(this.field, activityUnionService)
 
-    val activityId = mutableIntStateOf(-1)
+    var activityId by mutableIntStateOf(-1)
 
     fun toggleSubscription(model: ActivityModel) {
         if (model.id == -1) return
@@ -47,12 +51,12 @@ open class ActivityUnionViewModel(
 
             if (!successful) {
                 model.isSubscribed.value = isSubscribed
-                showToggleErrorMsg.value = true
+                showToggleError = true
             }
         }
     }
 
-    fun toggleLike(model: ActivityModel){
+    fun toggleLike(model: ActivityModel) {
         if (model.id == -1) return
 
         val isLiked = model.isLiked.value
@@ -61,17 +65,25 @@ open class ActivityUnionViewModel(
         val toggleLikeField =
             ToggleLikeV2Field(id = model.id, type = LikeableType.ACTIVITY)
 
-        launch {
-            toggleService.toggleLikeV2(toggleLikeField)
-                .onEach {
-                    it ?: return@onEach
-                    model.likeCount.intValue = it.likeCount
-                    model.isLiked.value = it.isLiked
-                }.catch {
-                    model.isLiked.value = isLiked
-                    showToggleErrorMsg.value = true
-                }.collect()
-        }
+        toggleService.toggleLikeV2(toggleLikeField)
+            .onEach {
+                it ?: return@onEach
+                model.likeCount.intValue = it.likeCount
+                model.isLiked.value = it.isLiked
+            }.catch {
+                model.isLiked.value = isLiked
+                showToggleError = true
+            }.launchIn(viewModelScope)
+    }
+
+    fun delete(model: ActivityModel) {
+        if (model.id == -1) return
+        activityUnionService.deleteActivity(model.id)
+            .onEach {
+                model.isDeleted.value = it
+            }.catch {
+                showDeleteError = true
+            }.launchIn(viewModelScope)
     }
 }
 

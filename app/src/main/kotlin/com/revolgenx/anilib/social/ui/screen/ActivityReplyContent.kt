@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import anilib.i18n.R
@@ -30,6 +31,9 @@ import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
+import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.LightText
@@ -37,11 +41,14 @@ import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcAutorenew
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCreate
+import com.revolgenx.anilib.common.ui.icons.appicon.IcDelete
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeartOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPencil
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithId
@@ -51,27 +58,39 @@ import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
 @Composable
 fun ActivityReplyContent(
     viewModel: ActivityReplyViewModel,
-    onReplyClick: OnClick,
+    onReplyCompose: OnClick,
+    onReplyEdit: (model: ActivityReplyModel) -> Unit,
     onUserClick: OnClickWithId
 ) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
     val snackbarHostState = localSnackbarHostState()
     val context = localContext()
+    val user = localUser()
 
-    LaunchedEffect(viewModel.showToggleErrorMsg.value) {
-        if (viewModel.showToggleErrorMsg.value) {
+    LaunchedEffect(viewModel.showToggleError) {
+        if (viewModel.showToggleError) {
             snackbarHostState.showSnackbar(
                 context.getString(R.string.operation_failed),
                 withDismissAction = true
             )
-            viewModel.showToggleErrorMsg.value = false
+            viewModel.showToggleError = false
+        }
+    }
+
+    LaunchedEffect(viewModel.showDeleteError) {
+        if (viewModel.showDeleteError) {
+            snackbarHostState.showSnackbar(
+                context.getString(R.string.failed_to_delete),
+                withDismissAction = true
+            )
+            viewModel.showDeleteError = false
         }
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(14.dp),
+            .padding(horizontal = 14.dp),
     ) {
         Row(
             modifier = Modifier
@@ -92,9 +111,8 @@ fun ActivityReplyContent(
                     Icon(imageVector = AppIcons.IcAutorenew, contentDescription = null)
                 }
                 FilledTonalButton(
-                    onClick = {
-                        onReplyClick()
-                    }) {
+                    onClick = onReplyCompose
+                ) {
                     Text(text = stringResource(id = R.string.reply))
                     Spacer(modifier = Modifier.size(3.dp))
                     Icon(imageVector = AppIcons.IcCreate, contentDescription = null)
@@ -105,20 +123,24 @@ fun ActivityReplyContent(
         LazyPagingList(
             pagingItems = pagingItems,
             onPullRefresh = false,
-            divider = {
-//                HorizontalDivider(
-//                    modifier = Modifier
-//                        .padding(horizontal = 12.dp)
-//                        .padding(bottom = 12.dp)
-//                )
-            }
         ) { replyModel ->
             replyModel ?: return@LazyPagingList
+
+            if (replyModel.isDeleted.value) {
+                ReplyDeletedItem()
+                return@LazyPagingList
+            }
+
             ActivityReplyItem(
                 model = replyModel,
+                loggedInUserId = user.userId,
                 onUserClick = onUserClick,
                 onLikeClick = {
-                    viewModel.toggleLike(replyModel)
+                    viewModel.toggleLike(model = replyModel)
+                },
+                onReplyEdit = onReplyEdit,
+                onDelete = {
+                    viewModel.delete(model = replyModel)
                 }
             )
         }
@@ -129,8 +151,11 @@ fun ActivityReplyContent(
 @Composable
 private fun ActivityReplyItem(
     model: ActivityReplyModel,
+    loggedInUserId: Int?,
     onUserClick: OnClickWithId,
-    onLikeClick: OnClick
+    onLikeClick: OnClick,
+    onReplyEdit: (model: ActivityReplyModel) -> Unit,
+    onDelete: OnClick
 ) {
     Column(
         modifier = Modifier
@@ -178,7 +203,6 @@ private fun ActivityReplyItem(
 
             Spacer(modifier = Modifier.weight(1f))
 
-
             MediumText(
                 modifier = Modifier.padding(start = 2.dp),
                 text = model.likeCount.intValue.prettyNumberFormat(),
@@ -195,6 +219,28 @@ private fun ActivityReplyItem(
                     contentDescription = null
                 )
             }
+
+            loggedInUserId?.takeIf { it == model.userId }?.let {
+                OverflowMenu {
+                    OverflowMenuItem(
+                        textRes = anilib.i18n.R.string.edit,
+                        icon = AppIcons.IcPencil,
+                        onClick = {
+                            it.value = false
+                            onReplyEdit(model)
+                        }
+                    )
+
+                    OverflowMenuItem(
+                        textRes = R.string.delete,
+                        icon = AppIcons.IcDelete,
+                        onClick = {
+                            it.value = false
+                            onDelete()
+                        }
+                    )
+                }
+            }
         }
 
         MarkdownText(
@@ -205,3 +251,15 @@ private fun ActivityReplyItem(
     }
 }
 
+@Composable
+private fun ReplyDeletedItem() {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        Text(
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 12.dp),
+            text = stringResource(id = R.string.reply_has_been_deleted)
+        )
+    }
+}

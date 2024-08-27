@@ -18,9 +18,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,7 +36,7 @@ import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.airing.ui.model.AiringAtModel
 import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
-import com.revolgenx.anilib.airing.ui.model.AiringScheduleTimer
+import com.revolgenx.anilib.airing.ui.model.TimeUntilAiringModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
@@ -330,7 +328,7 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                     )
                     AiringScheduleTimer(
                         airingScheduleModel.airingAtModel,
-                        airingScheduleModel.airingScheduleTimer!!,
+                        airingScheduleModel.timeUntilAiringModel,
                     )
                 }
             }
@@ -341,24 +339,24 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
 @Composable
 private fun AiringScheduleTimer(
     airingAtModel: AiringAtModel,
-    airingScheduleTimer: AiringScheduleTimer
+    timeUntilAiringModel: TimeUntilAiringModel
 ) {
     val context = localContext()
     val timeUntilAired = remember {
-        mutableStateOf(airingScheduleTimer.timeUntilAiringModel.formatString(context))
+        mutableStateOf(timeUntilAiringModel.formatString(context))
     }
 
     LaunchedEffect(Unit) {
-        airingScheduleTimer.start()
+        timeUntilAiringModel.renew()
         while (true) {
-            if (airingScheduleTimer.timeUntilAiringModel.alreadyAired) break
+            if (timeUntilAiringModel.alreadyAired) break
             delay(1000)
-            timeUntilAired.value = airingScheduleTimer.timeUntilAiringModel.formatString(context)
-            airingScheduleTimer.run()
+            timeUntilAired.value = timeUntilAiringModel.formatString(context)
+            timeUntilAiringModel.tick()
         }
     }
 
-    val scheduleTimeText = if (airingScheduleTimer.timeUntilAiringModel.alreadyAired) {
+    val scheduleTimeText = if (timeUntilAiringModel.alreadyAired) {
         airingAtModel.airedAt
     } else {
         timeUntilAired.value

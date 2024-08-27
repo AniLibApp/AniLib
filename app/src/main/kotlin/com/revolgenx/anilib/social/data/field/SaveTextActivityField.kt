@@ -4,7 +4,7 @@ import com.revolgenx.anilib.SaveTextActivityMutation
 import com.revolgenx.anilib.common.data.field.BaseField
 
 data class SaveTextActivityField(
-    val activityId: Int? = null,
+    val activityId: Int?,
     val text: String
 ) : BaseField<SaveTextActivityMutation>() {
     override fun toQueryOrMutation(): SaveTextActivityMutation {

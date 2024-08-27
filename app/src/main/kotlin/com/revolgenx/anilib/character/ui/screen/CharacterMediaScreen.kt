@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.character.ui.screen
 
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.rememberScrollState
@@ -172,7 +173,8 @@ private fun CharacterMediaScreenBottomSheetContent(
             }
 
             TextSwitch(
-                title = stringResource(id = I18nR.string.on_list),
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = I18nR.string.on_list),
                 checked = field.onList,
                 onCheckedChanged = {
                     field.onList = it

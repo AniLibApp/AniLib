@@ -97,11 +97,13 @@ import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaScreenPageType
+import com.revolgenx.anilib.media.ui.viewmodel.MediaSocialFollowingScreenViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStaffViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.review.ui.screen.ReviewComposerBottomSheet
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewComposerViewModel
+import com.revolgenx.anilib.social.ui.screen.ActivityReplyBottomSheet
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.type.MediaListStatus
@@ -137,7 +139,8 @@ private fun MediaScreenContent(
     val reviewViewModel: MediaReviewViewModel = koinViewModel()
     val staffViewModel: MediaStaffViewModel = koinViewModel()
     val characterViewModel: MediaCharacterViewModel = koinViewModel()
-
+    val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
+    val mediaSocialFollowingViewModel: MediaSocialFollowingScreenViewModel = koinViewModel()
     val reviewComposerViewModel: ReviewComposerViewModel = koinViewModel()
     val reviewComposerBottomSheetState = rememberBottomSheetState()
 
@@ -156,9 +159,13 @@ private fun MediaScreenContent(
     reviewViewModel.field.mediaId = mediaId
     staffViewModel.field.mediaId = mediaId
     characterViewModel.field.mediaId = mediaId
-
-
     reviewComposerViewModel.field.mediaId = mediaId
+
+    mediaSocialFollowingViewModel.field.mediaId = mediaId
+    activityUnionViewModel.field.also {
+        it.mediaId = mediaId
+        it.type = ActivityType.MEDIA_LIST
+    }
     viewModel.getResource()
 
 
@@ -267,7 +274,11 @@ private fun MediaScreenContent(
                     MediaScreenPageType.STAFF -> MediaStaffScreen(staffViewModel)
                     MediaScreenPageType.REVIEW -> MediaReviewScreen(reviewViewModel)
                     MediaScreenPageType.STATS -> MediaStatsScreen(statsViewModel, mediaType)
-                    MediaScreenPageType.SOCIAL -> {MediaSocialScreen(mediaId = mediaId)
+                    MediaScreenPageType.SOCIAL -> {
+                        MediaSocialScreen(
+                            activityUnionViewModel = activityUnionViewModel,
+                            mediaSocialFollowingViewModel = mediaSocialFollowingViewModel
+                        )
                     }
                 }
 
@@ -281,6 +292,7 @@ private fun MediaScreenContent(
                 }
             }
         }
+
 
     }
 
@@ -338,9 +350,12 @@ private fun MediaScreenTopAppBar(
         },
         actions = { isCollapsed ->
 
-            if(isCollapsed){
+            if (isCollapsed) {
                 ActionMenu(icon = AppIcons.IcPencil, onClick = onEdit)
-                ActionMenu(icon = if(mediaModel?.isFavourite?.value == true) AppIcons.IcHeart else AppIcons.IcHeartOutline, onClick = onFavouriteClick)
+                ActionMenu(
+                    icon = if (mediaModel?.isFavourite?.value == true) AppIcons.IcHeart else AppIcons.IcHeartOutline,
+                    onClick = onFavouriteClick
+                )
             }
 
             mediaModel?.siteUrl?.let { site ->

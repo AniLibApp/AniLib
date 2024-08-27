@@ -2,6 +2,7 @@ package com.revolgenx.anilib.studio.ui.screen
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -272,7 +273,8 @@ private fun StudioScreenBottomSheetContent(
             }
 
             TextSwitch(
-                title = stringResource(id = I18nR.string.on_list),
+                modifier = Modifier.fillMaxWidth(),
+                text = stringResource(id = I18nR.string.on_list),
                 checked = field.onList,
                 onCheckedChanged = {
                     field.onList = it

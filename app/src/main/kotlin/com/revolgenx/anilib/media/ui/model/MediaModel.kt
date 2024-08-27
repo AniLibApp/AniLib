@@ -214,8 +214,7 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
             AiringScheduleModel(
                 episode = it.episode,
                 timeUntilAiring = it.timeUntilAiring,
-                timeUntilAiringModel =
-                TimeUntilAiringModel(it.timeUntilAiring.toLong()),
+                timeUntilAiringModel = TimeUntilAiringModel(timeUntilAired = it.timeUntilAiring.toLong(), airingAt = it.airingAt.toLong()),
                 airingAt = it.airingAt,
                 airingAtModel = AiringAtModel(
                     LocalDateTime.ofInstant(

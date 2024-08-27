@@ -5,13 +5,16 @@ import IcShare
 import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
@@ -103,24 +106,27 @@ fun OverflowMenu(
 ) {
     val expanded = remember { mutableStateOf(false) }
 
-    ActionMenu(
-        icon = icon ?: AppIcons.IcMoreHoriz,
-        contentDescriptionRes = I18nR.string.more,
-        tonalButton = tonalButton
-    ) {
-        expanded.value = !expanded.value
+    Box(modifier = Modifier.wrapContentSize(Alignment.TopStart)) {
+        ActionMenu(
+            icon = icon ?: AppIcons.IcMoreHoriz,
+            contentDescriptionRes = I18nR.string.more,
+            tonalButton = tonalButton
+        ) {
+            expanded.value = !expanded.value
+        }
+
+        DropdownMenu(
+            expanded = expanded.value,
+            offset = DpOffset(8.dp, 0.dp),
+            onDismissRequest = {
+                expanded.value = expanded.value.not()
+            },
+            content = {
+                content(expanded)
+            }
+        )
     }
 
-    DropdownMenu(
-        expanded = expanded.value,
-        offset = DpOffset(8.dp, 0.dp),
-        onDismissRequest = {
-            expanded.value = expanded.value.not()
-        },
-        content = {
-            content(expanded)
-        }
-    )
 }
 
 @Composable

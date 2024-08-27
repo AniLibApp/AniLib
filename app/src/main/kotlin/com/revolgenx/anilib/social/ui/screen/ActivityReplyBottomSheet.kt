@@ -10,6 +10,8 @@ import com.dokar.sheets.SheetBehaviors
 import com.dokar.sheets.m3.BottomSheetLayout
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.social.ui.model.ActivityReplyModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -17,9 +19,10 @@ import org.koin.core.parameter.parametersOf
 
 @Composable
 fun ActivityReplyBottomSheet(
-    activityId: IntState,
+    activityId: Int,
     bottomSheetState: BottomSheetState,
-    activityComposerBottomSheetState: BottomSheetState
+    onReplyCompose: OnClick,
+    onReplyEdit: (model: ActivityReplyModel)-> Unit
 ) {
     val navigator = localNavigator()
     val scope = rememberCoroutineScope()
@@ -37,19 +40,16 @@ fun ActivityReplyBottomSheet(
             behaviors = SheetBehaviors(extendsIntoNavigationBar = true)
         ) {
             val viewModel: ActivityReplyViewModel = koinViewModel(
-                key = "${ActivityReplyViewModel::class.java.canonicalName}:${activityId.intValue}",
-                parameters = { parametersOf(activityId.intValue) }
+                key = "${ActivityReplyViewModel::class.java.canonicalName}:${activityId}",
+                parameters = { parametersOf(activityId) }
             )
             ActivityReplyContent(
                 viewModel = viewModel,
-                onReplyClick = {
-                    scope.launch {
-                        activityComposerBottomSheetState.peek()
-                    }
-                },
+                onReplyCompose = onReplyCompose,
                 onUserClick = {
                     navigator.userScreen(userId = it)
-                }
+                },
+                onReplyEdit = onReplyEdit
             )
         }
     }

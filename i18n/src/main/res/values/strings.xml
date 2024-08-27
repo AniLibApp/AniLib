@@ -533,6 +533,7 @@
 
     <!--Activity-->
     <string name="activity_has_been_deleted">Activity has been deleted.</string>
+    <string name="reply_has_been_deleted">Reply has been deleted.</string>
     <!--Activity-->
 
 
@@ -596,4 +597,10 @@
     <string name="never">Never</string>
     <!--Ads-->
 
+    <string name="datetime_days">Days</string>
+    <string name="datetime_hour">Hour</string>
+    <string name="datetime_min">Min</string>
+    <string name="datetime_sec">Sec</string>
+    <string name="ep_s">Ep %1$s</string>
+    <string name="text_field_required">Text field is cannot be empty.</string>
 </resources>

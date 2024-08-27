@@ -69,13 +69,6 @@ abstract class MediaListScreen : BaseTabScreen() {
         val viewModel = mediaListViewModel()
         val filterViewModel = mediaListFilterViewModel()
         MediaListScreenContent(viewModel, filterViewModel)
-
-        DisposableEffect(key1 = viewModel) {
-            Timber.d("I am created just now")
-            onDispose {
-                Timber.d("I am disposed")
-            }
-        }
     }
 
     @Composable
