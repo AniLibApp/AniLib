@@ -39,6 +39,7 @@ import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
 import com.revolgenx.anilib.airing.ui.model.TimeUntilAiringModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
+import com.revolgenx.anilib.common.data.constant.dateFormat
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.isNull
 import com.revolgenx.anilib.common.ext.localContext
@@ -54,7 +55,6 @@ import com.revolgenx.anilib.common.ui.component.date.CalendarRangeBottomSheet
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.component.text.MediumLargeText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -139,7 +139,7 @@ private fun AiringScreenContent() {
 
     val dateRangeSubTitle = remember {
         derivedStateOf {
-            val dateFormatPattern = context.getString(I18nR.string.date_format_pattern)
+            val dateFormatPattern = dateFormat
 
             if (viewModel.field.isWeeklyTypeDate) {
                 context.getString(I18nR.string.day_range_string).format(
@@ -303,14 +303,14 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
                 val timeUntilAiringModel = airingScheduleModel.timeUntilAiringModel
                 val epAiringTitle = if (media.episodes.isNull()) {
                     val epAiredRes = if (timeUntilAiringModel.alreadyAired) {
-                        I18nR.string.ep_s_aired_on
+                        I18nR.string.ep_s_aired_at
                     } else {
                         I18nR.string.ep_s_airing_in
                     }
                     stringResource(id = epAiredRes).format(airingScheduleModel.episode)
                 } else {
                     val epAiredRes = if (timeUntilAiringModel.alreadyAired) {
-                        I18nR.string.ep_s_of_s_aired_on
+                        I18nR.string.ep_s_of_s_aired_at
                     } else {
                         I18nR.string.ep_s_of_s_airing_in
                     }
@@ -361,8 +361,11 @@ private fun AiringScheduleTimer(
     } else {
         timeUntilAired.value
     }
-    MediumLargeText(
+
+    MediumText(
         text = scheduleTimeText,
+        fontSize = 16.sp,
+        lineHeight = 18.sp,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }

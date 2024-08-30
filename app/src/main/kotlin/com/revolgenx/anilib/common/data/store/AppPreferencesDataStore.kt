@@ -64,6 +64,9 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val mangaPageOrderKey = intPreferencesKey("manga_page_order_key")
         val activityPageOrderKey = intPreferencesKey("activity_page_order_key")
 
+
+        val bugReportKey = booleanPreferencesKey("bug_report_key")
+
     }
 
 
@@ -154,6 +157,12 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         dataStore = dataStore,
         prefKey = showUserAboutKey,
         defaultValue = false
+    )
+
+    val bugReport = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = bugReportKey,
+        defaultValue = true
     )
 
 

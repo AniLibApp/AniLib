@@ -26,6 +26,9 @@ enum class AdsInterval(val value: Int) {
     }
 }
 
+const val dateFormat = "MM/dd/yyyy"
+const val shortDateFormat = "dd MMM, yyyy"
+
 fun showAds(
     adsInterval: AdsInterval,
     currentEpochSecond: Long,

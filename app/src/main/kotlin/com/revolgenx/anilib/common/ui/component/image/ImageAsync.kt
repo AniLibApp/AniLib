@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.common.ui.component.image
 
+import android.content.Context
+import android.os.Build
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -14,12 +16,30 @@ import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import coil.ImageLoader
 import coil.compose.AsyncImage
-import coil.compose.AsyncImagePainter
+import coil.decode.GifDecoder
+import coil.decode.ImageDecoderDecoder
 import coil.imageLoader
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+
+private var _coilImageLoader: ImageLoader? = null
+
+val Context.coilImageLoader: ImageLoader
+    get() {
+        return _coilImageLoader ?: let {
+            this.imageLoader.newBuilder()
+                .components {
+                    if (Build.VERSION.SDK_INT >= 28) {
+                        add(ImageDecoderDecoder.Factory())
+                    } else {
+                        add(GifDecoder.Factory())
+                    }
+                }
+                .build()
+        }
+    }
 
 
 @Composable

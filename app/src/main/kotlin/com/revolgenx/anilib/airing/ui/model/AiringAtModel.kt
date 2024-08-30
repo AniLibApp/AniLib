@@ -12,7 +12,7 @@ data class AiringAtModel(val airingAt: LocalDateTime) {
         airingAt.toLocalTime().format(DateTimeFormatter.ofPattern("h:mm a")) //12:00
     fun airingTime(is12hrFormat: Boolean) = if (is12hrFormat) airingTime12 else airingTime24
 
-    val airedAt = airingAt.format(DateTimeFormatter.ofPattern("dd MMM, yyyy, HH:mm"))
+    val airedAt = airingAt.format(DateTimeFormatter.ofPattern("dd MMM, yyyy, h:mm a"))
 
     val airingDay: String = airingAt.dayOfWeek.getDisplayName(TextStyle.FULL, Locale.getDefault())
     val airingDayMedium: String =

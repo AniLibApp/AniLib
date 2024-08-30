@@ -6,4 +6,5 @@ import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 class SettingsViewModel(
     val appPreferencesDataStore: AppPreferencesDataStore
 ) : ViewModel() {
+    val bugReport = appPreferencesDataStore.bugReport
 }

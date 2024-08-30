@@ -18,12 +18,14 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowDown
 import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowDownward
 import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowUp
 import com.revolgenx.anilib.common.ui.icons.appicon.IcArrowUpward
+import com.revolgenx.anilib.common.ui.icons.appicon.IcAssignment
 import com.revolgenx.anilib.common.ui.icons.appicon.IcAutorenew
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBack
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBold
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBook
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBookOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBookmark
+import com.revolgenx.anilib.common.ui.icons.appicon.IcBugReport
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCalculate
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCalendar
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
@@ -93,6 +95,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcPin
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPlanning
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPlay
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPlus
+import com.revolgenx.anilib.common.ui.icons.appicon.IcPrivacyPolicy
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPublic
 import com.revolgenx.anilib.common.ui.icons.appicon.IcQuestionMark
 import com.revolgenx.anilib.common.ui.icons.appicon.IcQuote
@@ -247,7 +250,10 @@ val AppIcons.AllIcons: List<ImageVector>
             IcLayoutStyle,
             IcMainInline,
             IcPublic,
-            IcUnfold
+            IcUnfold,
+            IcPrivacyPolicy,
+            IcBugReport,
+            IcAssignment
         )
         return __AllIcons!!
     }

@@ -29,7 +29,8 @@ enum class DeepLinkPath {
     STAFF,
     STUDIO,
     ACTIVITY,
-    NOTIFICATION
+    NOTIFICATION,
+    AIRING
 }
 
 class MainActivityViewModel(private val preferencesDataStore: AppPreferencesDataStore) :

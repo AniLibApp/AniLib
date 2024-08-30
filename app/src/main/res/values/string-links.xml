@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="anilib_github_link" translatable="false">https://github.com/AniLibApp/AniLib</string>
+    <string name="anilib_license" translatable="false">https://github.com/AniLibApp/AniLib/blob/master/LICENSE</string>
+    <string name="privacy_policy_url" translatable="false">https://anilib.onrender.com/privacypolicy</string>
+    <string name="terms_and_condition_url" translatable="false">https://anilib.onrender.com/termsandcondition</string>
+</resources>

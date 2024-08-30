@@ -15,6 +15,7 @@ import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import com.revolgenx.anilib.app.ui.screen.MainActivityScreen
 import com.revolgenx.anilib.app.ui.viewmodel.DeepLinkPath
 import com.revolgenx.anilib.common.ext.activityScreen
+import com.revolgenx.anilib.common.ext.airingScheduleScreen
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.notificationScreen
@@ -111,6 +112,10 @@ class MainActivity : BaseMainActivity() {
 
             DeepLinkPath.NOTIFICATION ->{
                 navigator.notificationScreen()
+            }
+
+            DeepLinkPath.AIRING -> {
+                navigator.airingScheduleScreen()
             }
         }
         viewModel.deepLinkPath.value = null

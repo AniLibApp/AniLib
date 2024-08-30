@@ -43,22 +43,6 @@ fun SemiBoldText(
     )
 }
 
-
-@Composable
-fun MediumLargeText(
-    text: String,
-    modifier: Modifier = Modifier,
-    color: Color = Color.Unspecified,
-) {
-    MediumText(
-        text = text,
-        modifier = modifier,
-        fontSize = 16.sp,
-        lineHeight = 18.sp,
-        color = color
-    )
-}
-
 @Composable
 fun MediumText(
     text: String,

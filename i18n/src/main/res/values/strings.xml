@@ -202,7 +202,6 @@
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="more">More</string>
-    <string name="date_format_pattern">MM/dd/yyyy</string>
     <string name="search">Search</string>
     <string name="notifcations">Notifications</string>
 
@@ -320,13 +319,16 @@
     <string name="weekly">Weekly</string>
     <string name="ep_s_s">E: %1$s · %2$s</string>
     <string name="ep_s_airing_in">Ep %1$d airing in</string>
-    <string name="ep_s_aired_on">Ep %1$d aired on</string>
+    <string name="ep_s_aired_at">Ep %1$d aired at</string>
     <string name="ep_s_of_s_airing_in">Ep %1$d of %2$d airing in</string>
-    <string name="ep_s_of_s_aired_on">Ep %1$d of %2$d aired on</string>
+    <string name="ep_s_of_s_aired_at">Ep %1$d of %2$d aired at</string>
     <string name="eta_s_s_s_s">%1$dd %2$dh %3$dm %4$ds</string>
     <string name="eta_s_s_s">%1$dh %2$dm %3$ds</string>
     <string name="eta_s_s">%1$dm %2$ds</string>
     <string name="eta_s">%1$ds</string>
+    <string name="eta_no_sec_s_s_s">%1$dd %2$dh %3$dm</string>
+    <string name="eta_no_sec_s_s">%1$dh %2$dm</string>
+    <string name="eta_no_sec_s">%1$dm</string>
     <string name="include_already_aired">Include Already Aired</string>
     <string name="show_only_from_your_planning_list">Show only from your planning list</string>
     <string name="show_only_from_your_watching_list">Show only from your watching list</string>
@@ -451,6 +453,15 @@
     <string name="settings_show_users_about">Show User’s About</string>
     <string name="settings_show_users_about_desc">Directly load user’s about section</string>
 
+
+    <string name="privacy_policy">Privacy Policy.</string>
+    <string name="privacy_policy_desc">View complete privacy policy.</string>
+    <string name="whats_new">What\'s new</string>
+    <string name="terms_and_condition">Terms and Condition</string>
+    <string name="terms_and_condition_desc">View Terms and Condition</string>
+    <string name="crash_reporting">Crash Reporting</string>
+    <string name="crash_report_desc">Help improve AniLib\'s features. Automatically sends crash reports.</string>
+
     <!--Settings-->
 
     <string name="open_in_browser">Open in browser</string>
@@ -571,8 +582,6 @@
     <string name="settings_list_3_star">3 Point Smiley :)</string>
     <string name="licenses">Licenses</string>
     <string name="translators">Translators</string>
-    <string name="github">Github</string>
-    <string name="github_source_desc">View source on Github.</string>
     <string name="license_apache_2">APACHE 2.0</string>
     <string name="license_apache_desc">View full license.</string>
 

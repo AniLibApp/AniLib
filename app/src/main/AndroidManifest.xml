@@ -158,6 +158,19 @@
                 android:name="autoStoreLocales"
                 android:value="true" />
         </service>
+
+        <!--widget-->
+        <receiver android:name=".widget.ui.AiringScheduleWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/airing_schedule_widget_info" />
+        </receiver>
+        <!--widget-->
+
     </application>
 
 </manifest>

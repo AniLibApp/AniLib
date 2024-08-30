@@ -72,4 +72,26 @@ data class TimeUntilAiringModel(
         }
     }
 
+
+    fun formatWidgetString(context: Context): String {
+        return when {
+            day != 0L -> {
+                context.getString(I18nR.string.eta_no_sec_s_s_s).format(day, hour, min)
+            }
+
+            hour != 0L -> {
+                context.getString(I18nR.string.eta_no_sec_s_s).format(hour, min)
+            }
+
+            min != 0L -> {
+                context.getString(I18nR.string.eta_no_sec_s).format(min)
+            }
+
+            sec != 0L -> {
+                context.getString(I18nR.string.eta_s).format(sec)
+            }
+
+            else -> ""
+        }
+    }
 }

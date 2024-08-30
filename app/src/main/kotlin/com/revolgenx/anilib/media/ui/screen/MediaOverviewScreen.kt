@@ -693,15 +693,15 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean, context: Context) {
 private fun MediaNextAiringEpisode(media: MediaModel) {
     media.nextAiringEpisode?.let { nextEp ->
         var timeUntilAiring by remember {
-            mutableStateOf( nextEp.timeUntilAiringModel.copy())
+            mutableStateOf(nextEp.timeUntilAiringModel.copy())
         }
         LaunchedEffect(media) {
             nextEp.timeUntilAiringModel.renew()
-            while(true){
+            while (true) {
                 delay(1000)
                 nextEp.timeUntilAiringModel.tick()
                 timeUntilAiring = nextEp.timeUntilAiringModel.copy()
-                if(nextEp.timeUntilAiringModel.alreadyAired) break
+                if (nextEp.timeUntilAiringModel.alreadyAired) break
             }
         }
         Card(
@@ -748,8 +748,11 @@ private fun MediaNextAiringEpisode(media: MediaModel) {
 
 @Composable
 private fun NextEpisodeTime(dateTimeType: String, dateTimeValue: String) {
-    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-        RegularText(text = dateTimeValue, fontSize = 15.sp)
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(2.dp)
+    ) {
+        MediumText(text = dateTimeValue, fontSize = 15.sp)
         MediumText(text = dateTimeType, fontSize = 15.sp, color = MaterialTheme.colorScheme.primary)
     }
 }

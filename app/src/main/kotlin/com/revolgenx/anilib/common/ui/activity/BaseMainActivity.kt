@@ -50,6 +50,7 @@ import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.notification.data.worker.NotificationWorker
 import com.revolgenx.anilib.social.factory.AlMarkdownCallbackImpl
 import com.revolgenx.anilib.social.factory.AlMarkdownFactory
+import com.revolgenx.anilib.type.MediaType
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
@@ -63,6 +64,12 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
     protected var navigator: Navigator? = null
     private val themeDataStore: ThemeDataStore by inject()
     private val appPreferencesDataStore: AppPreferencesDataStore by inject()
+
+    companion object{
+        const val WIDGET_MEDIA_ID_KEY = "widget_media_id_key"
+        const val WIDGET_MEDIA_TYPE_KEY = "widget_media_type_key"
+        const val WIDGET_AIRING_SCHEDULE_SCREEN_KEY = "widget_airing_schedule_screen_key"
+    }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O)
@@ -141,7 +148,7 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
                         }
 
                         LauncherShortcuts.NOTIFICATION -> {
-                            viewModel.deepLinkPath.value = DeepLinkPath.NOTIFICATION to 0
+                            viewModel.deepLinkPath.value = DeepLinkPath.NOTIFICATION to true
                         }
                     }
                 }
@@ -188,6 +195,26 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
                 }
             }
         }
+
+
+        intent.takeIf { it.hasExtra(WIDGET_MEDIA_ID_KEY) }?.extras?.let { intentExtra->
+            val mediaId = intentExtra.getInt(WIDGET_MEDIA_ID_KEY)
+            val mediaType = MediaType.entries[intentExtra.getInt(WIDGET_MEDIA_TYPE_KEY)]
+
+            viewModel.deepLinkPath.value = when(mediaType){
+                MediaType.MANGA -> DeepLinkPath.MANGA to mediaId
+                else-> DeepLinkPath.ANIME to mediaId
+            }
+
+            intent.removeExtra(WIDGET_MEDIA_ID_KEY)
+            intent.removeExtra(WIDGET_MEDIA_TYPE_KEY)
+        }
+
+        intent.takeIf { it.hasExtra(WIDGET_AIRING_SCHEDULE_SCREEN_KEY) }?.let {
+            viewModel.deepLinkPath.value = DeepLinkPath.AIRING to true
+            intent.removeExtra(WIDGET_AIRING_SCHEDULE_SCREEN_KEY)
+        }
+
         intent.action = ""
     }
 
