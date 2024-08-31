@@ -58,7 +58,7 @@ abstract class ResourceViewModel<M : Any, F : BaseField<*>> : BaseViewModel<F>()
     protected open fun onInit() {}
     protected open fun onComplete() {}
 
-    fun refresh() {
+    open fun refresh() {
         resource.value = ResourceState.loading()
         load()
             .onEach {

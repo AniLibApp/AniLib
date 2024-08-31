@@ -15,7 +15,7 @@ data class AiringScheduleField(
     var showOnlyPlanning: Boolean = false,
     var isWeeklyTypeDate: Boolean = false,
     var mediaListIds: List<Int>? = null,
-    var needMediaListData: Boolean = false,
+    var needMediaListData: Boolean = showOnlyPlanning || showOnlyWatching,
 ) : BaseSourceUserField<AiringScheduleQuery>() {
 
     val mediaListStatus

@@ -30,7 +30,8 @@ enum class DeepLinkPath {
     STUDIO,
     ACTIVITY,
     NOTIFICATION,
-    AIRING
+    AIRING,
+    LIST_ENTRY_EDITOR
 }
 
 class MainActivityViewModel(private val preferencesDataStore: AppPreferencesDataStore) :

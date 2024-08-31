@@ -20,6 +20,7 @@ import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
 import com.revolgenx.anilib.common.data.constant.MainPageOrder
 import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
+import com.revolgenx.anilib.type.AiringSort
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
@@ -66,6 +67,11 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
 
 
         val bugReportKey = booleanPreferencesKey("bug_report_key")
+        val widgetIncludeAlreadyAiredKey = booleanPreferencesKey("widget_include_already_aired_key")
+        val widgetOpenListEditorKey = booleanPreferencesKey("widget_open_list_editor_key")
+        val widgetOnlyWatchingKey = booleanPreferencesKey("widget_only_watching_key")
+        val widgetOnlyPlanningKey = booleanPreferencesKey("widget_only_planning_key")
+        val widgetAiringSortKey = intPreferencesKey("widget_airing_sort_key")
 
     }
 
@@ -165,6 +171,35 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         defaultValue = true
     )
 
+    val widgetIncludeAlreadyAired = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = widgetIncludeAlreadyAiredKey,
+        defaultValue = false
+    )
+
+    val widgetOpenListEditor = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = widgetOpenListEditorKey,
+        defaultValue = false
+    )
+
+    val widgetOnlyWatching = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = widgetOnlyWatchingKey,
+        defaultValue = false
+    )
+
+    val widgetOnlyPlanning = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = widgetOnlyPlanningKey,
+        defaultValue = false
+    )
+
+    val widgetAiringSort = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = widgetAiringSortKey,
+        defaultValue = AiringSort.TIME.ordinal
+    )
 
     val isLoggedIn = userId.data.map { it != null }
 
@@ -271,6 +306,9 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
             pref.remove(NotificationDataStore.lastShownNotificationIdKey)
             pref.remove(displayAdultContentKey)
             pref[mediaTitleTypeKey] = MediaTitleModel.type_romaji
+            pref.remove(widgetOpenListEditorKey)
+            pref.remove(widgetOnlyWatchingKey)
+            pref.remove(widgetOnlyPlanningKey)
         }
     }
 }

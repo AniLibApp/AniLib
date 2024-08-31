@@ -124,6 +124,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcVideo
 import com.revolgenx.anilib.common.ui.icons.appicon.IcVoice
 import com.revolgenx.anilib.common.ui.icons.appicon.IcWatch
 import com.revolgenx.anilib.common.ui.icons.appicon.IcWatching
+import com.revolgenx.anilib.common.ui.icons.appicon.IcWidgets
 import com.revolgenx.anilib.common.ui.icons.appicon.IcWinter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcYoutube
 
@@ -253,7 +254,8 @@ val AppIcons.AllIcons: List<ImageVector>
             IcUnfold,
             IcPrivacyPolicy,
             IcBugReport,
-            IcAssignment
+            IcAssignment,
+            IcWidgets
         )
         return __AllIcons!!
     }

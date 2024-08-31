@@ -40,7 +40,6 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcAnilib
-import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
 import com.revolgenx.anilib.common.ui.icons.appicon.IcInfoOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcList
@@ -54,6 +53,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonAdd
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTune
+import com.revolgenx.anilib.common.ui.icons.appicon.IcWidgets
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.common.ui.theme.logout_color
 import com.revolgenx.anilib.common.ui.theme.support_color
@@ -186,7 +186,7 @@ fun SettingScreenContent(isTab: Boolean) {
                 title = stringResource(I18nR.string.settings_appearance),
                 subtitle = stringResource(I18nR.string.settings_appearance_desc)
             ) {
-                navigator.push(AppearanceScreen)
+                navigator.push(AppearanceSettingsScreen)
             }
 
             TextPreferenceItem(
@@ -215,11 +215,19 @@ fun SettingScreenContent(isTab: Boolean) {
                 }
             }
 
+//            TextPreferenceItem(
+//                icon = AppIcons.IcFilter,
+//                title = stringResource(I18nR.string.filter),
+//                subtitle = stringResource(I18nR.string.settings_filter_desc)
+//            )
+
             TextPreferenceItem(
-                icon = AppIcons.IcFilter,
-                title = stringResource(I18nR.string.filter),
+                icon = AppIcons.IcWidgets,
+                title = stringResource(I18nR.string.widget),
                 subtitle = stringResource(I18nR.string.settings_filter_desc)
-            )
+            ){
+                navigator.push(WidgetSettingsScreen)
+            }
 
 
             TextPreferenceItem(
@@ -229,7 +237,7 @@ fun SettingScreenContent(isTab: Boolean) {
                     .format(versionName),
                 iconTint = support_color,
                 onClick = {
-                    navigator.push(SupportScreen)
+                    navigator.push(SupportSettingsScreen)
                 }
             )
 

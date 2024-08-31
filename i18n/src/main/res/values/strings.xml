@@ -462,6 +462,16 @@
     <string name="crash_reporting">Crash Reporting</string>
     <string name="crash_report_desc">Help improve AniLib\'s features. Automatically sends crash reports.</string>
 
+    <string name="widget">Widget</string>
+    <string name="widget_open_list_editor">Open List Editor</string>
+    <string name="widget_open_list_editor_desc">Enable to open list editor on single tap.</string>
+    <string name="widget_already_aired">Already Aired</string>
+    <string name="widget_include_already_aired_desc">Include already aired shows.</string>
+    <string name="widget_watching_list">Watching List</string>
+    <string name="widget_watching_list_desc">Show only from your watching list.</string>
+    <string name="widget_planning_list">Planning List</string>
+    <string name="widget_planning_list_desc">Show only from you planning list.</string>
+
     <!--Settings-->
 
     <string name="open_in_browser">Open in browser</string>
@@ -612,4 +622,5 @@
     <string name="datetime_sec">Sec</string>
     <string name="ep_s">Ep %1$s</string>
     <string name="text_field_required">Text field is cannot be empty.</string>
+
 </resources>

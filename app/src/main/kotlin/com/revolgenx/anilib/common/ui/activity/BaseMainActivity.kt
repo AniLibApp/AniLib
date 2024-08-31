@@ -201,11 +201,14 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
             val mediaId = intentExtra.getInt(WIDGET_MEDIA_ID_KEY)
             val mediaType = MediaType.entries[intentExtra.getInt(WIDGET_MEDIA_TYPE_KEY)]
 
-            viewModel.deepLinkPath.value = when(mediaType){
-                MediaType.MANGA -> DeepLinkPath.MANGA to mediaId
-                else-> DeepLinkPath.ANIME to mediaId
+            if(appPreferencesDataStore.widgetOpenListEditor.get() == true){
+                viewModel.deepLinkPath.value = DeepLinkPath.LIST_ENTRY_EDITOR to mediaId
+            }else{
+                viewModel.deepLinkPath.value = when(mediaType){
+                    MediaType.MANGA -> DeepLinkPath.MANGA to mediaId
+                    else-> DeepLinkPath.ANIME to mediaId
+                }
             }
-
             intent.removeExtra(WIDGET_MEDIA_ID_KEY)
             intent.removeExtra(WIDGET_MEDIA_TYPE_KEY)
         }

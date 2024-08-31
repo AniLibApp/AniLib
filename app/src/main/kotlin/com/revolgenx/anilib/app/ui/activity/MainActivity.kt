@@ -17,6 +17,7 @@ import com.revolgenx.anilib.app.ui.viewmodel.DeepLinkPath
 import com.revolgenx.anilib.common.ext.activityScreen
 import com.revolgenx.anilib.common.ext.airingScheduleScreen
 import com.revolgenx.anilib.common.ext.characterScreen
+import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.notificationScreen
 import com.revolgenx.anilib.common.ext.staffScreen
@@ -116,6 +117,10 @@ class MainActivity : BaseMainActivity() {
 
             DeepLinkPath.AIRING -> {
                 navigator.airingScheduleScreen()
+            }
+
+            DeepLinkPath.LIST_ENTRY_EDITOR -> {
+                navigator.mediaListEntryEditorScreen(deepLinkPath.second as Int)
             }
         }
         viewModel.deepLinkPath.value = null
