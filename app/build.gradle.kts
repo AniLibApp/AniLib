@@ -10,6 +10,8 @@ plugins {
     kotlin("plugin.compose")
     id("com.apollographql.apollo3") version "3.7.3"
     id("com.mikepenz.aboutlibraries.plugin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 
@@ -66,6 +68,19 @@ android {
         create("alpha") {
             initWith(getByName("debug"))
             applicationIdSuffix = ".alpha"
+        }
+    }
+
+
+    flavorDimensions.add("default")
+
+    productFlavors {
+        create("prod") {
+            dimension = "default"
+        }
+        create("dev") {
+            resourceConfigurations.addAll(listOf("en", "xxhdpi"))
+            dimension = "default"
         }
     }
 
@@ -126,6 +141,7 @@ dependencies {
     aboutLibraries()
     reorderable()
     glance()
+    firebase()
 
     implementation("com.materialkolor:material-kolor:1.4.4")
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.3.0")

@@ -35,6 +35,7 @@ object Versions{
     const val aboutLibraries = "11.2.2"
     const val reorderable = "2.3.0"
     const val glance = "1.1.0"
+    const val firebase = "33.2.0"
 }
 
 object Dependencies {
@@ -108,6 +109,9 @@ object Dependencies {
     //widget
     const val glance = "androidx.glance:glance-appwidget:${Versions.glance}"
     const val glanceMaterial3 = "androidx.glance:glance-material3:${Versions.glance}"
+    const val firebase = "com.google.firebase:firebase-bom:${Versions.firebase}"
+    const val firebaseAnalytics = "com.google.firebase:firebase-analytics"
+    const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics"
 }
 
 
@@ -212,4 +216,10 @@ fun DependencyHandler.reorderable() {
 fun DependencyHandler.glance(){
     implementation(Dependencies.glance)
     implementation(Dependencies.glanceMaterial3)
+}
+
+fun DependencyHandler.firebase(){
+    implementation(platform(Dependencies.firebase))
+    implementation(Dependencies.firebaseAnalytics)
+    implementation(Dependencies.firebaseCrashlytics)
 }

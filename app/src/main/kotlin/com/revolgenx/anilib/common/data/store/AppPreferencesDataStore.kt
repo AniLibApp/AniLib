@@ -66,7 +66,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val activityPageOrderKey = intPreferencesKey("activity_page_order_key")
 
 
-        val bugReportKey = booleanPreferencesKey("bug_report_key")
+        val crashReportKey = booleanPreferencesKey("crash_report_key")
         val widgetIncludeAlreadyAiredKey = booleanPreferencesKey("widget_include_already_aired_key")
         val widgetOpenListEditorKey = booleanPreferencesKey("widget_open_list_editor_key")
         val widgetOnlyWatchingKey = booleanPreferencesKey("widget_only_watching_key")
@@ -133,12 +133,13 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     val mediaListDisplayMode = PreferencesDataStore(
         dataStore = dataStore,
         prefKey = mediaListDisplayModeKey,
-        defaultValue = 0
+        defaultValue = 1
     )
+
     val otherMediaListDisplayMode = PreferencesDataStore(
         dataStore = dataStore,
         prefKey = otherMediaListDisplayModeKey,
-        defaultValue = 0
+        defaultValue = 1
     )
 
     val displayAdsInterval = PreferencesDataStore(
@@ -165,9 +166,9 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         defaultValue = false
     )
 
-    val bugReport = PreferencesDataStore(
+    val crashReport = PreferencesDataStore(
         dataStore = dataStore,
-        prefKey = bugReportKey,
+        prefKey = crashReportKey,
         defaultValue = true
     )
 

@@ -38,6 +38,7 @@ import com.revolgenx.anilib.common.data.event.OpenSpoilerEvent
 import com.revolgenx.anilib.common.data.event.OpenUserScreenEvent
 import com.revolgenx.anilib.common.data.event.registerForEvent
 import com.revolgenx.anilib.common.data.event.unRegisterForEvent
+import com.revolgenx.anilib.common.data.logger.AniLibDebugTree
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.notificationRefreshIntervalKey
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.userIdKey
@@ -56,6 +57,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
@@ -107,9 +109,18 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        setupLogger()
         setupNotification()
         setupMarkdown()
         checkIntent(intent)
+    }
+
+    private fun setupLogger(){
+        lifecycleScope.launch {
+            appPreferencesDataStore.crashReport.collect{
+                Timber.plant(AniLibDebugTree(it!!))
+            }
+        }
     }
 
     private fun setupMarkdown() {
