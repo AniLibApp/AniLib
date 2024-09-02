@@ -179,6 +179,13 @@
         <item>@string/list_progress</item>
     </string-array>
 
+    <string-array name="user_activity_type_menu">
+        <item>@string/all</item>
+        <item>@string/status</item>
+        <item>@string/messages</item>
+        <item>@string/list</item>
+    </string-array>
+
 
     <string-array name="staff_character_studio_media_sort_menu">
         <item>@string/popularity</item>

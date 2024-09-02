@@ -622,5 +622,11 @@
     <string name="datetime_sec">Sec</string>
     <string name="ep_s">Ep %1$s</string>
     <string name="text_field_required">Text field is cannot be empty.</string>
+    <string name="messages">Messages</string>
+    <string name="blocked">Blocked</string>
+    <string name="block">Block</string>
+    <string name="unblock">Unblock</string>
+    <string name="important">Important</string>
+    <string name="block_user_msg">AniLib is going to open user in browser. AniLib is a 3rd party app and due to it\'s limitation, blocking/unblocking users is only possible through anilist.co. User must be logged in to see dropdown button in profile which is in top-left(for small screen) or in right.</string>
 
 </resources>

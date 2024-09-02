@@ -5,6 +5,7 @@ import com.revolgenx.anilib.character.ui.model.toModel
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.data.service.ToggleService
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.model.BaseModel
@@ -20,6 +21,7 @@ import com.revolgenx.anilib.user.data.field.UserField
 import com.revolgenx.anilib.user.data.field.UserSocialCountField
 import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.field.UserStatsOverviewField
+import com.revolgenx.anilib.user.data.field.UserToggleFollowField
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.model.UserSocialCountModel
@@ -40,7 +42,8 @@ import org.jetbrains.annotations.Nullable
 
 class UserServiceImpl(
     apolloRepository: ApolloRepository,
-    appPreferencesDataStore: AppPreferencesDataStore
+    appPreferencesDataStore: AppPreferencesDataStore,
+    private val toggleService: ToggleService
 ) :
     UserService, BaseService(apolloRepository, appPreferencesDataStore) {
     override fun getUser(field: UserField): Flow<UserModel?> {
@@ -227,6 +230,9 @@ class UserServiceImpl(
         }
     }
 
+    override fun toggleFollow(field: UserToggleFollowField): Flow<Boolean> {
+        return toggleService.toggleUserFollow(field)
+    }
 
     private fun getStatsGenreModel(genres: List<UserStatsQuery.Genre>): List<UserGenreStatisticModel> {
         return genres.map { genre ->

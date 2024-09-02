@@ -1,6 +1,8 @@
 package com.revolgenx.anilib.user.ui.model
 
 import android.text.Spanned
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.UserQuery
 import com.revolgenx.anilib.common.ext.nullIfEmpty
 import com.revolgenx.anilib.common.ui.model.BaseModel
@@ -28,7 +30,8 @@ data class UserModel(
     val aboutSpanned: Spanned? = null,
     val avatar: UserAvatarModel? = null,
     val bannerImage: String? = null,
-    val isFollowing: Boolean = false,
+    var isFollowing: Boolean = false,
+    val isFollowingState: MutableState<Boolean> = mutableStateOf(isFollowing),
     val isFollower: Boolean = false,
     val isBlocked: Boolean = false,
     val options: UserOptionsModel? = null,

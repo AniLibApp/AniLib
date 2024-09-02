@@ -6,6 +6,7 @@ import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.social.data.field.ToggleActivitySubscriptionField
 import com.revolgenx.anilib.social.data.field.ToggleLikeV2Field
 import com.revolgenx.anilib.social.ui.model.LikeableUnionModel
+import com.revolgenx.anilib.user.data.field.UserToggleFollowField
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
@@ -64,4 +65,12 @@ class ToggleServiceImpl(
             } ?: false
         }.catch { emit(false) }
     }
+
+    /**
+    * Returns true if following/unfollowing successfully, false if any error
+    * */
+    override fun toggleUserFollow(field: UserToggleFollowField): Flow<Boolean> {
+        return field.toMutation().map { true }.catch { emit(false) }
+    }
+
 }

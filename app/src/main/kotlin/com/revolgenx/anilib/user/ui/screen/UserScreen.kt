@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.user.ui.screen
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -25,24 +27,26 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.tab.TabOptions
-import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.topWindowInsets
@@ -54,6 +58,7 @@ import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
 import com.revolgenx.anilib.common.ui.component.appbar.CollapsingAppbar
 import com.revolgenx.anilib.common.ui.component.appbar.collapse
+import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
@@ -62,6 +67,8 @@ import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localTabNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBookOutline
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
+import com.revolgenx.anilib.common.ui.icons.appicon.IcDropped
 import com.revolgenx.anilib.common.ui.icons.appicon.IcGroupOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMediaOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPerson
@@ -73,18 +80,12 @@ import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
 import com.revolgenx.anilib.list.ui.screen.MangaListScreen
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
-import com.revolgenx.anilib.social.ui.screen.ActivityComposerBottomSheet
-import com.revolgenx.anilib.social.ui.screen.ActivityReplyBottomSheet
-import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
-import com.revolgenx.anilib.social.ui.viewmodel.MessageComposerViewModel
-import com.revolgenx.anilib.social.ui.viewmodel.ReplyComposerViewModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.screen.userStats.UserStatsScreen
 import com.revolgenx.anilib.user.ui.viewmodel.UserScreenPageType
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -122,9 +123,10 @@ private fun UserScreenContent(
     userName: String?,
     isTab: Boolean,
 ) {
+    val uriHandler = LocalUriHandler.current
+    val context = localContext()
     val viewModel: UserViewModel = koinViewModel()
     val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
-
     if (userId != null) {
         viewModel.userId.value = userId
     }
@@ -151,6 +153,11 @@ private fun UserScreenContent(
         })
 
 
+    val openBlockUserConfirmationDialog = remember {
+        mutableStateOf(false)
+    }
+
+
     ScreenScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -158,11 +165,22 @@ private fun UserScreenContent(
                 viewModel = viewModel,
                 scrollBehavior = scrollBehavior,
                 isLoggedInUser = viewModel.isLoggedInUser,
-                isTab = isTab
+                isTab = isTab,
+                blockUser = {
+                    openBlockUserConfirmationDialog.value = true
+                }
             )
         },
         contentWindowInsets = if (isTab) emptyWindowInsets() else horizontalBottomWindowInsets(),
-    ) {
+    ) { snackbar ->
+
+        LaunchedEffect(viewModel.showToggleUserFollowErrorMsg) {
+            if (viewModel.showToggleUserFollowErrorMsg) {
+                snackbar.showSnackbar(context.getString(anilib.i18n.R.string.operation_failed))
+                viewModel.showToggleUserFollowErrorMsg = false
+            }
+        }
+
         PagerScreenScaffold(
             pages = pages,
             pagerState = pagerState,
@@ -205,6 +223,19 @@ private fun UserScreenContent(
 
     }
 
+
+    ConfirmationDialog(
+        openDialog = openBlockUserConfirmationDialog,
+        title = stringResource(id = I18nR.string.important),
+        message = stringResource(
+            id = I18nR.string.block_user_msg
+        )
+    ) {
+        viewModel.getData()?.siteUrl?.let {
+            uriHandler.openUri(it)
+        }
+    }
+
 }
 
 
@@ -215,6 +246,7 @@ private fun UserScreenTopAppbar(
     scrollBehavior: TopAppBarScrollBehavior,
     isLoggedInUser: State<Boolean>,
     isTab: Boolean = false,
+    blockUser: OnClick
 ) {
     val tabNavigator = if (isTab) localTabNavigator() else null
     val navigator = localNavigator()
@@ -279,7 +311,11 @@ private fun UserScreenTopAppbar(
                             )
                         }
 
-                        ShowFollowingButton(user, isLoggedInUser)
+                        ShowFollowingButton(user, isLoggedInUser) {
+                            user?.let {
+                                viewModel.toggleFollow(user)
+                            }
+                        }
                     }
                 }
 
@@ -288,12 +324,38 @@ private fun UserScreenTopAppbar(
                         .height(100.dp)
                         .padding(horizontal = 8.dp)
                 ) {
-                    Text(
-                        text = user?.name.orEmpty(),
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        letterSpacing = 0.1.sp
-                    )
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        Text(
+                            text = user?.name.orEmpty(),
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            letterSpacing = 0.1.sp
+                        )
+
+                        if (user?.isBlocked == true) {
+                            Box(
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                                    .padding(horizontal = 4.dp, vertical = 2.dp)
+                            ) {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Icon(
+                                        modifier = Modifier.size(20.dp),
+                                        imageVector = AppIcons.IcDropped,
+                                        contentDescription = null
+                                    )
+                                    Text(
+                                        stringResource(id = I18nR.string.blocked),
+                                        fontSize = 12.sp,
+                                        color = MaterialTheme.colorScheme.onSecondaryContainer
+                                    )
+                                }
+                            }
+                        }
+                    }
 
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(6.dp)
@@ -380,6 +442,16 @@ private fun UserScreenTopAppbar(
                         navigator.push(SettingScreen)
                     }
                 }
+
+                if (!isLoggedInUser.value) {
+                    OverflowMenuItem(
+                        textRes = if (user?.isBlocked == true) I18nR.string.unblock else I18nR.string.block,
+                        icon = AppIcons.IcDropped,
+                        contentDescriptionRes = null,
+                        onClick = blockUser
+                    )
+                }
+
                 user?.siteUrl?.let { site ->
                     OpenInBrowserOverflowMenu(link = site)
                     ShareOverflowMenu(text = site)
@@ -394,15 +466,16 @@ private fun UserScreenTopAppbar(
 @Composable
 private fun ShowFollowingButton(
     user: UserModel?,
-    isLoggedInUser: State<Boolean>
+    isLoggedInUser: State<Boolean>,
+    onFollow: OnClick
 ) {
     if (!isLoggedInUser.value && user != null) {
         FilledTonalButton(
             modifier = Modifier.padding(horizontal = 8.dp),
-            onClick = { }
+            onClick = onFollow
         ) {
             Text(
-                text = stringResource(id = if (user.isFollowing) I18nR.string.following else I18nR.string.follow)
+                text = stringResource(id = if (user.isFollowingState.value) I18nR.string.following else I18nR.string.follow)
             )
         }
     }

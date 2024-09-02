@@ -6,7 +6,7 @@ import com.revolgenx.anilib.social.data.data.ActivityUnionFilterData
 import com.revolgenx.anilib.type.ActivityType
 
 data class ActivityUnionField(
-    var isFollowing: Boolean = false,
+    var isFollowing: Boolean? = false,
     var type: ActivityType? = null,
     var mediaId: Int? = null
 ) : BaseSourceUserField<ActivityUnionQuery>() {
@@ -28,7 +28,7 @@ data class ActivityUnionField(
             perPage = nn(perPage),
             userId = nn(userId),
             mediaId = nn(mediaId),
-            hasReplies = nnBool(!isFollowing),
+            hasReplies = nnBool(isFollowing?.let { !it }),
             isFollowing = nnBool(isFollowing),
             type = nn(type),
             type_in = nn(typeIn)
@@ -38,7 +38,7 @@ data class ActivityUnionField(
 
     fun toFilterData(): ActivityUnionFilterData {
         return ActivityUnionFilterData(
-            isFollowing = isFollowing,
+            isFollowing = isFollowing!!,
             type = type,
         )
     }

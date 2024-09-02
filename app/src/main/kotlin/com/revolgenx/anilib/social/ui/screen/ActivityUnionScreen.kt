@@ -251,7 +251,7 @@ private fun ActivityUnionFilterBottomSheetContent(
             TextSwitch(
                 modifier = Modifier.fillMaxWidth(),
                 text = stringResource(id = anilib.i18n.R.string.following),
-                checked = field.isFollowing,
+                checked = field.isFollowing!!,
                 onCheckedChanged = {
                     field.isFollowing = it
                 })

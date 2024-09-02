@@ -2,6 +2,7 @@ package com.revolgenx.anilib.airing.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -69,6 +70,7 @@ import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
+import com.revolgenx.anilib.media.ui.component.MediaStatsBadge
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import kotlinx.coroutines.delay
@@ -251,17 +253,26 @@ private fun AiringScheduleItem(airingScheduleModel: AiringScheduleModel, onClick
         Row(modifier = Modifier.clickable {
             onClick()
         }) {
-            MediaCoverImageType {
-                ImageAsync(
+            Box {
+                MediaCoverImageType {
+                    ImageAsync(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(104.dp),
+                        imageUrl = media.coverImage?.image(it),
+                        imageOptions = ImageOptions(
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center
+                        ),
+                        previewPlaceholder = R.drawable.bleach
+                    )
+                }
+
+                MediaStatsBadge(
                     modifier = Modifier
-                        .fillMaxHeight()
-                        .width(104.dp),
-                    imageUrl = media.coverImage?.image(it),
-                    imageOptions = ImageOptions(
-                        contentScale = ContentScale.Crop,
-                        alignment = Alignment.Center
-                    ),
-                    previewPlaceholder = R.drawable.bleach
+                        .align(Alignment.TopStart)
+                        .padding(4.dp),
+                    media = media
                 )
             }
             Column(

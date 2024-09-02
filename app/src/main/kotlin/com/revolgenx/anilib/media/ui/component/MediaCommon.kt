@@ -27,7 +27,7 @@ import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.ui.composition.localMediaState
+import com.revolgenx.anilib.common.ui.composition.LocalMediaState
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
@@ -35,12 +35,12 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun MediaTitleType(content: @Composable (type: Int) -> Unit) {
-    content(localMediaState().titleType)
+    content(LocalMediaState.current.titleType)
 }
 
 @Composable
 fun MediaCoverImageType(content: @Composable (type: Int) -> Unit) {
-    content(localMediaState().coverImageType)
+    content(LocalMediaState.current.coverImageType)
 }
 
 @OptIn(ExperimentalFoundationApi::class)

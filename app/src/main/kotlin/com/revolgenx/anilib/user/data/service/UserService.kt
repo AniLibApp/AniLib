@@ -8,6 +8,7 @@ import com.revolgenx.anilib.user.data.field.UserField
 import com.revolgenx.anilib.user.data.field.UserSocialCountField
 import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.field.UserStatsOverviewField
+import com.revolgenx.anilib.user.data.field.UserToggleFollowField
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.model.UserSocialCountModel
 import com.revolgenx.anilib.user.ui.model.statistics.BaseStatisticModel
@@ -20,4 +21,5 @@ interface UserService {
     fun getUserFavourite(field: UserFavouriteField): Flow<PageModel<BaseModel>>
     fun getUserStatsOverview(field: UserStatsOverviewField): Flow<UserModel?>
     fun getUserStats(field: UserStatsTypeField): Flow<List<BaseStatisticModel>>
+    fun toggleFollow(field: UserToggleFollowField): Flow<Boolean>
 }

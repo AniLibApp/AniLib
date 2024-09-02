@@ -7,6 +7,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
 import com.revolgenx.anilib.common.data.service.ToggleService
 import com.revolgenx.anilib.common.data.store.ActivityUnionFilterDataStore
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
@@ -89,8 +90,8 @@ open class ActivityUnionViewModel(
 
 class MainActivityUnionViewModel(
     activityUnionService: ActivityUnionService,
-    private val activityUnionFilterDataStore: ActivityUnionFilterDataStore,
-    toggleService: ToggleService
+    toggleService: ToggleService,
+    private val activityUnionFilterDataStore: ActivityUnionFilterDataStore
 ) : ActivityUnionViewModel(activityUnionService, toggleService = toggleService) {
     private var filter = activityUnionFilterDataStore.data.get()
     override var field: ActivityUnionField = filter.toField()

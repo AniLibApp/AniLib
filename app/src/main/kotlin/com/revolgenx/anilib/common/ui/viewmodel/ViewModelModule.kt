@@ -83,6 +83,7 @@ import com.revolgenx.anilib.studio.ui.viewmodel.StudioFilterViewModel
 import com.revolgenx.anilib.studio.ui.viewmodel.StudioViewModel
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.data.field.UserFavouriteType
+import com.revolgenx.anilib.user.ui.viewmodel.UserActivityFilterViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteContentViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserViewModel
@@ -157,6 +158,7 @@ val viewModelModules = module {
 
     //user
     viewModel { UserViewModel(get(), get()) }
+    viewModel { UserActivityFilterViewModel() }
     viewModel { UserFavouriteViewModel() }
     viewModel(named(UserFavouriteType.FAVOURITE_ANIME)) {
         UserFavouriteContentViewModel(
@@ -248,8 +250,8 @@ val viewModelModules = module {
     viewModel {
         MainActivityUnionViewModel(
             get(),
-            get<Context>().activityUnionFilterDataStore,
-            get()
+            get(),
+            get<Context>().activityUnionFilterDataStore
         )
     }
     viewModel { ActivityUnionViewModel(get(), get()) }
