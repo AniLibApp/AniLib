@@ -41,7 +41,7 @@ import com.revolgenx.anilib.common.util.OnClickWithValue
 import anilib.i18n.R as I18nR
 
 @Composable
-fun AboutScreen(
+fun EntityAboutScreenContent(
     name: String,
     alternative: String?,
     imageUrl: String?,

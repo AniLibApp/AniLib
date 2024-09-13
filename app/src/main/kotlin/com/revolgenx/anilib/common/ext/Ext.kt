@@ -21,17 +21,18 @@ import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.datastore.core.DataStore
+import com.apollographql.apollo3.exception.ApolloException
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.ocpsoft.prettytime.PrettyTime
+import timber.log.Timber
 import java.util.Date
 import java.util.NavigableMap
 import java.util.TreeMap
@@ -146,6 +147,15 @@ fun <T> DataStore<T>.get() = data.get()
 
 fun SnackbarHostState.showLoginMsg(context: Context, scope: CoroutineScope){
     scope.launch {
-        showSnackbar(message = context.getString(anilib.i18n.R.string.please_log_in))
+        showSnackbar(message = context.getString(anilib.i18n.R.string.please_log_in), withDismissAction = true)
+    }
+}
+
+fun <T> Flow<T>.logException(): Flow<T> {
+    return this.catch {
+        if(it !is ApolloException){
+            Timber.e(it)
+        }
+        throw it
     }
 }

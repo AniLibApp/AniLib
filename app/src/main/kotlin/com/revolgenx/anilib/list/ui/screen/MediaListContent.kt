@@ -22,6 +22,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -52,6 +53,7 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
+import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
@@ -89,6 +91,8 @@ fun MediaListContent(
     val navigator = localNavigator()
     val scope = rememberCoroutineScope()
     val context = localContext()
+    val localUser = localUser()
+    val isLoggedIn = localUser.isLoggedIn
     val snackbar = localSnackbarHostState()
 
     ScreenScaffold(
@@ -113,7 +117,6 @@ fun MediaListContent(
                 modifier = Modifier.nestedScroll(bottomNestedScrollConnection),
             ) {
                 val openEditorScreen = viewModel.openMediaListEntryEditor.collectAsState()
-                val isLoggedIn = localUser().isLoggedIn
                 val displayModeState =  if (viewModel.isLoggedInUserList) {
                     viewModel.displayMode.collectAsState()
                 }else{
@@ -175,6 +178,7 @@ fun MediaListContent(
                         MediaListDisplayMode.LIST -> {
                             MediaListRowCard(
                                 list = mediaList,
+                                showIncreaseButton = isLoggedIn,
                                 increaseProgress = increaseProgress,
                                 onClick = onMediaClick,
                                 onLongClick = onMediaLongClick
@@ -184,6 +188,7 @@ fun MediaListContent(
                         MediaListDisplayMode.LIST_COMPACT -> {
                             MediaListSmallRowCard(
                                 list = mediaList,
+                                showIncreaseButton = isLoggedIn,
                                 increaseProgress = increaseProgress,
                                 onClick = onMediaClick,
                                 onLongClick = onMediaLongClick
@@ -193,6 +198,7 @@ fun MediaListContent(
                         MediaListDisplayMode.GRID -> {
                             MediaListColumnCard(
                                 list = mediaList,
+                                showIncreaseButton = isLoggedIn,
                                 increaseProgress = increaseProgress,
                                 onClick = onMediaClick,
                                 onLongClick = onMediaLongClick
@@ -202,6 +208,7 @@ fun MediaListContent(
                         MediaListDisplayMode.GRID_COMPACT -> {
                             MediaListCompactColumnCard(
                                 list = mediaList,
+                                showIncreaseButton = isLoggedIn,
                                 increaseProgress = increaseProgress,
                                 onClick = onMediaClick,
                                 onLongClick = onMediaLongClick

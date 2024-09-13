@@ -46,7 +46,7 @@ import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
-import com.revolgenx.anilib.common.ext.openLink
+import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.notification.data.worker.NotificationWorker
 import com.revolgenx.anilib.social.factory.AlMarkdownCallbackImpl
@@ -384,7 +384,7 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
                 }
 
                 is OpenLinkEvent -> {
-                    openLink(link)
+                    openUri(link)
                 }
             }
         }

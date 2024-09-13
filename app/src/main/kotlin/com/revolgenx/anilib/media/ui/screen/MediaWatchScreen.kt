@@ -24,7 +24,7 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ext.openLink
+import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -57,7 +57,7 @@ fun MediaWatchScreen(viewModel: MediaViewModel) {
         ) { ep ->
             ep ?: return@LazyPagingList
             MediaWatchItem(streamingEpisode = ep) { link ->
-                context.openLink(link, scope, snackbarHostState)
+                context.openUri(link, scope, snackbarHostState)
             }
         }
     }

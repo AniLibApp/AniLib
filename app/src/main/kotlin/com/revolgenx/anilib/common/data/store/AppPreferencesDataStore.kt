@@ -145,7 +145,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     val displayAdsInterval = PreferencesDataStore(
         dataStore = dataStore,
         prefKey = displayAdsIntervalKey,
-        defaultValue = AdsInterval.EVERY_8_HR.value
+        defaultValue = AdsInterval.EVERY_DAY.value
     )
 
     val adsDisplayedDateTime = PreferencesDataStore(

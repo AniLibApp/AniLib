@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.setting.ui.screen.about
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,7 +18,6 @@ import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 
 object AboutSettingsScreen : AndroidScreen() {
-    @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     override fun Content() {
         AboutScreenContent()
@@ -42,7 +40,7 @@ private val pages = listOf(
     CharacterScreenPage(CharacterScreenPageType.TRANSLATORS, R.string.translators)
 )
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun AboutScreenContent() {
     val pagerState = rememberPagerState { pages.size }

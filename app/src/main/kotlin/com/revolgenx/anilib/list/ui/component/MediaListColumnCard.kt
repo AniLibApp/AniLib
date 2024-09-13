@@ -46,6 +46,7 @@ import com.revolgenx.anilib.media.ui.model.toStringRes
 @Composable
 fun MediaListColumnCard(
     list: MediaListModel,
+    showIncreaseButton: Boolean,
     increaseProgress: OnClick,
     onLongClick: OnLongClick,
     onClick: OnClick
@@ -143,17 +144,20 @@ fun MediaListColumnCard(
                     text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
                     fontSize = 13.sp
                 )
-                Box(
-                    modifier = Modifier.clickable { increaseProgress() }
-                ) {
 
-                    Icon(
-                        modifier = Modifier
-                            .padding(4.dp)
-                            .size(20.dp),
-                        imageVector = AppIcons.IcPlus,
-                        contentDescription = null
-                    )
+                if(showIncreaseButton){
+                    Box(
+                        modifier = Modifier.clickable { increaseProgress() }
+                    ) {
+
+                        Icon(
+                            modifier = Modifier
+                                .padding(4.dp)
+                                .size(20.dp),
+                            imageVector = AppIcons.IcPlus,
+                            contentDescription = null
+                        )
+                    }
                 }
             }
 
@@ -178,6 +182,7 @@ private fun MediaListColumnCardPreview() {
             },
             score = 10.0
         ),
+        showIncreaseButton = true,
         onClick = {},
         onLongClick = {},
         increaseProgress = {}

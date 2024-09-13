@@ -108,7 +108,6 @@ private fun BrowseScreenContent(browseFilterData: BrowseFilterData?) {
     val navigator = localNavigator()
     val browseFilterBottomSheetState = rememberBottomSheetState()
     val scope = rememberCoroutineScope()
-    val mediaComponentState = rememberMediaComponentState(navigator = navigator)
 
     ScreenScaffold(
         topBar = {
@@ -123,6 +122,13 @@ private fun BrowseScreenContent(browseFilterData: BrowseFilterData?) {
         },
         contentWindowInsets = horizontalBottomWindowInsets()
     ) {
+        val mediaComponentState =
+            rememberMediaComponentState(
+                navigator = navigator,
+                snackbarHostState = it,
+                scope = scope
+            )
+
         BrowsePagingContent(viewModel, mediaComponentState, navigator)
         BrowseFilterBottomSheet(state = browseFilterBottomSheetState,
             viewModel = browseFilterViewModel,
@@ -139,7 +145,9 @@ private fun BrowseScreenContent(browseFilterData: BrowseFilterData?) {
 
 @Composable
 private fun BrowsePagingContent(
-    viewModel: BrowseViewModel, mediaComponentState: MediaComponentState, navigator: Navigator
+    viewModel: BrowseViewModel,
+    mediaComponentState: MediaComponentState,
+    navigator: Navigator
 ) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
 

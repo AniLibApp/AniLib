@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
@@ -29,13 +28,13 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -47,8 +46,10 @@ import com.revolgenx.anilib.common.ext.emptyWindowInsets
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
+import com.revolgenx.anilib.common.ext.showLoginMsg
 import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ext.userMediaListScreen
 import com.revolgenx.anilib.common.ext.userRelationScreen
@@ -65,9 +66,9 @@ import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localTabNavigator
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBookOutline
-import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
 import com.revolgenx.anilib.common.ui.icons.appicon.IcDropped
 import com.revolgenx.anilib.common.ui.icons.appicon.IcGroupOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMediaOutline
@@ -123,8 +124,10 @@ private fun UserScreenContent(
     userName: String?,
     isTab: Boolean,
 ) {
-    val uriHandler = LocalUriHandler.current
+    val localUser = localUser()
     val context = localContext()
+    val scope = rememberCoroutineScope()
+
     val viewModel: UserViewModel = koinViewModel()
     val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
     if (userId != null) {
@@ -133,6 +136,7 @@ private fun UserScreenContent(
     viewModel.field.userName = userName
     viewModel.field.userId = viewModel.userId.value
     activityUnionViewModel.field.userId = viewModel.userId.value
+
 
     LaunchedEffect(viewModel.userId.value) {
         if (viewModel.userId.value != null) {
@@ -161,6 +165,7 @@ private fun UserScreenContent(
     ScreenScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
+            val snackbar = localSnackbarHostState()
             UserScreenTopAppbar(
                 viewModel = viewModel,
                 scrollBehavior = scrollBehavior,
@@ -168,6 +173,15 @@ private fun UserScreenContent(
                 isTab = isTab,
                 blockUser = {
                     openBlockUserConfirmationDialog.value = true
+                },
+                onFollow = {
+                    if(localUser.isLoggedIn){
+                        viewModel.user?.let {
+                            viewModel.toggleFollow(it)
+                        }
+                    }else{
+                        snackbar.showLoginMsg(context, scope)
+                    }
                 }
             )
         },
@@ -231,8 +245,8 @@ private fun UserScreenContent(
             id = I18nR.string.block_user_msg
         )
     ) {
-        viewModel.getData()?.siteUrl?.let {
-            uriHandler.openUri(it)
+        viewModel.user?.siteUrl?.let {
+            context.openUri(it)
         }
     }
 
@@ -246,7 +260,8 @@ private fun UserScreenTopAppbar(
     scrollBehavior: TopAppBarScrollBehavior,
     isLoggedInUser: State<Boolean>,
     isTab: Boolean = false,
-    blockUser: OnClick
+    blockUser: OnClick,
+    onFollow: OnClick
 ) {
     val tabNavigator = if (isTab) localTabNavigator() else null
     val navigator = localNavigator()
@@ -311,11 +326,7 @@ private fun UserScreenTopAppbar(
                             )
                         }
 
-                        ShowFollowingButton(user, isLoggedInUser) {
-                            user?.let {
-                                viewModel.toggleFollow(user)
-                            }
-                        }
+                        ShowFollowingButton(user, isLoggedInUser, onFollow = onFollow)
                     }
                 }
 

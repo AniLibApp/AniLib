@@ -1,17 +1,16 @@
 package com.revolgenx.anilib.home.explore.ui.viewmodel
 
-import android.os.Handler
-import android.os.Looper
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.setting.ui.viewmodel.ContentOrderData
+import kotlinx.coroutines.delay
 
-class ExploreViewModel(appPreferencesDataStore: AppPreferencesDataStore): ViewModel(), Runnable {
-    private val handler = Handler(Looper.getMainLooper())
+class ExploreViewModel(appPreferencesDataStore: AppPreferencesDataStore): ViewModel() {
     var showRefreshButton by mutableStateOf(false)
 
     val exploreSectionContentOrderData = ExploreSectionOrder.entries.map {
@@ -22,17 +21,13 @@ class ExploreViewModel(appPreferencesDataStore: AppPreferencesDataStore): ViewMo
         )
     }.sortedBy { it.order }
 
-    override fun run() {
-        showRefreshButton = true
-        handler.postDelayed(this, 600000)
-    }
-
     init {
-        handler.postDelayed(this, 600000)
-    }
+        launch {
+            while (true){
+                delay(600000)
+                showRefreshButton = true
+            }
 
-    override fun onCleared() {
-        handler.removeCallbacksAndMessages(null)
-        super.onCleared()
+        }
     }
 }

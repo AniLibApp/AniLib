@@ -31,7 +31,9 @@ import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
+import com.revolgenx.anilib.common.ext.showLoginMsg
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
@@ -47,6 +49,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
@@ -86,13 +89,15 @@ private fun StudioScreenContent(studioId: Int) {
     val studio = stringResource(id = I18nR.string.studio)
 
     val navigator = localNavigator()
+    val context = localContext()
     val scope = rememberCoroutineScope()
+    val localUser = localUser()
+    val isLoggedIn = localUser.isLoggedIn
 
     val filterBottomSheetState = rememberBottomSheetState()
 
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val studioModel = viewModel.studio.value
-    val context = localContext()
 
 
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
@@ -111,10 +116,15 @@ private fun StudioScreenContent(studioId: Int) {
             }
         },
         actions = {
+            val snackbar = localSnackbarHostState()
             studioModel?.let { s ->
                 FilledTonalButton(
                     onClick = {
-                        viewModel.toggleFavorite()
+                        if(isLoggedIn){
+                            viewModel.toggleFavorite()
+                        }else{
+                            snackbar.showLoginMsg(context, scope)
+                        }
                     }
                 ) {
                     Text(

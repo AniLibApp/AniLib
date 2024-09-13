@@ -15,27 +15,23 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mikepenz.aboutlibraries.entity.Library
 import com.mikepenz.aboutlibraries.ui.compose.m3.HtmlText
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
-import com.mikepenz.aboutlibraries.ui.compose.m3.LicenseDialog
 import com.mikepenz.aboutlibraries.ui.compose.m3.util.htmlReadyLicenseContent
-import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ui.component.text.LightText
-import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.ui.component.text.RegularText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPublic
 
 @Composable
 fun AppLibrariesScreen() {
     val openDialog = remember { mutableStateOf<Library?>(null) }
-
-    val uriHandler = LocalUriHandler.current
+    val context = localContext()
 
     LibrariesContainer(
         modifier = Modifier.fillMaxSize(),
@@ -81,7 +77,7 @@ fun AppLibrariesScreen() {
                 @Composable{
                     IconButton(
                         onClick = {
-                            uriHandler.openUri(url)
+                            context.openUri(url)
                             openDialog.value = null
                         }
                     ) {

@@ -17,7 +17,7 @@ object Config {
 }
 
 enum class AdsInterval(val value: Int) {
-    EVERY_8_HR(0), EVERY_DAY(1), EVERY_OTHER_DAY(2), EVERY_WEEK(3), EVERY_MONTH(4), NEVER(-1);
+    EVERY_DAY(1), EVERY_OTHER_DAY(2), EVERY_WEEK(3), EVERY_OTHER_WEEK(4), EVERY_MONTH(5);
 
     companion object {
         fun fromValue(value: Int): AdsInterval {
@@ -35,13 +35,6 @@ fun showAds(
     adsDisplayedDateTime: Long
 ): Boolean {
     return when (adsInterval) {
-        AdsInterval.EVERY_8_HR -> {
-            ChronoUnit.HOURS.between(
-                Instant.ofEpochSecond(adsDisplayedDateTime),
-                Instant.ofEpochSecond(currentEpochSecond)
-            ) >= 8
-        }
-
         AdsInterval.EVERY_DAY -> {
             ChronoUnit.DAYS.between(
                 Instant.ofEpochSecond(adsDisplayedDateTime),
@@ -63,6 +56,13 @@ fun showAds(
             ) >= 1
         }
 
+        AdsInterval.EVERY_OTHER_WEEK -> {
+            ChronoUnit.WEEKS.between(
+                Instant.ofEpochSecond(adsDisplayedDateTime),
+                Instant.ofEpochSecond(currentEpochSecond)
+            ) >= 2
+        }
+
         AdsInterval.EVERY_MONTH -> {
             ChronoUnit.MONTHS.between(
                 Instant.ofEpochSecond(adsDisplayedDateTime),
@@ -70,9 +70,6 @@ fun showAds(
             ) >= 1
         }
 
-        AdsInterval.NEVER -> {
-            false
-        }
     }
 }
 

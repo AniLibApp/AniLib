@@ -2,14 +2,17 @@ package com.revolgenx.anilib.character.ui.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.showLoginMsg
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.screen.about.AboutScreen
+import com.revolgenx.anilib.common.ui.composition.localUser
+import com.revolgenx.anilib.common.ui.screen.about.EntityAboutScreenContent
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 
 @Composable
@@ -18,7 +21,10 @@ fun CharacterAboutScreen(
 ) {
     val navigator = localNavigator()
     val context = localContext()
+    val scope = rememberCoroutineScope()
     val snackbarHostState = localSnackbarHostState()
+    val localUser = localUser()
+    val isLoggedIn = localUser.isLoggedIn
     viewModel.getResource()
 
     LaunchedEffect(viewModel.showToggleErrorMsg.value) {
@@ -29,7 +35,7 @@ fun CharacterAboutScreen(
     }
 
     ResourceScreen(viewModel = viewModel) { character ->
-        AboutScreen(
+        EntityAboutScreenContent(
             name = character.name?.full.naText(),
             alternative = character.name?.alternativeText,
             imageUrl = character.image?.image,
@@ -38,7 +44,11 @@ fun CharacterAboutScreen(
             description = character.description,
             spannedDescription = character.spannedDescription,
             onFavouriteClick = {
-                viewModel.toggleFavorite()
+                if(isLoggedIn){
+                    viewModel.toggleFavorite()
+                }else{
+                    snackbarHostState.showLoginMsg(context, scope)
+                }
             },
             onImageClick = {
                 navigator.imageViewerScreen(it)

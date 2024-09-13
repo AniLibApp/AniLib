@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.componentActivity
+import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
@@ -109,7 +110,7 @@ private fun ImageViewerScreenContent(imageUrl: String) {
                 onError = {
                     loading.value = false
                 },
-                imageLoader = LocalContext.current.coilImageLoader
+                imageLoader = localContext().coilImageLoader
             )
 
             if (loading.value) {

@@ -17,6 +17,7 @@ import com.revolgenx.anilib.common.ui.component.menu.SortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.LocalUserState
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
@@ -36,7 +37,7 @@ object WidgetSettingsScreen : AndroidScreen() {
 @Composable
 private fun WidgetSettingsScreenContent() {
     val scope = rememberCoroutineScope()
-    val user = LocalUserState.current
+    val user = localUser()
 
     val settingsViewModel: SettingsViewModel = koinViewModel()
     val appPreferencesDataStore = settingsViewModel.appPreferencesDataStore

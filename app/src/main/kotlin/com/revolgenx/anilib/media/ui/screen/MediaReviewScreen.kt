@@ -28,11 +28,14 @@ import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.reviewScreen
+import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
+import com.revolgenx.anilib.common.util.OnClick
+import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.media.ui.viewmodel.MediaReviewViewModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 
@@ -47,15 +50,21 @@ fun MediaReviewScreen(viewModel: MediaReviewViewModel) {
         }
     ) { staffEdgeModel ->
         staffEdgeModel ?: return@LazyPagingList
-        MediaReviewItem(staffEdgeModel) { reviewId ->
-            navigator.reviewScreen(reviewId)
-        }
+        MediaReviewItem(staffEdgeModel,
+            onUserClick = { userId ->
+                navigator.userScreen(userId)
+            },
+            onClick = { reviewId ->
+                navigator.reviewScreen(reviewId)
+            }
+        )
     }
 }
 
 @Composable
 private fun MediaReviewItem(
     reviewModel: ReviewModel,
+    onUserClick: OnClickWithId,
     onClick: (reviewId: Int) -> Unit
 ) {
 
@@ -68,7 +77,12 @@ private fun MediaReviewItem(
         ImageAsync(
             modifier = Modifier
                 .size(height = 50.dp, width = 50.dp)
-                .clip(CircleShape),
+                .clip(CircleShape)
+                .clickable {
+                    reviewModel.user?.id?.let {
+                        onUserClick(it)
+                    }
+                },
             imageUrl = reviewModel.user?.avatar?.image,
             imageOptions = ImageOptions(
                 contentScale = ContentScale.Crop,
@@ -114,6 +128,7 @@ fun MediaReviewItemPreview() {
     MediaReviewItem(
         ReviewModel(
             summary = "The finale was actually very good! The emotional parts hit pretty well, characters did good, and it set up the continuation cleanly! That's all you can really ask for in a season finale; however: as previously stated, there's a horrid scene that sags it down right towards the end >:( but uh yeah besides for that I'm looking forward to watching the continuation!"
-        )
+        ),
+        onUserClick = {}
     ) {}
 }

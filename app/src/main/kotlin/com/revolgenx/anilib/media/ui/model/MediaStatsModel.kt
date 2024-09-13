@@ -83,11 +83,7 @@ fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
     }?.nullIfEmpty()
 
     val trendsEntries = trends?.map {
-        val date = LocalDateTime.ofInstant(
-            Instant.ofEpochSecond(it.date.toLong()),
-            ZoneId.systemDefault()
-        ).dayOfMonth
-        entryOf(date, it.trending)
+        entryOf(it.date, it.trending)
     }?.nullIfEmpty()
 
     val statusDistribution = stats?.statusDistribution?.mapNotNull { statusData ->

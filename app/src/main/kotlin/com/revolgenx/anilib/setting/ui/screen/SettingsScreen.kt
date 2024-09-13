@@ -31,7 +31,7 @@ import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ext.openLink
+import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.common.ShowIfNotLoggedIn
@@ -276,7 +276,7 @@ fun SettingScreenContent(isTab: Boolean) {
             message = stringResource(id = I18nR.string.settings_login_signup_notice),
             title = stringResource(id = I18nR.string.settings_important_to_know)
         ) {
-            context.openLink(
+            context.openUri(
                 Config.SIGN_UP_URL,
                 scope = scope,
                 snackbarHostState = snackbarHostState

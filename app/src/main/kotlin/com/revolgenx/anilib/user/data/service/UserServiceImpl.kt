@@ -7,6 +7,7 @@ import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.data.service.ToggleService
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.common.ext.logException
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.PageInfo
@@ -66,7 +67,7 @@ class UserServiceImpl(
                     }
                 }
             }
-        }
+        }.logException()
     }
 
     override fun getUserSocialCount(field: UserSocialCountField): Flow<UserSocialCountModel> {
@@ -77,7 +78,7 @@ class UserServiceImpl(
                     following = data.followingPage?.pageInfo?.total.orZero()
                 )
             }
-        }
+        }.logException()
     }
 
     override fun getUserRelation(field: UserRelationField): Flow<PageModel<UserModel>> {
@@ -100,7 +101,7 @@ class UserServiceImpl(
                     data = data
                 )
             }
-        }
+        }.logException()
     }
 
     override fun getUserFavourite(field: UserFavouriteField): Flow<PageModel<BaseModel>> {
@@ -149,7 +150,7 @@ class UserServiceImpl(
                 pageInfo = pageInfo,
                 data = data
             )
-        }
+        }.logException()
     }
 
     override fun getUserStatsOverview(field: UserStatsOverviewField): Flow<UserModel?> {
@@ -171,7 +172,7 @@ class UserServiceImpl(
                     }
                 )
             }
-        }
+        }.logException()
     }
 
     override fun getUserStats(field: UserStatsTypeField): Flow<List<BaseStatisticModel>> {
@@ -227,7 +228,7 @@ class UserServiceImpl(
                     }
                 }
             }.orEmpty()
-        }
+        }.logException()
     }
 
     override fun toggleFollow(field: UserToggleFollowField): Flow<Boolean> {

@@ -47,6 +47,8 @@ class UserViewModel(
 
     val userId = mutableStateOf<Int?>(null)
 
+    val user get() = getData()
+
     val pages = listOf(
         UserScreenPage(UserScreenPageType.OVERVIEW, I18nR.string.overview),
         UserScreenPage(

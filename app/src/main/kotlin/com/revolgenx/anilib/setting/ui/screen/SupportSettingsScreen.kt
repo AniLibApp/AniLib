@@ -65,12 +65,11 @@ fun SupportSettingsScreenContent() {
                 ListPreferenceItem(
                     value = displayAdsIntervalState.value, title = stringResource(id = R.string.change_ads_interval), entries = remember {
                         listOf(
-                            ListPreferenceEntry(context.getString(R.string.ads_8_every_hour), AdsInterval.EVERY_8_HR),
                             ListPreferenceEntry(context.getString(R.string.ads_once_a_day), AdsInterval.EVERY_DAY),
                             ListPreferenceEntry(context.getString(R.string.ads_every_other_day), AdsInterval.EVERY_OTHER_DAY),
                             ListPreferenceEntry(context.getString(R.string.ads_end_of_every_week), AdsInterval.EVERY_WEEK),
+                            ListPreferenceEntry(context.getString(R.string.ads_end_of_every_other_week), AdsInterval.EVERY_OTHER_WEEK),
                             ListPreferenceEntry(context.getString(R.string.ads_once_every_month), AdsInterval.EVERY_MONTH),
-                            ListPreferenceEntry(context.getString(R.string.never), AdsInterval.NEVER),
                         )
                     }
                 ) {

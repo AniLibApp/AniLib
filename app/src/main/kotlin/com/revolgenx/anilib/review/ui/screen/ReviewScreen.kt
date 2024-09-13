@@ -28,6 +28,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -46,8 +47,10 @@ import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
+import com.revolgenx.anilib.common.ext.showLoginMsg
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
@@ -60,6 +63,7 @@ import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
@@ -85,19 +89,26 @@ class ReviewScreen(private val reviewId: Int) : AndroidScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ReviewScreenContent(viewModel: ReviewViewModel) {
-
-    viewModel.getResource()
     val scrollBehavior =
         TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     val navigator = localNavigator()
     val context = localContext()
+    val localUser = localUser()
+    val scope = rememberCoroutineScope()
+
+    viewModel.getResource()
 
     ScreenScaffold(
         topBar = {
             ReviewScreenTopAppBar(
-                reviewModel = viewModel.resource.value?.stateValue,
+                reviewModel = viewModel.getData(),
                 scrollBehavior = scrollBehavior,
+                onMediaTitleClicked = {
+                    viewModel.getData()?.media?.let {
+                        navigator.mediaScreen(it.id, it.type)
+                    }
+                }
             )
         },
         contentWindowInsets = horizontalBottomWindowInsets()
@@ -130,7 +141,8 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
                         .padding(horizontal = 6.dp, vertical = 8.dp)
                         .clickable {
                             navigator.userScreen(review.userId)
-                        }, horizontalArrangement = Arrangement.spacedBy(6.dp)
+                        }, horizontalArrangement = Arrangement.spacedBy(6.dp),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
 
                     ImageAsync(
@@ -152,24 +164,36 @@ private fun ReviewScreenContent(viewModel: ReviewViewModel) {
                     ) {
                         Text(text = stringResource(id = I18nR.string.review_by_user).format(user?.name.naText()))
                         Text(text = stringResource(id = I18nR.string.score_d_100).format(review.score.orZero()))
+                        LightText(
+                            modifier = Modifier.padding(top = 4.dp),
+                            text = review.createdAtPrettyTime,
+                            fontSize = 11.sp,
+                            textAlign = TextAlign.End
+                        )
                     }
 
-                    LightText(
-                        modifier = Modifier.weight(1f),
-                        text = review.createdAtPrettyTime,
-                        fontSize = 11.sp,
-                        textAlign = TextAlign.End
-                    )
 
                 }
 
                 MarkdownText(spanned = review.bodySpanned)
 
-                ReviewLikeDislike(review, onLike = {
-                    viewModel.likeReview(review)
-                }, onDislike = {
-                    viewModel.dislikeReview(review)
-                })
+                ReviewLikeDislike(
+                    review,
+                    onLike = {
+                        if (localUser.isLoggedIn) {
+                            viewModel.likeReview(review)
+                        } else {
+                            snackbarHostState.showLoginMsg(context, scope)
+                        }
+                    },
+                    onDislike = {
+                        if (localUser.isLoggedIn) {
+                            viewModel.dislikeReview(review)
+                        } else {
+                            snackbarHostState.showLoginMsg(context, scope)
+                        }
+                    }
+                )
 
                 MediumText(
                     modifier = Modifier.align(Alignment.CenterHorizontally),
@@ -221,6 +245,7 @@ fun ReviewLikeDislikeButton(
 private fun ReviewScreenTopAppBar(
     reviewModel: ReviewModel?,
     scrollBehavior: TopAppBarScrollBehavior,
+    onMediaTitleClicked: OnClick
 ) {
     val media = reviewModel?.media
     val containerHeight = 200.dp
@@ -258,7 +283,8 @@ private fun ReviewScreenTopAppBar(
                         Text(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
-                                .padding(bottom = 14.dp),
+                                .padding(bottom = 14.dp)
+                                .clickable(onClick = onMediaTitleClicked),
                             color = MaterialTheme.colorScheme.onSurface,
                             text = media?.title?.title(type)
                                 ?: stringResource(id = I18nR.string.review),

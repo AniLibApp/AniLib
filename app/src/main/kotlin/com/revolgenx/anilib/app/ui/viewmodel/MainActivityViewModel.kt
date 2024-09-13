@@ -79,22 +79,22 @@ class MainActivityViewModel(private val preferencesDataStore: AppPreferencesData
         }
 
 
-        launch {
-            delay(5000)
-            val currentEpochSecond = Instant.now().epochSecond
-            if (adsDisplayedDateTime.get() == null) {
-                adsDisplayedDateTime.set(currentEpochSecond)
-            } else {
-                val showAds = showAds(
-                    AdsInterval.fromValue(displayAdsInterval.get()!!),
-                    currentEpochSecond,
-                    adsDisplayedDateTime.get()!!
-                )
-                if (showAds) {
-                    showAdsDialog.value = true
-                    adsDisplayedDateTime.set(currentEpochSecond)
-                }
-            }
-        }
+//        launch {
+//            delay(5000)
+//            val currentEpochSecond = Instant.now().epochSecond
+//            if (adsDisplayedDateTime.get() == null) {
+//                adsDisplayedDateTime.set(currentEpochSecond)
+//            } else {
+//                val showAds = showAds(
+//                    AdsInterval.fromValue(displayAdsInterval.get()!!),
+//                    currentEpochSecond,
+//                    adsDisplayedDateTime.get()!!
+//                )
+//                if (showAds) {
+//                    showAdsDialog.value = true
+//                    adsDisplayedDateTime.set(currentEpochSecond)
+//                }
+//            }
+//        }
     }
 }

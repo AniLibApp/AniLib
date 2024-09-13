@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.media.ui.screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -28,11 +30,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
+import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
 import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.marker.Marker
 import com.patrykandpatrick.vico.core.scroll.InitialScroll
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ui.component.chart.ColumnChart
 import com.revolgenx.anilib.common.ui.component.chart.LineChart
@@ -47,6 +52,7 @@ import com.revolgenx.anilib.common.ui.model.stats.StatusDistributionModel
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.ui.theme.rank_type_popular
 import com.revolgenx.anilib.common.ui.theme.rank_type_rated
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.ui.model.toColor
 import com.revolgenx.anilib.list.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.model.MediaStatsModel
@@ -54,6 +60,10 @@ import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.media.ui.viewmodel.MediaStatsViewModel
 import com.revolgenx.anilib.type.MediaRankType
 import com.revolgenx.anilib.type.MediaType
+import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import anilib.i18n.R as I18nR
 
 @Composable
@@ -62,7 +72,8 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
         viewModel.getResource()
     }
 
-    val isAnime = mediaType.isAnime
+    val snackbar = localSnackbarHostState()
+    val scope = rememberCoroutineScope()
 
     ResourceScreen(
         viewModel = viewModel
@@ -79,7 +90,11 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
                 StatsRecentActivityPerDaySection(statsModel, marker)
                 StatsAiringScoreProgressionSection(statsModel, marker)
                 StatsAiringWatcherProgressionSection(statsModel, marker)
-                StatsStatusDistributionSection(statsModel, mediaType)
+                StatsStatusDistributionSection(statsModel, mediaType, onAmountClick = {
+                    scope.launch {
+                        snackbar.showSnackbar(it.toString(), withDismissAction = true)
+                    }
+                })
                 StatsScoreDistributionSection(statsModel, marker)
             }
         }
@@ -155,7 +170,8 @@ private fun StatsScoreDistributionSection(
 @Composable
 private fun StatsStatusDistributionSection(
     statsModel: MediaStatsModel,
-    mediaType: MediaType
+    mediaType: MediaType,
+    onAmountClick: (amount: Int)->Unit
 ) {
     val statusDistribution = statsModel.statusDistribution ?: return
     MediaStatsHeaderText(text = stringResource(id = I18nR.string.status_distribution))
@@ -176,7 +192,11 @@ private fun StatsStatusDistributionSection(
                 .padding(horizontal = 8.dp, vertical = 2.dp)
         ) {
             Text(
-                modifier = Modifier.align(Alignment.CenterStart),
+                modifier = Modifier
+                    .align(Alignment.CenterStart)
+                    .clickable {
+                        onAmountClick(item.amount)
+                    },
                 text = stringResource(id = I18nR.string.status_distribution_string).format(
                     item.amount.prettyNumberFormat(),
                     listStatus
@@ -198,7 +218,7 @@ private fun StatsStatusDistributionSection(
         }
         statusDistribution.forEach { item ->
             val weight = item.amount / statusTotalAmount * 100f
-            if(weight > 0){
+            if (weight > 0) {
                 Box(
                     modifier = Modifier
                         .weight(weight)
@@ -258,7 +278,16 @@ private fun StatsRecentActivityPerDaySection(
     MediaStatsHeaderText(text = stringResource(id = I18nR.string.recent_activity_per_day))
 
     OutlinedCard {
-        LineChart(marker = marker, model = trendEntries)
+        LineChart(
+            marker = marker,
+            model = trendEntries,
+            bottomAxis = rememberBottomAxis(valueFormatter = { value, _ ->
+                LocalDateTime.ofInstant(
+                    Instant.ofEpochSecond(value.toLong()),
+                    ZoneId.systemDefault()
+                ).dayOfMonth.toString()
+            })
+        )
     }
 }
 

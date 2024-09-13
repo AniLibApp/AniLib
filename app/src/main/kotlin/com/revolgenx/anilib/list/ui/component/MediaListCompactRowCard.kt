@@ -47,6 +47,7 @@ import com.revolgenx.anilib.media.ui.model.toStringRes
 @Composable
 fun MediaListSmallRowCard(
     list: MediaListModel,
+    showIncreaseButton: Boolean,
     increaseProgress: OnClick,
     onLongClick: OnLongClick,
     onClick: OnClick,
@@ -160,10 +161,12 @@ fun MediaListSmallRowCard(
                 MediaListEntryLinearProgressIndicator(list = list)
             }
 
-            IconButton(
-                onClick = increaseProgress
-            ) {
-                Icon(imageVector = AppIcons.IcPlus, contentDescription = null)
+            if(showIncreaseButton){
+                IconButton(
+                    onClick = increaseProgress
+                ) {
+                    Icon(imageVector = AppIcons.IcPlus, contentDescription = null)
+                }
             }
         }
     }
@@ -185,6 +188,7 @@ private fun MediaListSmallRowCardPreview() {
         ),
         onClick = {},
         onLongClick = {},
-        increaseProgress = {}
+        increaseProgress = {},
+        showIncreaseButton = true
     )
 }

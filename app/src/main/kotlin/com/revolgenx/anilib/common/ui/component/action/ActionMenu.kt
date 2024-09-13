@@ -2,14 +2,12 @@ package com.revolgenx.anilib.common.ui.component.action
 
 import IcOpenInNew
 import IcShare
-import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,7 +23,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.RadioButton
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -42,14 +39,13 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
-import com.revolgenx.anilib.common.ext.openLink
+import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ext.shareText
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBack
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.util.OnClick
-import kotlinx.coroutines.CoroutineScope
 import anilib.i18n.R as I18nR
 
 const val ActionMenuContainerAlpha = 0.17f
@@ -229,7 +225,7 @@ fun OpenInBrowserOverflowMenu(link: String) {
         icon = AppIcons.IcOpenInNew,
         contentDescriptionRes = null,
     ) {
-        context.openLink(link, scope, snackbarHostState)
+        context.openUri(link, scope, snackbarHostState)
     }
 }
 

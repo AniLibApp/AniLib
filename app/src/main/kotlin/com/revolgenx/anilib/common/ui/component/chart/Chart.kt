@@ -23,7 +23,7 @@ import com.patrykandpatrick.vico.core.scroll.InitialScroll
 fun ColumnChart(
     marker: Marker,
     model: ChartEntryModel,
-    bottomAxis: AxisRenderer<AxisPosition.Horizontal.Bottom>? = null
+    bottomAxis: AxisRenderer<AxisPosition.Horizontal.Bottom> = rememberBottomAxis()
 ) {
     Chart(
         marker = marker,
@@ -35,7 +35,7 @@ fun ColumnChart(
         startAxis = rememberStartAxis(
             valueFormatter = { value, _ -> value.toInt().toString() }
         ),
-        bottomAxis = bottomAxis ?: rememberBottomAxis()
+        bottomAxis = bottomAxis
     )
 }
 
@@ -43,7 +43,10 @@ fun ColumnChart(
 fun LineChart(
     marker: Marker,
     model: ChartEntryModel,
-    bottomAxis: AxisRenderer<AxisPosition.Horizontal.Bottom>? = null,
+    startAxis: AxisRenderer<AxisPosition.Vertical.Start> = rememberStartAxis(
+        valueFormatter = { value, _ -> value.toInt().toString() }
+    ),
+    bottomAxis: AxisRenderer<AxisPosition.Horizontal.Bottom> = rememberBottomAxis(),
     spacing: Dp = currentChartStyle.lineChart.spacing,
     initialScroll: InitialScroll = InitialScroll.Start,
 ) {
@@ -54,10 +57,8 @@ fun LineChart(
             axisValuesOverrider = AxisValuesOverrider.adaptiveYValues(yFraction = 1.2f)
         ),
         model = model,
-        startAxis = rememberStartAxis(
-            valueFormatter = { value, _ -> value.toInt().toString() }
-        ),
-        bottomAxis = bottomAxis ?: bottomAxis(),
+        startAxis = startAxis,
+        bottomAxis = bottomAxis,
         chartScrollSpec = rememberChartScrollSpec(initialScroll = initialScroll)
     )
 }

@@ -2,13 +2,16 @@ package com.revolgenx.anilib.staff.ui.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.showLoginMsg
 import com.revolgenx.anilib.common.ui.composition.localNavigator
-import com.revolgenx.anilib.common.ui.screen.about.AboutScreen
+import com.revolgenx.anilib.common.ui.composition.localUser
+import com.revolgenx.anilib.common.ui.screen.about.EntityAboutScreenContent
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 
@@ -18,6 +21,9 @@ fun StaffAboutScreen(
 ) {
     val navigator = localNavigator()
     val context = localContext()
+    val scope = rememberCoroutineScope()
+    val localUser = localUser()
+    val isLoggedIn = localUser.isLoggedIn
     val snackbarHostState = localSnackbarHostState()
 
     viewModel.getResource()
@@ -29,7 +35,7 @@ fun StaffAboutScreen(
     }
 
     ResourceScreen(viewModel = viewModel) { staff ->
-        AboutScreen(
+        EntityAboutScreenContent(
             name = staff.name?.full.naText(),
             alternative = staff.name?.alternativeText,
             imageUrl = staff.image?.image,
@@ -38,7 +44,11 @@ fun StaffAboutScreen(
             description = staff.description,
             spannedDescription = staff.spannedDescription,
             onFavouriteClick = {
-                viewModel.toggleFavorite()
+                if(isLoggedIn){
+                    viewModel.toggleFavorite()
+                }else{
+                    snackbarHostState.showLoginMsg(context, scope)
+                }
             },
             onImageClick = {
                 navigator.imageViewerScreen(it)

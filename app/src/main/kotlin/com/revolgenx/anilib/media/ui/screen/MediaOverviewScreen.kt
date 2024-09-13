@@ -55,7 +55,7 @@ import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naString
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.browseGenreScreen
-import com.revolgenx.anilib.common.ext.openLink
+import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ext.browseTagScreen
 import com.revolgenx.anilib.common.ext.orNa
 import com.revolgenx.anilib.common.ext.orZero
@@ -69,7 +69,6 @@ import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.ui.component.text.RegularText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -131,7 +130,7 @@ private fun MediaOverview(
 
 
     fun openLink(url: String?) {
-        context.openLink(
+        context.openUri(
             url = url,
             scope = scope,
             snackbarHostState = snackbarHostState
@@ -214,9 +213,7 @@ fun MediaRelation(relations: MediaConnectionModel?, mediaComponentState: MediaCo
     if (relations?.edges.isNullOrEmpty()) return
 
     MediaHeader(text = stringResource(id = I18nR.string.relations))
-    LazyRow(
-        horizontalArrangement = Arrangement.spacedBy(8.dp)
-    ) {
+    LazyRow {
         items(relations!!.edges!!) {
             MediaRelationCard(mediaEdgeModel = it, mediaCardState = mediaComponentState)
         }
@@ -866,18 +863,19 @@ fun MediaTagDetailBottomSheet(
 @Composable
 fun MediaTagDetailItem(title: String, value: String) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth()
+            .padding(bottom = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Text(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1.5f),
             text = title,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium
         )
         Text(
-            modifier = Modifier.weight(3f),
+            modifier = Modifier.weight(2.5f),
             text = value,
             fontSize = 15.sp,
             fontWeight = FontWeight.Medium,

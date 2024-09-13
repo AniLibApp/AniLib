@@ -51,6 +51,7 @@ import com.revolgenx.anilib.type.MediaListStatus
 @Composable
 fun MediaListCompactColumnCard(
     list: MediaListModel,
+    showIncreaseButton: Boolean,
     increaseProgress: OnClick,
     onLongClick: OnLongClick,
     onClick: OnClick
@@ -97,7 +98,7 @@ fun MediaListCompactColumnCard(
                 modifier = Modifier
                     .weight(1f)
             ) {
-                Column(modifier = Modifier.padding(3.dp)){
+                Column(modifier = Modifier.padding(3.dp)) {
                     MediaTitleType { type ->
                         MediumText(
                             modifier = Modifier
@@ -115,32 +116,43 @@ fun MediaListCompactColumnCard(
                 Spacer(modifier = Modifier.weight(1f))
                 Column {
                     Row(
-                        modifier = Modifier.padding(horizontal = 2.dp).fillMaxWidth(),
+                        modifier = Modifier
+                            .padding(horizontal = 2.dp)
+                            .fillMaxWidth(),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        RegularText(
-                            modifier = Modifier.weight(1f),
-                            text = stringResource(id = media.format.toStringRes()),
-                            color = MaterialTheme.colorScheme.primary,
-                            fontSize = 12.sp,
-                            maxLines = 1
-                        )
-
-                        RegularText(
-                            text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
-                            fontSize = 13.sp
-                        )
-                        Box(
-                            modifier = Modifier.clickable { increaseProgress() }
+                        Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(vertical = 3.dp),
                         ) {
-
-                            Icon(
-                                modifier = Modifier
-                                    .padding(4.dp)
-                                    .size(20.dp),
-                                imageVector = AppIcons.IcPlus,
-                                contentDescription = null
+                            RegularText(
+                                modifier = Modifier.weight(1f),
+                                text = stringResource(id = media.format.toStringRes()),
+                                color = MaterialTheme.colorScheme.primary,
+                                fontSize = 12.sp,
+                                maxLines = 1
                             )
+
+                            RegularText(
+                                text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
+                                fontSize = 12.sp
+                            )
+                        }
+
+                        if (showIncreaseButton) {
+                            Box(
+                                modifier = Modifier.clickable { increaseProgress() }
+                            ) {
+
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(4.dp)
+                                        .size(20.dp),
+                                    imageVector = AppIcons.IcPlus,
+                                    contentDescription = null
+                                )
+                            }
                         }
                     }
                     MediaListEntryLinearProgressIndicator(list = list)
@@ -162,7 +174,9 @@ private fun MediaListCompactColumnCardPreview() {
                 currentEpisode = 10,
                 averageScore = 20,
                 mediaListEntry = MediaListModel(
-                    status = mutableStateOf(MediaListStatus.CURRENT)
+                    status = remember {
+                        mutableStateOf(MediaListStatus.CURRENT)
+                    }
                 )
             ),
             progressState = remember {
@@ -170,6 +184,7 @@ private fun MediaListCompactColumnCardPreview() {
             },
             score = 10.0
         ),
+        showIncreaseButton = true,
         onClick = {},
         onLongClick = {},
         increaseProgress = {}

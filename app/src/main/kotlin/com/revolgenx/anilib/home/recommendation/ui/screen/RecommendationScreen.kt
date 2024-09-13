@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -33,6 +34,8 @@ import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ext.showLoginMsg
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -42,7 +45,10 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
+import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
@@ -118,6 +124,11 @@ private fun RecommendationPagingContent(
     mediaComponentState: MediaComponentState
 ) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
+    val localUser = localUser()
+    val isLoggedIn = localUser.isLoggedIn
+    val snackbar = localSnackbarHostState()
+    val context = localContext()
+    val scope = rememberCoroutineScope()
 
     LazyPagingList(
         pagingItems = pagingItems,
@@ -130,10 +141,18 @@ private fun RecommendationPagingContent(
             model = model,
             mediaComponentState = mediaComponentState,
             onLike = {
-                viewModel.likeRecommendation(model)
+                if(isLoggedIn){
+                    viewModel.likeRecommendation(model)
+                }else{
+                    snackbar.showLoginMsg(context = context, scope)
+                }
             },
             onDislike = {
-                viewModel.dislikeRecommendation(model)
+                if(isLoggedIn){
+                    viewModel.dislikeRecommendation(model)
+                }else{
+                    snackbar.showLoginMsg(context = context, scope)
+                }
             }
         )
     }

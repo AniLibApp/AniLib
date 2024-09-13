@@ -18,24 +18,22 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.common.data.store.PreferencesDataStore
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.openUri
+import com.revolgenx.anilib.common.ui.bottomsheet.WhatsNewBottomSheet
 import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.text.MediumText
-import com.revolgenx.anilib.common.ui.component.text.RegularText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcAnilib
 import com.revolgenx.anilib.common.ui.icons.appicon.IcAssignment
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBugReport
-import com.revolgenx.anilib.common.ui.icons.appicon.IcGithub
 import com.revolgenx.anilib.common.ui.icons.appicon.IcInfo
 import com.revolgenx.anilib.common.ui.icons.appicon.IcList
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPrivacyPolicy
@@ -54,23 +52,24 @@ data class InfoData(
 )
 
 @Composable
-fun AppAboutScreen(modifier: Modifier = Modifier) {
+fun AppAboutScreen() {
     AboutScreenContent()
 }
 
 @Composable
 private fun AboutScreenContent() {
-    val context = LocalContext.current
-    val uriHandler = LocalUriHandler.current
+    val context = localContext()
     val scope = rememberCoroutineScope()
     val viewModel: SettingsViewModel = koinViewModel()
     val bugReport = viewModel.bugReport
 
+    val whatsNewBottomSheetState = rememberBottomSheetState()
+
     Card(modifier = Modifier.fillMaxWidth()) {
-        Column(
-        ) {
+        Column {
             Row(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .padding(18.dp),
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalAlignment = Alignment.CenterVertically
@@ -128,11 +127,11 @@ private fun AboutScreenContent() {
 
                 Row(
                     modifier = Modifier
-                        .padding(vertical = 6.dp)
                         .fillMaxWidth()
                         .clickable {
-                            uriHandler.openUri(it.link)
-                        },
+                            context.openUri(it.link)
+                        }
+                        .padding(vertical = 6.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
@@ -162,7 +161,7 @@ private fun AboutScreenContent() {
                 subtitle = stringResource(id = I18nR.string.privacy_policy_desc),
                 icon = AppIcons.IcPrivacyPolicy
             ) {
-                uriHandler.openUri(context.getString(R.string.privacy_policy_url))
+                context.openUri(context.getString(R.string.privacy_policy_url))
             }
 
 
@@ -171,7 +170,7 @@ private fun AboutScreenContent() {
                 subtitle = stringResource(id = I18nR.string.terms_and_condition_desc),
                 icon = AppIcons.IcAssignment
             ) {
-                uriHandler.openUri(context.getString(R.string.terms_and_condition_url))
+                context.openUri(context.getString(R.string.terms_and_condition_url))
             }
 
             val isBugReportChecked = bugReport.collectAsState()
@@ -190,8 +189,12 @@ private fun AboutScreenContent() {
                 title = stringResource(id = I18nR.string.whats_new),
                 icon = AppIcons.IcInfo
             ) {
-                uriHandler.openUri(context.getString(R.string.terms_and_condition_url))
+                scope.launch {
+                    whatsNewBottomSheetState.peek()
+                }
             }
         }
+
+        WhatsNewBottomSheet(bottomSheetState = whatsNewBottomSheetState)
     }
 }

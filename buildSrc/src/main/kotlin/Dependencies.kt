@@ -36,6 +36,7 @@ object Versions{
     const val reorderable = "2.3.0"
     const val glance = "1.1.0"
     const val firebase = "33.2.0"
+    const val admob = "23.3.0"
 }
 
 object Dependencies {
@@ -110,6 +111,7 @@ object Dependencies {
     const val glance = "androidx.glance:glance-appwidget:${Versions.glance}"
     const val glanceMaterial3 = "androidx.glance:glance-material3:${Versions.glance}"
     const val firebase = "com.google.firebase:firebase-bom:${Versions.firebase}"
+    const val admob = "com.google.android.gms:play-services-ads:${Versions.admob}"
     const val firebaseAnalytics = "com.google.firebase:firebase-analytics"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics"
 }
@@ -222,4 +224,8 @@ fun DependencyHandler.firebase(){
     implementation(platform(Dependencies.firebase))
     implementation(Dependencies.firebaseAnalytics)
     implementation(Dependencies.firebaseCrashlytics)
+}
+
+fun DependencyHandler.admob(){
+    implementation(Dependencies.admob)
 }

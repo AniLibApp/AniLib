@@ -3,7 +3,8 @@
     <string name="app_desc">Your to be favourite place to manage, track and browse your anime and manga, and more.</string>
     <string name="app_anilist_client_desc">By the power of AniList</string>
     <string name="app_anilib_site">AniLib Site</string>
-    <string name="app_anilib_site_desc">Visit AniLib</string>
+    <string name="app_anilib_site_desc">Visit website</string>
+    <string name="no_watching_feature_desc">⚠️ Disclaimer: This app is not for watching anime/manga. Its an Unofficial Client For AniList. Visit Anilist official website for more info.</string>
 
     <string name="home">Home</string>
     <string name="list">List</string>
@@ -608,12 +609,11 @@
 
     <!--Ads-->
     <string name="change_ads_interval">Change Ads Interval</string>
-    <string name="ads_8_every_hour">Every 8 Hours</string>
     <string name="ads_once_a_day">Once a Day</string>
     <string name="ads_every_other_day">Every Other Day</string>
     <string name="ads_end_of_every_week">End of Every Week</string>
+    <string name="ads_end_of_every_other_week">End of Every Other Week</string>
     <string name="ads_once_every_month">Once Every Month</string>
-    <string name="never">Never</string>
     <!--Ads-->
 
     <string name="datetime_days">Days</string>

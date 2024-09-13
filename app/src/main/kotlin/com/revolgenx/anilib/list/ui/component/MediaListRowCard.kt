@@ -49,6 +49,7 @@ import com.revolgenx.anilib.media.ui.model.toStringRes
 @Composable
 fun MediaListRowCard(
     list: MediaListModel,
+    showIncreaseButton: Boolean,
     increaseProgress: OnClick,
     onLongClick: OnLongClick,
     onClick: OnClick,
@@ -162,21 +163,26 @@ fun MediaListRowCard(
                             .weight(1f)
                     )
                     RegularText(
+                        modifier = Modifier.padding(2.dp),
                         text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
                         fontSize = 13.sp
                     )
 
 
-                    Box(modifier = Modifier.clickable {
-                        increaseProgress()
-                    }) {
-                        Icon(
-                            modifier = Modifier
-                                .padding(3.dp)
-                                .size(20.dp),
-                            imageVector = AppIcons.IcPlus,
-                            contentDescription = null
-                        )
+                    if(showIncreaseButton){
+                        Box(
+                            modifier = Modifier.clickable {
+                                increaseProgress()
+                            }
+                        ) {
+                            Icon(
+                                modifier = Modifier
+                                    .padding(3.dp)
+                                    .size(20.dp),
+                                imageVector = AppIcons.IcPlus,
+                                contentDescription = null
+                            )
+                        }
                     }
 
                 }
@@ -196,6 +202,7 @@ private fun MediaListRowCardPreview() {
         Surface {
             MediaListRowCard(
                 list = MediaListModel(media = MediaModel(title = MediaTitleModel(romaji = "1234444444444444444444444444444444444"))),
+                showIncreaseButton = true,
                 onClick = {},
                 onLongClick = {},
                 increaseProgress = {}
