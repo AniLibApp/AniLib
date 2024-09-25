@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.common.ui.screen.image
 
+import IcOpenInNew
 import androidx.activity.SystemBarStyle
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -19,12 +20,16 @@ import androidx.compose.ui.platform.LocalContext
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.componentActivity
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.openUri
+import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarDefaults
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.image.coilImageLoader
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcLink
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import org.koin.compose.koinInject
 
@@ -42,6 +47,7 @@ private fun ImageViewerScreenContent(imageUrl: String) {
     val activity = componentActivity()
     val themeDataStore: ThemeDataStore = koinInject()
     val themeData = themeDataStore.collectAsState().value
+    val context = localContext()
 
     val isSystemInDarkMode = isSystemInDarkTheme()
     val darkTheme = themeData.darkMode ?: isSystemInDarkMode
@@ -86,7 +92,12 @@ private fun ImageViewerScreenContent(imageUrl: String) {
             navigationIconContentColor = Color.White,
             titleContentColor = Color.White,
             actionIconContentColor = Color.White
-        )
+        ),
+        actions = {
+            ActionMenu(icon = AppIcons.IcOpenInNew) {
+                context.openUri(imageUrl)
+            }
+        }
     ) {
 
         val loading = remember { mutableStateOf(false) }

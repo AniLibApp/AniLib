@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.ActivityUnionQuery
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
+import com.revolgenx.anilib.fragment.GeneralListActivity
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.type.ActivityType
@@ -38,7 +39,7 @@ data class ListActivityModel(
 }
 
 
-fun ActivityUnionQuery.OnListActivity.toModel(): ListActivityModel {
+fun GeneralListActivity.toModel(): ListActivityModel {
     return ListActivityModel(
         id = id,
         media = media?.let {

@@ -154,7 +154,7 @@ fun SnackbarHostState.showLoginMsg(context: Context, scope: CoroutineScope){
 fun <T> Flow<T>.logException(): Flow<T> {
     return this.catch {
         if(it !is ApolloException){
-            Timber.e(it)
+            Timber.e(it, "Caught Flow Exception")
         }
         throw it
     }

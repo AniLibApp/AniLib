@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localContext
@@ -141,16 +142,16 @@ private fun RecommendationPagingContent(
             model = model,
             mediaComponentState = mediaComponentState,
             onLike = {
-                if(isLoggedIn){
+                if (isLoggedIn) {
                     viewModel.likeRecommendation(model)
-                }else{
+                } else {
                     snackbar.showLoginMsg(context = context, scope)
                 }
             },
             onDislike = {
-                if(isLoggedIn){
+                if (isLoggedIn) {
                     viewModel.dislikeRecommendation(model)
-                }else{
+                } else {
                     snackbar.showLoginMsg(context = context, scope)
                 }
             }
@@ -278,7 +279,11 @@ private fun RecommendationFilterBottomSheet(
         }
     }
 
-    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+    BottomSheet(
+        state = bottomSheetState,
+        skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         RecommendationFilterBottomSheetContent(
             viewModel = viewModel,
             dismiss = dismiss,

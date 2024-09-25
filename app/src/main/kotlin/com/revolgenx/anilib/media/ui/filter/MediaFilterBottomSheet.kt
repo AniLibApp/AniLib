@@ -14,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
@@ -50,7 +51,11 @@ fun MediaFilterBottomSheet(
 ) {
     val scope = rememberCoroutineScope()
 
-    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+    BottomSheet(
+        state = bottomSheetState,
+        skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         MediaFilterBottomSheetContent(
             field = viewModel.field,
             showSort = viewModel is SeasonFilterViewModel,

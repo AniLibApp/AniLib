@@ -21,7 +21,7 @@ class BrowseServiceImpl(
     appPreferencesDataStore: AppPreferencesDataStore
 ) : BaseService(apolloRepository, appPreferencesDataStore), BrowseService {
     override fun browse(browseField: BrowseField): Flow<PageModel<BaseModel>> {
-        return browseField.toQuery().map {
+        return browseField.toQuery().mapData {
             var data: List<BaseModel>? = null
             var pageInfo: PageInfo? = null
             it.dataAssertNoErrors.apply {

@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
 import com.revolgenx.anilib.browse.ui.model.FuzzyDateIntModel
@@ -65,7 +66,11 @@ private val yearList by lazy {
 fun BrowseFilterBottomSheet(
     state: BottomSheetState, viewModel: BrowseFilterViewModel, onFilter: () -> Unit
 ) {
-    BottomSheet(state = state, skipPeeked = true) {
+    BottomSheet(
+        state = state,
+        skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         Column {
             Column(
                 modifier = Modifier
@@ -120,7 +125,8 @@ fun BrowseFilterBottomSheet(
 
                     BrowseFilterRowItem {
 
-                        val selectedFormats = viewModel.field.formatsIn?.map { it.ordinal }.orEmpty()
+                        val selectedFormats =
+                            viewModel.field.formatsIn?.map { it.ordinal }.orEmpty()
                         val formats = stringArrayResource(id = R.array.media_format)
 
                         MultiSelectMenu(
@@ -292,9 +298,11 @@ fun BrowseFilterBottomSheet(
                     )
 
                     Icon(
-                        modifier = Modifier.align(Alignment.CenterEnd).clickable {
-                            viewModel.clearFilter()
-                        },
+                        modifier = Modifier
+                            .align(Alignment.CenterEnd)
+                            .clickable {
+                                viewModel.clearFilter()
+                            },
                         imageVector = AppIcons.IcClose,
                         contentDescription = null
                     )
@@ -477,9 +485,9 @@ private fun ExternalLinkFilter(viewModel: BrowseFilterViewModel) {
         MultiSelectMenu(entries = if (isAnime) viewModel.selectStreamingOnCollections.value else viewModel.selectReadableOnCollections.value,
             text = { it.site.orEmpty() },
             onItemsSelected = {
-                if(isAnime){
+                if (isAnime) {
                     field.streamingOn = it.map { it.id }
-                }else{
+                } else {
                     field.readableOn = it.map { it.id }
                 }
             })

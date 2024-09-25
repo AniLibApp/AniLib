@@ -23,12 +23,19 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.browseGenreScreen
+import com.revolgenx.anilib.common.ext.browseTagScreen
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.staffScreen
+import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ui.component.common.HeaderText
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
+import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.screen.state.EmptyScreen
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.isAnime
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.statistics.BaseStatisticModel
@@ -42,6 +49,7 @@ import anilib.i18n.R as I18nR
 
 @Composable
 fun UserStatsTypeScreen(type: MediaType, viewModel: UserStatsTypeViewModel) {
+    val navigator = localNavigator()
     LaunchedEffect(viewModel) {
         viewModel.getResource()
     }
@@ -49,21 +57,35 @@ fun UserStatsTypeScreen(type: MediaType, viewModel: UserStatsTypeViewModel) {
     val isAnime = type.isAnime
 
     ResourceScreen(viewModel = viewModel) {
-        LazyPagingList(
-            items = it,
-            onRefresh = {
-                viewModel.refresh()
+        if (it.isEmpty()) {
+            EmptyScreen()
+        }else{
+            LazyPagingList(
+                items = it,
+                onRefresh = {
+                    viewModel.refresh()
+                }
+            ) {
+                val model = it ?: return@LazyPagingList
+                UserStatsTypeItem(isAnime, model){
+                    when (model) {
+                        is UserGenreStatisticModel -> {
+                            model.genre?.let { navigator.browseGenreScreen(model.genre) }
+                        }
+                        is UserTagStatisticModel -> model.tag?.name?.let { navigator.browseTagScreen(it) }
+                        is UserStudioStatisticModel -> model.studio?.id?.let { navigator.studioScreen(it) }
+                        is UserVoiceActorStatisticModel -> model.voiceActor?.id?.let { navigator.staffScreen(it) }
+                        is UserStaffStatisticModel -> model.staff?.id?.let { navigator.staffScreen(it) }
+                    }
+                }
             }
-        ) {
-            val item = it ?: return@LazyPagingList
-            UserStatsTypeItem(isAnime, item)
         }
     }
 }
 
 
 @Composable
-private fun UserStatsTypeItem(isAnime: Boolean, model: BaseStatisticModel) {
+private fun UserStatsTypeItem(isAnime: Boolean, model: BaseStatisticModel, onClick: OnClick) {
     val header = when (model) {
         is UserGenreStatisticModel -> model.genre
         is UserTagStatisticModel -> model.tag?.name
@@ -81,7 +103,8 @@ private fun UserStatsTypeItem(isAnime: Boolean, model: BaseStatisticModel) {
 
     OutlinedCard(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(8.dp),
+        onClick = onClick
     ) {
         Row {
             image?.let {
@@ -108,7 +131,10 @@ private fun UserStatsTypeItem(isAnime: Boolean, model: BaseStatisticModel) {
                 ) {
                     StatsTypeCardItem(labelId = I18nR.string.count, text = model.count.toString())
                     Spacer(modifier = Modifier.size(2.dp))
-                    StatsTypeCardItem(labelId = I18nR.string.mean_score, text = "${model.meanScore}%")
+                    StatsTypeCardItem(
+                        labelId = I18nR.string.mean_score,
+                        text = "${model.meanScore}%"
+                    )
                     Spacer(modifier = Modifier.size(2.dp))
                     StatsTypeCardItem(
                         labelId = if (isAnime) I18nR.string.time_watched else I18nR.string.chapters_read,

@@ -5,6 +5,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,8 +44,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -132,6 +136,7 @@ private fun MediaScreenContent(
     val scope = rememberCoroutineScope()
     val context = localContext()
     val navigator = localNavigator()
+    val clipboardManager = LocalClipboardManager.current
 
     val viewModel: MediaViewModel = koinViewModel()
     val recommendationViewModel: MediaRecommendationViewModel = koinViewModel()
@@ -225,6 +230,9 @@ private fun MediaScreenContent(
                             navigator.mediaListEntryEditorScreen(it.id)
                         }
                     }
+                },
+                copyToClipboard = {
+                    clipboardManager.setText(AnnotatedString(it))
                 }
             )
         },
@@ -316,7 +324,8 @@ private fun MediaScreenTopAppBar(
     onFavouriteClick: OnClick,
     onMoreClick: OnClick,
     onMediaListStatusChange: OnClickWithValue<MediaListStatus>,
-    onEdit: OnClick
+    onEdit: OnClick,
+    copyToClipboard: (value: String) -> Unit
 ) {
     val containerHeight = 320.dp
     CollapsingAppbar(
@@ -333,18 +342,29 @@ private fun MediaScreenTopAppBar(
                 onReviewClick = onReviewClick,
                 onFavouriteClick = onFavouriteClick,
                 onMoreClick = onMoreClick,
-                onMediaListStatusChange = onMediaListStatusChange
+                onMediaListStatusChange = onMediaListStatusChange,
+                copyToClipboard = copyToClipboard
             )
         },
         title = { isCollapsed ->
             if (isCollapsed) {
                 MediaTitleType {
-                    Text(
-                        text = mediaModel?.title?.title(it)
-                            ?: stringResource(id = I18nR.string.media),
-                        overflow = TextOverflow.Ellipsis,
-                        maxLines = 1,
-                    )
+                    (mediaModel?.title?.title(it)
+                        ?: stringResource(id = I18nR.string.media)).let { title ->
+                        Text(
+                            modifier = Modifier.pointerInput(Unit) {
+                                detectTapGestures(
+                                    onLongPress = {
+                                        copyToClipboard(title)
+                                    }
+                                )
+                            },
+                            text = title,
+                            overflow = TextOverflow.Ellipsis,
+                            maxLines = 1,
+                        )
+                    }
+
                 }
             }
         },
@@ -361,9 +381,13 @@ private fun MediaScreenTopAppBar(
             mediaModel?.siteUrl?.let { site ->
                 OverflowMenu(
                     tonalButton = !isCollapsed
-                ) {
-                    OpenInBrowserOverflowMenu(link = site)
-                    ShareOverflowMenu(text = site)
+                ) {expanded->
+                    OpenInBrowserOverflowMenu(link = site){
+                        expanded.value = false
+                    }
+                    ShareOverflowMenu(text = site){
+                        expanded.value = false
+                    }
                 }
             }
 
@@ -383,7 +407,8 @@ private fun MediaTopAppBarContainerContent(
     onReviewClick: OnClick,
     onFavouriteClick: OnClick,
     onMoreClick: OnClick,
-    onMediaListStatusChange: OnClickWithValue<MediaListStatus>
+    onMediaListStatusChange: OnClickWithValue<MediaListStatus>,
+    copyToClipboard: (value: String) -> Unit
 ) {
     val isAnime = mediaType.isAnime
     ImageAsync(
@@ -452,14 +477,21 @@ private fun MediaTopAppBarContainerContent(
                         verticalArrangement = Arrangement.spacedBy(3.dp)
                     ) {
                         MediaTitleType {
-                            MediumText(
-                                text = media?.title?.title(it).naText(),
-                                fontSize = 20.sp,
-                                lineHeight = 22.sp,
-                                maxLines = 2,
-                                color = MaterialTheme.colorScheme.onSurface,
-                                style = LocalTextStyle.current.shadow(surfaceContainerLowest)
-                            )
+                            media?.title?.title(it).naText().let { title ->
+                                MediumText(
+                                    modifier = Modifier.pointerInput(Unit) {
+                                        detectTapGestures(onLongPress = {
+                                            copyToClipboard(title)
+                                        })
+                                    },
+                                    text = title,
+                                    fontSize = 20.sp,
+                                    lineHeight = 22.sp,
+                                    maxLines = 2,
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    style = LocalTextStyle.current.shadow(surfaceContainerLowest)
+                                )
+                            }
                         }
 
 
@@ -500,7 +532,7 @@ private fun MediaTopAppBarContainerContent(
 
 
                             RegularText(
-                                text = stringResource(id = I18nR.string.season_dot_year).format(
+                                text = stringResource(id = I18nR.string.s_dot_s).format(
                                     season,
                                     media?.seasonYear.naText()
                                 ),
@@ -511,7 +543,7 @@ private fun MediaTopAppBarContainerContent(
 
                         media?.nextAiringEpisode?.let {
                             RegularText(
-                                text = stringResource(id = I18nR.string.episode_airing_date).format(
+                                text = stringResource(id = I18nR.string.ep_s_s).format(
                                     it.episode,
                                     it.airingAtModel.airingDateTime.naText()
                                 ),

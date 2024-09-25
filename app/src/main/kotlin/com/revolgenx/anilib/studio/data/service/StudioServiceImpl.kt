@@ -20,7 +20,7 @@ class StudioServiceImpl(
 ) : BaseService(apolloRepository, appPreferencesDataStore),
     StudioService {
     override fun getStudioMedia(field: StudioField): Flow<PageModel<MediaModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.studio.let { studio ->
                 PageModel(
                     pageInfo = studio?.media?.pageInfo?.pageInfo,

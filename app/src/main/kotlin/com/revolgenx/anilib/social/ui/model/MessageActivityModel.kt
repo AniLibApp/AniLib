@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.ActivityUnionQuery
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
+import com.revolgenx.anilib.fragment.GeneralMessageActivity
 import com.revolgenx.anilib.social.factory.markdown
 import com.revolgenx.anilib.social.markdown.anilify
 import com.revolgenx.anilib.type.ActivityType
@@ -39,7 +40,7 @@ data class MessageActivityModel(
     val messageSpanned: Spanned? = null
 ) : ActivityModel()
 
-fun ActivityUnionQuery.OnMessageActivity.toModel(): MessageActivityModel {
+fun GeneralMessageActivity.toModel(): MessageActivityModel {
     val anilifiedMsg = anilify(message)
     return MessageActivityModel(
         id = id,

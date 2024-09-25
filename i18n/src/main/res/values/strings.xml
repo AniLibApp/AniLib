@@ -1,11 +1,12 @@
 <resources>
     <string name="app_name" translatable="false">AniLib</string>
+    <string name="s_dot_s" translatable="false">%1$s · %2$s</string>
+    <string name="q_mark" translatable="false">\?</string>
+    <string name="app_subtitle">By the power of AniList</string>
     <string name="app_desc">Your to be favourite place to manage, track and browse your anime and manga, and more.</string>
-    <string name="app_anilist_client_desc">By the power of AniList</string>
-    <string name="app_anilib_site">AniLib Site</string>
-    <string name="app_anilib_site_desc">Visit website</string>
+    <string name="anilib_site">AniLib Site</string>
+    <string name="visit_site_desc">Visit website</string>
     <string name="no_watching_feature_desc">⚠️ Disclaimer: This app is not for watching anime/manga. Its an Unofficial Client For AniList. Visit Anilist official website for more info.</string>
-
     <string name="home">Home</string>
     <string name="list">List</string>
     <string name="profile">Profile</string>
@@ -16,14 +17,8 @@
     <string name="review">Review</string>
     <string name="reviews">Reviews</string>
     <string name="users">Users</string>
-
-
-    <!--MediaType-->
     <string name="anime">Anime</string>
     <string name="manga">Manga</string>
-    <!---->
-
-    <!--MediaFormat-->
     <string name="tv">Tv</string>
     <string name="tv_short">Tv Short</string>
     <string name="movie">Movie</string>
@@ -34,9 +29,6 @@
     <string name="novel">Novel</string>
     <string name="music">Music</string>
     <string name="unknown">Unknown</string>
-    <!--MediaFormat-->
-
-    <!--MediaSource-->
     <string name="original">Original</string>
     <string name="light_novel">Light Novel</string>
     <string name="visual_novel">Visual Novel</string>
@@ -49,9 +41,6 @@
     <string name="comic">Comic</string>
     <string name="web_novel">Web Novel</string>
     <string name="live_action">Live Action</string>
-    <!--MediaSource-->
-
-    <!--MediaSort-->
     <string name="id">Id</string>
     <string name="id_desc">Id Desc</string>
     <string name="title_romaji">Title Romaji</string>
@@ -89,36 +78,20 @@
     <string name="search_match">Search Match</string>
     <string name="favourites">Favourites</string>
     <string name="favourites_desc">Favourites Desc</string>
-    <!--MediaSort-->
-
-    <!--MediaStatus-->
     <string name="cancelled">Cancelled</string>
     <string name="hiatus">Hiatus</string>
     <string name="not_yet_released">Not yet released</string>
     <string name="releasing">Releasing</string>
     <string name="finished">Finished</string>
-    <!--MediaStatus-->
-
-    <!--MediaSeason-->
     <string name="all">All</string>
     <string name="winter">Winter</string>
     <string name="spring">Spring</string>
     <string name="summer">Summer</string>
     <string name="fall">Fall</string>
-    <!--MediaSeason-->
-
-
-    <!--Media-->
     <string name="ep_d_s">Ep: %1$s\u0020·\u0020D: %2$s min</string>
-    <!--Media-->
-
-    <!--Character Role-->
     <string name="main">Main</string>
     <string name="supporting">Supporting</string>
     <string name="background">Background</string>
-    <!--Character Role-->
-
-    <!--MediaListStatus-->
     <string name="watching">Watching</string>
     <string name="plan_to_watch">Plan to watch</string>
     <string name="rewatching">Rewatching</string>
@@ -129,9 +102,6 @@
     <string name="reading">Reading</string>
     <string name="plan_to_read">Plan to read</string>
     <string name="rereading">Rereading</string>
-    <!--MediaListStatus-->
-
-    <!--MediaRelationType-->
     <string name="contains">Contains</string>
     <string name="compilation">Compilation</string>
     <string name="spin_off">Spin off</string>
@@ -142,14 +112,8 @@
     <string name="prequel">Prequel</string>
     <string name="adaptation">Adaptation</string>
     <string name="summary">Summary</string>
-    <!--MediaRelationType-->
-
-    <!--notification-->
     <string name="notifications">Notifications</string>
     <string name="show_reason">Show reason</string>
-    <!--notification-->
-
-    <!--entry-->
     <string name="notes">Notes</string>
     <string name="_private">Private</string>
     <string name="custom_lists">Custom Lists</string>
@@ -159,30 +123,19 @@
     <string name="do_you_really_want_to_delete_the_entry_s">Do you really want to delete the entry%s?</string>
     <string name="failed_to_delete">Failed to delete.</string>
     <string name="failed_to_save">Failed to save.</string>
-    <!--entry-->
-
-    <!--reviews-->
     <string name="review_score_format">Score: %1$s/100</string>
     <string name="review_of_s_by_s">Review of %1$s by %2$s</string>
     <string name="write_review">Write review</string>
     <string name="review_summary">Review summary</string>
     <string name="write_review_valid_desc">Review must be greater than 2200 characters</string>
     <string name="write_review_summary_valid_desc">Summary must be less than 120 characters and greater than 20 characters</string>
-    <!--reviews-->
-
-    <!--notifications-->
     <string name="thread_notif_s">%1$s %2$s %3$s</string>
     <string name="episode_airing_notif">%1$s %2$s %3$s %4$s %5$s</string>
     <string name="new_notification">New notification available</string>
-    <!--notifications-->
-
-
-    <!--App-->
     <string name="its_empty">Feeling empty</string>
     <string name="empty">Empty</string>
     <string name="something_went_wrong">Something went wrong</string>
     <string name="retry">Retry</string>
-    <!--App-->
     <string name="na">N/A</string>
     <string name="filter">Filter</string>
     <string name="sort">Sort</string>
@@ -199,14 +152,10 @@
     <string name="voice_roles">Voice Roles</string>
     <string name="staff_roles">Staff Roles</string>
     <string name="about">About</string>
-    <string name="day_range_string">%1$s - %2$s</string>
     <string name="previous">Previous</string>
     <string name="next">Next</string>
     <string name="more">More</string>
     <string name="search">Search</string>
-    <string name="notifcations">Notifications</string>
-
-
     <string name="media_id">Media Id</string>
     <string name="time">Time</string>
     <string name="activity">Activity</string>
@@ -243,7 +192,6 @@
     <string name="write_a_status">Write a status…</string>
     <string name="activity_posting_guidelines">Please read the site guidelines before posting</string>
     <string name="view_all">View All</string>
-    <string name="s_dot_s">%1$s · %2$s</string>
     <string name="description">Description</string>
     <string name="no_description">No description</string>
     <string name="birth">Birth</string>
@@ -255,7 +203,6 @@
     <string name="hometown">Hometown</string>
     <string name="anime_staff_roles">Anime Staff Roles</string>
     <string name="manga_staff_roles">Manga Staff Roles</string>
-
     <string name="s_space_s">%1$s %2$s</string>
     <string name="rankings">Rankings</string>
     <string name="recent_activity_per_day">Recent Activity Per Day</string>
@@ -263,11 +210,8 @@
     <string name="airing_watchers_progression">Airing Watchers Progression</string>
     <string name="status_distribution">Status Distribution</string>
     <string name="score_distribution">Score Distribution</string>
-
     <string name="status_distribution_string">%1$s Users %2$s</string>
     <string name="voice_actors">Voice Actors</string>
-
-    <!--User Stats-->
     <string name="anime_stats">Anime Stats</string>
     <string name="manga_stats">Manga Stats</string>
     <string name="titles_watched">Titles Watched</string>
@@ -305,16 +249,6 @@
     <string name="score_d_100">Score: %1$d/100</string>
     <string name="d_out_of_d_liked_this_review">%1$d out of %2$d liked this review</string>
     <string name="add">Add</string>
-    <!--User Stats-->
-
-    <!--Others-->
-    <string name="q_mark" translatable="false">\?</string>
-    <!--Others-->
-
-    <!--Explore Screen-->
-    <!--Explore Screen-->
-
-    <!--Airing Schedule Screen-->
     <string name="airing">Airing</string>
     <string name="select_date">Select Date</string>
     <string name="weekly">Weekly</string>
@@ -333,11 +267,6 @@
     <string name="include_already_aired">Include Already Aired</string>
     <string name="show_only_from_your_planning_list">Show only from your planning list</string>
     <string name="show_only_from_your_watching_list">Show only from your watching list</string>
-    <!--Airing Schedule Screen-->
-
-    <!--Media Screen-->
-    <string name="season_dot_year">%1$s · %2$s</string>
-    <string name="episode_airing_date">E: %1$s · %2$s</string>
     <string name="source">Source</string>
     <string name="s_min">%1$s min</string>
     <string name="_native">Native</string>
@@ -361,9 +290,6 @@
     <string name="studios">Studios</string>
     <string name="producers">Producers</string>
     <string name="relations">Relations</string>
-    <!--Media Screen-->
-
-    <!--Settings-->
     <string name="settings">Settings</string>
     <string name="settings_important_to_know">Important to know</string>
     <string name="settings_login">Login</string>
@@ -409,7 +335,6 @@
     <string name="settings_explore_section_order_desc">Change explore section order</string>
     <string name="settings_main_page_order_desc">Change main page order</string>
     <string name="settings_change_order">Change Order</string>
-
     <string name="restart_required_msg">Restart is required for changes to take effect.</string>
     <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
     <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>
@@ -453,8 +378,6 @@
     <string name="settings_play_gif_desc">Automatically play GIF Images in Activity</string>
     <string name="settings_show_users_about">Show User’s About</string>
     <string name="settings_show_users_about_desc">Directly load user’s about section</string>
-
-
     <string name="privacy_policy">Privacy Policy.</string>
     <string name="privacy_policy_desc">View complete privacy policy.</string>
     <string name="whats_new">What\'s new</string>
@@ -462,7 +385,6 @@
     <string name="terms_and_condition_desc">View Terms and Condition</string>
     <string name="crash_reporting">Crash Reporting</string>
     <string name="crash_report_desc">Help improve AniLib\'s features. Automatically sends crash reports.</string>
-
     <string name="widget">Widget</string>
     <string name="widget_open_list_editor">Open List Editor</string>
     <string name="widget_open_list_editor_desc">Enable to open list editor on single tap.</string>
@@ -472,29 +394,20 @@
     <string name="widget_watching_list_desc">Show only from your watching list.</string>
     <string name="widget_planning_list">Planning List</string>
     <string name="widget_planning_list_desc">Show only from you planning list.</string>
-
-    <!--Settings-->
-
     <string name="open_in_browser">Open in browser</string>
     <string name="share">Share</string>
     <string name="popular">Popular</string>
     <string name="newly_added">Newly Added</string>
-
-    <!--User Overview-->
     <string name="show_description">Show Description</string>
     <string name="activity_history">Activity History\t</string>
     <string name="amount">Amount: %1$s</string>
     <string name="total_episodes">Total Episodes</string>
     <string name="genre_overview">Genre Overview</string>
     <string name="please_log_in">Please log in.</string>
-    <!--User Overview-->
-
     <plurals name="s_episodes_behind">
         <item quantity="one">%1$s episode behind</item>
         <item quantity="other">%1$s episodes behind</item>
     </plurals>
-
-    <!--Media Browse-->
     <string name="country_of_origin">Country Of Origin</string>
     <string name="China">China</string>
     <string name="South_Korean">South Korean</string>
@@ -504,23 +417,13 @@
     <string name="readable_on">Readable On</string>
     <string name="year_range">Year Range</string>
     <string name="no_result">No Result</string>
-    <!--Media Browse-->
-
-
     <string name="s_dash_s">%1$s - %2$s</string>
-
-    <!--Activity Union Screen-->
-    <string name="text_status">Text Status</string>>
-    <string name="list_progress">List Progress</string>
+    <string name="text_status">Text Status</string>>    <string name="list_progress">List Progress</string>
     <string name="activity_type">Activity Type</string>
     <string name="has_replies">Has Replies</string>
-    <!--Activity Union Screen-->
-
-    <!--Sort-->
     <string name="on_list">On List</string>
     <string name="newest">Newest</string>
     <string name="oldest">Oldest</string>
-
     <string name="recent">Recent</string>
     <string name="highest_rated">Highest Rated</string>
     <string name="lowest_rated">Lowest Rated</string>
@@ -532,13 +435,9 @@
     <string name="finished_on">Finished On</string>
     <string name="added">Added</string>
     <string name="updated">Updated</string>
-    <!--Sort-->
-
     <string name="operation_failed">Operation failed.</string>
     <string name="replies">Replies</string>
     <string name="reply">Reply</string>
-
-    <!--Staff languages-->
     <string name="japanese">Japanese</string>
     <string name="korean">Korean</string>
     <string name="italian">Italian</string>
@@ -548,18 +447,10 @@
     <string name="german">German</string>
     <string name="hebrew">Hebrew</string>
     <string name="hungarian">Hungarian</string>
-    <!--Staff languages-->
-
     <string name="compose">Compose</string>
     <string name="refresh">Refresh</string>
-
-    <!--Activity-->
     <string name="activity_has_been_deleted">Activity has been deleted.</string>
     <string name="reply_has_been_deleted">Reply has been deleted.</string>
-    <!--Activity-->
-
-
-    <!--Theme-->
     <string name="theme">Theme</string>
     <string name="color">Color</string>
     <string name="themes">Themes</string>
@@ -573,7 +464,6 @@
     <string name="seed_color">Seed Color</string>
     <string name="_default">Default</string>
     <string name="custom">Custom</string>
-
     <string name="primary_color">Primary Color</string>
     <string name="primary_color_desc">High-emphasis fills, texts, etc</string>
     <string name="primary_container_color">Primary Container Color</string>
@@ -595,27 +485,25 @@
     <string name="translators">Translators</string>
     <string name="license_apache_2">APACHE 2.0</string>
     <string name="license_apache_desc">View full license.</string>
-
-    <!--Theme-->
-
     <string name="enabled">Enabled</string>
     <string name="saved_successfully">Saved Successfully</string>
+    <string name="success">Success</string>
     <string name="refresh_interval">Refresh Interval</string>
     <string name="notification_refresh_interval">Notification Refresh Interval</string>
     <string name="score_s">Score: %1$s</string>
     <string name="list_compact">List Compact</string>
     <string name="grid">Grid</string>
     <string name="grid_compact">Grid Compact</string>
-
-    <!--Ads-->
     <string name="change_ads_interval">Change Ads Interval</string>
+    <string name="change_long_ads_interval">Change Long Ads Interval</string>
     <string name="ads_once_a_day">Once a Day</string>
+    <string name="ads_every_fourth_day">Every Fourth Day</string>
     <string name="ads_every_other_day">Every Other Day</string>
-    <string name="ads_end_of_every_week">End of Every Week</string>
-    <string name="ads_end_of_every_other_week">End of Every Other Week</string>
-    <string name="ads_once_every_month">Once Every Month</string>
-    <!--Ads-->
-
+    <string name="ads_every_week">Every Week</string>
+    <string name="ads_every_other_week">Every Other Week</string>
+    <string name="ads_play_support_message">An ad is about to play. You can skip anytime, but watching helps support the app\'s development. \nThanks for your support! 🙏</string>
+    <string name="ads_support_the_app">Support the App! \uD83D\uDC96</string>
+    <string name="ads_support_button_message">\uD83D\uDCAC If you would like to support the app, you can watch ads by pressing the button below.</string>
     <string name="datetime_days">Days</string>
     <string name="datetime_hour">Hour</string>
     <string name="datetime_min">Min</string>
@@ -628,5 +516,8 @@
     <string name="unblock">Unblock</string>
     <string name="important">Important</string>
     <string name="block_user_msg">AniLib is going to open user in browser. AniLib is a 3rd party app and due to it\'s limitation, blocking/unblocking users is only possible through anilist.co. User must be logged in to see dropdown button in profile which is in top-left(for small screen) or in right.</string>
-
+    <string name="replies_s">Replies · %1$s</string>
+    <string name="skip">Skip</string>
+    <string name="translate">Translate</string>
+    <string name="help_to_translate">Help to translate?</string>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,7 +23,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,7 +45,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -121,6 +124,7 @@ private fun MediaOverview(
 ) {
 
     val isAnime = mediaType.isAnime
+    val clipboardManager = LocalClipboardManager.current
     val context = localContext()
     val snackbarHostState = localSnackbarHostState()
     val scope = rememberCoroutineScope()
@@ -144,7 +148,9 @@ private fun MediaOverview(
     ) {
         MediaNextAiringEpisode(media)
         MediaDescription(media)
-        MediaInfo(media, isAnime, context)
+        MediaInfo(media, isAnime, context, copyToClipBoard = {
+            clipboardManager.setText(AnnotatedString(it))
+        })
         MediaGenre(media.genres) {
             navigator.browseGenreScreen(it)
         }
@@ -555,7 +561,12 @@ private fun MediaGenre(genres: List<String>?, onClick: OnClickWithValue<String>)
 }
 
 @Composable
-private fun MediaInfo(media: MediaModel, isAnime: Boolean, context: Context) {
+private fun MediaInfo(
+    media: MediaModel,
+    isAnime: Boolean,
+    context: Context,
+    copyToClipBoard: (value: String) -> Unit
+) {
     SectionSpacer()
     val naString = naString()
     val mediaInfo = remember {
@@ -659,24 +670,29 @@ private fun MediaInfo(media: MediaModel, isAnime: Boolean, context: Context) {
                 )
             }
 
-            titles.forEach {
+            titles.forEach { info ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = it.title,
+                        text = info.title,
                         fontWeight = FontWeight.Medium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                     Spacer(modifier = Modifier.width(width = 22.dp))
-                    SelectionContainer {
-                        Text(
-                            text = it.value,
-                            fontWeight = FontWeight.Medium,
-                            textAlign = TextAlign.End
-                        )
-                    }
+                    Text(
+                        modifier = Modifier.pointerInput(Unit) {
+                            detectTapGestures(
+                                onLongPress = {
+                                    copyToClipBoard(info.value)
+                                }
+                            )
+                        },
+                        text = info.value,
+                        fontWeight = FontWeight.Medium,
+                        textAlign = TextAlign.End
+                    )
                 }
             }
 
@@ -863,7 +879,8 @@ fun MediaTagDetailBottomSheet(
 @Composable
 fun MediaTagDetailItem(title: String, value: String) {
     Row(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier
+            .fillMaxWidth()
             .padding(bottom = 4.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {

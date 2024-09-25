@@ -21,6 +21,7 @@ import anilib.i18n.R
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.PeekHeight
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
@@ -30,7 +31,11 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
 fun WhatsNewBottomSheet(
     bottomSheetState: BottomSheetState
 ) {
-    BottomSheet(state = bottomSheetState, peekHeight = PeekHeight.fraction(0.7f)) {
+    BottomSheet(
+        state = bottomSheetState,
+        peekHeight = PeekHeight.fraction(0.7f),
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         WhatsNewContent()
     }
 }
@@ -38,7 +43,8 @@ fun WhatsNewBottomSheet(
 @Composable
 private fun WhatsNewContent() {
     Column(
-        modifier = Modifier.padding(horizontal = 20.dp)
+        modifier = Modifier
+            .padding(horizontal = 20.dp)
             .fillMaxSize()
     ) {
         Row(

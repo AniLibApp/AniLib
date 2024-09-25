@@ -17,13 +17,13 @@ class MediaListEntryServiceImpl(apolloRepository: ApolloRepository, appPreferenc
     MediaListEntryService {
 
     override fun saveMediaListEntry(field: SaveMediaListEntryField): Flow<MediaListModel?> {
-        return field.toMutation().map {
+        return field.toMutation().mapData {
             it.dataAssertNoErrors.toModel()
         }
     }
 
     override fun getMediaListEntry(field: MediaListEntryField): Flow<UserMediaModel> {
-        return field.toQuery().map { it.dataAssertNoErrors.toModel() }
+        return field.toQuery().mapData { it.dataAssertNoErrors.toModel() }
     }
 
     override fun deleteMediaListEntry(id: Int): Flow<Boolean> {

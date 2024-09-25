@@ -43,15 +43,3 @@ class AniLibDebugTree(enableCrashReport: Boolean): Timber.DebugTree(){
 
     }
 }
-
-//class DebugLoggerTree: Timber.DebugTree(){
-//    init {
-//        Log.i(LoggerTree::class.java.simpleName,"Flavor-${BuildConfig.FLAVOR}")
-//        doIfNotDevFlavor {
-//            Firebase.crashlytics
-//                .setCrashlyticsCollectionEnabled(true)
-//            Firebase.analytics
-//                .setAnalyticsCollectionEnabled(true)
-//        }
-//    }
-//}

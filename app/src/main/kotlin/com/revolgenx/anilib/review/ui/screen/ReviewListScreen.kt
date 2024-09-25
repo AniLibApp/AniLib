@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.Navigator
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.mediaScreen
@@ -292,7 +293,11 @@ private fun ReviewListFilterBottomSheet(
         }
     }
 
-    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+    BottomSheet(
+        state = bottomSheetState,
+        skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         ReviewListFilterBottomSheetContent(
             viewModel = viewModel,
             dismiss = dismiss,

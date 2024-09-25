@@ -100,6 +100,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcPublic
 import com.revolgenx.anilib.common.ui.icons.appicon.IcQuestionMark
 import com.revolgenx.anilib.common.ui.icons.appicon.IcQuote
 import com.revolgenx.anilib.common.ui.icons.appicon.IcRecommendation
+import com.revolgenx.anilib.common.ui.icons.appicon.IcReply
 import com.revolgenx.anilib.common.ui.icons.appicon.IcReview
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSad
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSadAnilib
@@ -117,6 +118,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcSummer
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbDown
 import com.revolgenx.anilib.common.ui.icons.appicon.IcThumbUp
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTime
+import com.revolgenx.anilib.common.ui.icons.appicon.IcTranslate
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTune
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTv
 import com.revolgenx.anilib.common.ui.icons.appicon.IcUnfold
@@ -255,7 +257,9 @@ val AppIcons.AllIcons: List<ImageVector>
             IcPrivacyPolicy,
             IcBugReport,
             IcAssignment,
-            IcWidgets
+            IcWidgets,
+            IcReply,
+            IcTranslate
         )
         return __AllIcons!!
     }

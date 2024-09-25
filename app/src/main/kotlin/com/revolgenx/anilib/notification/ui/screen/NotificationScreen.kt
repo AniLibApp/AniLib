@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import com.revolgenx.anilib.common.ui.component.card.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.Text
@@ -58,7 +56,7 @@ import com.revolgenx.anilib.notification.ui.model.MediaMergeNotificationModel
 import com.revolgenx.anilib.notification.ui.model.RelatedMediaNotificationModel
 import com.revolgenx.anilib.notification.ui.model.ThreadNotificationModel
 import com.revolgenx.anilib.notification.ui.viewmodel.NotificationViewModel
-import com.revolgenx.anilib.social.ui.screen.ActivityScreen
+import com.revolgenx.anilib.social.ui.screen.ActivityDetailScreen
 import com.revolgenx.anilib.user.ui.screen.UserScreen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -134,7 +132,7 @@ private fun NotificationScreenContent(
                             navigator.push(UserScreen(notificationModel.userId))
                         }
                         onClick = {
-                            navigator.push(ActivityScreen(notificationModel.activityId))
+                            navigator.push(ActivityDetailScreen(notificationModel.activityId))
                         }
                     }
 

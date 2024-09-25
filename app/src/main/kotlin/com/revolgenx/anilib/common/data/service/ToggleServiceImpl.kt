@@ -17,7 +17,7 @@ class ToggleServiceImpl(
 ) : ToggleService, BaseService(apolloRepository, appPreferencesDataStore) {
 
     override fun toggleLikeV2(field: ToggleLikeV2Field): Flow<LikeableUnionModel?> {
-        return field.toMutation().map {
+        return field.toMutation().mapData {
             it.dataAssertNoErrors.toggleLikeV2?.let { toggleLikeV2 ->
                 toggleLikeV2.onTextActivity?.let { m ->
                     LikeableUnionModel(
@@ -52,14 +52,14 @@ class ToggleServiceImpl(
      * True if Toggled successfully, false if any error
      * */
     override fun toggleFavourite(field: ToggleFavoriteField): Flow<Boolean> {
-        return field.toMutation().map { true }.catch { emit(false) }
+        return field.toMutation().mapData { true }.catch { emit(false) }
     }
 
     /**
      * True if Un/Subscribed successfully, false if any error
      * */
     override fun toggleActivitySubscription(field: ToggleActivitySubscriptionField): Flow<Boolean> {
-        return field.toMutation().map {
+        return field.toMutation().mapData {
             it.dataAssertNoErrors.toggleActivitySubscription?.let {
                 true
             } ?: false
@@ -70,7 +70,7 @@ class ToggleServiceImpl(
     * Returns true if following/unfollowing successfully, false if any error
     * */
     override fun toggleUserFollow(field: UserToggleFollowField): Flow<Boolean> {
-        return field.toMutation().map { true }.catch { emit(false) }
+        return field.toMutation().mapData { true }.catch { emit(false) }
     }
 
 }

@@ -14,6 +14,7 @@ import androidx.compose.ui.unit.dp
 import anilib.i18n.R
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.revolgenx.anilib.airing.data.field.AiringScheduleField
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
@@ -32,7 +33,11 @@ fun AiringScheduleFilterBottomSheet(
     viewModel: AiringScheduleFilterViewModel,
 ) {
     val scope = rememberCoroutineScope()
-    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+    BottomSheet(
+        state = bottomSheetState,
+        skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         AiringScheduleFilterBottomSheetContent(
             field = viewModel.field,
             onPositiveClicked = {

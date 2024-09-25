@@ -29,6 +29,7 @@ import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
+import com.revolgenx.anilib.common.ui.component.button.RefreshButton
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localUser
@@ -67,6 +68,15 @@ fun UserActivityUnionScreen(viewModel: ActivityUnionViewModel) {
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
     val bottomScrollConnection =
         remember { BottomNestedScrollConnection(state = scrollState) }
+
+
+    val showActivityRefreshButton = remember {
+        mutableStateOf(false)
+    }
+
+    val showReplyListRefreshButton = remember {
+        mutableStateOf(false)
+    }
 
     val user = localUser()
 
@@ -141,9 +151,18 @@ fun UserActivityUnionScreen(viewModel: ActivityUnionViewModel) {
                     )
                     messageComposerBottomSheetState.peek()
                 }
-            }
+            },
+
         )
+
+
+        RefreshButton(visible = showActivityRefreshButton.value) {
+            showActivityRefreshButton.value = false
+            viewModel.refresh()
+        }
     }
+
+
 
     UserActivityFilterBottomSheet(
         bottomSheetState = filterBottomSheetState,
@@ -179,24 +198,34 @@ fun UserActivityUnionScreen(viewModel: ActivityUnionViewModel) {
                     replyComposerBottomSheetState.peek()
                 }
             }
-        }
+        },
+        showRefreshButton = showReplyListRefreshButton
     )
 
 
     ActivityComposerBottomSheet(
         bottomSheetState = activityComposerBottomSheetState,
-        viewModel = activityComposerViewModel
+        viewModel = activityComposerViewModel,
+        onSuccess = {
+            showActivityRefreshButton.value = true
+        }
     )
 
     ActivityComposerBottomSheet(
         bottomSheetState = messageComposerBottomSheetState,
-        viewModel = messageComposerViewModel
+        viewModel = messageComposerViewModel,
+        onSuccess = {
+            showActivityRefreshButton.value = true
+        }
     )
 
 
     ActivityComposerBottomSheet(
         bottomSheetState = replyComposerBottomSheetState,
-        viewModel = replyComposerViewModel
+        viewModel = replyComposerViewModel,
+        onSuccess = {
+            showReplyListRefreshButton.value = true
+        }
     )
 }
 

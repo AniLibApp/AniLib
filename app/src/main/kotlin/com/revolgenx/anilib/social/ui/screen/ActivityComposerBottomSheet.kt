@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.social.ui.screen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,21 +14,30 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import anilib.i18n.R
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.PeekHeight
 import com.dokar.sheets.m3.BottomSheetLayout
+import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
@@ -35,8 +45,9 @@ import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSend
+import com.revolgenx.anilib.common.ui.screen.state.LinearLoadingSection
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.social.ui.component.MarkdownEditor
-import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.BaseActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityType
 import kotlinx.coroutines.launch
@@ -57,7 +68,8 @@ private val pages = listOf(
 @Composable
 fun ActivityComposerBottomSheet(
     bottomSheetState: BottomSheetState,
-    viewModel: BaseActivityComposerViewModel
+    viewModel: BaseActivityComposerViewModel,
+    onSuccess: OnClick
 ) {
     val scope = rememberCoroutineScope()
     if (bottomSheetState.visible) {
@@ -72,7 +84,15 @@ fun ActivityComposerBottomSheet(
             peekHeight = PeekHeight.fraction(0.8f),
             backgroundColor = MaterialTheme.colorScheme.surfaceContainerLowest
         ) {
-            ActivityComposerScreenContent(viewModel = viewModel)
+            ActivityComposerScreenContent(
+                viewModel = viewModel,
+                onSuccess = {
+                    onSuccess()
+                    scope.launch {
+                        bottomSheetState.collapse()
+                    }
+                }
+            )
         }
     }
 }
@@ -81,9 +101,53 @@ fun ActivityComposerBottomSheet(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ActivityComposerScreenContent(
-    viewModel: BaseActivityComposerViewModel
+    viewModel: BaseActivityComposerViewModel,
+    onSuccess: OnClick
 ) {
     val pagerState = rememberPagerState { pages.size }
+    val showLoading = remember {
+        mutableStateOf(false)
+    }
+    val snackbarHostState = localSnackbarHostState()
+    val context = localContext()
+
+    LaunchedEffect(viewModel.saveResource) {
+        when (viewModel.saveResource) {
+            is ResourceState.Loading -> {
+                showLoading.value = true
+            }
+
+            is ResourceState.Error -> {
+                showLoading.value = false
+                val retry = context.getString(R.string.retry)
+                when (snackbarHostState.showSnackbar(
+                    context.getString(R.string.operation_failed),
+                    retry,
+                    withDismissAction = true,
+                    duration = SnackbarDuration.Long
+                )) {
+                    SnackbarResult.Dismissed -> {
+                        viewModel.saveResource = null
+                    }
+
+                    SnackbarResult.ActionPerformed -> {
+                        viewModel.save()
+                    }
+                }
+            }
+
+            is ResourceState.Success -> {
+                showLoading.value = false
+                viewModel.saveResource = null
+                onSuccess()
+            }
+
+            else -> {
+                showLoading.value = false
+            }
+        }
+    }
+
 
     PagerScreenScaffold(
         navigationIcon = {},
@@ -99,33 +163,40 @@ private fun ActivityComposerScreenContent(
         pagerState = pagerState,
         windowInsets = emptyWindowInsets()
     ) { page ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            when (ActivityComposerScreenPages.entries[page]) {
-                ActivityComposerScreenPages.COMPOSE -> ActivityComposerStatusScreen(
-                    viewModel
-                )
+        if (showLoading.value) {
+            LinearLoadingSection()
+        }
+        when (ActivityComposerScreenPages.entries[page]) {
+            ActivityComposerScreenPages.COMPOSE -> ActivityComposerEditScreen(
+                viewModel = viewModel,
+                onGuideLineClick = {
+                    context.openUri("https://anilist.co/forum/thread/14")
+                }
+            )
 
-                ActivityComposerScreenPages.PREVIEW -> ActivityComposerPreviewScreen(
-                    viewModel
-                )
-            }
+            ActivityComposerScreenPages.PREVIEW -> ActivityComposerPreviewScreen(
+                viewModel
+            )
         }
     }
 }
 
 
 @Composable
-private fun ActivityComposerStatusScreen(viewModel: BaseActivityComposerViewModel) {
+private fun ActivityComposerEditScreen(viewModel: BaseActivityComposerViewModel, onGuideLineClick: OnClick) {
     Box(modifier = Modifier) {
         Column(
-            modifier = Modifier.padding(top = 8.dp).imePadding().verticalScroll(rememberScrollState()),
+            modifier = Modifier
+                .padding(top = 8.dp)
+                .imePadding()
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
-            if(viewModel.activityType == ActivityType.MESSAGE){
-                TextSwitch(text = stringResource(I18nR.string._private), checked = viewModel.private) {
+            if (viewModel.canShowPrivateToggle) {
+                TextSwitch(
+                    text = stringResource(I18nR.string._private),
+                    checked = viewModel.private
+                ) {
                     viewModel.private = it
                 }
             }
@@ -133,18 +204,18 @@ private fun ActivityComposerStatusScreen(viewModel: BaseActivityComposerViewMode
                 modifier = Modifier.fillMaxWidth(),
                 value = viewModel.textFieldValue,
                 onValueChange = {
-                    if(viewModel.isError){
-                        viewModel.isError = viewModel.textFieldValue.text.isBlank()
+                    if (viewModel.hasErrors) {
+                        viewModel.hasErrors = viewModel.textFieldValue.text.isBlank()
                     }
                     viewModel.textFieldValue = it
                 },
                 supportingText = {
-                    if (viewModel.isError) {
+                    if (viewModel.hasErrors) {
                         Text(text = stringResource(id = I18nR.string.text_field_required))
                     }
                 },
                 label = { Text(text = stringResource(id = I18nR.string.write_a_status)) },
-                isError = viewModel.isError,
+                isError = viewModel.hasErrors,
                 colors = TextFieldDefaults.colors(
                     focusedIndicatorColor = Color.Transparent,
                     unfocusedIndicatorColor = Color.Transparent
@@ -156,7 +227,9 @@ private fun ActivityComposerStatusScreen(viewModel: BaseActivityComposerViewMode
             }
             Box(modifier = Modifier.fillMaxWidth()) {
                 Text(
-                    modifier = Modifier.align(Alignment.CenterEnd),
+                    modifier = Modifier.align(Alignment.CenterEnd)
+                        .padding(bottom = 3.dp)
+                        .clickable(onClick = onGuideLineClick),
                     text = stringResource(id = I18nR.string.activity_posting_guidelines)
                 )
             }

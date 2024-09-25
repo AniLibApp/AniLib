@@ -20,7 +20,7 @@ class NotificationServiceImpl(
         if (field.page == 1) {
             field.includeNotificationCount = true
         }
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             val data = it.dataAssertNoErrors
 
             field.unreadNotificationCount =

@@ -2,6 +2,8 @@ package com.revolgenx.anilib.social.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -53,37 +55,41 @@ import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.social.ui.model.ActivityReplyModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyServiceViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ActivityReplyContent(
     viewModel: ActivityReplyViewModel,
     onReplyCompose: OnClick,
     onReplyEdit: (model: ActivityReplyModel) -> Unit,
-    onUserClick: OnClickWithId
+    onUserClick: OnClickWithId,
+    refreshButton: @Composable BoxScope.()-> Unit
 ) {
+    val activityReplyServiceViewModel: ActivityReplyServiceViewModel = koinViewModel()
     val pagingItems = viewModel.collectAsLazyPagingItems()
     val snackbarHostState = localSnackbarHostState()
     val context = localContext()
     val user = localUser()
 
-    LaunchedEffect(viewModel.showToggleError) {
-        if (viewModel.showToggleError) {
+    LaunchedEffect(activityReplyServiceViewModel.showToggleError) {
+        if (activityReplyServiceViewModel.showToggleError) {
             snackbarHostState.showSnackbar(
                 context.getString(R.string.operation_failed),
                 withDismissAction = true
             )
-            viewModel.showToggleError = false
+            activityReplyServiceViewModel.showToggleError = false
         }
     }
 
-    LaunchedEffect(viewModel.showDeleteError) {
-        if (viewModel.showDeleteError) {
+    LaunchedEffect(activityReplyServiceViewModel.showDeleteError) {
+        if (activityReplyServiceViewModel.showDeleteError) {
             snackbarHostState.showSnackbar(
                 context.getString(R.string.failed_to_delete),
                 withDismissAction = true
             )
-            viewModel.showDeleteError = false
+            activityReplyServiceViewModel.showDeleteError = false
         }
     }
 
@@ -120,36 +126,41 @@ fun ActivityReplyContent(
             }
         }
 
-        LazyPagingList(
-            pagingItems = pagingItems,
-            onPullRefresh = false,
-        ) { replyModel ->
-            replyModel ?: return@LazyPagingList
+        Box(modifier = Modifier.fillMaxSize()) {
+            LazyPagingList(
+                pagingItems = pagingItems,
+                onPullRefresh = false,
+            ) { replyModel ->
+                replyModel ?: return@LazyPagingList
 
-            if (replyModel.isDeleted.value) {
-                ReplyDeletedItem()
-                return@LazyPagingList
+                if (replyModel.isDeleted.value) {
+                    ReplyDeletedItem()
+                    return@LazyPagingList
+                }
+
+                ActivityReplyItem(
+                    model = replyModel,
+                    loggedInUserId = user.userId,
+                    onUserClick = onUserClick,
+                    onLikeClick = {
+                        activityReplyServiceViewModel.toggleLike(model = replyModel)
+                    },
+                    onReplyEdit = onReplyEdit,
+                    onDelete = {
+                        activityReplyServiceViewModel.delete(model = replyModel)
+                    }
+                )
             }
 
-            ActivityReplyItem(
-                model = replyModel,
-                loggedInUserId = user.userId,
-                onUserClick = onUserClick,
-                onLikeClick = {
-                    viewModel.toggleLike(model = replyModel)
-                },
-                onReplyEdit = onReplyEdit,
-                onDelete = {
-                    viewModel.delete(model = replyModel)
-                }
-            )
+            refreshButton()
+
         }
     }
 }
 
 
 @Composable
-private fun ActivityReplyItem(
+fun ActivityReplyItem(
     model: ActivityReplyModel,
     loggedInUserId: Int?,
     onUserClick: OnClickWithId,
@@ -160,7 +171,8 @@ private fun ActivityReplyItem(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = 22.dp),
+            .padding(bottom = 22.dp)
+            .padding(horizontal = 4.dp),
         verticalArrangement = Arrangement.spacedBy(2.dp)
     ) {
         Row(
@@ -252,7 +264,7 @@ private fun ActivityReplyItem(
 }
 
 @Composable
-private fun ReplyDeletedItem() {
+fun ReplyDeletedItem() {
     Card(
         modifier = Modifier
             .fillMaxWidth()

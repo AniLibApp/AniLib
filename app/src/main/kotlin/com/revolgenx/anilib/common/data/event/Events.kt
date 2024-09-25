@@ -40,5 +40,7 @@ data class OpenSpoilerEvent(val spanned: Spanned) : CommonEvent()
 data class OpenUserScreenEvent(val userId: Int? = null, val username: String? = null) : CommonEvent()
 data class OpenMediaScreenEvent(val mediaId: Int, val type: MediaType) : CommonEvent()
 data class OpenCharacterScreenEvent(val characterId: Int) : CommonEvent()
+data class OpenStaffScreenEvent(val staffId: Int) : CommonEvent()
+data class OpenStudioScreenEvent(val studioId: Int) : CommonEvent()
 
 

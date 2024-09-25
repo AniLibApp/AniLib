@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.map
 
 class ReviewServiceImpl(apolloRepository: ApolloRepository, appPreferencesDataStore: AppPreferencesDataStore) : BaseService(apolloRepository, appPreferencesDataStore), ReviewService {
     override fun getReviewList(field: ReviewListField): Flow<PageModel<ReviewModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.page.let { page ->
                 PageModel(
                     pageInfo = page.pageInfo.pageInfo,
@@ -33,11 +33,11 @@ class ReviewServiceImpl(apolloRepository: ApolloRepository, appPreferencesDataSt
     }
 
     override fun getReview(field: ReviewField): Flow<ReviewModel?> {
-        return field.toQuery().map { it.dataAssertNoErrors.review?.toModel() }
+        return field.toQuery().mapData { it.dataAssertNoErrors.review?.toModel() }
     }
 
     override fun rateReview(field: RateReviewField): Flow<RateReviewModel?> {
-        return field.toMutation().map {
+        return field.toMutation().mapData {
             it.dataAssertNoErrors.rateReview?.let { review ->
                 RateReviewModel(
                     id = review.id,
@@ -50,10 +50,10 @@ class ReviewServiceImpl(apolloRepository: ApolloRepository, appPreferencesDataSt
     }
 
     override fun saveReview(field: SaveReviewField): Flow<Int> {
-        return field.toMutation().map { it.dataAssertNoErrors.saveReview?.id!! }
+        return field.toMutation().mapData { it.dataAssertNoErrors.saveReview?.id!! }
     }
 
     override fun deleteReview(id: Int): Flow<Boolean> {
-        return DeleteReviewField(id).toMutation().map { it.dataAssertNoErrors.deleteReview?.deleted == true }
+        return DeleteReviewField(id).toMutation().mapData { it.dataAssertNoErrors.deleteReview?.deleted == true }
     }
 }

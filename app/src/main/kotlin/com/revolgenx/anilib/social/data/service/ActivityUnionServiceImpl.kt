@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.social.data.service
 
+import androidx.compose.ui.util.fastMap
 import com.apollographql.apollo3.api.Optional
 import com.revolgenx.anilib.DeleteActivityMutation
 import com.revolgenx.anilib.DeleteActivityReplyMutation
@@ -7,6 +8,7 @@ import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.social.data.field.ActivityInfoField
 import com.revolgenx.anilib.social.data.field.ActivityReplyField
 import com.revolgenx.anilib.social.data.field.ActivityUnionField
 import com.revolgenx.anilib.social.data.field.SaveActivityReplyField
@@ -24,24 +26,43 @@ class ActivityUnionServiceImpl(
 ) : BaseService(apolloRepository, appPreferencesDataStore),
     ActivityUnionService {
     override fun getActivityUnion(field: ActivityUnionField): Flow<PageModel<ActivityModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.page.let {
                 PageModel(
                     pageInfo = it.pageInfo.pageInfo,
                     data = it.activities?.mapNotNull {
-                        if (!field.canShowAdult && it?.onListActivity?.media?.isAdult == true) return@mapNotNull null
+                        if (!field.canShowAdult && it?.onListActivity?.generalListActivity?.media?.isAdult == true) return@mapNotNull null
 
-                        it?.onTextActivity?.toModel()
-                            ?: it?.onListActivity?.toModel()
-                            ?: it?.onMessageActivity?.toModel()
+                        it?.onTextActivity?.generalTextActivity?.toModel()
+                            ?: it?.onListActivity?.generalListActivity?.toModel()
+                            ?: it?.onMessageActivity?.generalMessageActivity?.toModel()
                     }
                 )
             }
         }
     }
 
+    override fun getActivityInfo(field: ActivityInfoField): Flow<ActivityModel?> {
+        return field.toQuery().mapData {response->
+            response.dataAssertNoErrors.activity?.let {activity->
+                activity.onTextActivity?.let {
+                    it.generalTextActivity.toModel()
+                        .copy(replies = it.replies?.mapNotNull { it?.activityReply?.toModel() })
+                }
+                    ?: activity.onListActivity?.let {
+                        it.generalListActivity.toModel()
+                            .copy(replies = it.replies?.mapNotNull { it?.activityReply?.toModel() })
+                    }
+                    ?: activity.onMessageActivity?.let {
+                        it.generalMessageActivity.toModel()
+                            .copy(replies = it.replies?.mapNotNull { it?.activityReply?.toModel() })
+                    }
+            }
+        }
+    }
+
     override fun getActivityReply(field: ActivityReplyField): Flow<PageModel<ActivityReplyModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.page.let {
                 PageModel(
                     pageInfo = it.pageInfo.pageInfo,
@@ -54,19 +75,19 @@ class ActivityUnionServiceImpl(
     }
 
     override fun saveTextActivity(field: SaveTextActivityField): Flow<Int?> {
-        return field.toMutation().map {
+        return field.toMutation().mapData {
             it.dataAssertNoErrors.saveTextActivity?.id
         }
     }
 
     override fun saveMessageActivity(field: SaveMessageActivityField): Flow<Int?> {
-        return field.toMutation().map {
+        return field.toMutation().mapData {
             it.dataAssertNoErrors.saveMessageActivity?.id
         }
     }
 
     override fun saveActivityReply(field: SaveActivityReplyField): Flow<Int?> {
-        return field.toMutation().map {
+        return field.toMutation().mapData {
             it.dataAssertNoErrors.saveActivityReply?.id
         }
     }

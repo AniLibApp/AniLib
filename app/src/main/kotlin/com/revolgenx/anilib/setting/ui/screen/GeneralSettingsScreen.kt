@@ -72,7 +72,7 @@ object GeneralSettingsScreen : PreferencesScreen() {
         }
 
 
-        LaunchedEffect(currentLanguage) {
+        LaunchedEffect(currentLanguage.value) {
             val locale = if (currentLanguage.value.isEmpty()) {
                 LocaleListCompat.getEmptyLocaleList()
             } else {

@@ -9,10 +9,11 @@ import android.content.pm.ShortcutManager
 import android.graphics.drawable.Icon
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.runtime.Composable
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -35,6 +36,8 @@ import com.revolgenx.anilib.common.data.event.OpenImageEvent
 import com.revolgenx.anilib.common.data.event.OpenLinkEvent
 import com.revolgenx.anilib.common.data.event.OpenMediaScreenEvent
 import com.revolgenx.anilib.common.data.event.OpenSpoilerEvent
+import com.revolgenx.anilib.common.data.event.OpenStaffScreenEvent
+import com.revolgenx.anilib.common.data.event.OpenStudioScreenEvent
 import com.revolgenx.anilib.common.data.event.OpenUserScreenEvent
 import com.revolgenx.anilib.common.data.event.registerForEvent
 import com.revolgenx.anilib.common.data.event.unRegisterForEvent
@@ -47,7 +50,11 @@ import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.openUri
+import com.revolgenx.anilib.common.ext.staffScreen
+import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ext.userScreen
+import com.revolgenx.anilib.common.ui.ads.AdsViewModel
+import com.revolgenx.anilib.common.ui.ads.CheckAds
 import com.revolgenx.anilib.notification.data.worker.NotificationWorker
 import com.revolgenx.anilib.social.factory.AlMarkdownCallbackImpl
 import com.revolgenx.anilib.social.factory.AlMarkdownFactory
@@ -61,13 +68,16 @@ import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
 
-abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
+abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
     protected val viewModel by viewModel<MainActivityViewModel>()
     protected var navigator: Navigator? = null
     private val themeDataStore: ThemeDataStore by inject()
     private val appPreferencesDataStore: AppPreferencesDataStore by inject()
 
-    companion object{
+    private val adsViewModel: AdsViewModel by viewModel<AdsViewModel>()
+
+
+    companion object {
         const val WIDGET_MEDIA_ID_KEY = "widget_media_id_key"
         const val WIDGET_MEDIA_TYPE_KEY = "widget_media_type_key"
         const val WIDGET_AIRING_SCHEDULE_SCREEN_KEY = "widget_airing_schedule_screen_key"
@@ -113,11 +123,12 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
         setupNotification()
         setupMarkdown()
         checkIntent(intent)
+        initAds()
     }
 
-    private fun setupLogger(){
+    private fun setupLogger() {
         lifecycleScope.launch {
-            appPreferencesDataStore.crashReport.collect{
+            appPreferencesDataStore.crashReport.collect {
                 Timber.plant(AniLibDebugTree(it!!))
             }
         }
@@ -150,12 +161,15 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
 
                     when (LauncherShortcuts.entries[currentShortcut]) {
                         LauncherShortcuts.HOME -> {
+                            viewModel.deepLinkPath.value = DeepLinkPath.HOME to true
                         }
 
                         LauncherShortcuts.ANIME -> {
+                            viewModel.deepLinkPath.value = DeepLinkPath.ANIME_LIST to true
                         }
 
                         LauncherShortcuts.MANGA -> {
+                            viewModel.deepLinkPath.value = DeepLinkPath.MANGA_LIST to true
                         }
 
                         LauncherShortcuts.NOTIFICATION -> {
@@ -208,16 +222,16 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
         }
 
 
-        intent.takeIf { it.hasExtra(WIDGET_MEDIA_ID_KEY) }?.extras?.let { intentExtra->
+        intent.takeIf { it.hasExtra(WIDGET_MEDIA_ID_KEY) }?.extras?.let { intentExtra ->
             val mediaId = intentExtra.getInt(WIDGET_MEDIA_ID_KEY)
             val mediaType = MediaType.entries[intentExtra.getInt(WIDGET_MEDIA_TYPE_KEY)]
 
-            if(appPreferencesDataStore.widgetOpenListEditor.get() == true){
+            if (appPreferencesDataStore.widgetOpenListEditor.get() == true) {
                 viewModel.deepLinkPath.value = DeepLinkPath.LIST_ENTRY_EDITOR to mediaId
-            }else{
-                viewModel.deepLinkPath.value = when(mediaType){
+            } else {
+                viewModel.deepLinkPath.value = when (mediaType) {
                     MediaType.MANGA -> DeepLinkPath.MANGA to mediaId
-                    else-> DeepLinkPath.ANIME to mediaId
+                    else -> DeepLinkPath.ANIME to mediaId
                 }
             }
             intent.removeExtra(WIDGET_MEDIA_ID_KEY)
@@ -240,7 +254,7 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
 
     private fun createNotificationWorker() {
         lifecycleScope.launch {
-            appPreferencesDataStore.dataStore.data.flowWithLifecycle(lifecycle).collect{
+            appPreferencesDataStore.dataStore.data.flowWithLifecycle(lifecycle).collect {
                 val isLoggedIn = it[userIdKey] != null
 
                 if (isLoggedIn) {
@@ -280,7 +294,7 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
         val homeShortcut = createShortcut(
             "home_shortcut",
             getString(anilib.i18n.R.string.home),
-            R.drawable.ic_home,
+            R.drawable.ic_shortcut_home,
             Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
                 it.putExtra(
                     LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
@@ -296,7 +310,7 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
             val animeShortcut = createShortcut(
                 "anime_shortcut",
                 getString(anilib.i18n.R.string.settings_anime_list),
-                R.drawable.ic_computer,
+                R.drawable.ic_shortcut_computer,
                 Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
                     it.putExtra(
                         LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
@@ -308,7 +322,7 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
             val mangaShortcut = createShortcut(
                 "manga_shortcut",
                 getString(anilib.i18n.R.string.settings_manga_list),
-                R.drawable.ic_book,
+                R.drawable.ic_shortcut_book,
                 Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
                     it.putExtra(
                         LauncherShortcutKeys.LAUNCHER_SHORTCUT_EXTRA_KEY,
@@ -320,8 +334,8 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
 
             val notificationShortcut = createShortcut(
                 "notification_shortcut",
-                getString(anilib.i18n.R.string.notifcations),
-                R.drawable.ic_notification,
+                getString(anilib.i18n.R.string.notifications),
+                R.drawable.ic_shortcut_notification,
                 Intent(Intent.ACTION_VIEW, null, this, MainActivity::class.java).also {
                     it.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
                     it.putExtra(
@@ -378,6 +392,16 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
                     navigator?.characterScreen(characterId)
                 }
 
+                is OpenStaffScreenEvent -> {
+                    viewModel.openSpoilerBottomSheet.value = false
+                    navigator?.staffScreen(staffId)
+                }
+
+                is OpenStudioScreenEvent -> {
+                    viewModel.openSpoilerBottomSheet.value = false
+                    navigator?.studioScreen(studioId)
+                }
+
                 is OpenUserScreenEvent -> {
                     viewModel.openSpoilerBottomSheet.value = false
                     navigator?.userScreen(userId, username)
@@ -388,6 +412,15 @@ abstract class BaseMainActivity : ComponentActivity(), EventBusListener {
                 }
             }
         }
+    }
+
+    private fun initAds() {
+        adsViewModel.initAds(this)
+    }
+
+    @Composable
+    fun CanShowAds() {
+        CheckAds(navigator = navigator, activity = this, viewModel = viewModel, adsViewModel = adsViewModel)
     }
 
     override fun onDestroy() {

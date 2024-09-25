@@ -112,13 +112,6 @@ fun SettingScreenContent(isTab: Boolean) {
     ScreenScaffold(
         title = stringResource(id = I18nR.string.settings),
         topBar = (@Composable {}).takeIf { isTab },
-        actions = {
-            ActionMenu(
-                icon = AppIcons.IcSearch
-            ) {
-                navigator.push(SearchSettingScreen)
-            }
-        },
         contentWindowInsets = if (isTab) WindowInsets.statusBars else ScaffoldDefaults.contentWindowInsets
     ) { snackbarHostState ->
         Column(

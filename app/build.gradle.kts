@@ -1,3 +1,4 @@
+import com.android.build.api.dsl.ApplicationBuildType
 import java.io.FileInputStream
 import java.util.*
 
@@ -41,13 +42,7 @@ android {
         named("debug") {
             applicationIdSuffix = ".debug"
             isDebuggable = true
-
-            val secretProps = rootProject.loadProperties("secret.debug.properties")
-            buildConfigField(
-                "String",
-                "CLIENT_ID",
-                secretPropslistOf(secretProps, "client_id")
-            )
+            loadConfig("secret.debug.properties")
         }
         named("release") {
             isMinifyEnabled = false
@@ -58,12 +53,7 @@ android {
                 )
             )
 
-            val secretProps = rootProject.loadProperties("secret.properties")
-            buildConfigField(
-                "String",
-                "CLIENT_ID",
-                secretPropslistOf(secretProps, "client_id")
-            )
+            loadConfig("secret.properties")
         }
         create("alpha") {
             initWith(getByName("debug"))
@@ -116,6 +106,24 @@ android {
     }
 }
 
+fun ApplicationBuildType.loadConfig(file: String){
+    val secretProps = rootProject.loadProperties(file)
+    buildConfigField(
+        "String",
+        "CLIENT_ID",
+        secretPropslistOf(secretProps, "client_id")
+    )
+    buildConfigField(
+        "String",
+        "INTERSTITIAL_ADS_ID",
+        secretPropslistOf(secretProps, "interstitial_ads_id")
+    )
+    buildConfigField(
+        "String",
+        "REWARDED_INTERSTITIAL_ADS_ID",
+        secretPropslistOf(secretProps, "rewarded_interstitial_ads_id")
+    )
+}
 
 dependencies {
     implementation(project(":i18n"))
@@ -151,9 +159,8 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:${Versions.composeUi}")
-    debugImplementation("androidx.compose.ui:ui-tooling:${Versions.composeUi}")
-    debugImplementation("androidx.compose.ui:ui-test-manifest:${Versions.composeUi}")
+    testImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
 }
 
 

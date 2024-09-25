@@ -1,8 +1,5 @@
 package com.revolgenx.anilib.common.data.constant
 
-import java.time.Instant
-import java.time.temporal.ChronoUnit
-
 const val YOUTUBE_URL = "https://www.youtube.com/watch?v="
 const val DAILYMOTION_URL = "https://www.dailymotion.com/video/"
 
@@ -16,62 +13,29 @@ object Config {
     const val AUTH_ENDPOINT = "https://anilist.co/api/v2/oauth/authorize"
 }
 
-enum class AdsInterval(val value: Int) {
-    EVERY_DAY(1), EVERY_OTHER_DAY(2), EVERY_WEEK(3), EVERY_OTHER_WEEK(4), EVERY_MONTH(5);
+enum class InterstitialAdsInterval() {
+    EVERY_DAY, EVERY_OTHER_DAY, EVERY_FOURTH_DAY, EVERY_WEEK, EVERY_OTHER_WEEK;
 
     companion object {
-        fun fromValue(value: Int): AdsInterval {
-            return entries.first { it.value == value }
+        fun fromValue(value: Int): InterstitialAdsInterval {
+            return entries.first { it.ordinal == value }
         }
     }
 }
+
+enum class RewardedInterstitialAdsInterval {
+    EVERY_FOURTH_DAY, EVERY_WEEK, EVERY_OTHER_WEEK;
+
+    companion object {
+        fun fromValue(value: Int): RewardedInterstitialAdsInterval {
+            return entries.first { it.ordinal == value }
+        }
+    }
+}
+
 
 const val dateFormat = "MM/dd/yyyy"
 const val shortDateFormat = "dd MMM, yyyy"
-
-fun showAds(
-    adsInterval: AdsInterval,
-    currentEpochSecond: Long,
-    adsDisplayedDateTime: Long
-): Boolean {
-    return when (adsInterval) {
-        AdsInterval.EVERY_DAY -> {
-            ChronoUnit.DAYS.between(
-                Instant.ofEpochSecond(adsDisplayedDateTime),
-                Instant.ofEpochSecond(currentEpochSecond)
-            ) >= 1
-        }
-
-        AdsInterval.EVERY_OTHER_DAY -> {
-            ChronoUnit.DAYS.between(
-                Instant.ofEpochSecond(adsDisplayedDateTime),
-                Instant.ofEpochSecond(currentEpochSecond)
-            ) >= 2
-        }
-
-        AdsInterval.EVERY_WEEK -> {
-            ChronoUnit.WEEKS.between(
-                Instant.ofEpochSecond(adsDisplayedDateTime),
-                Instant.ofEpochSecond(currentEpochSecond)
-            ) >= 1
-        }
-
-        AdsInterval.EVERY_OTHER_WEEK -> {
-            ChronoUnit.WEEKS.between(
-                Instant.ofEpochSecond(adsDisplayedDateTime),
-                Instant.ofEpochSecond(currentEpochSecond)
-            ) >= 2
-        }
-
-        AdsInterval.EVERY_MONTH -> {
-            ChronoUnit.MONTHS.between(
-                Instant.ofEpochSecond(adsDisplayedDateTime),
-                Instant.ofEpochSecond(currentEpochSecond)
-            ) >= 1
-        }
-
-    }
-}
 
 object LauncherShortcutKeys {
     const val LAUNCHER_SHORTCUT_EXTRA_KEY = "LAUNCHER_SHORTCUT_EXTRA_KEY"

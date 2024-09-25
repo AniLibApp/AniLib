@@ -28,6 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.store.MediaListDisplayMode
@@ -56,6 +57,7 @@ import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localUser
+import com.revolgenx.anilib.common.ui.screen.state.EmptyScreen
 import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
@@ -93,6 +95,7 @@ fun MediaListContent(
     val context = localContext()
     val localUser = localUser()
     val isLoggedIn = localUser.isLoggedIn
+
     val snackbar = localSnackbarHostState()
 
     ScreenScaffold(
@@ -117,9 +120,9 @@ fun MediaListContent(
                 modifier = Modifier.nestedScroll(bottomNestedScrollConnection),
             ) {
                 val openEditorScreen = viewModel.openMediaListEntryEditor.collectAsState()
-                val displayModeState =  if (viewModel.isLoggedInUserList) {
+                val displayModeState = if (viewModel.isLoggedInUserList) {
                     viewModel.displayMode.collectAsState()
-                }else{
+                } else {
                     viewModel.otherDisplayMode.collectAsState()
                 }
                 val displayMode = MediaListDisplayMode.fromValue(displayModeState.value!!)
@@ -130,93 +133,97 @@ fun MediaListContent(
 
                     else -> null
                 }
-                LazyPagingList(
-                    items = viewModel.mediaListCollection,
-                    type = if (gridOptions != null) ListPagingListType.GRID else ListPagingListType.COLUMN,
-                    gridOptions = gridOptions,
-                    onRefresh = {
-                        viewModel.refresh()
-                    }
-                ) { mediaList ->
-                    mediaList ?: return@LazyPagingList
+                val mediaListCollection = viewModel.mediaListCollection
 
-                    val openMediaListEditorScreen = {
-                        if (isLoggedIn) {
-                            navigator.mediaListEntryEditorScreen(mediaId = mediaList.mediaId)
-                        } else {
-                            snackbar.showLoginMsg(context = context, scope = scope)
+                if (mediaListCollection.isEmpty()) {
+                    EmptyScreen()
+                } else {
+                    LazyPagingList(
+                        items = mediaListCollection,
+                        type = if (gridOptions != null) ListPagingListType.GRID else ListPagingListType.COLUMN,
+                        gridOptions = gridOptions,
+                        onRefresh = {
+                            viewModel.refresh()
+                        }
+                    ) { mediaList ->
+                        mediaList ?: return@LazyPagingList
+
+                        val openMediaListEditorScreen = {
+                            if (isLoggedIn) {
+                                navigator.mediaListEntryEditorScreen(mediaId = mediaList.mediaId)
+                            } else {
+                                snackbar.showLoginMsg(context = context, scope = scope)
+                            }
+                        }
+
+                        val onMediaClick = {
+                            if (openEditorScreen.value == true) {
+                                openMediaListEditorScreen()
+                            } else {
+                                navigator.mediaScreen(
+                                    mediaId = mediaList.mediaId,
+                                    type = mediaList.media?.type
+                                )
+                            }
+                        }
+
+                        val onMediaLongClick = {
+                            if (openEditorScreen.value == true) {
+                                navigator.mediaScreen(
+                                    mediaId = mediaList.mediaId,
+                                    type = mediaList.media?.type
+                                )
+                            } else {
+                                openMediaListEditorScreen()
+                            }
+                        }
+
+                        val increaseProgress = {
+                            viewModel.increaseProgress(mediaList)
+                        }
+
+                        when (displayMode) {
+                            MediaListDisplayMode.LIST -> {
+                                MediaListRowCard(
+                                    list = mediaList,
+                                    showIncreaseButton = viewModel.isLoggedInUserList,
+                                    increaseProgress = increaseProgress,
+                                    onClick = onMediaClick,
+                                    onLongClick = onMediaLongClick
+                                )
+                            }
+
+                            MediaListDisplayMode.LIST_COMPACT -> {
+                                MediaListSmallRowCard(
+                                    list = mediaList,
+                                    showIncreaseButton = viewModel.isLoggedInUserList,
+                                    increaseProgress = increaseProgress,
+                                    onClick = onMediaClick,
+                                    onLongClick = onMediaLongClick
+                                )
+                            }
+
+                            MediaListDisplayMode.GRID -> {
+                                MediaListColumnCard(
+                                    list = mediaList,
+                                    showIncreaseButton = viewModel.isLoggedInUserList,
+                                    increaseProgress = increaseProgress,
+                                    onClick = onMediaClick,
+                                    onLongClick = onMediaLongClick
+                                )
+                            }
+
+                            MediaListDisplayMode.GRID_COMPACT -> {
+                                MediaListCompactColumnCard(
+                                    list = mediaList,
+                                    showIncreaseButton = viewModel.isLoggedInUserList,
+                                    increaseProgress = increaseProgress,
+                                    onClick = onMediaClick,
+                                    onLongClick = onMediaLongClick
+                                )
+                            }
                         }
                     }
-
-                    val onMediaClick = {
-                        if (openEditorScreen.value == true) {
-                            openMediaListEditorScreen()
-                        } else {
-                            navigator.mediaScreen(
-                                mediaId = mediaList.mediaId,
-                                type = mediaList.media?.type
-                            )
-                        }
-                    }
-
-                    val onMediaLongClick = {
-                        if (openEditorScreen.value == true) {
-                            navigator.mediaScreen(
-                                mediaId = mediaList.mediaId,
-                                type = mediaList.media?.type
-                            )
-                        } else {
-                            openMediaListEditorScreen()
-                        }
-                    }
-
-                    val increaseProgress = {
-                        viewModel.increaseProgress(mediaList)
-                    }
-
-                    when (displayMode) {
-                        MediaListDisplayMode.LIST -> {
-                            MediaListRowCard(
-                                list = mediaList,
-                                showIncreaseButton = isLoggedIn,
-                                increaseProgress = increaseProgress,
-                                onClick = onMediaClick,
-                                onLongClick = onMediaLongClick
-                            )
-                        }
-
-                        MediaListDisplayMode.LIST_COMPACT -> {
-                            MediaListSmallRowCard(
-                                list = mediaList,
-                                showIncreaseButton = isLoggedIn,
-                                increaseProgress = increaseProgress,
-                                onClick = onMediaClick,
-                                onLongClick = onMediaLongClick
-                            )
-                        }
-
-                        MediaListDisplayMode.GRID -> {
-                            MediaListColumnCard(
-                                list = mediaList,
-                                showIncreaseButton = isLoggedIn,
-                                increaseProgress = increaseProgress,
-                                onClick = onMediaClick,
-                                onLongClick = onMediaLongClick
-                            )
-                        }
-
-                        MediaListDisplayMode.GRID_COMPACT -> {
-                            MediaListCompactColumnCard(
-                                list = mediaList,
-                                showIncreaseButton = isLoggedIn,
-                                increaseProgress = increaseProgress,
-                                onClick = onMediaClick,
-                                onLongClick = onMediaLongClick
-                            )
-                        }
-                    }
-
-
                 }
             }
 
@@ -299,7 +306,11 @@ private fun MediaListFilterBottomSheet(
 ) {
     val scope = rememberCoroutineScope()
 
-    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+    BottomSheet(
+        state = bottomSheetState,
+        skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         MediaListFilterBottomSheetContent(
             viewModel = viewModel,
             dismiss = {

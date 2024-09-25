@@ -15,9 +15,10 @@ import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.notification.data.store.NotificationDataStore
-import com.revolgenx.anilib.common.data.constant.AdsInterval
+import com.revolgenx.anilib.common.data.constant.InterstitialAdsInterval
 import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
 import com.revolgenx.anilib.common.data.constant.MainPageOrder
+import com.revolgenx.anilib.common.data.constant.RewardedInterstitialAdsInterval
 import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import com.revolgenx.anilib.type.AiringSort
@@ -41,8 +42,10 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val displayAdultContentKey = booleanPreferencesKey("display_adult_content_key")
         val mediaListDisplayModeKey = intPreferencesKey("media_list_display_mode_key")
         val otherMediaListDisplayModeKey = intPreferencesKey("other_media_list_display_mode_key")
-        val displayAdsIntervalKey = intPreferencesKey("display_ads_interval_key")
-        val adsDisplayedDateTimeKey = longPreferencesKey("ads_displayed_date_time_key")
+        val displayInterstitialAdsIntervalKey = intPreferencesKey("display_interstitial_ads_interval_key")
+        val displayRewardedInterstitialAdsIntervalKey = intPreferencesKey("display_rewarded_interstitial_ads_interval_key")
+        val interstitialAdsDisplayedDateTimeKey = longPreferencesKey("interstitial_ads_displayed_date_time_key")
+        val rewardedInterstitialAdsDisplayedDateTimeKey = longPreferencesKey("rewarded_interstitial_ads_displayed_date_time_key")
         val autoPlayGifKey = booleanPreferencesKey("auto_play_gif_key")
         val showUserAboutKey = booleanPreferencesKey("show_user_about_key")
         val exploreAiringOrderKey = intPreferencesKey("explore_airing_order_key")
@@ -142,15 +145,27 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         defaultValue = 1
     )
 
-    val displayAdsInterval = PreferencesDataStore(
+    val displayInterstitialAdsInterval = PreferencesDataStore(
         dataStore = dataStore,
-        prefKey = displayAdsIntervalKey,
-        defaultValue = AdsInterval.EVERY_DAY.value
+        prefKey = displayInterstitialAdsIntervalKey,
+        defaultValue = InterstitialAdsInterval.EVERY_DAY.ordinal
     )
 
-    val adsDisplayedDateTime = PreferencesDataStore(
+    val displayRewardedInterstitialAdsInterval = PreferencesDataStore(
         dataStore = dataStore,
-        prefKey = adsDisplayedDateTimeKey,
+        prefKey = displayRewardedInterstitialAdsIntervalKey,
+        defaultValue = RewardedInterstitialAdsInterval.EVERY_FOURTH_DAY.ordinal
+    )
+
+    val interstitialAdsDisplayedDateTime = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = interstitialAdsDisplayedDateTimeKey,
+        defaultValue = null
+    )
+
+    val rewardedInterstitialAdsDisplayedDateTime = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = rewardedInterstitialAdsDisplayedDateTimeKey,
         defaultValue = null
     )
 

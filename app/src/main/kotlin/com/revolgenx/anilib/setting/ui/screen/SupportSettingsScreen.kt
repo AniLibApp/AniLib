@@ -2,8 +2,10 @@ package com.revolgenx.anilib.setting.ui.screen
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -21,7 +23,11 @@ import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
-import com.revolgenx.anilib.common.data.constant.AdsInterval
+import com.revolgenx.anilib.common.data.constant.InterstitialAdsInterval
+import com.revolgenx.anilib.common.data.constant.RewardedInterstitialAdsInterval
+import com.revolgenx.anilib.common.ext.activityViewModel
+import com.revolgenx.anilib.common.ext.componentActivity
+import com.revolgenx.anilib.common.ui.ads.AdsViewModel
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
@@ -39,6 +45,7 @@ object SupportSettingsScreen : AndroidScreen() {
 @Composable
 fun SupportSettingsScreenContent() {
     val viewModel: SettingsViewModel = koinViewModel()
+    val adsViewModel: AdsViewModel = activityViewModel()
     val context = localContext()
     val scope = rememberCoroutineScope()
     ScreenScaffold(
@@ -55,50 +62,95 @@ fun SupportSettingsScreenContent() {
             OutlinedCard {
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "\uD83D\uDCCC If you enjoy the app and would like to support its development, you can choose to watch ads at regular intervals. These ads are not intrusive and will only appear when you prefer to see them. If you'd rather not see the reminders, you have the option to adjust the frequency of the ads or turn them off entirely. Your support is greatly appreciated! \uD83D\uDE4F\uD83D\uDE4F\uD83D\uDE4F"
+                    text = "\uD83D\uDCCC To support the development of the app, ads are shown at regular intervals. You can choose to watch ads at different intervals. Your support is greatly appreciated! \uD83D\uDE4F\uD83D\uDE4F\uD83D\uDE4F"
                 )
             }
 
-            val displayAdsInterval = viewModel.appPreferencesDataStore.displayAdsInterval
-            val displayAdsIntervalState = displayAdsInterval.collectAsState{ AdsInterval.fromValue(it!!)}
+            val displayInterstitialAdsInterval = viewModel.displayInterstitialAdsInterval
+            val displayInterstitialAdsIntervalState =
+                displayInterstitialAdsInterval.collectAsState { InterstitialAdsInterval.fromValue(it!!) }
+
             OutlinedCard {
                 ListPreferenceItem(
-                    value = displayAdsIntervalState.value, title = stringResource(id = R.string.change_ads_interval), entries = remember {
+                    value = displayInterstitialAdsIntervalState.value,
+                    title = stringResource(id = R.string.change_ads_interval),
+                    entries = remember {
                         listOf(
-                            ListPreferenceEntry(context.getString(R.string.ads_once_a_day), AdsInterval.EVERY_DAY),
-                            ListPreferenceEntry(context.getString(R.string.ads_every_other_day), AdsInterval.EVERY_OTHER_DAY),
-                            ListPreferenceEntry(context.getString(R.string.ads_end_of_every_week), AdsInterval.EVERY_WEEK),
-                            ListPreferenceEntry(context.getString(R.string.ads_end_of_every_other_week), AdsInterval.EVERY_OTHER_WEEK),
-                            ListPreferenceEntry(context.getString(R.string.ads_once_every_month), AdsInterval.EVERY_MONTH),
+                            ListPreferenceEntry(
+                                context.getString(R.string.ads_once_a_day),
+                                InterstitialAdsInterval.EVERY_DAY
+                            ),
+                            ListPreferenceEntry(
+                                context.getString(R.string.ads_every_other_day),
+                                InterstitialAdsInterval.EVERY_OTHER_DAY
+                            ),
+                            ListPreferenceEntry(
+                                context.getString(R.string.ads_every_fourth_day),
+                                InterstitialAdsInterval.EVERY_FOURTH_DAY
+                            ),
+                            ListPreferenceEntry(
+                                context.getString(R.string.ads_every_week),
+                                InterstitialAdsInterval.EVERY_WEEK
+                            ),
+                            ListPreferenceEntry(
+                                context.getString(R.string.ads_every_other_week),
+                                InterstitialAdsInterval.EVERY_OTHER_WEEK
+                            ),
                         )
                     }
                 ) {
                     scope.launch {
-                        displayAdsInterval.set(it!!.value)
+                        displayInterstitialAdsInterval.set(it!!.ordinal)
                     }
                 }
             }
 
+
+            val displayRewardedInterstitialAdsInterval = viewModel.displayRewardedInterstitialAdsInterval
+            val displayRewardedInterstitialAdsIntervalState =
+                displayRewardedInterstitialAdsInterval.collectAsState { RewardedInterstitialAdsInterval.fromValue(it!!) }
+
+            OutlinedCard {
+                ListPreferenceItem(
+                    value = displayRewardedInterstitialAdsIntervalState.value,
+                    title = stringResource(id = R.string.change_long_ads_interval),
+                    entries = remember {
+                        listOf(
+                            ListPreferenceEntry(
+                                context.getString(R.string.ads_every_fourth_day),
+                                RewardedInterstitialAdsInterval.EVERY_FOURTH_DAY
+                            ),
+                            ListPreferenceEntry(
+                                context.getString(R.string.ads_every_week),
+                                RewardedInterstitialAdsInterval.EVERY_WEEK
+                            ),
+                            ListPreferenceEntry(
+                                context.getString(R.string.ads_every_other_week),
+                                RewardedInterstitialAdsInterval.EVERY_OTHER_WEEK
+                            ),
+                        )
+                    }
+                ) {
+                    scope.launch {
+                        displayRewardedInterstitialAdsInterval.set(it!!.ordinal)
+                    }
+                }
+            }
+
+            Spacer(modifier = Modifier.size(4.dp))
             OutlinedCard() {
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "Additionally, you can donate directly via the Play Store."
+                    text = stringResource(id = R.string.ads_support_button_message)
                 )
             }
 
-            Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
-                Text(text = "Donate 1")
-            }
-
-            Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
-                Text(text = "Donate 3")
-            }
-            Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
-                Text(text = "Donate 9")
-            }
-
-            Button(modifier = Modifier.fillMaxWidth(), onClick = { /*TODO*/ }) {
-                Text(text = "Donate 18")
+            Button(modifier = Modifier.fillMaxWidth(), onClick = {
+                context.componentActivity()?.let {
+                    adsViewModel.showRewardedInterstitialAdsFromSupport(it)
+                }
+            }) {
+                Text(text = "Show ads")
             }
 
         }

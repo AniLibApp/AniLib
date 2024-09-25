@@ -13,9 +13,9 @@ object PackagingOptions {
 
 object Versions{
     const val composeUi = "1.6.8"
-    const val composeFoundation = "1.6.8"
-    const val composeMaterial = "1.3.0-rc01"
+    const val composeMaterial = "1.3.0"
     const val composeActivity = "1.9.1"
+    const val composeBom = "2024.09.00"
     const val voyager = "1.1.0-beta02"
     const val timber = "5.0.1"
     const val koin = "3.5.6"
@@ -41,11 +41,10 @@ object Versions{
 
 object Dependencies {
     const val composeMaterial = "androidx.compose.material3:material3:${Versions.composeMaterial}"
-    const val composeUi = "androidx.compose.ui:ui:${Versions.composeUi}"
     const val composeActivity = "androidx.activity:activity-compose:${Versions.composeActivity}"
-    const val composeFoundation = "androidx.compose.foundation:foundation:${Versions.composeFoundation}"
-    const val composeUiTooling = "androidx.compose.ui:ui-tooling:${Versions.composeUi}"
-    const val composeUiToolingPreview = "androidx.compose.ui:ui-tooling-preview:${Versions.composeUi}"
+    const val composeBom = "androidx.compose:compose-bom:${Versions.composeBom}"
+    const val composeUiTooling = "androidx.compose.ui:ui-tooling"
+    const val composeUiToolingPreview = "androidx.compose.ui:ui-tooling-preview"
 
     const val voyager = "cafe.adriel.voyager:voyager-navigator:${Versions.voyager}"
     const val voyagerTab = "cafe.adriel.voyager:voyager-tab-navigator:${Versions.voyager}"
@@ -118,13 +117,14 @@ object Dependencies {
 
 
 fun DependencyHandler.compose() {
-    implementation(Dependencies.composeUi)
     implementation(Dependencies.composeActivity)
-    //remove it later
-    implementation(Dependencies.composeFoundation)
     implementation(Dependencies.composeMaterial)
-    implementation(Dependencies.composeUiTooling)
-    debugImplementation(Dependencies.composeUiToolingPreview)
+
+    val composeBom = platform(Dependencies.composeBom)
+    implementation(composeBom)
+
+    debugImplementation(Dependencies.composeUiTooling)
+    implementation(Dependencies.composeUiToolingPreview)
 }
 fun DependencyHandler.koin() {
     dependencyPlatform(Dependencies.koinBom)

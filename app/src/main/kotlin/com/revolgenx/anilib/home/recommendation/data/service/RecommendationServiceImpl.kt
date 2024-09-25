@@ -20,7 +20,7 @@ class RecommendationServiceImpl(
 ) : BaseService(apolloRepository, appPreferencesDataStore),
     RecommendationService {
     override fun getRecommendationList(field: RecommendationField): Flow<PageModel<RecommendationModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.page.let { page ->
                 PageModel(
                     pageInfo = page.pageInfo.pageInfo,
@@ -37,7 +37,7 @@ class RecommendationServiceImpl(
 
 
     override fun saveRecommendation(field: SaveRecommendationField): Flow<SaveRecommendationModel?> {
-        return field.toMutation().map {
+        return field.toMutation().mapData {
             it.dataAssertNoErrors.saveRecommendation?.let {recommendation->
                 SaveRecommendationModel(
                     id = recommendation.id,

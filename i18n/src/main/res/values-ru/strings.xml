@@ -1,0 +1,277 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources><string name="app_subtitle">"От платформы  AniList"</string>
+    <string name="anilib_site">"Сайт AniLib"</string>
+    <string name="season">"Сезон"</string>
+    <string name="something_went_wrong">"Что-то пошло не так"</string>
+    <string name="its_empty">"Поле не заполнено"</string>
+    <string name="manga">"Манга"</string>
+    <string name="please_log_in">"Авторизуйтесь пожалуйста."</string>
+    <string name="settings">"Настройки"</string>
+    <string name="activity">"Активность"</string>
+    <string name="previous">"Предыдущий"</string>
+    <string name="next">"Следующий"</string>
+    <string name="filter">"Фильтр"</string>
+    <string name="users">"Пользователи"</string>
+    <string name="save">"Сохранить"</string>
+    <string name="status">"Статус"</string>
+    <string name="score">"Оценка"</string>
+    <string name="watching">"Просматриваемые"</string>
+    <string name="planning">"Запланированые"</string>
+    <string name="completed">"Завершенные"</string>
+    <string name="dropped">"Заброшенные"</string>
+    <string name="paused">"Просмотр приостановлен"</string>
+    <string name="rewatching">"Повторный просмотр"</string>
+    <string name="episode_progress">"Отметка эпизода"</string>
+    <string name="start_date">"Дата начала"</string>
+    <string name="total_rewatches">"Всего повторных просмотров"</string>
+    <string name="_private">"Приватное"</string>
+    <string name="notes">"Примечания"</string>
+    <string name="failed_to_save">"Ошибка при сохранении."</string>
+    <string name="volume_progress">"Прогрес чтения тома"</string>
+    <string name="overview">"Обзор"</string>
+    <string name="character">"Персонажи"</string>
+    <string name="stats">"Статистика"</string>
+    <string name="staff">"Создатели"</string>
+    <string name="review">"Отзывы"</string>
+    <string name="watch">"Смотреть"</string>
+    <string name="delete">"Удалить"</string>
+    <string name="operation_failed">"Ошибка действия."</string>
+    <string name="type">"Тип"</string>
+    <string name="source">"Источник"</string>
+    <string name="episodes">"Эпизоды"</string>
+    <string name="duration">"Длительность"</string>
+    <string name="format">"Формат"</string>
+    <string name="s_min">"%1$s мин."</string>
+    <string name="chapters">"Главы"</string>
+    <string name="japanese">"Японский"</string>
+    <string name="english">"Английский"</string>
+    <string name="description">"Описание"</string>
+    <string name="ep_s_s">"Э: %1$s · %2$s"</string>
+    <string name="recommendation">"Рекомендации"</string>
+    <string name="relations">"Связанные"</string>
+    <string name="genre">"Жанр"</string>
+    <string name="tags">"Тэги"</string>
+    <string name="studios">"Студии"</string>
+    <string name="producers">"Продюссеры"</string>
+    <string name="hashtag">"Хэштэг"</string>
+    <string name="average_score">"Средняя оценка"</string>
+    <string name="popularity">"Популярность"</string>
+    <string name="favourites">"Избранные"</string>
+    <string name="datetime_days">"дней"</string>
+    <string name="datetime_hour">"часов"</string>
+    <string name="datetime_min">"мин."</string>
+    <string name="datetime_sec">"сек."</string>
+    <string name="recent_activity_per_day">"Последняя активность за день"</string>
+    <string name="rankings">"Рейтинги"</string>
+    <string name="status_distribution">"Распределение статусов"</string>
+    <string name="score_distribution">"Распределение оценок"</string>
+    <string name="about">"Описание"</string>
+    <string name="share">"Поделиться"</string>
+    <string name="media">"Медиа"</string>
+    <string name="voice_roles">"Озвучивают"</string>
+    <string name="staff_roles">"Создатели"</string>
+    <string name="studio">"Студия"</string>
+    <string name="search">"Поиск"</string>
+    <string name="sort">"Сортировка"</string>
+    <string name="streaming_on">"Трансляция"</string>
+    <string name="country">"Страна"</string>
+    <string name="year">"Год"</string>
+    <string name="done">"Готово"</string>
+    <string name="cancel">"Отменить"</string>
+    <string name="name">"Название"</string>
+    <string name="settings_anime_list">"Список аниме"</string>
+    <string name="settings_manga_list">"Список манги"</string>
+    <string name="none">"Нет"</string>
+    <string name="following">"Подписка"</string>
+    <string name="blocked">"Заблокированы"</string>
+    <string name="total_anime">"Всего аниме"</string>
+    <string name="days_watched">"Дней просмотра"</string>
+    <string name="mean_score">"Средняя оценка"</string>
+    <string name="total_manga">"Всего манги"</string>
+    <string name="chapters_read">"Прочитанные разделы"</string>
+    <string name="anime">"Аниме"</string>
+    <string name="anime_stats">"Статистика по аниме"</string>
+    <string name="manga_stats">"Статистика по манге"</string>
+    <string name="voice_actors">"Актеры озвучивания"</string>
+    <string name="episodes_watched">"Просмотренные эпизоды"</string>
+    <string name="days_planned">"Запланированные дни"</string>
+    <string name="standard_deviation">"Стандартное отклонение"</string>
+    <string name="format_distribution">"Распределение по формату"</string>
+    <string name="country_distribution">"Распределение по странам"</string>
+    <string name="release_year">"Год выпуска"</string>
+    <string name="watch_year">"Год просмотра"</string>
+    <string name="read_year">"Год прочтения"</string>
+    <string name="count">"Счет"</string>
+    <string name="time_watched">"Время просмотров"</string>
+    <string name="links">"Ссылки"</string>
+    <string name="add">"Добавить"</string>
+    <string name="follow">"Подписаться"</string>
+    <string name="episode_airing_notif">"%1$s %2$s %3$s %4$s %5$s"</string>
+    <string name="thread_notif_s">"%1$s %2$s %3$s"</string>
+    <string name="s_space_s">"%1$s %2$s"</string>
+    <string name="new_notification">"Доступно новое уведомление"</string>
+    <string name="select_date">"Выбрать дату"</string>
+    <string name="airing">"Выходит"</string>
+    <string name="trending">"В тренде"</string>
+    <string name="popular">"Популярное"</string>
+    <string name="newly_added">"Недавно добавленные"</string>
+    <string name="summary">"Краткое содержание"</string>
+    <string name="review_score_format">"Оценка: %1$s/100"</string>
+    <string name="review_of_s_by_s">"Обзор %1$s от %2$s"</string>
+    <string name="reviews">"Обзоры"</string>
+    <string name="press_again_to_exit">"Нажмите ещё раз, чтобы выйти"</string>
+    <string name="privacy_policy">"Политика конфиденциальности."</string>
+    <string name="privacy_policy_desc">"Ознакомиться с политикой конфиденциальности."</string>
+    <string name="whats_new">"Что нового"</string>
+    <string name="terms_and_condition">"Правила и условия"</string>
+    <string name="terms_and_condition_desc">"Ознакомиться с правилами и условиями"</string>
+    <string name="crash_reporting">"Сообщить о неполадке"</string>
+    <string name="crash_report_desc">"Помогите усовершенствовать AniLib. Отправляет отчеты о неполадках в автоматическом режиме."</string>
+
+    
+    <string name="refresh_interval">"Период обновления"</string>
+    <string name="notifications">"Уведомления"</string>
+    <string name="when_someone_follows_me">"Когда кто-то подписывается на меня"</string>
+    <string name="receive_message_notif">"Когда я получаю сообщение"</string>
+    <string name="mention_replay_notif">"Когда меня упоминают @ в действии или ответе не действие"</string>
+    <string name="activity_like_notif">"Когда кому-то понравилось мое действие"</string>
+    <string name="likes_activity_reply_notif">"Когда кому-то понравился мой ответ на действие"</string>
+    <string name="forum_reply_notif">"Когда кто-то отвечает на мой комментарий на форуме"</string>
+    <string name="forum_mention_notif">"Когда меня упоминают @ в комментарии на форуме"</string>
+    <string name="forum_coment_liked_notif">"Когда кому-то понравился мой комментарий на форуме"</string>
+    <string name="reply_to_subscribed_forum_notif">"Когда кто-то отвечает на ветку обсуждений на форуме, на которую я подписан"</string>
+    <string name="forum_liked_notif">"Когда кому-то понравилась моя ветка обсуждений на форуме"</string>
+    <string name="cover_image_quality">"Качество изображения обложки"</string>
+    <string name="advanced_scores">"Подробные оценки"</string>
+    <string name="reading">"Чтение"</string>
+    <string name="romaji">"Ромаджи"</string>
+    <string name="_native">"Оригинал"</string>
+
+    
+    <string name="high">"Высокое"</string>
+    <string name="low">"Низкое"</string>
+    <string name="medium">"Среднее"</string>
+    <string name="title">"Заголовок"</string>
+    <string name="score_desc">"Описание оценки"</string>
+    <string name="progress">"Прогресс"</string>
+    <string name="last_updated">"Последние обновления"</string>
+    <string name="last_added">"Последние добавленные"</string>
+    <string name="start_date_desc">"Описание даты начала"</string>
+    <string name="completed_date">"Дата завершения"</string>
+    <string name="release_date">"Дата релиза"</string>
+    <string name="popularity_desc">"Описание популярности"</string>
+
+    
+    <string name="tv">"Tv"</string>
+    <string name="tv_short">"Tv Short"</string>
+    <string name="movie">"Фильм"</string>
+    <string name="special">"Спэшл"</string>
+    <string name="ova">"OVA"</string>
+    <string name="ona">"ONA"</string>
+    <string name="one_shot">"One shot"</string>
+    <string name="novel">"Новелла"</string>
+    <string name="music">"Музыка"</string>
+    <string name="unknown">"Неизвестно"</string>
+
+    
+    <string name="original">"Оригинал"</string>
+    <string name="light_novel">"Ранобэ"</string>
+    <string name="visual_novel">"Визуальная новелла"</string>
+    <string name="video_game">"Видеоигра"</string>
+    <string name="other">"Другое"</string>
+    <string name="doujinshi">"Додзинси"</string>
+
+    
+    <string name="contains">"Содержит"</string>
+    <string name="compilation">"Компиляция"</string>
+    <string name="spin_off">"Спин-офф"</string>
+    <string name="alternative">"Альтернативная история"</string>
+    <string name="side_story">"Ответвление сюжета"</string>
+    <string name="parent">"Родитель"</string>
+    <string name="sequel">"Сиквел"</string>
+    <string name="prequel">"Приквел"</string>
+    <string name="adaptation">"Адаптация"</string>
+
+    
+    <string name="background">"Фон"</string>
+    <string name="supporting">"Вспомогательный"</string>
+    <string name="main">"Главный"</string>
+
+    
+    <string name="korean">"Корейский"</string>
+    <string name="hebrew">"Иврит"</string>
+    <string name="hungarian">"Венгерский"</string>
+
+    
+    <string name="cancelled">"Отменен"</string>
+    <string name="not_yet_released">"Еще не издано"</string>
+    <string name="releasing">"Издается"</string>
+    <string name="finished">"Завершено"</string>
+
+    
+    <string name="all">"Все"</string>
+    <string name="winter">"Зима"</string>
+    <string name="spring">"Весна"</string>
+    <string name="summer">"Лето"</string>
+    <string name="fall">"Список"</string>
+
+    
+    <string name="id">"Идентификатор"</string>
+    <string name="id_desc">"Описание идентификатора"</string>
+    <string name="title_romaji">"Название ромадзи"</string>
+    <string name="title_romaji_desc">"Описание названия ромадзи "</string>
+    <string name="title_english">"Название на английском"</string>
+    <string name="title_english_desc">"Описание названия на английском"</string>
+    <string name="title_native">"Оригинальное название"</string>
+    <string name="title_native_desc">"Описание оригинального названия"</string>
+    <string name="type_desc">"Описание типа"</string>
+    <string name="format_desc">"Описание формата"</string>
+    <string name="end_date_desc">"Описание дата окончания"</string>
+    <string name="trending_desc">"Описание тенденции"</string>
+    <string name="episodes_desc">"Описание эпизодов"</string>
+    <string name="duration_desc">"Описание длительности"</string>
+    <string name="status_desc">"Описание статуса"</string>
+    <string name="chapters_desc">"Описание глав"</string>
+    <string name="volumes_desc">"Описание томов"</string>
+    <string name="updated_at">"Обновление"</string>
+    <string name="updated_at_desc">"Описание обновления"</string>
+    <string name="search_match">"Поиск похожих"</string>
+    <string name="favourites_desc">"Описание избранных"</string>
+
+    
+    <string name="China">"Китай"</string>
+    <string name="South_Korean">"Южная Корея"</string>
+    <string name="Japan">"Япония"</string>
+
+    
+    <string name="on_list">"В списке"</string>
+    <string name="recent">"Недавние"</string>
+    <string name="highest_rated">"Высокие оценки"</string>
+    <string name="lowest_rated">"Низкие оценки"</string>
+
+    
+    <string name="titles_watched">"Просмотренные тайтлы"</string>
+    <string name="titles_read">"Прочитанные тайтлы"</string>
+    <string name="rating">"Оценка"</string>
+    <string name="created_at">"Издательство"</string>
+    <string name="show_adult_content_desc">"Изменение этого параметра не повлияет на настройки в AniList. Это зависит от AniList, так что отключение предпочтений пользователя удалит этот параметр."</string>
+    <string name="theme">"Тема"</string>
+    <string name="media_id">"Идентификатор медиа"</string>
+    <string name="time">"Время"</string>
+    <string name="home">"Главная"</string>
+    <string name="list">"Список"</string>
+    <string name="profile">"Профиль"</string>
+    <string name="include_already_aired">"Содержит уже вышедшие"</string>
+    <string name="settings_anime_and_manga">Аниме и манга</string>
+    <string name="settings_title_language">"Язык тайтла"</string>
+    <string name="settings_airing_anime_notifications">"Уведомления о выходе аниме"</string>
+    <string name="settings_scoring_system">"Система оценивания"</string>
+    <string name="settings_default_list_order">"Порядок списка по умолчанию"</string>
+    <string name="saved_successfully">"Успешно сохранено"</string>
+    <string name="show_only_from_your_planning_list">"Показывать только из списка запланированных"</string>
+    <string name="show_only_from_your_watching_list">"Показывать только из списка просматриваемых"</string>
+    <string name="automatically_subscribe_me_to_activity_i_create">"Автоматически подписывать меня на создаваемые мной активности"</string>
+    <string name="automatically_subscribe_me_to_activity_i_reply_to">"Автоматически подписывать меня на активности, на которые я отвечаю"</string>
+    <string name="weekly">"Еженедельно"</string>
+    <string name="s_dash_s">"%1$s - %2$s"</string>
+    </resources>

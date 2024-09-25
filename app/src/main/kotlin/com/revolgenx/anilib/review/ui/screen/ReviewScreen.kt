@@ -316,9 +316,13 @@ private fun ReviewScreenTopAppBar(
             reviewModel?.siteUrl?.let { site ->
                 OverflowMenu(
                     tonalButton = !isCollapsed
-                ) {
-                    OpenInBrowserOverflowMenu(link = site)
-                    ShareOverflowMenu(text = site)
+                ) {expanded->
+                    OpenInBrowserOverflowMenu(link = site){
+                        expanded.value = false
+                    }
+                    ShareOverflowMenu(text = site){
+                        expanded.value = false
+                    }
                 }
             }
         }

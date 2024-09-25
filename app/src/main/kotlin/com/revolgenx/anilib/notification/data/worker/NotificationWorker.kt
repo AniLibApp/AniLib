@@ -128,7 +128,7 @@ class NotificationWorker(
         val pendingIntent = createNotificationPendingIntent()
         notificationBuilder.setContentIntent(pendingIntent)
         notificationBuilder.setSmallIcon(
-            R.drawable.ic_notification
+            R.drawable.ic_shortcut_notification
         )
         notificationBuilder.setAutoCancel(true)
         notificationData.image?.let {

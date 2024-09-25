@@ -31,7 +31,7 @@ class AiringScheduleServiceImpl(
                     field.also {
                         it.needMediaListData = false
                         it.mediaListIds = t
-                    }.toQuery().map {
+                    }.toQuery().mapData {
                         it.dataAssertNoErrors.page.let {
                             PageModel(
                                 pageInfo = it.pageInfo.pageInfo,
@@ -41,7 +41,7 @@ class AiringScheduleServiceImpl(
                     }.get()
                 }
         } else {
-            field.toQuery().map {
+            field.toQuery().mapData {
                 it.dataAssertNoErrors.page.let {
                     PageModel(
                         pageInfo = it.pageInfo.pageInfo,

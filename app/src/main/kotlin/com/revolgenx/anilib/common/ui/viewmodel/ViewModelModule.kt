@@ -32,6 +32,7 @@ import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
 import com.revolgenx.anilib.common.data.store.mediaTagCollectionDataStore
 import com.revolgenx.anilib.common.data.store.readableOnCollectionDataStore
 import com.revolgenx.anilib.common.data.store.streamingOnCollectionDataStore
+import com.revolgenx.anilib.common.ui.ads.AdsViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaListFilterViewModel
@@ -67,9 +68,12 @@ import com.revolgenx.anilib.setting.ui.viewmodel.MediaSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.NotificationSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyServiceViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.BaseActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionFilterViewModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionServiceViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.MainActivityUnionViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.MessageComposerViewModel
@@ -101,7 +105,7 @@ import org.koin.dsl.module
 
 val viewModelModules = module {
     //main activity
-    viewModel { MainActivityViewModel(get()) }
+    viewModel { MainActivityViewModel(get(), get()) }
     viewModel { SharedActivityViewModel() }
 
     //airing
@@ -250,16 +254,18 @@ val viewModelModules = module {
     viewModel {
         MainActivityUnionViewModel(
             get(),
-            get(),
             get<Context>().activityUnionFilterDataStore
         )
     }
-    viewModel { ActivityUnionViewModel(get(), get()) }
+    viewModel { ActivityUnionViewModel(get()) }
+    viewModel { ActivityUnionServiceViewModel(get(), get()) }
+    viewModel { ActivityReplyServiceViewModel(get(), get()) }
     viewModel { ActivityComposerViewModel(get()) }
     viewModel { MessageComposerViewModel(get()) }
     viewModel { ReplyComposerViewModel(get()) }
     viewModel { ActivityUnionFilterViewModel(get<Context>().activityUnionFilterDataStore) }
-    viewModel { parameters -> ActivityReplyViewModel(parameters.get(), get(), get()) }
+    viewModel { parameters -> ActivityReplyViewModel(parameters.get(), get()) }
+    viewModel { parameters -> ActivityInfoViewModel(parameters.get(), get()) }
 
     //browse
     viewModel { BrowseViewModel(get(), get()) }
@@ -318,4 +324,5 @@ val viewModelModules = module {
     viewModel { ExploreReadingViewModel(get(), get(), get()) }
 
 
+    viewModel { AdsViewModel(get()) }
 }

@@ -8,6 +8,7 @@ import android.provider.Settings
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarDefaults
@@ -37,8 +38,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
 import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
+import com.revolgenx.anilib.app.ui.viewmodel.DeepLinkPath
 import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
-import com.revolgenx.anilib.app.ui.viewmodel.SharedActivityViewModel
 import com.revolgenx.anilib.common.data.constant.MainPageOrder
 import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.componentActivity
@@ -46,9 +47,9 @@ import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.LocalMainTabNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
-import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
 import com.revolgenx.anilib.list.ui.screen.MangaListScreen
@@ -77,7 +78,7 @@ private var userScreen: UserScreen = UserScreen(isTab = true)
 @Composable
 private fun MainActivityScreenContent() {
     val snackbarHostState = remember { SnackbarHostState() }
-    val viewModel: MainActivityViewModel = koinViewModel()
+    val viewModel: MainActivityViewModel = activityViewModel()
 
     val dispose = remember {
         mutableStateOf(false)
@@ -113,6 +114,7 @@ private fun MainActivityScreenContent() {
             }
         }
     ) { tabNavigator ->
+        CheckDeepLinkPath(viewModel, tabNavigator)
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) },
             bottomBar = {
@@ -142,7 +144,7 @@ private fun MainActivityScreenContent() {
             contentWindowInsets = NavigationBarDefaults.windowInsets,
         ) { contentPadding ->
             NotificationPermission(viewModel = viewModel, snackbarHostState)
-            Box(Modifier.padding(contentPadding)) {
+            Box(Modifier.padding(contentPadding).consumeWindowInsets(contentPadding)) {
                 CompositionLocalProvider(
                     LocalMainTabNavigator provides tabNavigator,
                     LocalSnackbarHostState provides snackbarHostState
@@ -150,6 +152,28 @@ private fun MainActivityScreenContent() {
                     CurrentTab()
                 }
                 BackPress(snackbarHostState = snackbarHostState, dispose = dispose)
+            }
+        }
+    }
+}
+
+@Composable
+private fun CheckDeepLinkPath(
+    viewModel: MainActivityViewModel,
+    tabNavigator: TabNavigator
+) {
+    LaunchedEffect(viewModel.deepLinkPath.value) {
+        viewModel.deepLinkPath.value?.let {
+            when(it.first){
+                DeepLinkPath.ANIME_LIST->{
+                    tabNavigator.current = AnimeListScreen
+                    viewModel.deepLinkPath.value = null
+                }
+                DeepLinkPath.MANGA_LIST->{
+                    tabNavigator.current = MangaListScreen
+                    viewModel.deepLinkPath.value = null
+                }
+                else -> {}
             }
         }
     }

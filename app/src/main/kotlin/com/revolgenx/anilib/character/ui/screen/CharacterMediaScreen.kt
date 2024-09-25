@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import anilib.i18n.R as I18nR
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.data.field.CharacterMediaField
@@ -120,7 +121,10 @@ private fun CharacterMediaFilterBottomSheet(
         }
     }
 
-    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+    BottomSheet(
+        state = bottomSheetState, skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         CharacterMediaScreenBottomSheetContent(
             viewModel = viewModel,
             dismiss = dismiss,

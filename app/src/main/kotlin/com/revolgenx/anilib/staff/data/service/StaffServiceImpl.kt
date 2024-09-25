@@ -27,12 +27,12 @@ class StaffServiceImpl(
 ) : StaffService,
     BaseService(apolloRepository, appPreferencesDataStore) {
     override fun getStaff(field: StaffField): Flow<StaffModel?> {
-        return field.toQuery().map { it.dataAssertNoErrors.staff?.toModel() }
+        return field.toQuery().mapData { it.dataAssertNoErrors.staff?.toModel() }
             
     }
 
     override fun getStaffMediaCharacter(field: StaffMediaCharacterField): Flow<PageModel<MediaModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
 
             var pageInfo: PageInfo? = null
             var data: List<MediaModel>? = null
@@ -85,7 +85,7 @@ class StaffServiceImpl(
 
 
     override fun getStaffMediaRole(field: StaffMediaRoleField): Flow<PageModel<MediaModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             val staffMedia = it.dataAssertNoErrors.staff?.staffMedia
             PageModel(
                 pageInfo = staffMedia?.pageInfo?.pageInfo,

@@ -8,16 +8,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
-import com.revolgenx.anilib.character.ui.viewmodel.CharacterActorViewModel
-import com.revolgenx.anilib.character.ui.viewmodel.CharacterMediaViewModel
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
-import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
@@ -27,6 +21,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcAbout
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
 import com.revolgenx.anilib.common.ui.icons.appicon.IcVoice
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -73,9 +68,13 @@ private fun CharacterScreenContent(characterId: Int) {
         scrollBehavior = scrollBehavior,
         actions = {
             aboutViewModel.resource.value?.stateValue?.siteUrl?.let {site->
-                OverflowMenu {
-                    OpenInBrowserOverflowMenu(link = site)
-                    ShareOverflowMenu(text = site)
+                OverflowMenu {expanded->
+                    OpenInBrowserOverflowMenu(link = site){
+                        expanded.value = false
+                    }
+                    ShareOverflowMenu(text = site){
+                        expanded.value = false
+                    }
                 }
             }
         },

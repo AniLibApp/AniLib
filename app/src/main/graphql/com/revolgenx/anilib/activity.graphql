@@ -23,73 +23,13 @@ query ActivityUnionQuery(
         ){
             __typename
             ... on TextActivity{
-                id
-                text
-                replyCount
-                likeCount
-                siteUrl
-                isSubscribed
-                createdAt
-                type
-                userId
-                isLiked
-                likes{
-                    ... likeUsers
-                }
-                user{
-                    ... activityUser
-                }
+                ... generalTextActivity
             }
             ... on ListActivity{
-                id
-                status
-                progress
-                replyCount
-                likeCount
-                isSubscribed
-                createdAt
-                siteUrl
-                type
-                userId
-                isLiked
-                media{
-                    id
-                    title{
-                        ... mediaTitle
-                    }
-                    coverImage{
-                        ... mediaCoverImage
-                    }
-                    bannerImage
-                    type
-                    isAdult
-                }
-                likes{
-                    ... likeUsers
-                }
-                user{
-                    ... activityUser
-                }
+                ... generalListActivity
             }
             ... on MessageActivity{
-                id
-                recipientId
-                messengerId
-                type
-                replyCount
-                likeCount
-                message
-                isLiked
-                siteUrl
-                isPrivate
-                isSubscribed
-                createdAt
-                messenger{
-                    ... messengerUser
-                }
-                likes{
-                    ... likeUsers
-                }
+                ... generalMessageActivity
             }
         }
     }
@@ -116,78 +56,19 @@ query ActivityReplyQuery(
 query ActivityInfoQuery($id:Int){
     activity: Activity(id:$id){
         ... on TextActivity{
-            id
-            text
-            replyCount
-            likeCount
-            siteUrl
-            isSubscribed
-            createdAt
-            type
-            userId
-            isLiked
-            likes{
-                ... likeUsers
-            }
+            ... generalTextActivity
             replies{
                 ... activityReply
-            }
-            user{
-                ... activityUser
             }
         }
         ... on ListActivity{
-            id
-            status
-            progress
-            replyCount
-            likeCount
-            isSubscribed
-            createdAt
-            siteUrl
-            type
-            userId
-            isLiked
-            media{
-                id
-                title{
-                    ... mediaTitle
-                }
-                coverImage{
-                    ... mediaCoverImage
-                }
-                bannerImage
-                type
-            }
-            likes{
-                ... likeUsers
-            }
+            ... generalListActivity
             replies{
                 ... activityReply
             }
-            user{
-                ... activityUser
-            }
         }
         ... on MessageActivity{
-            id
-            recipientId
-            messengerId
-            type
-            replyCount
-            likeCount
-            message
-            isLiked
-            siteUrl
-            isPrivate
-            isSubscribed
-            createdAt
-            messenger{
-                ... messengerUser
-            }
-            likes{
-                ... likeUsers
-            }
+            ... generalMessageActivity
             replies{
                 ... activityReply
             }
@@ -292,4 +173,75 @@ fragment messengerUser on User{
     isBlocked
 }
 
+fragment generalTextActivity on TextActivity {
+    id
+    text
+    replyCount
+    likeCount
+    siteUrl
+    isSubscribed
+    createdAt
+    type
+    userId
+    isLiked
+    likes{
+        ... likeUsers
+    }
+    user{
+        ... activityUser
+    }
+}
 
+fragment generalListActivity on ListActivity{
+    id
+    status
+    progress
+    replyCount
+    likeCount
+    isSubscribed
+    createdAt
+    siteUrl
+    type
+    userId
+    isLiked
+    media{
+        id
+        title{
+            ... mediaTitle
+        }
+        coverImage{
+            ... mediaCoverImage
+        }
+        bannerImage
+        type
+        isAdult
+    }
+    likes{
+        ... likeUsers
+    }
+    user{
+        ... activityUser
+    }
+}
+
+
+fragment generalMessageActivity on MessageActivity{
+    id
+    recipientId
+    messengerId
+    type
+    replyCount
+    likeCount
+    message
+    isLiked
+    siteUrl
+    isPrivate
+    isSubscribed
+    createdAt
+    messenger{
+        ... messengerUser
+    }
+    likes{
+        ... likeUsers
+    }
+}

@@ -24,19 +24,19 @@ class SettingsServiceImpl(
 ) : BaseService(apolloRepository, appPreferencesDataStore),
     SettingsService {
     override fun getNotificationSettings(field: NotificationSettingsField): Flow<Map<NotificationType, Boolean>?> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.data?.user?.options?.notificationOptions?.filterNotNull()
                 ?.associateBy({ it.type!! }, { it.enabled == true })
         }
     }
 
     override fun saveNotificationSettings(field: SaveNotificationSettingsField): Flow<Boolean> {
-        return field.toMutation().map { it.dataAssertNoErrors.updateUser?.id != null }
+        return field.toMutation().mapData { it.dataAssertNoErrors.updateUser?.id != null }
     }
 
     override fun getMediaSettings(field: MediaSettingsField): Flow<MediaSettingsModel?> {
         return field.toQuery()
-            .map {
+            .mapData {
                 it.dataAssertNoErrors.user?.options?.userMediaOptions?.toModel()?.let {
                     MediaSettingsModel(
                         mutableStateOf(it)
@@ -46,17 +46,17 @@ class SettingsServiceImpl(
     }
 
     override fun saveMediaSettings(field: SaveMediaSettingsField): Flow<Boolean> {
-        return field.toMutation().map { it.dataAssertNoErrors.updateUser?.id != null }
+        return field.toMutation().mapData { it.dataAssertNoErrors.updateUser?.id != null }
     }
 
     override fun getMediaListSettings(field: MediaListSettingsField): Flow<MediaListSettingsModel?> {
         return field.toQuery()
-            .map {
+            .mapData {
                 it.dataAssertNoErrors.user?.mediaListOptions?.userMediaListOptions?.toModel()?.toModel()
             }
     }
 
     override fun saveMediaListSettings(field: SaveMediaListSettingsField): Flow<Boolean> {
-        return field.toMutation().map { it.dataAssertNoErrors.updateUser?.id != null }
+        return field.toMutation().mapData { it.dataAssertNoErrors.updateUser?.id != null }
     }
 }

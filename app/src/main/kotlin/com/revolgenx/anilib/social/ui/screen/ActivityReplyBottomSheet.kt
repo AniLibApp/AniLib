@@ -1,9 +1,12 @@
 package com.revolgenx.anilib.social.ui.screen
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.IntState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.PeekHeight
 import com.dokar.sheets.SheetBehaviors
@@ -16,13 +19,15 @@ import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.parameter.parametersOf
+import com.revolgenx.anilib.common.ui.component.button.RefreshButton
 
 @Composable
 fun ActivityReplyBottomSheet(
     activityId: Int,
     bottomSheetState: BottomSheetState,
+    showRefreshButton: MutableState<Boolean>,
     onReplyCompose: OnClick,
-    onReplyEdit: (model: ActivityReplyModel)-> Unit
+    onReplyEdit: (model: ActivityReplyModel) -> Unit
 ) {
     val navigator = localNavigator()
     val scope = rememberCoroutineScope()
@@ -39,18 +44,28 @@ fun ActivityReplyBottomSheet(
             peekHeight = PeekHeight.fraction(0.7f),
             behaviors = SheetBehaviors(extendsIntoNavigationBar = true)
         ) {
-            val viewModel: ActivityReplyViewModel = koinViewModel(
-                key = "${ActivityReplyViewModel::class.java.canonicalName}:${activityId}",
-                parameters = { parametersOf(activityId) }
-            )
-            ActivityReplyContent(
-                viewModel = viewModel,
-                onReplyCompose = onReplyCompose,
-                onUserClick = {
-                    navigator.userScreen(userId = it)
-                },
-                onReplyEdit = onReplyEdit
-            )
+            Box {
+                val viewModel: ActivityReplyViewModel = koinViewModel(
+                    key = "${ActivityReplyViewModel::class.java.canonicalName}:${activityId}",
+                    parameters = { parametersOf(activityId) }
+                )
+                ActivityReplyContent(
+                    viewModel = viewModel,
+                    onReplyCompose = onReplyCompose,
+                    onUserClick = {
+                        navigator.userScreen(userId = it)
+                    },
+                    onReplyEdit = onReplyEdit,
+                    refreshButton = {
+                        RefreshButton(visible = showRefreshButton.value) {
+                            showRefreshButton.value = false
+                            viewModel.refresh()
+                        }
+                    }
+                )
+
+            }
+
         }
     }
 }

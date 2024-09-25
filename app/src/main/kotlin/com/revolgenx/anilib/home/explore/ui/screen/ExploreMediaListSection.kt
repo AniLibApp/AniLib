@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.dp
 import anilib.i18n.R
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.data.field.BaseField
 import com.revolgenx.anilib.common.data.state.ResourceState
@@ -164,7 +165,11 @@ private fun ExploreMediaListFilterBottomSheet(
     onDismiss: OnClick,
     onFilter: OnClickWithValue<MediaListSort?>
 ) {
-    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+    BottomSheet(
+        state = bottomSheetState,
+        skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         val mediaListSortList =
             stringArrayResource(id = com.revolgenx.anilib.R.array.media_list_sort)
 

@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import anilib.i18n.R
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
@@ -120,9 +121,9 @@ private fun StudioScreenContent(studioId: Int) {
             studioModel?.let { s ->
                 FilledTonalButton(
                     onClick = {
-                        if(isLoggedIn){
+                        if (isLoggedIn) {
                             viewModel.toggleFavorite()
-                        }else{
+                        } else {
                             snackbar.showLoginMsg(context, scope)
                         }
                     }
@@ -139,19 +140,26 @@ private fun StudioScreenContent(studioId: Int) {
                 }
             }
             studioModel?.siteUrl?.let { site ->
-                OverflowMenu {
-                    OpenInBrowserOverflowMenu(link = site)
-                    ShareOverflowMenu(text = site)
+                OverflowMenu { expanded ->
+                    OpenInBrowserOverflowMenu(link = site) {
+                        expanded.value = false
+                    }
+                    ShareOverflowMenu(text = site) {
+                        expanded.value = false
+                    }
                 }
             }
         },
         bottomNestedScrollConnection = bottomScrollConnection,
         scrollBehavior = scrollBehavior,
         contentWindowInsets = horizontalBottomWindowInsets()
-    ) {snackbarHostState->
+    ) { snackbarHostState ->
         LaunchedEffect(viewModel.showToggleErrorMsg.value) {
             if (viewModel.showToggleErrorMsg.value) {
-                snackbarHostState.showSnackbar(context.getString(R.string.operation_failed), withDismissAction = true)
+                snackbarHostState.showSnackbar(
+                    context.getString(R.string.operation_failed),
+                    withDismissAction = true
+                )
                 viewModel.showToggleErrorMsg.value = false
             }
         }
@@ -214,7 +222,6 @@ private fun StudioPagingContent(
 }
 
 
-
 @Composable
 private fun StudioFilterBottomSheet(
     bottomSheetState: BottomSheetState,
@@ -230,7 +237,11 @@ private fun StudioFilterBottomSheet(
         }
     }
 
-    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+    BottomSheet(
+        state = bottomSheetState,
+        skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         StudioScreenBottomSheetContent(
             viewModel = viewModel,
             dismiss = dismiss,

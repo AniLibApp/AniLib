@@ -61,7 +61,7 @@ private fun AboutScreenContent() {
             when (pages[page].type) {
                 CharacterScreenPageType.ABOUT -> AppAboutScreen()
                 CharacterScreenPageType.LICENSES -> AppLibrariesScreen()
-                CharacterScreenPageType.TRANSLATORS -> AppAboutScreen()
+                CharacterScreenPageType.TRANSLATORS -> AppTranslatorScreen()
             }
         }
     }

@@ -215,22 +215,22 @@ fun NavigationIcon(
 }
 
 @Composable
-fun OpenInBrowserOverflowMenu(link: String) {
+fun OpenInBrowserOverflowMenu(link: String, onClick: OnClick) {
     val context = localContext()
     val snackbarHostState = localSnackbarHostState()
     val scope = rememberCoroutineScope()
-
     OverflowMenuItem(
         textRes = I18nR.string.open_in_browser,
         icon = AppIcons.IcOpenInNew,
         contentDescriptionRes = null,
     ) {
+        onClick()
         context.openUri(link, scope, snackbarHostState)
     }
 }
 
 @Composable
-fun ShareOverflowMenu(text: String) {
+fun ShareOverflowMenu(text: String, onClick: OnClick) {
     val context = localContext()
     val snackbarHostState = localSnackbarHostState()
     val scope = rememberCoroutineScope()

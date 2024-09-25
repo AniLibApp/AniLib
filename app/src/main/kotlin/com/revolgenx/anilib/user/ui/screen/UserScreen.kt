@@ -459,13 +459,20 @@ private fun UserScreenTopAppbar(
                         textRes = if (user?.isBlocked == true) I18nR.string.unblock else I18nR.string.block,
                         icon = AppIcons.IcDropped,
                         contentDescriptionRes = null,
-                        onClick = blockUser
+                        onClick = {
+                            expanded.value = false
+                            blockUser()
+                        }
                     )
                 }
 
                 user?.siteUrl?.let { site ->
-                    OpenInBrowserOverflowMenu(link = site)
-                    ShareOverflowMenu(text = site)
+                    OpenInBrowserOverflowMenu(link = site){
+                        expanded.value = false
+                    }
+                    ShareOverflowMenu(text = site){
+                        expanded.value = false
+                    }
                 }
             }
         }

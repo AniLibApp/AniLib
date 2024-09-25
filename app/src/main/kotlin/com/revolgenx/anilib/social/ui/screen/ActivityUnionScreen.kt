@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.topWindowInsets
@@ -31,6 +32,7 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
+import com.revolgenx.anilib.common.ui.component.button.RefreshButton
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
@@ -78,7 +80,7 @@ object ActivityUnionScreen : BaseTabScreen() {
         val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
         val bottomNestedScrollConnection =
             remember { BottomNestedScrollConnection(state = scrollState) }
-        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+        val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
 
         val activityReplyBottomSheetState = rememberBottomSheetState()
 
@@ -87,6 +89,14 @@ object ActivityUnionScreen : BaseTabScreen() {
 
         val activityComposerViewModel: ActivityComposerViewModel = koinViewModel()
         val replyComposerViewModel: ReplyComposerViewModel = koinViewModel()
+
+        val showActivityRefreshButton = remember {
+            mutableStateOf(false)
+        }
+
+        val showReplyListRefreshButton = remember {
+            mutableStateOf(false)
+        }
 
         ScreenScaffold(
             topBar = {
@@ -135,10 +145,24 @@ object ActivityUnionScreen : BaseTabScreen() {
                         activityReplyBottomSheetState.peek()
                     }
                 },
-                onEditTextActivity = {
-
+                onEditTextActivity = { textModel ->
+                    scope.launch {
+                        activityComposerViewModel.forText(
+                            activityId = textModel.id,
+                            text = textModel.text
+                        )
+                        activityComposerBottomSheetState.peek()
+                    }
                 },
-                onEditMessageActivity = {})
+                onEditMessageActivity = {
+                    //Can be ignored. There won't be any message activity in this screen
+                })
+
+
+            RefreshButton(visible = showActivityRefreshButton.value) {
+                showActivityRefreshButton.value = false
+                viewModel.refresh()
+            }
             ActivityUnionFilterBottomSheet(
                 bottomSheetState = filterBottomSheetState,
                 viewModel = filterViewModel
@@ -154,25 +178,36 @@ object ActivityUnionScreen : BaseTabScreen() {
                     replyComposerBottomSheetState.peek()
                 }
             },
-            onReplyEdit = {replyModel->
+            onReplyEdit = { replyModel ->
                 scope.launch {
                     replyModel.activityId?.let {
-                        replyComposerViewModel.forReply(replyModel.activityId, replyModel.id, replyModel.text)
+                        replyComposerViewModel.forReply(
+                            replyModel.activityId,
+                            replyModel.id,
+                            replyModel.text
+                        )
                         replyComposerBottomSheetState.peek()
                     }
                 }
-            }
+            },
+            showRefreshButton = showReplyListRefreshButton
         )
 
         ActivityComposerBottomSheet(
             bottomSheetState = activityComposerBottomSheetState,
-            viewModel = activityComposerViewModel
+            viewModel = activityComposerViewModel,
+            onSuccess = {
+                showActivityRefreshButton.value = true
+            }
         )
 
 
         ActivityComposerBottomSheet(
             bottomSheetState = replyComposerBottomSheetState,
-            viewModel = replyComposerViewModel
+            viewModel = replyComposerViewModel,
+            onSuccess = {
+                showReplyListRefreshButton.value = true
+            }
         )
 
     }
@@ -189,6 +224,7 @@ fun ActivityUnionFilterBottomSheet(
     BottomSheet(
         state = bottomSheetState,
         skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
     ) {
         ActivityUnionFilterBottomSheetContent(
             field = viewModel.field,

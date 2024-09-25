@@ -24,6 +24,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -32,8 +33,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.common.ext.activityScreen
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ext.userScreen
@@ -65,7 +68,9 @@ import com.revolgenx.anilib.social.ui.model.ActivityModel
 import com.revolgenx.anilib.social.ui.model.ListActivityModel
 import com.revolgenx.anilib.social.ui.model.MessageActivityModel
 import com.revolgenx.anilib.social.ui.model.TextActivityModel
+import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionServiceViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ActivityUnionScreenContent(
@@ -74,29 +79,30 @@ fun ActivityUnionScreenContent(
     onEditTextActivity: (model: TextActivityModel) -> Unit,
     onEditMessageActivity: (model: MessageActivityModel) -> Unit,
 ) {
+    val activityUnionServiceViewModel: ActivityUnionServiceViewModel = koinViewModel()
     val navigator = localNavigator()
     val pagingItems = viewModel.collectAsLazyPagingItems()
     val snackbarHostState = localSnackbarHostState()
     val context = localContext()
     val user = localUser()
 
-    LaunchedEffect(viewModel.showToggleError) {
-        if (viewModel.showToggleError) {
+    LaunchedEffect(activityUnionServiceViewModel.showToggleError) {
+        if (activityUnionServiceViewModel.showToggleError) {
             snackbarHostState.showSnackbar(
                 context.getString(anilib.i18n.R.string.operation_failed),
                 withDismissAction = true
             )
-            viewModel.showToggleError = false
+            activityUnionServiceViewModel.showToggleError = false
         }
     }
 
-    LaunchedEffect(viewModel.showDeleteError) {
-        if (viewModel.showDeleteError) {
+    LaunchedEffect(activityUnionServiceViewModel.showDeleteError) {
+        if (activityUnionServiceViewModel.showDeleteError) {
             snackbarHostState.showSnackbar(
                 context.getString(anilib.i18n.R.string.failed_to_delete),
                 withDismissAction = true
             )
-            viewModel.showDeleteError = false
+            activityUnionServiceViewModel.showDeleteError = false
         }
     }
 
@@ -120,18 +126,26 @@ fun ActivityUnionScreenContent(
                     ListActivityItem(
                         model = activityModel,
                         loggedInUserId = user.userId,
+                        onActivityClick = {
+                            navigator.activityScreen(activityModel.id)
+                        },
+                        onMediaClick = {
+                            activityModel.media?.let {
+                                navigator.mediaScreen(it.id, it.type)
+                            }
+                        },
                         onUserClick = {
                             navigator.userScreen(it)
                         },
                         onSubscribeClick = {
-                            viewModel.toggleSubscription(activityModel)
+                            activityUnionServiceViewModel.toggleSubscription(activityModel)
                         },
                         onLikeClick = {
-                            viewModel.toggleLike(activityModel)
+                            activityUnionServiceViewModel.toggleLike(activityModel)
                         },
                         onShowReplies = onShowReplies,
                         onDelete = {
-                            viewModel.delete(model = activityModel)
+                            activityUnionServiceViewModel.delete(model = activityModel)
                         })
                 }
 
@@ -139,21 +153,24 @@ fun ActivityUnionScreenContent(
                     MessageActivityItem(
                         model = activityModel,
                         loggedInUserId = user.userId,
+                        onActivityClick = {
+                            navigator.activityScreen(activityModel.id)
+                        },
                         onUserClick = {
                             navigator.userScreen(it)
                         },
                         onSubscribeClick = {
-                            viewModel.toggleSubscription(activityModel)
+                            activityUnionServiceViewModel.toggleSubscription(activityModel)
                         },
                         onLikeClick = {
-                            viewModel.toggleLike(activityModel)
+                            activityUnionServiceViewModel.toggleLike(activityModel)
                         },
                         onShowReplies = onShowReplies,
                         onEdit = {
                             onEditMessageActivity(activityModel)
                         },
                         onDelete = {
-                            viewModel.delete(model = activityModel)
+                            activityUnionServiceViewModel.delete(model = activityModel)
                         }
                     )
                 }
@@ -162,21 +179,24 @@ fun ActivityUnionScreenContent(
                     TextActivityItem(
                         model = activityModel,
                         loggedInUserId = user.userId,
+                        onActivityClick = {
+                            navigator.activityScreen(activityModel.id)
+                        },
                         onUserClick = {
                             navigator.userScreen(it)
                         },
                         onSubscribeClick = {
-                            viewModel.toggleSubscription(activityModel)
+                            activityUnionServiceViewModel.toggleSubscription(activityModel)
                         },
                         onLikeClick = {
-                            viewModel.toggleLike(activityModel)
+                            activityUnionServiceViewModel.toggleLike(activityModel)
                         },
                         onShowReplies = onShowReplies,
                         onEdit = {
                             onEditTextActivity(activityModel)
                         },
                         onDelete = {
-                            viewModel.delete(model = activityModel)
+                            activityUnionServiceViewModel.delete(model = activityModel)
                         }
                     )
                 }
@@ -190,6 +210,9 @@ fun ActivityUnionScreenContent(
 fun ListActivityItem(
     model: ListActivityModel,
     loggedInUserId: Int?,
+    showActionMenu: Boolean = true,
+    onActivityClick: OnClick,
+    onMediaClick: OnClick,
     onUserClick: OnClickWithId,
     onSubscribeClick: OnClick,
     onShowReplies: OnClickWithId,
@@ -209,7 +232,8 @@ fun ListActivityItem(
                 ImageAsync(
                     modifier = Modifier
                         .fillMaxHeight()
-                        .width(90.dp),
+                        .width(90.dp)
+                        .clickable(onClick = onMediaClick),
                     imageUrl = media?.coverImage?.image(imageType),
                     imageOptions = ImageOptions(
                         contentScale = ContentScale.Crop,
@@ -222,7 +246,8 @@ fun ListActivityItem(
             Column(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .padding(horizontal = 8.dp, vertical = 2.dp),
+                    .padding(horizontal = 8.dp, vertical = 2.dp)
+                    .clickable(onClick = onActivityClick),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(
@@ -233,7 +258,8 @@ fun ListActivityItem(
                         loggedInUserId = loggedInUserId,
                         onUserClick = onUserClick,
                         onSubscribeClick = onSubscribeClick,
-                        onDelete = onDelete
+                        onDelete = onDelete,
+                        showActionMenu = showActionMenu
                     )
                     Text(
                         modifier = Modifier.fillMaxWidth(),
@@ -244,6 +270,7 @@ fun ListActivityItem(
                 }
                 ActivityItemBottom(
                     model = model,
+                    onActivityClick = onActivityClick,
                     onReplyClick = onShowReplies,
                     onLikeClick = onLikeClick
                 )
@@ -256,6 +283,8 @@ fun ListActivityItem(
 fun MessageActivityItem(
     model: MessageActivityModel,
     loggedInUserId: Int?,
+    showActionMenu: Boolean = true,
+    onActivityClick: OnClick,
     onUserClick: OnClickWithId,
     onSubscribeClick: OnClick,
     onShowReplies: OnClickWithId,
@@ -277,13 +306,19 @@ fun MessageActivityItem(
                 onUserClick = onUserClick,
                 onSubscribeClick = onSubscribeClick,
                 onEdit = onEdit,
-                onDelete = onDelete
+                onDelete = onDelete,
+                showActionMenu = showActionMenu
             )
             MarkdownText(
                 modifier = Modifier.fillMaxWidth(),
                 spanned = model.messageSpanned
             )
-            ActivityItemBottom(model, onReplyClick = onShowReplies, onLikeClick = onLikeClick)
+            ActivityItemBottom(
+                model,
+                onActivityClick = onActivityClick,
+                onReplyClick = onShowReplies,
+                onLikeClick = onLikeClick
+            )
         }
     }
 }
@@ -293,12 +328,14 @@ fun MessageActivityItem(
 fun TextActivityItem(
     model: TextActivityModel,
     loggedInUserId: Int?,
+    showActionMenu: Boolean = true,
+    onActivityClick: OnClick,
     onUserClick: OnClickWithId,
     onSubscribeClick: OnClick,
     onShowReplies: OnClickWithId,
     onLikeClick: OnClick,
     onEdit: OnClick,
-    onDelete: OnClick,
+    onDelete: OnClick
 ) {
     Card(
         modifier = Modifier
@@ -314,26 +351,33 @@ fun TextActivityItem(
                 onUserClick = onUserClick,
                 onSubscribeClick = onSubscribeClick,
                 onEdit = onEdit,
-                onDelete = onDelete
+                onDelete = onDelete,
+                showActionMenu = showActionMenu
             )
             MarkdownText(
                 modifier = Modifier.fillMaxWidth(),
                 spanned = model.textSpanned
             )
-            ActivityItemBottom(model, onReplyClick = onShowReplies, onLikeClick = onLikeClick)
+            ActivityItemBottom(
+                model,
+                onActivityClick = onActivityClick,
+                onReplyClick = onShowReplies,
+                onLikeClick = onLikeClick
+            )
         }
     }
 }
 
 
 @Composable
-fun ActivityItemTop(
+private fun ActivityItemTop(
     model: ActivityModel,
     loggedInUserId: Int?,
+    showActionMenu: Boolean,
     onUserClick: OnClickWithId,
     onSubscribeClick: OnClick,
     onEdit: OnClick? = null,
-    onDelete: OnClick,
+    onDelete: OnClick
 ) {
     Row(
         modifier = Modifier
@@ -370,37 +414,49 @@ fun ActivityItemTop(
             )
         }
 
-        Row {
-            IconButton(onClick = {
-                onSubscribeClick()
-            }) {
-                Icon(
-                    modifier = Modifier.size(20.dp),
-                    imageVector = if (model.isSubscribed.value) AppIcons.IcNotification else AppIcons.IcNotificationOutline,
-                    contentDescription = null
-                )
-            }
-
-            OverflowMenu {
-                loggedInUserId?.takeIf { it == model.userId }?.let {
-                    onEdit?.let {
-                        OverflowMenuItem(
-                            textRes = anilib.i18n.R.string.edit,
-                            icon = AppIcons.IcPencil,
-                            onClick = it
-                        )
-                    }
-
-                    OverflowMenuItem(
-                        textRes = anilib.i18n.R.string.delete,
-                        icon = AppIcons.IcDelete,
-                        onClick = onDelete
+        if (showActionMenu) {
+            Row {
+                IconButton(onClick = {
+                    onSubscribeClick()
+                }) {
+                    Icon(
+                        modifier = Modifier.size(20.dp),
+                        imageVector = if (model.isSubscribed.value) AppIcons.IcNotification else AppIcons.IcNotificationOutline,
+                        contentDescription = null
                     )
                 }
 
-                model.siteUrl?.let { site ->
-                    OpenInBrowserOverflowMenu(link = site)
-                    ShareOverflowMenu(text = site)
+                OverflowMenu { expanded ->
+                    loggedInUserId?.takeIf { it == model.userId }?.let {
+                        onEdit?.let {
+                            OverflowMenuItem(
+                                textRes = anilib.i18n.R.string.edit,
+                                icon = AppIcons.IcPencil,
+                                onClick = {
+                                    expanded.value = false
+                                    it()
+                                }
+                            )
+                        }
+
+                        OverflowMenuItem(
+                            textRes = anilib.i18n.R.string.delete,
+                            icon = AppIcons.IcDelete,
+                            onClick = {
+                                expanded.value = false
+                                onDelete()
+                            }
+                        )
+                    }
+
+                    model.siteUrl?.let { site ->
+                        OpenInBrowserOverflowMenu(link = site) {
+                            expanded.value = false
+                        }
+                        ShareOverflowMenu(text = site) {
+                            expanded.value = false
+                        }
+                    }
                 }
             }
         }
@@ -411,11 +467,14 @@ fun ActivityItemTop(
 @Composable
 private fun ActivityItemBottom(
     model: ActivityModel,
+    onActivityClick: OnClick,
     onReplyClick: OnClickWithId,
     onLikeClick: OnClick
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onActivityClick),
         verticalAlignment = Alignment.Bottom
     ) {
         LightText(

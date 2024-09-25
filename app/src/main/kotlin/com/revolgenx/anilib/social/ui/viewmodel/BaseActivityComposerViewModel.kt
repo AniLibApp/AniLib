@@ -32,12 +32,13 @@ abstract class BaseActivityComposerViewModel(
     private var recipientId = -1
     private var replyId: Int? = null
 
+    val canShowPrivateToggle get() = activityType == ActivityType.MESSAGE && activityId == null
     var private = false
 
     var textFieldValue by mutableStateOf(TextFieldValue())
     var spannedText by mutableStateOf<Spanned?>(null)
 
-    var isError by mutableStateOf(false)
+    var hasErrors by mutableStateOf(false)
 
     var saveResource by mutableStateOf<ResourceState<Int>?>(null)
 
@@ -75,7 +76,7 @@ abstract class BaseActivityComposerViewModel(
 
     fun save() {
         if (textFieldValue.text.isBlank()) {
-            isError = true
+            hasErrors = true
             return
         }
         saveResource = ResourceState.loading()
@@ -109,6 +110,11 @@ abstract class BaseActivityComposerViewModel(
         }
 
         saveActivity.onEach {
+            if (activityType == ActivityType.REPLY) {
+                replyId = it
+            } else {
+                activityId = it
+            }
             saveResource = ResourceState.success(it)
         }.catch {
             saveResource = ResourceState.error(it)

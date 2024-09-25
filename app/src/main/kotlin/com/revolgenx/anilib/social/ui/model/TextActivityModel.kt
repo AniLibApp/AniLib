@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.ActivityUnionQuery
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
+import com.revolgenx.anilib.fragment.GeneralTextActivity
 import com.revolgenx.anilib.social.factory.markdown
 import com.revolgenx.anilib.social.markdown.anilify
 import com.revolgenx.anilib.type.ActivityType
@@ -35,7 +36,7 @@ data class TextActivityModel(
 ) : ActivityModel()
 
 
-fun ActivityUnionQuery.OnTextActivity.toModel(): TextActivityModel {
+fun GeneralTextActivity.toModel(): TextActivityModel {
     val anilifiedText = anilify(text)
     return TextActivityModel(
         id = id,

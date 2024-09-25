@@ -3,6 +3,7 @@ package com.revolgenx.anilib.common.ui.component.scaffold
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
@@ -69,6 +70,7 @@ fun <T> PagerScreenScaffold(
                 userScrollEnabled = userScrollEnabled,
                 modifier = Modifier
                     .padding(paddingValues)
+                    .consumeWindowInsets(paddingValues)
             ) { page ->
                 content(page)
             }

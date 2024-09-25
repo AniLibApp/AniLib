@@ -76,9 +76,13 @@ private fun StaffScreenContent(staffId: Int) {
         scrollBehavior = scrollBehavior,
         actions = {
             aboutViewModel.resource.value?.stateValue?.siteUrl?.let {site->
-                OverflowMenu {
-                    OpenInBrowserOverflowMenu(link = site)
-                    ShareOverflowMenu(text = site)
+                OverflowMenu {expanded->
+                    OpenInBrowserOverflowMenu(link = site){
+                        expanded.value = false
+                    }
+                    ShareOverflowMenu(text = site){
+                        expanded.value = false
+                    }
                 }
             }
         },

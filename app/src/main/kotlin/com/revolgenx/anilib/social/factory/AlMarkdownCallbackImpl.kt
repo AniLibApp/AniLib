@@ -6,6 +6,8 @@ import com.revolgenx.anilib.common.data.event.OpenImageEvent
 import com.revolgenx.anilib.common.data.event.OpenLinkEvent
 import com.revolgenx.anilib.common.data.event.OpenMediaScreenEvent
 import com.revolgenx.anilib.common.data.event.OpenSpoilerEvent
+import com.revolgenx.anilib.common.data.event.OpenStaffScreenEvent
+import com.revolgenx.anilib.common.data.event.OpenStudioScreenEvent
 import com.revolgenx.anilib.common.data.event.OpenUserScreenEvent
 import com.revolgenx.anilib.type.MediaType
 
@@ -41,6 +43,14 @@ class AlMarkdownCallbackImpl : AlMarkdownCallback {
 
             "character" -> {
                 OpenCharacterScreenEvent(id).postEvent
+            }
+
+            "staff" -> {
+                OpenStaffScreenEvent(id).postEvent
+            }
+
+            "studio" -> {
+                OpenStudioScreenEvent(id).postEvent
             }
         }
     }

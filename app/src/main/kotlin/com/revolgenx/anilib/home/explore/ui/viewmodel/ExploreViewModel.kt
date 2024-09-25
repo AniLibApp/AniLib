@@ -1,8 +1,6 @@
 package com.revolgenx.anilib.home.explore.ui.viewmodel
 
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
@@ -11,7 +9,7 @@ import com.revolgenx.anilib.setting.ui.viewmodel.ContentOrderData
 import kotlinx.coroutines.delay
 
 class ExploreViewModel(appPreferencesDataStore: AppPreferencesDataStore): ViewModel() {
-    var showRefreshButton by mutableStateOf(false)
+    var showRefreshButton = mutableStateOf(false)
 
     val exploreSectionContentOrderData = ExploreSectionOrder.entries.map {
         ContentOrderData(
@@ -25,7 +23,7 @@ class ExploreViewModel(appPreferencesDataStore: AppPreferencesDataStore): ViewMo
         launch {
             while (true){
                 delay(600000)
-                showRefreshButton = true
+                showRefreshButton.value = true
             }
 
         }

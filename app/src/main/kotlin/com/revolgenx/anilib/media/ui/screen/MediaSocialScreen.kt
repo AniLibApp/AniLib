@@ -63,6 +63,10 @@ fun MediaSocialScreen(
         mutableStateOf(false)
     }
 
+    val showReplyListRefreshButton = remember {
+        mutableStateOf(false)
+    }
+
 
     ScreenScaffold(
         floatingActionButton = {
@@ -95,9 +99,11 @@ fun MediaSocialScreen(
                             }
                         },
                         onEditTextActivity = {
-
+                            //Can be ignored. Only List Activity is shown here
                         },
-                        onEditMessageActivity = {}
+                        onEditMessageActivity = {
+                            //Can be ignored. Only List Activity is shown here
+                        }
                     )
                 }
 
@@ -129,13 +135,17 @@ fun MediaSocialScreen(
                     replyComposerBottomSheetState.peek()
                 }
             }
-        }
+        },
+        showRefreshButton = showReplyListRefreshButton
     )
 
 
     ActivityComposerBottomSheet(
         bottomSheetState = replyComposerBottomSheetState,
-        viewModel = replyComposerViewModel
+        viewModel = replyComposerViewModel,
+        onSuccess = {
+            showReplyListRefreshButton.value = true
+        }
     )
 
     MediaSocialTypeBottomSheet(

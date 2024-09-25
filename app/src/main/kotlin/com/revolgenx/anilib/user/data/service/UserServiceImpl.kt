@@ -19,6 +19,7 @@ import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.studio.ui.model.toModel
 import com.revolgenx.anilib.user.data.field.UserFavouriteField
 import com.revolgenx.anilib.user.data.field.UserField
+import com.revolgenx.anilib.user.data.field.UserSettingsField
 import com.revolgenx.anilib.user.data.field.UserSocialCountField
 import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.field.UserStatsOverviewField
@@ -48,7 +49,7 @@ class UserServiceImpl(
 ) :
     UserService, BaseService(apolloRepository, appPreferencesDataStore) {
     override fun getUser(field: UserField): Flow<UserModel?> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.let { data ->
                 data.user?.toModel()?.also { userModel ->
                     if (field.userId == null) {
@@ -71,7 +72,7 @@ class UserServiceImpl(
     }
 
     override fun getUserSocialCount(field: UserSocialCountField): Flow<UserSocialCountModel> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.let { data ->
                 UserSocialCountModel(
                     followers = data.followerPage?.pageInfo?.total.orZero(),
@@ -82,7 +83,7 @@ class UserServiceImpl(
     }
 
     override fun getUserRelation(field: UserRelationField): Flow<PageModel<UserModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.let {
                 var pageInfo: PageInfo? = null
                 var data: List<UserModel>? = null
@@ -105,7 +106,7 @@ class UserServiceImpl(
     }
 
     override fun getUserFavourite(field: UserFavouriteField): Flow<PageModel<BaseModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             val fav = it.dataAssertNoErrors.user?.favourites
             var pageInfo: PageInfo? = null
             var data: List<BaseModel>? = null
@@ -154,7 +155,7 @@ class UserServiceImpl(
     }
 
     override fun getUserStatsOverview(field: UserStatsOverviewField): Flow<UserModel?> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.user?.let { user ->
                 UserModel(
                     id = user.id,
@@ -176,7 +177,7 @@ class UserServiceImpl(
     }
 
     override fun getUserStats(field: UserStatsTypeField): Flow<List<BaseStatisticModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.user?.statistics?.let {
                 if (it.anime != null) {
                     when {
@@ -233,6 +234,20 @@ class UserServiceImpl(
 
     override fun toggleFollow(field: UserToggleFollowField): Flow<Boolean> {
         return toggleService.toggleUserFollow(field)
+    }
+
+    override fun getUserSettings(field: UserSettingsField): Flow<UserModel?> {
+        return field.toQuery().mapData {
+            it.dataAssertNoErrors.user?.let {
+                UserModel(
+                    id = it.id,
+                    name = it.name,
+                    options = it.options?.userMediaOptions?.toModel(),
+                    mediaListOptions = it.mediaListOptions?.userMediaListOptions?.toModel(),
+                    unreadNotificationCount = it.unreadNotificationCount
+                )
+            }
+        }
     }
 
     private fun getStatsGenreModel(genres: List<UserStatsQuery.Genre>): List<UserGenreStatisticModel> {

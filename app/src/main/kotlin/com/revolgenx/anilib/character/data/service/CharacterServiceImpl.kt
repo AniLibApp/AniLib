@@ -27,12 +27,12 @@ class CharacterServiceImpl(
     CharacterService {
 
     override fun getCharacter(field: CharacterField): Flow<CharacterModel?> {
-        return field.toQuery().map { it.dataAssertNoErrors.character?.toModel() }
+        return field.toQuery().mapData { it.dataAssertNoErrors.character?.toModel() }
             
     }
 
     override fun getCharacterMedia(field: CharacterMediaField): Flow<PageModel<MediaModel>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.let { data ->
                 PageModel(
                     data = data.character?.media?.nodes?.mapNotNull {
@@ -47,7 +47,7 @@ class CharacterServiceImpl(
     }
 
     override fun getCharacterActor(field: CharacterActorField): Flow<List<StaffModel>?> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             val hashMap = mutableMapOf<Int, StaffModel>()
             it.dataAssertNoErrors.character?.media?.edges?.forEach {
                 it?.voiceActors?.filterNotNull()?.forEach { actor ->

@@ -22,7 +22,7 @@ class MediaListServiceImpl(
     BaseService(apolloRepository, appPreferencesDataStore) {
 
     override fun getMediaListCollectionsIds(field: MediaListCollectionIdField): Flow<List<Int>> {
-        return field.toQuery().map {
+        return field.toQuery().mapData {
             it.dataAssertNoErrors.mediaListCollection?.lists?.mapNotNull { list ->
                 list?.entries?.mapNotNull { entry ->
                     entry?.takeIf { if (field.canShowAdult) true else it.media?.isAdult == false }?.media?.id
@@ -32,12 +32,12 @@ class MediaListServiceImpl(
     }
 
     override fun getMediaListCollection(field: MediaListCollectionField): Flow<MediaListCollectionModel> {
-        return field.toQuery().map { it.dataAssertNoErrors.toModel(field) }
+        return field.toQuery().mapData { it.dataAssertNoErrors.toModel(field) }
     }
 
     override fun getMediaList(field: MediaListField): Flow<PageModel<MediaListModel>> =
         field.toQuery()
-            .map {
+            .mapData {
                 it.dataAssertNoErrors.let { data ->
                     data.page.let { page ->
                         PageModel(

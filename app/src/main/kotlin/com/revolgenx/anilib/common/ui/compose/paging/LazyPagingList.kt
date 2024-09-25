@@ -60,7 +60,6 @@ fun <M : BaseModel> LazyPagingList(
     pagingItems: LazyPagingItems<M>? = null,
     span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     gridOptions: GridOptions? = null,
-    showRefreshButton: MutableState<Boolean>? = null,
     onPullRefresh: Boolean = true,
     onRefresh: OnClick? = null,
     divider: @Composable (() -> Unit)? = null,

@@ -119,7 +119,7 @@ private fun AiringScreenContent() {
     val dayRangeTitle = remember {
         derivedStateOf {
             if (viewModel.field.isWeeklyTypeDate) {
-                context.getString(I18nR.string.day_range_string).format(
+                context.getString(I18nR.string.s_dash_s).format(
                     viewModel.startDateTime.dayOfWeek.getDisplayName(
                         TextStyle.SHORT,
                         Locale.getDefault()
@@ -144,7 +144,7 @@ private fun AiringScreenContent() {
             val dateFormatPattern = dateFormat
 
             if (viewModel.field.isWeeklyTypeDate) {
-                context.getString(I18nR.string.day_range_string).format(
+                context.getString(I18nR.string.s_dash_s).format(
                     viewModel.startDateTime.format(
                         DateTimeFormatter.ofPattern(
                             dateFormatPattern

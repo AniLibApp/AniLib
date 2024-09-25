@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.unit.dp
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
+import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.component.CharacterStaffCard
@@ -59,7 +60,7 @@ fun MediaCharacterScreen(
     ScreenScaffold(
         topBar = {},
         floatingActionButton = {
-            if(mediaType == MediaType.ANIME){
+            if (mediaType == MediaType.ANIME) {
                 DisappearingFAB(scrollState = scrollState, icon = AppIcons.IcFilter) {
                     filterViewModel.staffLanguage = viewModel.field.language
                     scope.launch {
@@ -76,9 +77,9 @@ fun MediaCharacterScreen(
             onRefresh = {
                 viewModel.refresh()
             },
-            type = if(mediaType == MediaType.MANGA) ListPagingListType.GRID else ListPagingListType.COLUMN,
+            type = if (mediaType == MediaType.MANGA) ListPagingListType.GRID else ListPagingListType.COLUMN,
             gridOptions = GridOptions(GridCells.Adaptive(168.dp))
-            ) { characterEdgeModel ->
+        ) { characterEdgeModel ->
             characterEdgeModel ?: return@LazyPagingList
             MediaCharacterItem(characterEdgeModel)
         }
@@ -124,7 +125,11 @@ private fun MediaCharacterFilterBottomSheet(
     onFilter: OnClick,
     onDismiss: OnClick
 ) {
-    BottomSheet(state = bottomSheetState, skipPeeked = true) {
+    BottomSheet(
+        state = bottomSheetState,
+        skipPeeked = true,
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+    ) {
         Column(
             modifier = Modifier
                 .padding(bottom = 4.dp)

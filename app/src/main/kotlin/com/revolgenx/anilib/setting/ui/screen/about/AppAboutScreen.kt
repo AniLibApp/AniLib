@@ -87,7 +87,7 @@ private fun AboutScreenContent() {
                         fontSize = 16.sp
                     )
                     MediumText(
-                        text = stringResource(id = I18nR.string.app_anilist_client_desc),
+                        text = stringResource(id = I18nR.string.app_subtitle),
                         fontSize = 15.sp
                     )
                     Spacer(modifier = Modifier.size(6.dp))
@@ -103,8 +103,8 @@ private fun AboutScreenContent() {
             val appInfo = remember {
                 listOf(
                     InfoData(
-                        title = context.getString(I18nR.string.app_anilib_site),
-                        subTitle = context.getString(I18nR.string.app_anilib_site_desc),
+                        title = context.getString(I18nR.string.anilib_site),
+                        subTitle = context.getString(I18nR.string.visit_site_desc),
                         imageVector = AppIcons.IcAnilib,
                         link = context.getString(R.string.anilib_github_link)
                     ),
