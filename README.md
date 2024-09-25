@@ -12,14 +12,26 @@ Track your anime and manga progress, discover new titles, customize your lists, 
 ![GitHub License](https://img.shields.io/github/license/AniLibApp/AniLib)
 
 <div style="display:flex; align-items:center; justify-content:center;">
-<a href='https://play.google.com/store/apps/details?id=com.revolgenx.anilib&hl=en&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'  target="_blank"><img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200px"/></a>
-<a href="https://www.buymeacoffee.com/9qP65KlG4" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="200px" ></a>
+<table>
+    <tr>
+    <td align="center">
+        <a href='https://play.google.com/store/apps/details?id=com.revolgenx.anilib&hl=en&gl=US&pcampaignid=pcampaignidMKT-Other-global-all-co-prtnr-py-PartBadge-Mar2515-1'  target="_blank">
+            <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png' width="200px"/>
+        </a>   
+    </td>
+    <td align="center">
+        <a href="https://www.buymeacoffee.com/9qP65KlG4" target="_blank">
+            <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="200px" >
+        </a>
+    </td>
+    </tr>
+</table>
 </div>
 
 ## Features
 
-<div align="start">
-
+<div align="left">
+    
 - Track anime and manga progress.
 - Get detailed info on characters, episodes, and studios.
 - Use advanced filters to quickly find anime and manga that match your tastes.
