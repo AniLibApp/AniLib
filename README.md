@@ -10,7 +10,7 @@ Track your anime and manga progress, discover new titles, customize your lists, 
 
 ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/AniLibApp/AniLib/build.yml)
 ![GitHub License](https://img.shields.io/github/license/AniLibApp/AniLib)
-![Translation](https://img.shields.io/badge/translation-0%25-blue)
+![Translation](https://img.shields.io/badge/translation-76.17%25-blue)
 
 <div style="display:flex; align-items:center; justify-content:center;">
 <table>
