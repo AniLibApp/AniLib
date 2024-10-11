@@ -8,7 +8,7 @@
 ### An Unofficial Client for [AniList](https://anilist.co)
 Track your anime and manga progress, discover new titles, customize your lists, and much more—all in one app!
 
-[![Build Check](https://github.com/AniLibApp/AniLib/workflows/AniLib%20build%20check/badge.svg?branch=master&event=push)](https://github.com/AniLibApp/AniLib/actions)
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/AniLibApp/AniLib/build.yml)
 ![GitHub License](https://img.shields.io/github/license/AniLibApp/AniLib)
 
 <div style="display:flex; align-items:center; justify-content:center;">
