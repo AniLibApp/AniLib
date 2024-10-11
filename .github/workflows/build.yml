@@ -34,9 +34,9 @@ jobs:
       - name: Create gradle property file
         env:
           ANILIST_SECRET: ${{ secrets.ANILIST_SECRET }}
-          $GOOGLE_SERVICES_JSON: ${{ secrets.$GOOGLE_SERVICES_JSON }}
-          $DEBUG_KEYSTORE: ${{ secrets.$DEBUG_KEYSTORE }}
-        run:
+          GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+          DEBUG_KEYSTORE: ${{ secrets.DEBUG_KEYSTORE }}
+        run: |
           echo "$ANILIST_SECRET" | base64 -d > ./secret.properties
           echo "$GOOGLE_SERVICES_JSON" | base64 -d > ./app/src/debug/google-services.json
           # create common debug keystore
