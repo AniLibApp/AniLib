@@ -1,10 +1,16 @@
-name: Update POEditor Translation Progress Badge
+name: Update Translation Progress Badge
 
 on:
   push:
+    branches:
+      - master
     paths:
       - 'i18n/src/main/res/values/**.xml'       # Trigger for any other XML files in the values directory
   workflow_dispatch:  # Allow manual triggers as well
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   update-badge:
