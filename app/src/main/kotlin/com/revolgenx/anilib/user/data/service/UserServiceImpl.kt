@@ -114,14 +114,18 @@ class UserServiceImpl(
                 fav?.anime != null -> {
                     pageInfo = fav.anime.pageInfo.pageInfo
                     data = fav.anime.nodes?.mapNotNull {
-                        it?.onMedia?.media?.toModel()
+                        it?.onMedia?.media?.takeIf {
+                            if (field.canShowAdult) true else it.isAdult == false
+                        }?.toModel()
                     }
                 }
 
                 fav?.manga != null -> {
                     pageInfo = fav.manga.pageInfo.pageInfo
                     data = fav.manga.nodes?.mapNotNull {
-                        it?.onMedia?.media?.toModel()
+                        it?.onMedia?.media?.takeIf {
+                            if (field.canShowAdult) true else it.isAdult == false
+                        }?.toModel()
                     }
                 }
 

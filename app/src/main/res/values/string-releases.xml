@@ -2,6 +2,9 @@
 <resources>
     <string name="release_info" translatable="false">
         ## v2.0.0 \n
-        * minor bug fixes. \n
+        * **Complete App Rewrite**: Improved performance and stability with a brand-new codebase. \n
+        * **Enhanced UI/UX**: Enjoy a more modern and user-friendly interface for a smoother experience. \n
+        * **Note**: Any missing feature like filter settings will be added later on. ML translate is removed and won\'t be added. \n
+        * **Enjoy AniLib!**
     </string>
 </resources>

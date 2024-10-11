@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_subtitle">Anilist güçlendirilmesiyle</string>
+    <string name="anilib_site">AniLib Sitesi</string>
+    <string name="visit_site_desc">Daha fazlasını öğrenmek için AniLib\'i ziyaret edin.</string>
+    <string name="season">Sezon</string>
+    <string name="something_went_wrong">Bir şeyler ters gitti</string>
+    <string name="its_empty">Kendimi boşlukta hissediyorum</string>
+    <string name="ep_d_s">Bölüm: %1$s · S: %2$s dk</string>
+    <string name="manga">Manga</string>
+    <string name="please_log_in">Lütfen giriş yapın.</string>
+    <string name="settings">Ayarlar</string>
+    <string name="activity">Aktivite</string>
+    <string name="previous">Önceki</string>
+    <string name="next">Sonraki</string>
+    <string name="filter">Filtre</string>
+    <string name="users">Kullanıcılar</string>
+    <string name="save">Kaydet</string>
+    <string name="status">Durum</string>
+    <string name="score">Puan</string>
+    <string name="watching">İzleniyor</string>
+    <string name="planning">Planlanıyor</string>
+    <string name="completed">Tamamlandı</string>
+    <string name="dropped">Bırakıldı</string>
+    <string name="paused">Ara Verildi</string>
+    <string name="rewatching">Tekrar izleniyor</string>
+    <string name="episode_progress">Bölüm İlerlemesi</string>
+    <string name="start_date">Başlangıç Tarihi</string>
+    <string name="end_date">Bitiş Tarihi</string>
+    <string name="notes">Not</string>
+    <string name="failed_to_save">Kaydedilemedi.</string>
+    <string name="failed_to_delete">Kaldırılamadı.</string>
+    <string name="volume_progress">Cilt İlerlemesi</string>
+    <string name="overview">Genel Bakış</string>
+    <string name="character">Karakter</string>
+    <string name="stats">İstatistik</string>
+    <string name="staff">Kadro</string>
+    <string name="review">İncelemeler</string>
+    <string name="watch">İzleyin</string>
+    <string name="delete">Sil</string>
+    <string name="operation_failed">İşlem başarısız.</string>
+    <string name="type">Tür</string>
+    <string name="source">Kaynak</string>
+    <string name="episodes">Bölüm</string>
+    <string name="duration">Süre</string>
+    <string name="format">Tür</string>
+    <string name="chapters">Bölüm</string>
+    <string name="volumes">Cilt</string>
+    <string name="description">Açıklama</string>
+    <string name="recommendations">Öneriler</string>
+    <string name="relations">İlgili</string>
+    <string name="genre">Tür</string>
+    <string name="tags">Etiketler</string>
+    <string name="studios">Stüdyo(lar)</string>
+    <string name="producers">Yapımcı(lar)</string>
+    <string name="hashtag">Etiket</string>
+    <string name="average_score">Ortalama Puan</string>
+    <string name="popularity">Popülerlik</string>
+    <string name="favourites">Favoriler</string>
+    <string name="ep_s">%1$d.Bölüm</string>
+    <string name="rankings">Sıralama</string>
+    <string name="status_distribution">Durum Dağılımı</string>
+    <string name="score_distribution">Puan Dağılımı</string>
+    <string name="about">Hakkında</string>
+    <string name="share">Paylaş</string>
+    <string name="media">Medya</string>
+    <string name="studio">Stüdyo</string>
+    <string name="search">Ara</string>
+    <string name="sort">Sırala</string>
+    <string name="streaming_on">Şu Platform Üzerinde Yayında</string>
+    <string name="country">Ülke</string>
+    <string name="year">Yıl</string>
+    <string name="done">Bitti</string>
+    <string name="cancel">İptal et</string>
+    <string name="name">Ad</string>
+    <string name="none">Hiçbiri</string>
+    <string name="following">Takip edilen</string>
+    <string name="blocked">Engelli</string>
+    <string name="total_anime">Toplam Anime</string>
+    <string name="days_watched">İzlenen Gün</string>
+    <string name="mean_score">Ortalama Puan</string>
+    <string name="total_manga">Toplam Manga</string>
+    <string name="chapters_read">Okunan Bölüm</string>
+    <string name="anime">Anime</string>
+    <string name="anime_stats">Anime İstatistikleri</string>
+    <string name="manga_stats">Manga İstatistikleri</string>
+    <string name="voice_actors">Ses Sanatçıları</string>
+    <string name="episodes_watched">İzlenen Bölüm</string>
+    <string name="days_planned">Planan Gün</string>
+    <string name="standard_deviation">Standart Sapma</string>
+    <string name="format_distribution">Tür Dağılımı</string>
+    <string name="country_distribution">Ülke Dağılımı</string>
+    <string name="release_year">Çıkış Tarihi</string>
+    <string name="watch_year">İzlenen Yıl</string>
+    <string name="read_year">Okunan Yıl</string>
+    <string name="count">Sayı</string>
+    <string name="time_watched">İzlenen Sayı</string>
+    <string name="links">Bağlantılar</string>
+    <string name="add">Listeye ekle</string>
+    <string name="follow">Takip et</string>
+    <string name="episode_airing_notif">%1$s %2$s %3$s %4$s %5$s</string>
+    <string name="thread_notif_s">%1$s %2$s %3$s</string>
+    <string name="s_space_s">%1$s %2$s</string>
+    <string name="new_notification">Yeni bildirim var</string>
+    <string name="select_date">Tarih Seç</string>
+    <string name="airing">Yayınlanma</string>
+    <string name="trending">Trend</string>
+    <string name="popular">Popüler</string>
+    <string name="newly_added">Yeni Eklenmiş</string>
+    <string name="write_review">İnceleme yazın (En az:2200 karakter)</string>
+    <string name="summary">Özet</string>
+    <string name="review_summary">Özet İnceleme Yazısı (En az:20, En fazla:120 karakter)</string>
+    <string name="review_score_format">Puan: %1$s/100</string>
+    <string name="review_of_s_by_s">Review of %1$s by %2$s</string>
+    <string name="reviews">İncelemeler</string>
+    <string name="press_again_to_exit">Çıkmak için tekrar basın</string>
+    <string name="privacy_policy">Gizlilik Politikası.</string>
+    <string name="privacy_policy_desc">Tam gizlilik politikasına bakın.</string>
+    <string name="whats_new">Yeni neler var</string>
+    <string name="terms_and_condition">Şartlar ve Koşullar</string>
+    <string name="terms_and_condition_desc">Şartlar ve Koşullara Bakın</string>
+
+    <!-- crash report -->
+    <string name="crash_reporting">Çökme Raporu</string>
+    <string name="crash_report_desc">AniLib\'in özelliklerinin gelişmesine yardım edin.\nOtomatik olarak çökme raporlarını gönderir.</string>
+    <string name="refresh_interval">Yenileme Arası</string>
+    <string name="notifications">Bildirimler</string>
+    <string name="when_someone_follows_me">Birisi beni takip ettiğinde</string>
+    <string name="receive_message_notif">Bir mesaj aldığımda</string>
+    <string name="mention_replay_notif">\@ olarak bir aktivitede veya aktivite yanıtında bahsedildiğimde</string>
+    <string name="activity_like_notif">Birisi benim aktivitemi beğendiğinde</string>
+    <string name="likes_activity_reply_notif">Birisi benim aktivite yanıtımı beğendiğinde</string>
+    <string name="forum_reply_notif">Birisi benim forum yorumuma yanıt verdiğinde</string>
+    <string name="forum_mention_notif">Forum yorumunda @ bahsedildiğimde</string>
+    <string name="forum_coment_liked_notif">Birisi benim forum yorumumu beğendiğinde</string>
+    <string name="reply_to_subscribed_forum_notif">Birisi benim abone olduğum bir forum konusuna yanıt verdiğinde</string>
+    <string name="forum_liked_notif">Birisi benim forum konumu beğendiğinde</string>
+    <string name="cover_image_quality">Kapak Resmi Kalitesi</string>
+    <string name="advanced_scores">Gelişmiş Puanlar</string>
+    <string name="reading">Okunuyor</string>
+
+    <!-- media title -->
+    <string name="romaji">Romaji</string>
+    <string name="english">İngilizce</string>
+    <string name="_native">Yerli</string>
+
+    <!-- image quality -->
+    <string name="high">Yüksek</string>
+    <string name="low">Düşük</string>
+    <string name="medium">Orta</string>
+    <string name="title">Başlık</string>
+    <string name="score_desc">Puan Açıklaması</string>
+    <string name="progress">İlerleme</string>
+    <string name="last_updated">Son Güncelleme</string>
+    <string name="last_added">Son Eklenen</string>
+    <string name="start_date_desc">Başlangıç Tarihi Açıklaması</string>
+    <string name="completed_date">Tamamlanan Tarih</string>
+    <string name="release_date">Yayın Tarihi</string>
+    <string name="popularity_desc">Popülerlik Açıklaması</string>
+
+    <!-- media_format -->
+    <string name="tv">TV</string>
+    <string name="tv_short">TV Shorts</string>
+    <string name="movie">Film</string>
+    <string name="special">Özel</string>
+    <string name="ova">Ova</string>
+    <string name="ona">Ona</string>
+    <string name="one_shot">One Shot</string>
+    <string name="novel">Roman</string>
+    <string name="music">Müzik</string>
+    <string name="unknown">Bilinmeyen</string>
+
+    <!-- media_source -->
+    <string name="original">Orijinal</string>
+    <string name="light_novel">Hafif Roman</string>
+    <string name="visual_novel">Görsel Roman</string>
+    <string name="video_game">Video Oyunu</string>
+    <string name="other">Diğer</string>
+    <string name="doujinshi">Doujinshi</string>
+
+    <!-- media_relation -->
+    <string name="contains">İçerir</string>
+    <string name="compilation">Derleme</string>
+    <string name="spin_off">Yan ürün</string>
+    <string name="alternative">Alternatif</string>
+    <string name="side_story">Yan hikaye</string>
+    <string name="parent">Ana</string>
+    <string name="sequel">Devam filmi/dizisi</string>
+    <string name="prequel">Ön bölüm</string>
+    <string name="adaptation">Uyarlama</string>
+
+    <!-- character_role -->
+    <string name="background">Arkaplan</string>
+    <string name="supporting">Yan</string>
+    <string name="main">Ana</string>
+
+    <!-- media_status -->
+    <string name="cancelled">İptal edildi</string>
+    <string name="not_yet_released">Daha yayınlanmamış</string>
+    <string name="releasing">Yayınlanıyor</string>
+    <string name="finished">Bitmiş</string>
+
+    <!-- media_season -->
+    <string name="all">Hepsi</string>
+    <string name="winter">Kış</string>
+    <string name="spring">Bahar</string>
+    <string name="summer">Yaz</string>
+    <string name="fall">Sonbahar</string>
+
+    <!-- advance_search_sort -->
+    <string name="id">Id</string>
+    <string name="id_desc">Id Açıklaması</string>
+    <string name="title_romaji">Romaji Başlık</string>
+    <string name="title_romaji_desc">Romaji Başlık Açıklaması</string>
+    <string name="title_english">İngilizce Başlık</string>
+    <string name="title_english_desc">Başlık İngilizce Açıklaması</string>
+    <string name="title_native">Yerli Başlık</string>
+    <string name="title_native_desc">Yerli Başlık Açıklaması</string>
+    <string name="type_desc">Tür Açıklaması</string>
+    <string name="format_desc">Tür Açıklaması</string>
+    <string name="end_date_desc">Bitiş Tarihi Açıklaması</string>
+    <string name="trending_desc">Trend Açıklaması</string>
+    <string name="episodes_desc">Bölüm Açıklaması</string>
+    <string name="duration_desc">Süre Açıklama</string>
+    <string name="status_desc">Durum Açıklama</string>
+    <string name="chapters_desc">Bölüm Açıklaması</string>
+    <string name="volumes_desc">Cilt Açıklaması</string>
+    <string name="updated_at">Güncellenme Tarihi</string>
+    <string name="updated_at_desc">Güncellenme Tarihi Açıklama</string>
+    <string name="search_match">Arama Eşleşmesi</string>
+    <string name="favourites_desc">Favori Açıklaması</string>
+
+    <!-- country of origin -->
+    <string name="China">Çin</string>
+    <string name="South_Korean">Güney Kore</string>
+    <string name="Japan">Japonya</string>
+
+    <!-- recommendation_sort -->
+    <string name="on_list">Listede</string>
+    <string name="recent">Son</string>
+    <string name="highest_rated">En Yüksek Puanlı</string>
+    <string name="lowest_rated">En Düşük Puanlı</string>
+
+    <!-- toggle -->
+    <string name="titles_watched">İzlenen Başlık</string>
+    <string name="titles_read">Okunan Başlık</string>
+    <string name="rating">Puanlama</string>
+    <string name="created_at">Oluşturulma Tarihi</string>
+    <string name="show_adult_content_desc">Bunu değiştirmek, Anilist\'de yapılan ayarı değiştirmez. Anilist\'e göre değişir, yani bu özellik Anilist\'de açıksa çalışır.</string>
+    <string name="theme">Tema</string>
+
+    <!-- not translated -->
+    <string name="portuguese">Português</string>
+    <string name="italian">Italiano</string>
+    <string name="spanish">Español</string>
+
+    <!-- airing sort -->
+    <string name="media_id">Medya Kimliği</string>
+    <string name="time">Zaman</string>
+    <string name="home">Ana Sayfa</string>
+    <string name="list">Liste</string>
+    <string name="profile">Profil</string>
+    <string name="no_description">Açıklama Yok</string>
+    <string name="translate">Çevir</string>
+    <string name="include_already_aired">Çoktan Yayınlanmış Olanları Da Dahil Et</string>
+    <string name="saved_successfully">Başarıyla Kaydedildi</string>
+    <string name="show_only_from_your_planning_list">Yalnızca planlanladığınız listedekileri gösterin</string>
+    <string name="show_only_from_your_watching_list">Yalnızca izlemekte olduğunuz listedekileri gösterin</string>
+    <string name="automatically_subscribe_me_to_activity_i_create">Oluşturduğum aktivitelere otomatik olarak abone ol</string>
+    <string name="automatically_subscribe_me_to_activity_i_reply_to">Yanıt verdiğim aktivitelere beni otomatik olarak abone et</string>
+    <string name="weekly">Haftalık</string>
+    <string name="more">Daha fazla</string>
+    <string name="synonyms">Eş Anlamlı(lar)</string>
+    <string name="category">Kategori</string>
+    <string name="rank">Sıralama</string>
+    <string name="tag_name_percent">%1$s · %2$d%%</string>
+    <string name="status_distribution_string">%1$s Kullanıcı %2$s</string>
+    <string name="trailer">Fragman</string>
+    <string name="airing_score_progression">Yayınlanan Puan İlerlemesi</string>
+    <string name="airing_watchers_progression">Yayınlanan İzleyici İlerlemesi</string>
+    <string name="widget">Pencere Öğesi</string>
+    <string name="french">Français</string>
+    <string name="german">Deutsch</string>
+    <string name="licenses">Lisanslar</string>
+    <string name="translators">Çevirmenler</string>
+    <string name="repeat">Tekrarla</string>
+    <string name="priority">Öncelik</string>
+    <string name="started_on">Şu Tarihte Başlandı</string>
+    <string name="finished_on">Şu Tarihte Bitirildi</string>
+    <string name="added">Eklendi</string>
+    <string name="updated">Güncellendi</string>
+    <string name="do_you_really_want_to_delete_the_entry_s">%s girdisini gerçekten silmek istediğinizden emin misiniz?</string>
+    <string name="hiatus">Ara Verilmiş</string>
+
+    <!-- not translated
+country of origin -->
+    <string name="country_of_origin">Menşe Ülkesi</string>
+    <string name="Taiwan">Tayvan</string>
+    <string name="text_status">Durum Yazısı</string>
+    <string name="list_progress">Liste İlerlemesi</string>
+    <string name="social">Sosyal</string>
+    <string name="write_a_status">Bir durum yaz…</string>
+    <string name="preview">Önizleme</string>
+    <string name="spoiler">Spoiler</string>
+    <string name="reply">Yanıtla</string>
+    <string name="edit">Düzenle</string>
+    <string name="plan_to_read">Okumaya planlanıyor</string>
+    <string name="rereading">Tekrar Okunuyor</string>
+    <string name="plan_to_watch">İzlemeye planlanıyor</string>
+    <string name="no_watching_feature_desc">Not: Bu uygulama anime izlemek veya manga okumak için değildir. Bu bir resmi olmayan Anilist için oluşturulmuş bir uygulamadır; Daha fazla bilgi için Anilist\'in resmi sitesini ziyaret edin.</string>
+    <string name="mutual">Ortak</string>
+    <string name="show_reason">Sebep göster....</string>
+    <string name="_default">Varsayılan</string>
+    <string name="custom">Özel</string>
+    <string name="surface_color_desc">Görünüş rengi seçin.</string>
+    <string name="surface_color">Görünüş rengi</string>
+    <string name="media_related_to_me">Listemdeki bir anime veya mangayla ilgili yeni bir girdi oluşturulduğunda</string>
+    <string name="media_modified_in_my_list">Listemdeki bir anime veya manganın verisinin değişmesinin listeme etki ettiğinde</string>
+    <string name="media_merged_in_my_list">Listemdeki bir veya daha fazla anime veya manga birleştirildiğinde</string>
+    <string name="media_deleted_in_my_list">Bir anime veya manga listemden siteden silindiğinde </string>
+    <string name="web_novel">Web Roman</string>
+    <string name="live_action">Canlı Çekim</string>
+    <string name="year_range">Yıl Sırası</string>
+    <string name="readable_on">Okunabilirlik Açık</string>
+    <string name="favourite">Favori</string>
+    <string name="custom_lists">Özel Listeler</string>
+    <string name="no_custom_lists">Özel liste yok</string>
+    <string name="game">Oyun</string>
+    <string name="multimedia_project">Çoklu ortam proje</string>
+    <string name="picture_book">Resim Kitabı</string>
+    <string name="comic">Çizgi roman</string>
+    <string name="important">Önemli</string>
+    <string name="open_in_browser">Tarayıcıda aç</string>
+    <string name="newest">En Yeni</string>
+    <string name="oldest">En Eski</string>
+    <string name="gender">Cinsiyet</string>
+    <string name="blood_type">Kan Grubu</string>
+    <string name="age">Yaş</string>
+    <string name="death">Ölüm</string>
+    <string name="birth">Doğum</string>
+    <string name="years_active">Aktif yıl</string>
+    <string name="hometown">Memleket</string>
+    <string name="anime_staff_roles">Anime Kadro Rolleri</string>
+    <string name="manga_staff_roles">Manga Kadro Rolleri</string>
+    <string name="block">Engelle</string>
+    <string name="unblock">Engeli kaldır</string>
+    <string name="block_user_msg">AniLib kullanıcıyı tarayıcıda açacak.\nBu bir 3.taraf bir uygulamadır ve sınırlanmasından dolayı, engelleme/engeli kaldırma işlemleri yalnızca anilist.co üzerinde mümkündür. Kullanıcı sağ üstteki (küçük ekranlarda sol üst olabilir.) açılırlisteyi görmek için giriş yapmalıdır.</string>
+</resources>

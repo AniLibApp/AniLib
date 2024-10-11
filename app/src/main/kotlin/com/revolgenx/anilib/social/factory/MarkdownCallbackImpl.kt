@@ -11,7 +11,7 @@ import com.revolgenx.anilib.common.data.event.OpenStudioScreenEvent
 import com.revolgenx.anilib.common.data.event.OpenUserScreenEvent
 import com.revolgenx.anilib.type.MediaType
 
-class AlMarkdownCallbackImpl : AlMarkdownCallback {
+class MarkdownCallbackImpl : MarkdownCallback {
     override fun onYoutubeClick(link: String) {
         OpenLinkEvent(link).postEvent
     }

@@ -22,10 +22,13 @@ class ExploreViewModel(appPreferencesDataStore: AppPreferencesDataStore): ViewMo
     init {
         launch {
             while (true){
-                delay(600000)
-                showRefreshButton.value = true
+                if(showRefreshButton.value){
+                    delay(10000)
+                }else{
+                    delay(900000)
+                    showRefreshButton.value = true
+                }
             }
-
         }
     }
 }

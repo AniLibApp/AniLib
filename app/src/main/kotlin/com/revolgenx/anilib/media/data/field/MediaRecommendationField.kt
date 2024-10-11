@@ -11,6 +11,7 @@ class MediaRecommendationField :
             page = nn(page),
             perPage = nn(perPage),
             mediaId = nn(mediaId),
+            isAdult = nn(canShowAdult.takeIf { it.not() })
         )
     }
 }

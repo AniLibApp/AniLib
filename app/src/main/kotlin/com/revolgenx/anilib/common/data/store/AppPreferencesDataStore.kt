@@ -76,6 +76,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val widgetOnlyPlanningKey = booleanPreferencesKey("widget_only_planning_key")
         val widgetAiringSortKey = intPreferencesKey("widget_airing_sort_key")
 
+        val currentAppVersionKey = stringPreferencesKey("current_app_version_key")
     }
 
 
@@ -148,13 +149,13 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     val displayInterstitialAdsInterval = PreferencesDataStore(
         dataStore = dataStore,
         prefKey = displayInterstitialAdsIntervalKey,
-        defaultValue = InterstitialAdsInterval.EVERY_DAY.ordinal
+        defaultValue = InterstitialAdsInterval.EVERY_6_HOURS.ordinal
     )
 
     val displayRewardedInterstitialAdsInterval = PreferencesDataStore(
         dataStore = dataStore,
         prefKey = displayRewardedInterstitialAdsIntervalKey,
-        defaultValue = RewardedInterstitialAdsInterval.EVERY_FOURTH_DAY.ordinal
+        defaultValue = RewardedInterstitialAdsInterval.EVERY_OTHER_DAY.ordinal
     )
 
     val interstitialAdsDisplayedDateTime = PreferencesDataStore(
@@ -215,6 +216,12 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         dataStore = dataStore,
         prefKey = widgetAiringSortKey,
         defaultValue = AiringSort.TIME.ordinal
+    )
+
+    val currentAppVersion = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = currentAppVersionKey,
+        defaultValue = null
     )
 
     val isLoggedIn = userId.data.map { it != null }

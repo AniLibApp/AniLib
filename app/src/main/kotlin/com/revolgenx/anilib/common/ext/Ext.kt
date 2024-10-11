@@ -23,6 +23,7 @@ import androidx.compose.ui.window.DialogWindowProvider
 import androidx.datastore.core.DataStore
 import com.apollographql.apollo3.exception.ApolloException
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
+import com.revolgenx.anilib.social.factory.MarkdownFactoryImpl
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,6 +47,7 @@ fun Double?.orZero() = this ?: 0.0
 
 @Composable
 fun naString() = stringResource(id = I18nR.string.na)
+
 @StringRes
 fun Int?.orNa() = this ?: I18nR.string.na
 
@@ -145,17 +147,26 @@ fun componentActivity() = localContext().componentActivity()
 fun <T> Flow<T>.get() = runBlocking { first() }
 fun <T> DataStore<T>.get() = data.get()
 
-fun SnackbarHostState.showLoginMsg(context: Context, scope: CoroutineScope){
+fun SnackbarHostState.showLoginMsg(context: Context, scope: CoroutineScope) {
     scope.launch {
-        showSnackbar(message = context.getString(anilib.i18n.R.string.please_log_in), withDismissAction = true)
+        showSnackbar(
+            message = context.getString(anilib.i18n.R.string.please_log_in),
+            withDismissAction = true
+        )
     }
 }
 
 fun <T> Flow<T>.logException(): Flow<T> {
     return this.catch {
-        if(it !is ApolloException){
+        if (it !is ApolloException) {
             Timber.e(it, "Caught Flow Exception")
         }
         throw it
     }
+}
+
+val markdown get() = MarkdownFactoryImpl.markwon
+
+fun anilify(text: String?): String {
+    return MarkdownFactoryImpl.anilify(text)
 }

@@ -27,7 +27,7 @@ class RecommendationServiceImpl(
                     data = page.recommendations?.mapNotNull { recommendation ->
                         recommendation?.takeIf {
                             if (field.canShowAdult) true else ((it.media?.media?.isAdult == false)
-                                    and (it.recommendationFragment.mediaRecommendation?.media?.isAdult == false))
+                                    && (it.recommendationFragment.mediaRecommendation?.media?.isAdult == false))
                         }?.toModel()
                     }
                 )

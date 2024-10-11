@@ -12,8 +12,8 @@ import com.revolgenx.anilib.common.ui.model.toModel
 import com.revolgenx.anilib.fragment.SmallStaff
 import com.revolgenx.anilib.fragment.StaffImage
 import com.revolgenx.anilib.media.ui.model.MediaConnectionModel
-import com.revolgenx.anilib.social.factory.markdown
-import com.revolgenx.anilib.social.markdown.anilify
+import com.revolgenx.anilib.common.ext.markdown
+import com.revolgenx.anilib.common.ext.anilify
 import java.time.Month
 import java.time.format.TextStyle
 import java.util.Locale

@@ -52,25 +52,7 @@ android {
                     "proguard-rules.pro"
                 )
             )
-
             loadConfig("secret.properties")
-        }
-        create("alpha") {
-            initWith(getByName("debug"))
-            applicationIdSuffix = ".alpha"
-        }
-    }
-
-
-    flavorDimensions.add("default")
-
-    productFlavors {
-        create("prod") {
-            dimension = "default"
-        }
-        create("dev") {
-            resourceConfigurations.addAll(listOf("en", "xxhdpi"))
-            dimension = "default"
         }
     }
 

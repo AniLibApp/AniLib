@@ -7,28 +7,25 @@ import com.google.firebase.crashlytics.crashlytics
 import timber.log.Timber
 import com.revolgenx.anilib.BuildConfig
 
-class AniLibDebugTree(enableCrashReport: Boolean): Timber.DebugTree(){
+class AniLibDebugTree(enableCrashReport: Boolean) : Timber.DebugTree() {
     private val priorityKey = "priority"
     private val tagKey = "tag"
     private val messageKey = "message"
 
     init {
-        if(BuildConfig.FLAVOR != "dev"){
-            val enableCrashlytics = if(BuildConfig.DEBUG) true else enableCrashReport
-
-            Firebase.crashlytics
-                .setCrashlyticsCollectionEnabled(enableCrashlytics)
-            Firebase.analytics
-                .setAnalyticsCollectionEnabled(true)
-        }
+        val enableCrashlytics = if (BuildConfig.DEBUG) true else enableCrashReport
+        Firebase.crashlytics
+            .setCrashlyticsCollectionEnabled(enableCrashlytics)
+        Firebase.analytics
+            .setAnalyticsCollectionEnabled(true)
     }
 
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
-        if(BuildConfig.DEBUG){
+        if (BuildConfig.DEBUG) {
             super.log(priority, tag, message, t)
         }
 
-        if (BuildConfig.FLAVOR == "dev" || priority == Log.VERBOSE || priority == Log.DEBUG) {
+        if (priority == Log.VERBOSE || priority == Log.DEBUG) {
             return
         }
 

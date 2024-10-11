@@ -9,8 +9,8 @@ import com.revolgenx.anilib.ActivityReplyQuery
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.ActivityReply
-import com.revolgenx.anilib.social.factory.markdown
-import com.revolgenx.anilib.social.markdown.anilify
+import com.revolgenx.anilib.common.ext.markdown
+import com.revolgenx.anilib.common.ext.anilify
 import com.revolgenx.anilib.type.ActivityType
 import com.revolgenx.anilib.user.ui.model.UserModel
 

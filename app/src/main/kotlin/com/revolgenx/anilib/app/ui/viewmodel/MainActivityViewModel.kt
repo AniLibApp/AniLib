@@ -43,6 +43,7 @@ class MainActivityViewModel(
     private val userService: UserService
 ) :
     ViewModel() {
+    val currentAppVersion = preferencesDataStore.currentAppVersion
     var userState by mutableStateOf(UserState(userId = preferencesDataStore.userId.get()))
     var mediaState by mutableStateOf(
         MediaState(

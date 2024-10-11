@@ -24,7 +24,7 @@ import androidx.core.content.res.ResourcesCompat
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.util.OnClick
-import com.revolgenx.anilib.social.factory.markdown
+import com.revolgenx.anilib.common.ext.markdown
 
 
 class MarkdownTextView(context: Context, attributeSet: AttributeSet?, style: Int) :
@@ -35,7 +35,7 @@ class MarkdownTextView(context: Context, attributeSet: AttributeSet?, style: Int
             ViewGroup.LayoutParams.MATCH_PARENT,
             ViewGroup.LayoutParams.WRAP_CONTENT
         )
-        typeface = ResourcesCompat.getFont(context, R.font.overpass_regular)
+        typeface = ResourcesCompat.getFont(context, R.font.inter_regular)
         letterSpacing = 0.02f
     }
 

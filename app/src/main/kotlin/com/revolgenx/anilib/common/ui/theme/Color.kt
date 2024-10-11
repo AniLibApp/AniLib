@@ -3,6 +3,7 @@ package com.revolgenx.anilib.common.ui.theme
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
+import com.revolgenx.anilib.common.data.constant.ThemeModes
 import com.revolgenx.anilib.common.data.store.theme.ThemeData
 
 
@@ -166,7 +167,7 @@ internal object ElevationTokens {
 
 val defaultTheme by lazy {
     ThemeData(
-        theme = 0,
+        theme = ThemeModes.DEFAULT,
         primary = default_primary.toArgb(),
         onPrimary = default_onPrimary.toArgb(),
         primaryContainer = default_primaryContainer.toArgb(),
@@ -181,7 +182,7 @@ val defaultTheme by lazy {
 
 val defaultDarkTheme by lazy {
     ThemeData(
-        theme = 0,
+        theme = ThemeModes.DEFAULT,
         primary = default_dark_primary.toArgb(),
         onPrimary = default_dark_onPrimary.toArgb(),
         primaryContainer = default_dark_primaryContainer.toArgb(),
@@ -196,7 +197,7 @@ val defaultDarkTheme by lazy {
 
 val midnightTheme by lazy {
     ThemeData(
-        theme = 2,
+        theme = ThemeModes.MIDNIGHT,
         primary = midnight_primary.toArgb(),
         onPrimary = midnight_onPrimary.toArgb(),
         primaryContainer = midnight_primaryContainer.toArgb(),
@@ -211,7 +212,7 @@ val midnightTheme by lazy {
 
 val midnightDarkTheme by lazy {
     ThemeData(
-        theme = 2,
+        theme = ThemeModes.MIDNIGHT,
         primary = midnight_dark_primary.toArgb(),
         onPrimary = midnight_dark_onPrimary.toArgb(),
         primaryContainer = midnight_dark_primaryContainer.toArgb(),
@@ -226,7 +227,7 @@ val midnightDarkTheme by lazy {
 
 val beeTheme by lazy {
     ThemeData(
-        theme = 3,
+        theme = ThemeModes.BEE,
         primary = bee_primary.toArgb(),
         onPrimary = bee_onPrimary.toArgb(),
         primaryContainer = bee_primaryContainer.toArgb(),
@@ -240,7 +241,7 @@ val beeTheme by lazy {
 }
 val beeDarkTheme by lazy {
     ThemeData(
-        theme = 3,
+        theme = ThemeModes.BEE,
         primary = bee_dark_primary.toArgb(),
         onPrimary = bee_dark_onPrimary.toArgb(),
         primaryContainer = bee_dark_primaryContainer.toArgb(),
@@ -255,7 +256,7 @@ val beeDarkTheme by lazy {
 
 val strawberryTheme by lazy {
     ThemeData(
-        theme = 4,
+        theme = ThemeModes.STRAWBERRY_DAIQUIRI,
         primary = strawberry_primary.toArgb(),
         onPrimary = strawberry_onPrimary.toArgb(),
         primaryContainer = strawberry_primaryContainer.toArgb(),
@@ -269,7 +270,7 @@ val strawberryTheme by lazy {
 }
 val strawberryDarkTheme by lazy {
     ThemeData(
-        theme = 4,
+        theme = ThemeModes.STRAWBERRY_DAIQUIRI,
         primary = strawberry_dark_primary.toArgb(),
         onPrimary = strawberry_dark_onPrimary.toArgb(),
         primaryContainer = strawberry_dark_primaryContainer.toArgb(),
@@ -284,7 +285,7 @@ val strawberryDarkTheme by lazy {
 
 val tealTheme by lazy {
     ThemeData(
-        theme = 5,
+        theme = ThemeModes.TEAL,
         primary = teal_primary.toArgb(),
         onPrimary = teal_onPrimary.toArgb(),
         primaryContainer = teal_primaryContainer.toArgb(),
@@ -298,7 +299,7 @@ val tealTheme by lazy {
 }
 val tealDarkTheme by lazy {
     ThemeData(
-        theme = 5,
+        theme = ThemeModes.TEAL,
         primary = teal_dark_primary.toArgb(),
         onPrimary = teal_dark_onPrimary.toArgb(),
         primaryContainer = teal_dark_primaryContainer.toArgb(),
@@ -312,7 +313,7 @@ val tealDarkTheme by lazy {
 }
 val greenAppleTheme by lazy {
     ThemeData(
-        theme = 6,
+        theme = ThemeModes.GREEN_APPLE,
         primary = green_apple_primary.toArgb(),
         onPrimary = green_apple_onPrimary.toArgb(),
         primaryContainer = green_apple_primaryContainer.toArgb(),
@@ -326,7 +327,7 @@ val greenAppleTheme by lazy {
 }
 val greenAppleDarkTheme by lazy {
     ThemeData(
-        theme = 6,
+        theme = ThemeModes.GREEN_APPLE,
         primary = green_apple_dark_primary.toArgb(),
         onPrimary = green_apple_dark_onPrimary.toArgb(),
         primaryContainer = green_apple_dark_primaryContainer.toArgb(),

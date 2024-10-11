@@ -37,7 +37,7 @@ fun Studio.toModel(field: BaseField<*>) = StudioModel(
     media = media?.let { media ->
         MediaConnectionModel(
             nodes = media.nodes?.mapNotNull {
-                it?.takeIf { if (field.canShowAdult) true else it.media.isAdult == false }?.media?.toModel()
+                it?.media?.takeIf { if (field.canShowAdult) true else it.isAdult == false }?.toModel()
             }
         )
     }

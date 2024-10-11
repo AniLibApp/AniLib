@@ -28,6 +28,10 @@ Track your anime and manga progress, discover new titles, customize your lists, 
 </table>
 </div>
 
+<img width="185" src=".github/assets/explore.jpg"/>
+<img width="185" src=".github/assets/list.jpg"/>
+<img width="185" src=".github/assets/overview.jpg"/>
+
 ## Features
 
 <div align="left">

@@ -1,8 +1,6 @@
 package com.revolgenx.anilib.common.util
 
 import android.app.PendingIntent
-import android.content.Context
-import android.content.pm.PackageManager
 import android.os.Build
 import com.revolgenx.anilib.BuildConfig
 
@@ -19,4 +17,4 @@ val immutableFlagUpdateCurrent get() = immutablePendingFlag(PendingIntent.FLAG_U
 val immutableFlagEmpty get() = immutablePendingFlag(0)
 
 
-val versionName = "${BuildConfig.VERSION_NAME}-${BuildConfig.VERSION_CODE}"
+const val versionName = "${BuildConfig.VERSION_NAME}-${BuildConfig.VERSION_CODE}"

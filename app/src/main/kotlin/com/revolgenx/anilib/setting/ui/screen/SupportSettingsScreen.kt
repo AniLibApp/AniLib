@@ -91,11 +91,7 @@ fun SupportSettingsScreenContent() {
                             ListPreferenceEntry(
                                 context.getString(R.string.ads_every_week),
                                 InterstitialAdsInterval.EVERY_WEEK
-                            ),
-                            ListPreferenceEntry(
-                                context.getString(R.string.ads_every_other_week),
-                                InterstitialAdsInterval.EVERY_OTHER_WEEK
-                            ),
+                            )
                         )
                     }
                 ) {
@@ -117,16 +113,16 @@ fun SupportSettingsScreenContent() {
                     entries = remember {
                         listOf(
                             ListPreferenceEntry(
+                                context.getString(R.string.ads_every_other_day),
+                                RewardedInterstitialAdsInterval.EVERY_OTHER_DAY
+                            ),
+                            ListPreferenceEntry(
                                 context.getString(R.string.ads_every_fourth_day),
                                 RewardedInterstitialAdsInterval.EVERY_FOURTH_DAY
                             ),
                             ListPreferenceEntry(
                                 context.getString(R.string.ads_every_week),
                                 RewardedInterstitialAdsInterval.EVERY_WEEK
-                            ),
-                            ListPreferenceEntry(
-                                context.getString(R.string.ads_every_other_week),
-                                RewardedInterstitialAdsInterval.EVERY_OTHER_WEEK
                             ),
                         )
                     }

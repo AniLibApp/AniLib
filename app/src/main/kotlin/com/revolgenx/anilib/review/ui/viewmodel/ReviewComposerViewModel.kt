@@ -17,8 +17,8 @@ import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.field.SaveReviewField
 import com.revolgenx.anilib.review.data.service.ReviewService
 import com.revolgenx.anilib.review.ui.model.ReviewModel
-import com.revolgenx.anilib.social.factory.markdown
-import com.revolgenx.anilib.social.markdown.anilify
+import com.revolgenx.anilib.common.ext.markdown
+import com.revolgenx.anilib.common.ext.anilify
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn

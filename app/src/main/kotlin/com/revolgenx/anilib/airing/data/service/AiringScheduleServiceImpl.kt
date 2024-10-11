@@ -35,7 +35,10 @@ class AiringScheduleServiceImpl(
                         it.dataAssertNoErrors.page.let {
                             PageModel(
                                 pageInfo = it.pageInfo.pageInfo,
-                                data = it.airingSchedules?.mapNotNull { it?.toModel() }
+                                data = it.airingSchedules?.mapNotNull {
+                                    it?.takeIf { if (field.canShowAdult) true else it.media?.media?.isAdult == false }
+                                        ?.toModel()
+                                }
                             )
                         }
                     }.get()
@@ -45,7 +48,10 @@ class AiringScheduleServiceImpl(
                 it.dataAssertNoErrors.page.let {
                     PageModel(
                         pageInfo = it.pageInfo.pageInfo,
-                        data = it.airingSchedules?.mapNotNull { it?.toModel() }
+                        data = it.airingSchedules?.mapNotNull {
+                            it?.takeIf { if (field.canShowAdult) true else it.media?.media?.isAdult == false }
+                                ?.toModel()
+                        }
                     )
                 }
             }

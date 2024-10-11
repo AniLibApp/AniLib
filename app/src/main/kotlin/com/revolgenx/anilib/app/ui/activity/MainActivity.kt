@@ -58,6 +58,8 @@ class MainActivity : BaseMainActivity() {
                     skipPartiallyExpanded = true
                 )
 
+                CheckWhatsNew()
+
                 SpoilerBottomSheet(
                     openBottomSheet = viewModel.openSpoilerBottomSheet,
                     bottomSheetState = bottomSheetState,

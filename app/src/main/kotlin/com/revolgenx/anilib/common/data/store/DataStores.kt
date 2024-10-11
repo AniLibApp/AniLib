@@ -12,6 +12,7 @@ import com.revolgenx.anilib.airing.data.store.AiringScheduleFilterData
 import com.revolgenx.anilib.airing.data.store.AiringScheduleFilterDataSerializer
 import com.revolgenx.anilib.browse.data.store.BrowseFilterData
 import com.revolgenx.anilib.browse.data.store.BrowseFilterDataSerializer
+import com.revolgenx.anilib.common.data.constant.ThemeModes
 import com.revolgenx.anilib.common.data.store.theme.ThemeData
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataSerializer
 import com.revolgenx.anilib.common.data.store.theme.isDarkMode
@@ -142,8 +143,11 @@ fun Context.customThemeDataStore(themeDataStore: DataStore<ThemeData>): DataStor
         serializer = ThemeDataSerializer(
             if (isDark) defaultDarkTheme.copy(
                 darkMode = darkMode,
-                theme = 1
-            ) else defaultTheme.copy(darkMode = darkMode, theme = 1)
+                theme = ThemeModes.CUSTOM
+            ) else defaultTheme.copy(
+                darkMode = darkMode,
+                theme = ThemeModes.CUSTOM
+            )
         ),
         produceFile = { applicationContext.dataStoreFile("custom_theme_data_store.json") }
     )

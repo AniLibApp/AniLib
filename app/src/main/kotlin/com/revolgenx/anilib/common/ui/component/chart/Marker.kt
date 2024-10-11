@@ -51,7 +51,7 @@ internal fun rememberMarker(mLabelFormatter: MarkerLabelFormatter? = null): Mark
         background = labelBackground,
         lineCount = LABEL_LINE_COUNT,
         padding = labelPadding,
-        typeface = ResourcesCompat.getFont(context, R.font.overpass_regular),
+        typeface = ResourcesCompat.getFont(context, R.font.inter_regular),
     )
     val indicatorInnerComponent = shapeComponent(Shapes.pillShape, surfaceContainer)
     val indicatorCenterComponent = shapeComponent(Shapes.pillShape, Color.White)

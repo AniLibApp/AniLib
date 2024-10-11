@@ -106,7 +106,7 @@ private fun AboutScreenContent() {
                         title = context.getString(I18nR.string.anilib_site),
                         subTitle = context.getString(I18nR.string.visit_site_desc),
                         imageVector = AppIcons.IcAnilib,
-                        link = context.getString(R.string.anilib_github_link)
+                        link = context.getString(R.string.anilib_website_link)
                     ),
                     InfoData(
                         title = context.getString(I18nR.string.license_apache_2),

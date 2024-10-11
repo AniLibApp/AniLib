@@ -2,7 +2,7 @@ package com.revolgenx.anilib.social.factory
 
 import android.text.Spanned
 
-interface AlMarkdownCallback {
+interface MarkdownCallback {
     fun onYoutubeClick(link: String)
     fun onVideoClick(link: String)
     fun onImageClick(link: String)

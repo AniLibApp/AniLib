@@ -14,7 +14,7 @@ object Config {
 }
 
 enum class InterstitialAdsInterval() {
-    EVERY_DAY, EVERY_OTHER_DAY, EVERY_FOURTH_DAY, EVERY_WEEK, EVERY_OTHER_WEEK;
+    EVERY_6_HOURS, EVERY_DAY, EVERY_OTHER_DAY, EVERY_FOURTH_DAY, EVERY_WEEK;
 
     companion object {
         fun fromValue(value: Int): InterstitialAdsInterval {
@@ -24,7 +24,7 @@ enum class InterstitialAdsInterval() {
 }
 
 enum class RewardedInterstitialAdsInterval {
-    EVERY_FOURTH_DAY, EVERY_WEEK, EVERY_OTHER_WEEK;
+    EVERY_OTHER_DAY, EVERY_FOURTH_DAY, EVERY_WEEK;
 
     companion object {
         fun fromValue(value: Int): RewardedInterstitialAdsInterval {
@@ -100,4 +100,7 @@ enum class MainPageOrder : ContentOrder {
             ACTIVITY -> anilib.i18n.R.string.activity
         }
     }
+}
+enum class ThemeModes{
+    DEFAULT, MIDNIGHT, BEE, STRAWBERRY_DAIQUIRI, TEAL, GREEN_APPLE, CUSTOM;
 }

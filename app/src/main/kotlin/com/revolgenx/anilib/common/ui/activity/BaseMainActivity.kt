@@ -14,6 +14,8 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -23,6 +25,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import cafe.adriel.voyager.navigator.Navigator
+import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.app.ui.viewmodel.DeepLinkPath
@@ -55,9 +58,11 @@ import com.revolgenx.anilib.common.ext.studioScreen
 import com.revolgenx.anilib.common.ext.userScreen
 import com.revolgenx.anilib.common.ui.ads.AdsViewModel
 import com.revolgenx.anilib.common.ui.ads.CheckAds
+import com.revolgenx.anilib.common.ui.bottomsheet.WhatsNewBottomSheet
+import com.revolgenx.anilib.common.util.versionName
 import com.revolgenx.anilib.notification.data.worker.NotificationWorker
-import com.revolgenx.anilib.social.factory.AlMarkdownCallbackImpl
-import com.revolgenx.anilib.social.factory.AlMarkdownFactory
+import com.revolgenx.anilib.social.factory.MarkdownCallbackImpl
+import com.revolgenx.anilib.social.factory.MarkdownFactoryImpl
 import com.revolgenx.anilib.type.MediaType
 import kotlinx.coroutines.launch
 import org.greenrobot.eventbus.Subscribe
@@ -135,11 +140,11 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
     }
 
     private fun setupMarkdown() {
-        AlMarkdownFactory.init(
+        MarkdownFactoryImpl.initialize(
             this,
             themeDataStore.get().primary,
             appPreferencesDataStore.autoPlayGif.get()!!,
-            AlMarkdownCallbackImpl()
+            MarkdownCallbackImpl()
         )
     }
 
@@ -419,12 +424,30 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
     }
 
     @Composable
+    fun CheckWhatsNew() {
+        val bottomSheetState = rememberBottomSheetState()
+        LaunchedEffect(viewModel) {
+            if (viewModel.currentAppVersion.get() != versionName) {
+                viewModel.currentAppVersion.set(versionName)
+                bottomSheetState.peek()
+            }
+        }
+
+        WhatsNewBottomSheet(bottomSheetState = bottomSheetState)
+    }
+
+    @Composable
     fun CanShowAds() {
-        CheckAds(navigator = navigator, activity = this, viewModel = viewModel, adsViewModel = adsViewModel)
+        CheckAds(
+            navigator = navigator,
+            activity = this,
+            viewModel = viewModel,
+            adsViewModel = adsViewModel
+        )
     }
 
     override fun onDestroy() {
-        AlMarkdownFactory.destroy()
+        MarkdownFactoryImpl.destroy()
         super.onDestroy()
     }
 

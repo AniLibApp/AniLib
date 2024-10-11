@@ -302,7 +302,7 @@
     <string name="settings_appearance_desc">App theme</string>
     <string name="settings_login_signup_notice">You\'ll be redirected to anilist.co to login/register. Make sure browser such as Chrome is installed and the URL is anilist.co before entering your credentials.</string>
     <string name="settings_anime_and_manga">Anime &amp; Manga</string>
-    <string name="settings_anime_and_manga_desc">Title language, airing notifications</string>
+    <string name="settings_anime_and_manga_desc">Title language, etc</string>
     <string name="settings_filter_desc">Filter tags, genre, etc</string>
     <string name="settings_about_desc">AniLib %1$s</string>
     <string name="settings_lists">Lists</string>
@@ -386,6 +386,7 @@
     <string name="crash_reporting">Crash Reporting</string>
     <string name="crash_report_desc">Help improve AniLib\'s features. Automatically sends crash reports.</string>
     <string name="widget">Widget</string>
+    <string name="settings_widget_desc">Airing Sort, etc</string>
     <string name="widget_open_list_editor">Open List Editor</string>
     <string name="widget_open_list_editor_desc">Enable to open list editor on single tap.</string>
     <string name="widget_already_aired">Already Aired</string>
@@ -500,7 +501,6 @@
     <string name="ads_every_fourth_day">Every Fourth Day</string>
     <string name="ads_every_other_day">Every Other Day</string>
     <string name="ads_every_week">Every Week</string>
-    <string name="ads_every_other_week">Every Other Week</string>
     <string name="ads_play_support_message">An ad is about to play. You can skip anytime, but watching helps support the app\'s development. \nThanks for your support! 🙏</string>
     <string name="ads_support_the_app">Support the App! \uD83D\uDC96</string>
     <string name="ads_support_button_message">\uD83D\uDCAC If you would like to support the app, you can watch ads by pressing the button below.</string>

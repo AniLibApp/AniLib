@@ -22,11 +22,14 @@ class StudioServiceImpl(
     override fun getStudioMedia(field: StudioField): Flow<PageModel<MediaModel>> {
         return field.toQuery().mapData {
             it.dataAssertNoErrors.studio.let { studio ->
+                val studioModel = studio?.toModel()
                 PageModel(
                     pageInfo = studio?.media?.pageInfo?.pageInfo,
                     data = studio?.media?.nodes?.mapNotNull { media ->
-                        media?.onMedia?.media?.toModel()?.also { mediaModel ->
-                            mediaModel.studio = studio.toModel()
+                        media?.onMedia?.media?.takeIf {
+                            if (field.canShowAdult) true else it.isAdult == false
+                        }?.toModel()?.also { mediaModel ->
+                            mediaModel.studio = studioModel
                         }
                     }
                 )

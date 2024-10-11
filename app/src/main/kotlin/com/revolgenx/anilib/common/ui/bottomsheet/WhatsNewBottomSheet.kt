@@ -1,10 +1,8 @@
 package com.revolgenx.anilib.common.ui.bottomsheet
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +23,8 @@ import com.dokar.sheets.m3.BottomSheetDefaults
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
+import androidx.compose.ui.graphics.compositeOver
+import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 
 
 @Composable
@@ -33,7 +33,7 @@ fun WhatsNewBottomSheet(
 ) {
     BottomSheet(
         state = bottomSheetState,
-        peekHeight = PeekHeight.fraction(0.7f),
+        peekHeight = PeekHeight.fraction(0.8f),
         behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
     ) {
         WhatsNewContent()
@@ -64,15 +64,16 @@ private fun WhatsNewContent() {
             Icon(imageVector = AppIcons.IcStar, contentDescription = null)
         }
 
-        Text(
+        SemiBoldText(
             modifier = Modifier.padding(vertical = 8.dp),
             text = stringResource(id = R.string.no_watching_feature_desc),
-            color = Color(0xFFEED202),
-            fontSize = 12.sp
+            fontSize = 12.sp,
+            maxLines = Int.MAX_VALUE
         )
 
         MarkdownText(
-            text = stringResource(id = com.revolgenx.anilib.R.string.release_info)
+            text = stringResource(id = com.revolgenx.anilib.R.string.release_info),
+            fontSize = 14.sp
         )
     }
 }

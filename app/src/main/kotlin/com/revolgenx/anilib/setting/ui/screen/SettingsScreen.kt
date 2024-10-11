@@ -131,16 +131,16 @@ fun SettingScreenContent(isTab: Boolean) {
                         contentDescription = null,
                     )
 
-                    Box(
-                        modifier = Modifier.align(Alignment.TopEnd)
-                    ) {
-                        ActionMenu(
-                            icon = AppIcons.IcSearch,
-                            tonalButton = true
-                        ) {
-                            navigator.push(SearchSettingScreen)
-                        }
-                    }
+//                    Box(
+//                        modifier = Modifier.align(Alignment.TopEnd)
+//                    ) {
+//                        ActionMenu(
+//                            icon = AppIcons.IcSearch,
+//                            tonalButton = true
+//                        ) {
+//                            navigator.push(SearchSettingScreen)
+//                        }
+//                    }
                 }
                 HorizontalDivider()
             }
@@ -217,7 +217,7 @@ fun SettingScreenContent(isTab: Boolean) {
             TextPreferenceItem(
                 icon = AppIcons.IcWidgets,
                 title = stringResource(I18nR.string.widget),
-                subtitle = stringResource(I18nR.string.settings_filter_desc)
+                subtitle = stringResource(I18nR.string.settings_widget_desc)
             ){
                 navigator.push(WidgetSettingsScreen)
             }

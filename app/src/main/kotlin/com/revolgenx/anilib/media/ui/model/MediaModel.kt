@@ -29,7 +29,7 @@ import com.revolgenx.anilib.fragment.Media
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
 import com.revolgenx.anilib.home.recommendation.ui.model.toModel
 import com.revolgenx.anilib.list.ui.model.MediaListModel
-import com.revolgenx.anilib.social.factory.markdown
+import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.studio.ui.model.StudioConnectionModel
 import com.revolgenx.anilib.studio.ui.model.StudioEdgeModel

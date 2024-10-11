@@ -236,6 +236,12 @@ class AdsViewModel(preferencesDataStore: AppPreferencesDataStore) : ViewModel() 
         adsDisplayedDateTime: Long
     ): Boolean {
         return when (rewardedInterstitialAdsInterval) {
+            RewardedInterstitialAdsInterval.EVERY_OTHER_DAY->{
+                ChronoUnit.DAYS.between(
+                    Instant.ofEpochSecond(adsDisplayedDateTime),
+                    Instant.ofEpochSecond(currentEpochSecond)
+                ) >= 2
+            }
             RewardedInterstitialAdsInterval.EVERY_FOURTH_DAY->{
                 ChronoUnit.DAYS.between(
                     Instant.ofEpochSecond(adsDisplayedDateTime),
@@ -250,12 +256,6 @@ class AdsViewModel(preferencesDataStore: AppPreferencesDataStore) : ViewModel() 
                 ) >= 7
             }
 
-            RewardedInterstitialAdsInterval.EVERY_OTHER_WEEK -> {
-                ChronoUnit.DAYS.between(
-                    Instant.ofEpochSecond(adsDisplayedDateTime),
-                    Instant.ofEpochSecond(currentEpochSecond)
-                ) >= 14
-            }
         }
     }
 
@@ -265,6 +265,12 @@ class AdsViewModel(preferencesDataStore: AppPreferencesDataStore) : ViewModel() 
         adsDisplayedDateTime: Long
     ): Boolean {
         return when (interstitialAdsInterval) {
+            InterstitialAdsInterval.EVERY_6_HOURS->{
+                ChronoUnit.HOURS.between(
+                    Instant.ofEpochSecond(adsDisplayedDateTime),
+                    Instant.ofEpochSecond(currentEpochSecond)
+                ) >= 6
+            }
             InterstitialAdsInterval.EVERY_DAY -> {
                 ChronoUnit.DAYS.between(
                     Instant.ofEpochSecond(adsDisplayedDateTime),
@@ -291,13 +297,6 @@ class AdsViewModel(preferencesDataStore: AppPreferencesDataStore) : ViewModel() 
                     Instant.ofEpochSecond(adsDisplayedDateTime),
                     Instant.ofEpochSecond(currentEpochSecond)
                 ) >= 7
-            }
-
-            InterstitialAdsInterval.EVERY_OTHER_WEEK -> {
-                ChronoUnit.DAYS.between(
-                    Instant.ofEpochSecond(adsDisplayedDateTime),
-                    Instant.ofEpochSecond(currentEpochSecond)
-                ) >= 14
             }
 
         }

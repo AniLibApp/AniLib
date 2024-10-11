@@ -9,6 +9,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.datastore.core.DataStore
+import com.revolgenx.anilib.common.data.constant.ThemeModes
 import com.revolgenx.anilib.common.data.store.BaseDataStore
 import com.revolgenx.anilib.common.data.store.BaseSerializer
 import com.revolgenx.anilib.common.ui.theme.ElevationTokens
@@ -20,7 +21,7 @@ import kotlinx.serialization.Transient
 @Serializable
 data class ThemeData(
     val darkMode: Boolean? = null, //system(null), dark(true), light(false)
-    val theme: Int,
+    val theme: ThemeModes,
     val primary: Int,
     val onPrimary: Int,
     val primaryContainer: Int,

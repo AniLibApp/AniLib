@@ -32,6 +32,7 @@ import com.maxkeppeler.sheets.color.models.ColorConfig
 import com.maxkeppeler.sheets.color.models.ColorSelection
 import com.maxkeppeler.sheets.color.models.MultipleColors
 import com.maxkeppeler.sheets.color.models.SingleColor
+import com.revolgenx.anilib.common.data.constant.ThemeModes
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.theme.primaryColors
 import com.revolgenx.anilib.common.ui.theme.primaryContainerColors
@@ -69,7 +70,7 @@ object AppearanceSettingsScreen : PreferencesScreen() {
         val themeEntries = remember {
             context.resources.getStringArray(com.revolgenx.anilib.R.array.theme_entries)
                 .mapIndexed { index, s ->
-                    ListPreferenceEntry(s, index)
+                    ListPreferenceEntry(s, ThemeModes.entries[index])
                 }
         }
 
@@ -101,7 +102,7 @@ object AppearanceSettingsScreen : PreferencesScreen() {
             }
         }
 
-        val isCustomTheme = themeData.theme == 1
+        val isCustomTheme = themeData.theme == ThemeModes.CUSTOM
 
         GroupPreferenceItem(title = stringResource(I18nR.string.color)) {
             ColorGroupContent(

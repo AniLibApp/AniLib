@@ -12,6 +12,7 @@ import com.materialkolor.ktx.getColor
 import com.materialkolor.ktx.toHct
 import com.materialkolor.palettes.TonalPalette
 import com.materialkolor.scheme.SchemeTonalSpot
+import com.revolgenx.anilib.common.data.constant.ThemeModes
 import com.revolgenx.anilib.common.data.store.theme.CustomThemeDataStore
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.launch
@@ -40,43 +41,33 @@ class AppearanceSettingsViewModel(
 
 
     fun setTheme(
-        theme: Int,
+        theme: ThemeModes,
         isDarkTheme: Boolean,
         darkMode: Boolean?
     ) {
         launch {
             themeDataStore.source.updateData {
                 when (theme) {
-                    0 -> {
+                    ThemeModes.DEFAULT -> {
                         if (isDarkTheme) defaultDarkTheme else defaultTheme
                     }
-
-                    1 -> {
-                        customThemeDataStore.get()
-                    }
-
-                    2 -> {
+                    ThemeModes.MIDNIGHT -> {
                         if (isDarkTheme) midnightDarkTheme else midnightTheme
                     }
-
-                    3 -> {
+                    ThemeModes.BEE -> {
                         if (isDarkTheme) beeDarkTheme else beeTheme
                     }
-
-                    4 -> {
+                    ThemeModes.STRAWBERRY_DAIQUIRI -> {
                         if (isDarkTheme) strawberryDarkTheme else strawberryTheme
                     }
-
-                    5 -> {
+                    ThemeModes.TEAL-> {
                         if (isDarkTheme) tealDarkTheme else tealTheme
                     }
-
-                    6 -> {
+                    ThemeModes.GREEN_APPLE-> {
                         if (isDarkTheme) greenAppleDarkTheme else greenAppleTheme
                     }
-
-                    else -> {
-                        it
+                    ThemeModes.CUSTOM -> {
+                        customThemeDataStore.get()
                     }
                 }.copy(darkMode = darkMode)
             }
@@ -90,7 +81,7 @@ class AppearanceSettingsViewModel(
 
             val customTheme = customThemeDataStore.source.updateData {
                 it.copy(
-                    theme = 1,
+                    theme = ThemeModes.CUSTOM,
                     primary = color,
                     onPrimary = onBg.toArgb()
                 )
@@ -106,7 +97,7 @@ class AppearanceSettingsViewModel(
             val onBg = foregroundColor(color)
             val customTheme = customThemeDataStore.source.updateData {
                 it.copy(
-                    theme = 1,
+                    theme = ThemeModes.CUSTOM,
                     primaryContainer = color,
                     onPrimaryContainer = onBg.toArgb()
                 )
@@ -121,7 +112,7 @@ class AppearanceSettingsViewModel(
 
             val customTheme = customThemeDataStore.source.updateData {
                 it.copy(
-                    theme = 1,
+                    theme = ThemeModes.CUSTOM,
                     surfaceContainer = color,
                 )
             }
@@ -136,7 +127,7 @@ class AppearanceSettingsViewModel(
             val onBg = foregroundColor(color)
             val customTheme = customThemeDataStore.source.updateData {
                 it.copy(
-                    theme = 1,
+                    theme = ThemeModes.CUSTOM,
                     surfaceContainerLow = color,
                     onSurfaceVariant = onBg.toArgb()
                 )
@@ -152,7 +143,7 @@ class AppearanceSettingsViewModel(
             val onBg = foregroundColor(color)
             val customTheme = customThemeDataStore.source.updateData {
                 it.copy(
-                    theme = 1,
+                    theme = ThemeModes.CUSTOM,
                     background = color,
                     onBackground = onBg.toArgb(),
                 )
@@ -171,7 +162,7 @@ class AppearanceSettingsViewModel(
             val customTheme = customThemeDataStore.source.updateData {
                 with(colorScheme) {
                     it.copy(
-                        theme = 1,
+                        theme = ThemeModes.CUSTOM,
                         primary = primary.toArgb(),
                         onPrimary = onPrimary.toArgb(),
                         primaryContainer = primaryContainer.toArgb(),

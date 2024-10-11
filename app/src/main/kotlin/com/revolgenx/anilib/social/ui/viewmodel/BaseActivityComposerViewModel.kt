@@ -13,8 +13,8 @@ import com.revolgenx.anilib.social.data.field.SaveActivityReplyField
 import com.revolgenx.anilib.social.data.field.SaveMessageActivityField
 import com.revolgenx.anilib.social.data.field.SaveTextActivityField
 import com.revolgenx.anilib.social.data.service.ActivityUnionService
-import com.revolgenx.anilib.social.factory.markdown
-import com.revolgenx.anilib.social.markdown.anilify
+import com.revolgenx.anilib.common.ext.markdown
+import com.revolgenx.anilib.common.ext.anilify
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
