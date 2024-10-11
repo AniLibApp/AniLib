@@ -19,8 +19,8 @@ jobs:
       - name: Clone Repo
         uses: actions/checkout@v4.2.0
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}  
-          submodules: 'recursive'              
+          submodules: 'recursive'
+          token: ${{ secrets.ACCESS_TOKEN }}
 
       - name: Validate Gradle Wrapper
         uses: gradle/actions/wrapper-validation@v3.5.0
@@ -30,6 +30,12 @@ jobs:
         with:
           java-version: 17
           distribution: adopt
+          
+      - name: Create gradle property file
+        env:
+          ANILIST_SECRET: ${{ secrets.ANILIST_SECRET }}
+        run:
+          echo "$ANILIST_SECRET" | base64 -d > ./secret.properties
 
       - name: Set up gradle
         uses: gradle/actions/setup-gradle@v4.1.0
