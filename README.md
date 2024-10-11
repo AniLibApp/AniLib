@@ -3,7 +3,8 @@
     <img src="./.github/assets/logo.png" alt="AniLib Logo" title="AniLib Logo" width="80"/>
 </a>
 
-# AniLib [App](https://anilibapp.github.io)
+# AniLib [App](https://anilibapp.github.io) 
+🚧🚧 **(WIP)** 🚧🚧
 
 ### An Unofficial Client for [AniList](https://anilist.co)
 Track your anime and manga progress, discover new titles, customize your lists, and much more—all in one app!
