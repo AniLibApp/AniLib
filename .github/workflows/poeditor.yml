@@ -47,7 +47,7 @@ jobs:
           overall_progress=$(printf "%.2f" $overall_progress)
           echo "Overall translation progress: $overall_progress%"
           echo "::set-output name=progress::$overall_progress"
-
+          rm poeditor_languages.json
       - name: Update README with the new badge
         run: |
           # Create the badge URL with the overall progress
