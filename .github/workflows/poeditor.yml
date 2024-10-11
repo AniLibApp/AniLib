@@ -1,0 +1,62 @@
+name: Update POEditor Translation Progress Badge
+
+on:
+  push:
+    paths:
+      - 'i18n/src/main/res/values/**.xml'       # Trigger for any other XML files in the values directory
+  workflow_dispatch:  # Allow manual triggers as well
+
+jobs:
+  update-badge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.0
+
+      - name: Fetch translation progress from POEditor
+        env:
+          POEDITOR_API_KEY: ${{ secrets.POEDITOR_API_KEY }}
+          POEDITOR_PROJECT_ID: ${{ secrets.POEDITOR_PROJECT_ID }}
+        run: |
+          curl -X POST https://api.poeditor.com/v2/languages/list \
+            -d api_token=$POEDITOR_API_KEY \
+            -d id=$POEDITOR_PROJECT_ID \
+            -d pretty=true > poeditor_languages.json
+
+      - name: Calculate overall progress
+        id: calc
+        run: |
+          total_percent=0
+          total_languages=0
+
+          # Loop through the JSON response and sum the percentages
+          for percent in $(jq '.result.languages[].percentage' poeditor_languages.json); do
+            total_percent=$(echo "$total_percent + $percent" | bc)
+            total_languages=$((total_languages + 1))
+          done
+
+          # Calculate overall progress
+          overall_progress=$(echo "$total_percent / $total_languages" | bc -l)
+          overall_progress=$(printf "%.2f" $overall_progress)
+          echo "Overall translation progress: $overall_progress%"
+          echo "::set-output name=progress::$overall_progress"
+
+      - name: Update README with the new badge
+        run: |
+          # Create the badge URL with the overall progress
+          badge_url="https://img.shields.io/badge/translation-${{ steps.calc.outputs.progress }}%25-blue"
+          
+          # Replace the existing badge URL in README.md
+          sed -i "s|https://img.shields.io/badge/translation-[0-9]*%25-blue|$badge_url|g" README.md
+
+      - name: Create a pull request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: "Update translation progress badge to ${{ steps.calc.outputs.progress }}%"
+          branch: update-translation-badge
+          title: "Update translation progress badge"
+          body: "This pull request updates the translation progress badge in the README based on the latest POEditor data."
+          labels: |
+            automated-update
+            translation
