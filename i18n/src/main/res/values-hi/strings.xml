@@ -1,9 +1,12 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources><string name="app_subtitle">"एनिलिस्ट !"</string>
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_subtitle">"एनिलिस्ट !"</string>
     <string name="anilib_site">"AniLib साइट"</string>
+    <string name="visit_site_desc">"अधिक जानने के लिए AniLib पर जाएं"</string>
     <string name="season">"ऋतु"</string>
     <string name="something_went_wrong">"कृपया दोबारा प्रयास करें !"</string>
     <string name="its_empty">"कोई परिणाम नहीं"</string>
+    <string name="ep_d_s">"Ep: %1$s · D: %2$s min"</string>
     <string name="manga">"मंगा"</string>
     <string name="please_log_in">"कृपया लॉगिन करें"</string>
     <string name="settings">"सेटिंगस"</string>
@@ -23,10 +26,10 @@
     <string name="rewatching">"रिवॉचिंग"</string>
     <string name="episode_progress">"एपिसोड प्रगति"</string>
     <string name="start_date">"आरंभ तिथि"</string>
-    <string name="total_rewatches">"कूल दृश्यम"</string>
-    <string name="_private">"निजी"</string>
+    <string name="end_date">"समाप्त तिथि"</string>
     <string name="notes">"टिप्पणियां"</string>
     <string name="failed_to_save">"सैव करने में असफल"</string>
+    <string name="failed_to_delete">"हटाने में असफल"</string>
     <string name="volume_progress">"वॉल्यूम की प्रगति"</string>
     <string name="overview">"अवलोकन"</string>
     <string name="character">"स्वरूप"</string>
@@ -41,14 +44,10 @@
     <string name="episodes">"एपिसोड"</string>
     <string name="duration">"अवधि"</string>
     <string name="format">"फार्मेट"</string>
-    <string name="s_min">"%1$s min"</string>
     <string name="chapters">"अध्याय"</string>
-    <string name="japanese">"जापानी"</string>
-    <string name="english">"अंग्रेज़ी"</string>
-    <string name="romaji">"रमाजी"</string>
+    <string name="volumes">"वॉल्यूम"</string>
     <string name="description">"विवरण"</string>
-    <string name="ep_s_s">"E: %1$s · %2$s"</string>
-    <string name="recommendation">"सिफारिशें"</string>
+    <string name="recommendations">"सिफारिशें"</string>
     <string name="relations">"संबंधी"</string>
     <string name="genre">"शैली"</string>
     <string name="tags">"टैग्स"</string>
@@ -58,19 +57,13 @@
     <string name="average_score">"औसत अंक"</string>
     <string name="popularity">"लोकप्रियता"</string>
     <string name="favourites">"पसंदीदा"</string>
-    <string name="datetime_days">"Days"</string>
-    <string name="datetime_hour">"Hour"</string>
-    <string name="datetime_min">"Min"</string>
-    <string name="datetime_sec">"Sec"</string>
-    <string name="recent_activity_per_day">"हाल ही की गतिविधि"</string>
+    <string name="ep_s">"Ep %1$d"</string>
     <string name="rankings">"रैंकिंग"</string>
     <string name="status_distribution">"स्थिति वितरण"</string>
     <string name="score_distribution">"स्कोर वितरण"</string>
     <string name="about">"सम्बंधित"</string>
     <string name="share">"शेयर"</string>
     <string name="media">"मीडिया"</string>
-    <string name="voice_roles">"वॉयस रोल्स"</string>
-    <string name="staff_roles">"स्टाफ रोल्स"</string>
     <string name="studio">"स्टूडियो"</string>
     <string name="search">"खोजें"</string>
     <string name="sort">"क्रमबद्ध"</string>
@@ -80,14 +73,12 @@
     <string name="done">"समर्पण करें"</string>
     <string name="cancel">"रद्द करें"</string>
     <string name="name">"नाम"</string>
-    <string name="settings_anime_list">"एनिमे सूची"</string>
-    <string name="settings_manga_list">"मंगा सूची"</string>
     <string name="none">"कोई भी नहीं"</string>
     <string name="following">"फोल्लोवंग"</string>
     <string name="blocked">"अवरोधित"</string>
     <string name="total_anime">"टोटल एनिमे"</string>
 
-    
+    <!-- Days Watched -->
     <string name="days_watched">"डे वॉंचड"</string>
     <string name="mean_score">"माध्य स्कोर"</string>
     <string name="total_manga">"टोटल मंगा"</string>
@@ -118,7 +109,9 @@
     <string name="trending">"ट्रेंडिंग"</string>
     <string name="popular">"लोकप्रिय"</string>
     <string name="newly_added">"नया जोड़ा गया"</string>
+    <string name="write_review">"समीक्षा करें (Min:2200)"</string>
     <string name="summary">"संक्षेप"</string>
+    <string name="review_summary">"समीक्षा सारांश (Min:20, Max:120)"</string>
     <string name="review_score_format">"स्कोर: %1$s/100"</string>
     <string name="review_of_s_by_s">"Review of %1$s by %2$s"</string>
     <string name="reviews">"Reviews"</string>
@@ -128,10 +121,10 @@
     <string name="whats_new">"नया क्या है"</string>
     <string name="terms_and_condition">"नियम और शर्तें"</string>
     <string name="terms_and_condition_desc">"नियम और शर्तें देखें"</string>
+
+    <!-- crash report -->
     <string name="crash_reporting">"क्रैश रिपोर्टिंग"</string>
     <string name="crash_report_desc">"AniLib की सुविधाओं को बेहतर बनाने में मदद करें। स्वचालित रूप से क्रैश रिपोर्ट भेजता है"</string>
-
-    
     <string name="refresh_interval">"पुनश्चर्या अंतराल"</string>
     <string name="notifications">"नोटिफिकेशनस"</string>
     <string name="when_someone_follows_me">"जब कोई मुझे फौलो करें"</string>
@@ -147,9 +140,13 @@
     <string name="cover_image_quality">"कवर छवि गुणवत्ता"</string>
     <string name="advanced_scores">"उन्नत स्कोरस"</string>
     <string name="reading">"रिडिंग"</string>
+
+    <!-- media title -->
+    <string name="romaji">"रमाजी"</string>
+    <string name="english">"अंग्रेज़ी"</string>
     <string name="_native">"मूल"</string>
 
-    
+    <!-- image quality -->
     <string name="high">"उच्च"</string>
     <string name="low">"निम्न"</string>
     <string name="medium">"मध्य"</string>
@@ -163,7 +160,7 @@
     <string name="release_date">"रिलीज़‌ तिथि"</string>
     <string name="popularity_desc">"लोकप्रियता डेस्केन्डिंग"</string>
 
-    
+    <!-- media_format -->
     <string name="tv">"टिभी"</string>
     <string name="tv_short">"टिभी सौर्ट"</string>
     <string name="movie">"चलचित्र"</string>
@@ -175,7 +172,7 @@
     <string name="music">"संगीत"</string>
     <string name="unknown">"अनजान"</string>
 
-    
+    <!-- media_source -->
     <string name="original">"प्राकृत"</string>
     <string name="light_novel">"हल्का उपन्यास"</string>
     <string name="visual_novel">"द्रश्य उपन्यास"</string>
@@ -183,7 +180,7 @@
     <string name="other">"अन्य"</string>
     <string name="doujinshi">"दजंषि"</string>
 
-    
+    <!-- media_relation -->
     <string name="contains">"शामिल"</string>
     <string name="compilation">"संकलन"</string>
     <string name="spin_off">"स्पिन अफ"</string>
@@ -194,30 +191,25 @@
     <string name="prequel">"प्रीक्वल"</string>
     <string name="adaptation">"अनुकूलन"</string>
 
-    
+    <!-- character_role -->
     <string name="background">"पृष्ठभूमि"</string>
     <string name="supporting">"सहायक"</string>
     <string name="main">"मुख्य"</string>
 
-    
-    <string name="korean">"कोरियाईन"</string>
-    <string name="hebrew">"हिब्रू"</string>
-    <string name="hungarian">"हंगरियन"</string>
-
-    
+    <!-- media_status -->
     <string name="cancelled">"रद्द"</string>
     <string name="not_yet_released">"अभी तक रिलीज़ नहीं हुआ है"</string>
     <string name="releasing">"रिलीजिंग"</string>
     <string name="finished">"समाप्त"</string>
 
-    
+    <!-- media_season -->
     <string name="all">"प्रत्येक"</string>
     <string name="winter">"शिशिर"</string>
     <string name="spring">"वसन्त"</string>
     <string name="summer">"ग्रीष्म"</string>
     <string name="fall">"अतः"</string>
 
-    
+    <!-- advance_search_sort -->
     <string name="id">"आईडि"</string>
     <string name="id_desc">"आईडि डेस्केन्डिंग"</string>
     <string name="title_romaji">"रमाजी नाम"</string>
@@ -240,22 +232,326 @@
     <string name="search_match">"मैच खोजें"</string>
     <string name="favourites_desc">"पसंदीदा डेस्केन्डिंग"</string>
 
-    
+    <!-- country of origin -->
     <string name="China">"चीन"</string>
     <string name="South_Korean">"दक्षिण कोरियाई"</string>
     <string name="Japan">"जापान"</string>
 
-    
+    <!-- recommendation_sort -->
     <string name="on_list">"सूची में"</string>
     <string name="recent">"हाल ही में"</string>
     <string name="highest_rated">"उच्चतम मूल्यांकित"</string>
     <string name="lowest_rated">"निम्नतम मूल्यांकित"</string>
 
-    
+    <!-- toggle -->
     <string name="titles_watched">"टाइटल वॉंचड"</string>
     <string name="titles_read">"टाइटल रैड"</string>
     <string name="rating">"रेटिंग"</string>
     <string name="created_at">"क्रिऐट ऐट"</string>
     <string name="show_adult_content_desc">"इसे सक्रिय करने पर एडल्ट कंटेंट सामग्री दिखाई देगा"</string>
-    <string name="settings_appearance_desc">ऐप का रंग-रूप</string>
-    </resources>
+    <string name="theme"></string>
+
+    <!-- not translated -->
+    <string name="portuguese">"Português"</string>
+    <string name="italian">"Italiano"</string>
+    <string name="spanish">"Español"</string>
+
+    <!-- airing sort -->
+    <string name="media_id"></string>
+    <string name="time"></string>
+    <string name="home"></string>
+    <string name="list"></string>
+    <string name="profile"></string>
+    <string name="no_description"></string>
+    <string name="translate"></string>
+    <string name="include_already_aired"></string>
+    <string name="saved_successfully"></string>
+    <string name="show_only_from_your_planning_list"></string>
+    <string name="show_only_from_your_watching_list"></string>
+    <string name="automatically_subscribe_me_to_activity_i_create"></string>
+    <string name="automatically_subscribe_me_to_activity_i_reply_to"></string>
+    <string name="weekly"></string>
+    <string name="more"></string>
+    <string name="synonyms"></string>
+    <string name="category"></string>
+    <string name="rank"></string>
+    <string name="tag_name_percent"></string>
+    <string name="status_distribution_string"></string>
+    <string name="trailer"></string>
+    <string name="airing_score_progression"></string>
+    <string name="airing_watchers_progression"></string>
+    <string name="widget"></string>
+    <string name="french">"Français"</string>
+    <string name="german">"Deutsch"</string>
+    <string name="licenses"></string>
+    <string name="translators"></string>
+    <string name="repeat"></string>
+    <string name="priority"></string>
+    <string name="started_on"></string>
+    <string name="finished_on"></string>
+    <string name="added"></string>
+    <string name="updated"></string>
+    <string name="do_you_really_want_to_delete_the_entry_s"></string>
+    <string name="hiatus"></string>
+
+    <!-- not translated
+country of origin -->
+    <string name="country_of_origin"></string>
+    <string name="Taiwan"></string>
+    <string name="text_status"></string>
+    <string name="list_progress"></string>
+    <string name="social"></string>
+    <string name="write_a_status"></string>
+    <string name="preview"></string>
+    <string name="spoiler"></string>
+    <string name="reply"></string>
+    <string name="edit"></string>
+    <string name="plan_to_read"></string>
+    <string name="rereading"></string>
+    <string name="plan_to_watch"></string>
+    <string name="no_watching_feature_desc"></string>
+    <string name="mutual"></string>
+    <string name="show_reason"></string>
+    <string name="_default"></string>
+    <string name="custom"></string>
+    <string name="surface_color_desc"></string>
+    <string name="surface_color"></string>
+    <string name="media_related_to_me"></string>
+    <string name="media_modified_in_my_list"></string>
+    <string name="media_merged_in_my_list"></string>
+    <string name="media_deleted_in_my_list"></string>
+    <string name="web_novel"></string>
+    <string name="live_action"></string>
+    <string name="year_range"></string>
+    <string name="readable_on"></string>
+    <string name="favourite"></string>
+    <string name="custom_lists"></string>
+    <string name="no_custom_lists"></string>
+    <string name="game"></string>
+    <string name="multimedia_project"></string>
+    <string name="picture_book"></string>
+    <string name="comic"></string>
+    <string name="important"></string>
+    <string name="open_in_browser"></string>
+    <string name="newest"></string>
+    <string name="oldest"></string>
+    <string name="gender"></string>
+    <string name="blood_type"></string>
+    <string name="age"></string>
+    <string name="death"></string>
+    <string name="birth"></string>
+    <string name="years_active"></string>
+    <string name="hometown"></string>
+    <string name="anime_staff_roles"></string>
+    <string name="manga_staff_roles"></string>
+    <string name="block"></string>
+    <string name="unblock"></string>
+    <string name="block_user_msg"></string>
+    <string name="app_desc"></string>
+    <string name="explore"></string>
+    <string name="recommendation">"सिफारिशें"</string>
+    <string name="_private">"निजी"</string>
+    <string name="hide_from_status_lists"></string>
+    <string name="write_review_valid_desc"></string>
+    <string name="write_review_summary_valid_desc"></string>
+    <string name="empty"></string>
+    <string name="retry"></string>
+    <string name="na"></string>
+    <string name="ok"></string>
+    <string name="voice_roles">"वॉयस रोल्स"</string>
+    <string name="staff_roles">"स्टाफ रोल्स"</string>
+    <string name="user"></string>
+    <string name="logout"></string>
+    <string name="chapter_progress"></string>
+    <string name="total_rewatches">"कूल दृश्यम"</string>
+    <string name="total_rereads"></string>
+    <string name="confirm"></string>
+    <string name="clear"></string>
+    <string name="search_manga"></string>
+    <string name="search_anime"></string>
+    <string name="progress_volumes"></string>
+    <string name="activity_posting_guidelines"></string>
+    <string name="view_all"></string>
+    <string name="recent_activity_per_day">"हाल ही की गतिविधि"</string>
+    <string name="hours_watched"></string>
+    <string name="volume_read"></string>
+    <string name="chapters_planned"></string>
+    <string name="episode_count"></string>
+    <string name="chapter_count"></string>
+    <string name="count_d"></string>
+    <string name="hours_watched_d"></string>
+    <string name="chapters_read_d"></string>
+    <string name="mean_score_d"></string>
+    <string name="d_day_d_hour"></string>
+    <string name="followers"></string>
+    <string name="review_by_user"></string>
+    <string name="score_d_100"></string>
+    <string name="d_out_of_d_liked_this_review"></string>
+    <string name="ep_s_s">"E: %1$s · %2$s"</string>
+    <string name="ep_s_airing_in"></string>
+    <string name="ep_s_aired_at"></string>
+    <string name="ep_s_of_s_airing_in"></string>
+    <string name="ep_s_of_s_aired_at"></string>
+    <string name="eta_s_s_s_s"></string>
+    <string name="eta_s_s_s"></string>
+    <string name="eta_s_s"></string>
+    <string name="eta_s"></string>
+    <string name="eta_no_sec_s_s_s"></string>
+    <string name="eta_no_sec_s_s"></string>
+    <string name="eta_no_sec_s"></string>
+    <string name="s_min">"%1$s min"</string>
+    <string name="s_percent"></string>
+    <string name="show_spoilers"></string>
+    <string name="hide_spoilers"></string>
+    <string name="invalid_url"></string>
+    <string name="no_app_found_to_handle_url"></string>
+    <string name="settings_important_to_know"></string>
+    <string name="settings_login"></string>
+    <string name="settings_sign_up"></string>
+    <string name="settings_log_into_anilist"></string>
+    <string name="settings_sign_up_to_anilist"></string>
+    <string name="settings_general"></string>
+    <string name="settings_general_desc"></string>
+    <string name="settings_appearance"></string>
+    <string name="settings_appearance_desc">"ऐप का रंग-रूप"</string>
+    <string name="settings_login_signup_notice"></string>
+    <string name="settings_anime_and_manga"></string>
+    <string name="settings_anime_and_manga_desc"></string>
+    <string name="settings_filter_desc"></string>
+    <string name="settings_about_desc"></string>
+    <string name="settings_lists"></string>
+    <string name="settings_list_desc"></string>
+    <string name="settings_scoring_system"></string>
+    <string name="settings_default_list_order"></string>
+    <string name="settings_split_completed_list_section_by_format"></string>
+    <string name="settings_advanced_scoring"></string>
+    <string name="settings_custom_anime_lists"></string>
+    <string name="settings_custom_manga_lists"></string>
+    <string name="settings_anime_list">"एनिमे सूची"</string>
+    <string name="settings_manga_list">"मंगा सूची"</string>
+    <string name="settings_notifications_desc"></string>
+    <string name="settings_are_you_sure_you_want_to_log_out"></string>
+    <string name="settings_support"></string>
+    <string name="settings_support_desc"></string>
+    <string name="settings_placeholder_search"></string>
+    <string name="settings_theme_dark_mode"></string>
+    <string name="settings_theme_dark_follow_system"></string>
+    <string name="settings_theme_dark_off"></string>
+    <string name="settings_theme_dark_on"></string>
+    <string name="settings_general_app_language"></string>
+    <string name="settings_default"></string>
+    <string name="settings_title_language"></string>
+    <string name="settings_adult_content"></string>
+    <string name="settings_airing_anime_notifications"></string>
+    <string name="settings_activity_merge_time"></string>
+    <string name="settings_explore_section_order"></string>
+    <string name="settings_main_page_order"></string>
+    <string name="settings_explore_section_order_desc"></string>
+    <string name="settings_main_page_order_desc"></string>
+    <string name="settings_change_order"></string>
+    <string name="restart_required_msg"></string>
+    <string name="activity_subscriptions"></string>
+    <string name="site_data_changes"></string>
+    <string name="merge_time_never"></string>
+    <string name="merge_time_30_min"></string>
+    <string name="merge_time_1_hour"></string>
+    <string name="merge_time_2_hours"></string>
+    <string name="merge_time_3_hours"></string>
+    <string name="merge_time_6_hours"></string>
+    <string name="merge_time_12_hours"></string>
+    <string name="merge_time_1_day"></string>
+    <string name="merge_time_2_days"></string>
+    <string name="merge_time_3_days"></string>
+    <string name="merge_time_1_week"></string>
+    <string name="merge_time_2_weeks"></string>
+    <string name="merge_time_always"></string>
+    <string name="settings_list_editor_on_single_tap"></string>
+    <string name="settings_list_editor_on_single_tap_desc"></string>
+    <string name="settings_auto_play_gif"></string>
+    <string name="settings_play_gif_desc"></string>
+    <string name="settings_show_users_about"></string>
+    <string name="settings_show_users_about_desc"></string>
+    <string name="settings_widget_desc"></string>
+    <string name="widget_open_list_editor"></string>
+    <string name="widget_open_list_editor_desc"></string>
+    <string name="widget_already_aired"></string>
+    <string name="widget_include_already_aired_desc"></string>
+    <string name="widget_watching_list"></string>
+    <string name="widget_watching_list_desc"></string>
+    <string name="widget_planning_list"></string>
+    <string name="widget_planning_list_desc"></string>
+    <string name="show_description"></string>
+    <string name="activity_history"></string>
+    <string name="amount"></string>
+    <string name="total_episodes"></string>
+    <string name="genre_overview"></string>
+    <plurals name="s_episodes_behind">
+        <item quantity="one"></item>
+        <item quantity="other"></item>
+    </plurals>
+    <string name="no_result"></string>
+    <string name="s_dash_s"></string>
+    <string name="activity_type"></string>
+    <string name="has_replies"></string>
+    <string name="replies"></string>
+    <string name="japanese">"जापानी"</string>
+    <string name="korean">"कोरियाईन"</string>
+    <string name="hebrew">"हिब्रू"</string>
+    <string name="hungarian">"हंगरियन"</string>
+    <string name="compose"></string>
+    <string name="refresh"></string>
+    <string name="activity_has_been_deleted"></string>
+    <string name="reply_has_been_deleted"></string>
+    <string name="color"></string>
+    <string name="themes"></string>
+    <string name="midnight"></string>
+    <string name="bee"></string>
+    <string name="strawberry_daiquiri"></string>
+    <string name="tako"></string>
+    <string name="teal"></string>
+    <string name="green_apple"></string>
+    <string name="seeding"></string>
+    <string name="seed_color"></string>
+    <string name="primary_color"></string>
+    <string name="primary_color_desc"></string>
+    <string name="primary_container_color"></string>
+    <string name="primary_container_color_desc"></string>
+    <string name="surface_container_color"></string>
+    <string name="surface_container_color_desc"></string>
+    <string name="surface_container_low_color"></string>
+    <string name="surface_container_low_color_desc"></string>
+    <string name="grant_notification_permission_message"></string>
+    <string name="support"></string>
+    <string name="settings_list_100_point"></string>
+    <string name="settings_list_10_point_decimal"></string>
+    <string name="settings_list_10_point"></string>
+    <string name="settings_list_5_star"></string>
+    <string name="settings_list_3_star"></string>
+    <string name="license_apache_2"></string>
+    <string name="license_apache_desc"></string>
+    <string name="enabled"></string>
+    <string name="success"></string>
+    <string name="notification_refresh_interval"></string>
+    <string name="score_s"></string>
+    <string name="list_compact"></string>
+    <string name="grid"></string>
+    <string name="grid_compact"></string>
+    <string name="change_ads_interval"></string>
+    <string name="change_long_ads_interval"></string>
+    <string name="ads_once_a_day"></string>
+    <string name="ads_every_fourth_day"></string>
+    <string name="ads_every_other_day"></string>
+    <string name="ads_every_week"></string>
+    <string name="ads_play_support_message"></string>
+    <string name="ads_support_the_app"></string>
+    <string name="ads_support_button_message"></string>
+    <string name="datetime_days">"Days"</string>
+    <string name="datetime_hour">"Hour"</string>
+    <string name="datetime_min">"Min"</string>
+    <string name="datetime_sec">"Sec"</string>
+    <string name="text_field_required"></string>
+    <string name="messages"></string>
+    <string name="replies_s"></string>
+    <string name="skip"></string>
+    <string name="help_to_translate"></string>
+</resources>
