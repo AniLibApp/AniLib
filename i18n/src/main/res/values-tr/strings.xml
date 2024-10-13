@@ -299,7 +299,7 @@ country of origin -->
     <string name="text_status">Durum Yazısı</string>
     <string name="list_progress">Liste İlerlemesi</string>
     <string name="social">Sosyal</string>
-    <string name="write_a_status">Bir durum yaz…</string>
+    <string name="write_a_status">Bir durum yaz...</string>
     <string name="preview">Önizleme</string>
     <string name="spoiler">Spoiler</string>
     <string name="reply">Yanıtla</string>
