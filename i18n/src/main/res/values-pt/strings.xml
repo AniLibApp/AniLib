@@ -489,6 +489,7 @@ country of origin -->
     <string name="genre_overview">Visão Geral do Gênero</string>
     <plurals name="s_episodes_behind">
         <item quantity="one">%1$s episódio atrasado</item>
+        <item quantity="many">%1$s episódios atrasados</item>
         <item quantity="other">%1$s episódios atrasados</item>
     </plurals>
     <string name="no_result">Sem Resultado</string>
