@@ -33,7 +33,7 @@ jobs:
               -d id=$POEDITOR_PROJECT_ID \
               -d language=$LOCALE \
               -d type=android_strings \
-              -d options=[{"unquoted": 1}])
+              -d options='[{"unquoted": 1}]')
 
             # Extract the download URL from the response
             DOWNLOAD_URL=$(echo $RESPONSE | jq -r '.result.url')
