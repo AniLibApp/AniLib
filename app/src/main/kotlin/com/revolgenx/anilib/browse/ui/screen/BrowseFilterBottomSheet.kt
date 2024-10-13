@@ -454,6 +454,7 @@ fun BrowseFilterRangeSlider(
                     .size(18.dp)
                     .clickable {
                         position.value = start..end
+                        onValueChanged(start, end)
                     }, imageVector = AppIcons.IcClose, contentDescription = null
             )
         }

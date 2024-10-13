@@ -497,6 +497,7 @@
     <string name="grid_compact">Grid Compact</string>
     <string name="change_ads_interval">Change Ads Interval</string>
     <string name="change_long_ads_interval">Change Long Ads Interval</string>
+    <string name="ads_every_6_hours">Every 6 Hours</string>
     <string name="ads_once_a_day">Once a Day</string>
     <string name="ads_every_fourth_day">Every Fourth Day</string>
     <string name="ads_every_other_day">Every Other Day</string>

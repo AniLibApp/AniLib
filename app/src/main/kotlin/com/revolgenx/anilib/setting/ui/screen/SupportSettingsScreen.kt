@@ -77,6 +77,10 @@ fun SupportSettingsScreenContent() {
                     entries = remember {
                         listOf(
                             ListPreferenceEntry(
+                                context.getString(R.string.ads_every_6_hours),
+                                InterstitialAdsInterval.EVERY_6_HOURS
+                            ),
+                            ListPreferenceEntry(
                                 context.getString(R.string.ads_once_a_day),
                                 InterstitialAdsInterval.EVERY_DAY
                             ),

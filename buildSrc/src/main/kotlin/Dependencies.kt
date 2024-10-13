@@ -3,7 +3,7 @@ import org.gradle.api.artifacts.dsl.DependencyHandler
 object AndroidConfig {
     const val compileSdk = 34
     const val minSdk = 21
-    const val targetSdk = 33
+    const val targetSdk = 34
 }
 
 object PackagingOptions {
@@ -12,7 +12,6 @@ object PackagingOptions {
 }
 
 object Versions{
-    const val composeUi = "1.6.8"
     const val composeMaterial = "1.3.0"
     const val composeActivity = "1.9.1"
     const val composeBom = "2024.09.00"

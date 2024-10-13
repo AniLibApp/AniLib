@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "730969148513",
+    "project_id": "anilib-bc7c0",
+    "storage_bucket": "anilib-bc7c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:730969148513:android:442d50aba74bb135cbee20",
+        "android_client_info": {
+          "package_name": "com.revolgenx.anilib"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3MalG1XcgeqozAUv8m5166mze3EL36RM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
