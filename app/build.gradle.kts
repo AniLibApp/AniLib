@@ -23,7 +23,7 @@ android {
     defaultConfig {
         applicationId = "com.revolgenx.anilib"
 
-        versionCode = 41
+        versionCode = 42
         versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
