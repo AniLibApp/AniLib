@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4.2.0
 
       - name: Install jq for JSON parsing
         run: sudo apt-get install -y jq
@@ -32,7 +32,8 @@ jobs:
               -d api_token=$POEDITOR_API_KEY \
               -d id=$POEDITOR_PROJECT_ID \
               -d language=$LOCALE \
-              -d type=android_strings)
+              -d type=android_strings \
+              -d options=[{"unquoted": 1}])
 
             # Extract the download URL from the response
             DOWNLOAD_URL=$(echo $RESPONSE | jq -r '.result.url')
