@@ -1,0 +1,55 @@
+name: Update Translations from POEditor
+
+on:
+  workflow_dispatch: # Allows manual triggers
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-translations:
+    name: Pull Translations and Create PR
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install jq for JSON parsing
+        run: sudo apt-get install -y jq
+
+      - name: Download translations for all locales
+        run: |
+          # Define an array of the locales you want to download
+          LOCALES=("ar" "de" "es" "fr" "hi" "it" "pt" "ru" "tr")
+
+          for LOCALE in "${LOCALES[@]}"; do
+            echo "Downloading translations for $LOCALE"
+          
+            # Export translations from POEditor for each locale
+            RESPONSE=$(curl -s -X POST https://api.poeditor.com/v2/projects/export \
+              -d api_token=$POEDITOR_API_KEY \
+              -d id=$POEDITOR_PROJECT_ID \
+              -d language=$LOCALE \
+              -d type=android_strings)
+
+            # Extract the download URL from the response
+            DOWNLOAD_URL=$(echo $RESPONSE | jq -r '.result.url')
+
+            # Download the translation file and save it to the appropriate folder
+            curl -o i18n/src/main/res/values-$LOCALE/strings.xml "$DOWNLOAD_URL"
+          done
+        env:
+          POEDITOR_API_KEY: ${{ secrets.POEDITOR_API_KEY }}
+          POEDITOR_PROJECT_ID: ${{ secrets.POEDITOR_PROJECT_ID }}
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: 'Update translations from POEditor'
+          branch: 'update-translations'
+          title: 'Update Translations'
+          body: 'This PR updates locale strings with the latest translations from POEditor'
+          labels: 'translations, automation'
