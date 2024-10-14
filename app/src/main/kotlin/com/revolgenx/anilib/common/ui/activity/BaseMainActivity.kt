@@ -77,7 +77,7 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
     protected val viewModel by viewModel<MainActivityViewModel>()
     protected var navigator: Navigator? = null
     private val themeDataStore: ThemeDataStore by inject()
-    private val appPreferencesDataStore: AppPreferencesDataStore by inject()
+    protected val appPreferencesDataStore: AppPreferencesDataStore by inject()
 
     private val adsViewModel: AdsViewModel by viewModel<AdsViewModel>()
 

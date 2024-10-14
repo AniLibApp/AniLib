@@ -6,6 +6,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -77,6 +78,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val widgetAiringSortKey = intPreferencesKey("widget_airing_sort_key")
 
         val currentAppVersionKey = stringPreferencesKey("current_app_version_key")
+        val displayScaleKey = floatPreferencesKey("display_scale_key")
     }
 
 
@@ -222,6 +224,12 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         dataStore = dataStore,
         prefKey = currentAppVersionKey,
         defaultValue = null
+    )
+
+    val displayScale = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = displayScaleKey,
+        defaultValue = 1f
     )
 
     val isLoggedIn = userId.data.map { it != null }

@@ -521,4 +521,5 @@
     <string name="skip">Skip</string>
     <string name="translate">Translate</string>
     <string name="help_to_translate">Help to translate?</string>
+    <string name="display_scale">Display Scale</string>
 </resources>

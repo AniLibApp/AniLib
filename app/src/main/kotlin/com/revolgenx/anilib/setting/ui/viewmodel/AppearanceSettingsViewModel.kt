@@ -13,6 +13,7 @@ import com.materialkolor.ktx.toHct
 import com.materialkolor.palettes.TonalPalette
 import com.materialkolor.scheme.SchemeTonalSpot
 import com.revolgenx.anilib.common.data.constant.ThemeModes
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.theme.CustomThemeDataStore
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.launch
@@ -33,12 +34,20 @@ import com.revolgenx.anilib.common.util.isColorDark
 
 class AppearanceSettingsViewModel(
     val themeDataStore: ThemeDataStore,
-    private val customThemeDataStore: CustomThemeDataStore
+    private val customThemeDataStore: CustomThemeDataStore,
+    appPreferencesDataStore: AppPreferencesDataStore
 ) : ViewModel() {
     companion object {
         val colors = MaterialDynamicColors(false)
     }
 
+    val displayScale = appPreferencesDataStore.displayScale
+
+    fun setDisplayScale(scale: Float) {
+        launch {
+            displayScale.set(scale)
+        }
+    }
 
     fun setTheme(
         theme: ThemeModes,
