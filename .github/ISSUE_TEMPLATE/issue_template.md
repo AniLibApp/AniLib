@@ -1,6 +1,6 @@
 ---
-name: Android Issue
-about: Report a bug or request a feature related to the Android app.
+name: 🐛Issue report
+about: Report a bug or request a feature related to the AniLib app.
 title: "[Bug] | [Feature] | [Improvement] - [Short description]"
 labels: bug, feature, improvement
 assignees: ''
@@ -23,10 +23,6 @@ Please provide a brief description of the issue or feature request.
 2. Click on '...'
 3. Scroll down to '...'
 4. See error/issue
-
-## Behavior
-
-Describe what happened.
 
 ## Screenshots (if applicable)
 
