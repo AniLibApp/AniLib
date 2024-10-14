@@ -1,0 +1,25 @@
+name: Release
+on:
+  push:
+    branches:
+      - master
+    tags:
+      - v*
+  workflow_dispatch:  # Allow manual triggers as well
+
+jobs:
+  build:
+    name: Build app
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Create Release
+#        if: startsWith(github.ref, 'refs/tags/') && github.repository == 'AniLibApp/AniLib'
+        uses: softprops/action-gh-release@v2.0.8
+        with:
+          tag_name: 2.0.0
+          name: AniLib 2.0.0
+          draft: true
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT }}
