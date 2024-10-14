@@ -277,7 +277,7 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
 
                     WorkManager.getInstance(this@BaseMainActivity).enqueueUniquePeriodicWork(
                         NotificationWorker.NOTIFICATION_WORKER_TAG,
-                        ExistingPeriodicWorkPolicy.UPDATE,
+                        ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
                         periodicWork
                     )
                 } else {
