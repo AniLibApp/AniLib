@@ -1,0 +1,22 @@
+name: Close Stale Issues
+
+on:
+  schedule:
+    - cron: "0 0 1 1 *"
+  workflow_dispatch:  # Allows you to trigger the workflow manually
+
+permissions:
+  issues: write
+  
+jobs:
+  close_old_issues:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Close issues inactive for 1 year
+      uses: actions/stale@v9
+      with:
+        repo-token: ${{ secrets.GITHUB_TOKEN }}
+        days-before-stale: 365  # Mark issues as stale after 365 days of inactivity
+        days-before-close: 0     # Close immediately after marking as stale
+        stale-issue-message: "This issue has been inactive for over a year and will be closed."
+        close-issue-message: "Closing this issue due to over a year of inactivity."
