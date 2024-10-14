@@ -1,0 +1,31 @@
+name: Upload to POEditor
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'i18n/src/main/res/values/strings.xml'
+  workflow_dispatch:  # Allows you to trigger the workflow manually
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4.2.0
+
+      - name: Upload to POEditor
+        env:
+          POEDITOR_API_KEY: ${{ secrets.POEDITOR_API_KEY }}
+          POEDITOR_PROJECT_ID: ${{ secrets.POEDITOR_PROJECT_ID }}
+        run: |
+          curl -X POST "https://api.poeditor.com/v2/projects/upload" \
+          -F api_token="${POEDITOR_API_KEY}" \
+          -F id="${POEDITOR_PROJECT_ID}" \
+          -F updating="terms_translations" \
+          -F file=@i18n/src/main/res/values/strings.xml \
+          -F language="en" \
+          -F override="1" \
+          -F tags="{\"obsolete\":\"removed-strings\"}"

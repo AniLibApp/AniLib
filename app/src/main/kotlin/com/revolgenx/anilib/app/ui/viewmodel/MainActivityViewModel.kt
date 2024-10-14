@@ -5,6 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
@@ -28,7 +29,9 @@ import com.revolgenx.anilib.user.data.field.UserSettingsField
 import com.revolgenx.anilib.user.data.service.UserService
 import com.revolgenx.anilib.user.ui.model.toMediaTitleType
 import com.revolgenx.anilib.user.ui.screen.UserScreen
-import kotlinx.coroutines.flow.single
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 
 enum class DeepLinkPath {
     HOME,
@@ -119,16 +122,16 @@ class MainActivityViewModel(
     }
 
     private fun getUserSettings(userId: Int) {
-        launch {
-            val userSettings = userService.getUserSettings(UserSettingsField().also {
-                it.userId = userId
-            }).single()
-
-            userSettings?.let { settings ->
+        userService.getUserSettings(UserSettingsField().also {
+            it.userId = userId
+        }).onEach { userModel ->
+            userModel?.let { settings ->
                 settings.options?.let {
                     preferencesDataStore.mediaTitleType.set(it.titleLanguage.toMediaTitleType())
                 }
             }
-        }
+        }.catch {}
+            .launchIn(viewModelScope)
+
     }
 }

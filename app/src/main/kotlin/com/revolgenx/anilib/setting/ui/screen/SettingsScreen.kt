@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.setting.ui.screen
 
+import android.content.ActivityNotFoundException
 import android.content.Context
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
@@ -57,6 +58,7 @@ import com.revolgenx.anilib.common.util.versionName
 import com.revolgenx.anilib.setting.ui.component.TextPreferenceItem
 import com.revolgenx.anilib.setting.ui.screen.about.AboutSettingsScreen
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -255,7 +257,17 @@ fun SettingScreenContent(isTab: Boolean) {
             message = stringResource(id = I18nR.string.settings_login_signup_notice),
             title = stringResource(id = I18nR.string.settings_important_to_know)
         ) {
-            login(context)
+            try {
+                login(context)
+            } catch (e: ActivityNotFoundException) {
+                scope.launch {
+                    snackbarHostState.showSnackbar(context.getString(anilib.i18n.R.string.no_app_found_to_handle_url))
+                }
+            } catch (e: Exception) {
+                scope.launch {
+                    snackbarHostState.showSnackbar("An error occurred while trying to open the link")
+                }
+            }
         }
 
 
