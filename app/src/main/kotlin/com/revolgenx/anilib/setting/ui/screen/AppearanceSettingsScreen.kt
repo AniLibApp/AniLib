@@ -15,7 +15,9 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -43,6 +45,8 @@ import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.setting.ui.component.GroupPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
+import com.revolgenx.anilib.setting.ui.component.PrefsHorizontalPadding
+import com.revolgenx.anilib.setting.ui.component.PrefsVerticalPadding
 import com.revolgenx.anilib.setting.ui.component.TextPreferenceItem
 import com.revolgenx.anilib.setting.ui.viewmodel.AppearanceSettingsViewModel
 import kotlinx.coroutines.launch
@@ -63,6 +67,27 @@ object AppearanceSettingsScreen : PreferencesScreen() {
         val isDarkTheme = themeData.darkMode ?: systemInDarkTheme
 
         val context = localContext()
+
+        GroupPreferenceItem(title = context.getString(I18nR.string.display_scale)) {
+            val displayScaleValue = viewModel.displayScale.collectAsState()
+            val displayScale = remember(displayScaleValue.value){
+                mutableFloatStateOf(displayScaleValue.value!!)
+            }
+            Slider(
+                modifier = Modifier.padding(horizontal = PrefsHorizontalPadding, vertical = PrefsVerticalPadding),
+                value = displayScale.floatValue,
+                steps = 6,
+                onValueChange = { range ->
+                    displayScale.floatValue = range
+                },
+                valueRange = 0.8f..1f,
+                onValueChangeFinished = {
+                    viewModel.setDisplayScale(displayScale.floatValue)
+                }
+            )
+        }
+
+
         val themeModeEntries = remember {
             getThemeModeEntries(context)
         }
@@ -200,7 +225,7 @@ object AppearanceSettingsScreen : PreferencesScreen() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .alpha(if(enabled) 1f else 0.5f)
+                .alpha(if (enabled) 1f else 0.5f)
                 .clickable(enabled = enabled) {
                     state.show()
                 },
@@ -215,7 +240,11 @@ object AppearanceSettingsScreen : PreferencesScreen() {
                 modifier = Modifier
                     .padding(4.dp)
                     .size(48.dp)
-                    .border(width = 1.dp, color = MaterialTheme.colorScheme.onSurface, shape = CircleShape)
+                    .border(
+                        width = 1.dp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                        shape = CircleShape
+                    )
                     .clip(RoundedCornerShape(100.dp))
                     .background(Color(color))
             )

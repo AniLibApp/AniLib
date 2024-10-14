@@ -8,6 +8,8 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.NavigatorDisposeBehavior
 import com.revolgenx.anilib.app.ui.screen.MainActivityScreen
@@ -43,10 +45,18 @@ class MainActivity : BaseMainActivity() {
                 ) { navigator ->
                     this@MainActivity.navigator = navigator
                     CanShowAds()
+
+                    val displayScale = appPreferencesDataStore.displayScale.collectAsState()
+                    val density = LocalDensity.current
+
                     CompositionLocalProvider(
                         LocalMainNavigator provides navigator,
                         LocalUserState provides viewModel.userState,
                         LocalMediaState provides viewModel.mediaState,
+                        LocalDensity provides Density(
+                            density.density * displayScale.value!!,
+                            density.fontScale
+                        ),
                         GlobalViewModelStoreOwner provides this@MainActivity
                     ) {
                         SlideTransition(navigator = navigator)
@@ -74,7 +84,7 @@ class MainActivity : BaseMainActivity() {
         LaunchedEffect(viewModel.deepLinkPath.value) {
             viewModel.deepLinkPath.value?.let { deepLinkPath ->
                 val handle: Any = when (deepLinkPath.first) {
-                    DeepLinkPath.HOME ->{
+                    DeepLinkPath.HOME -> {
                         navigator.popUntilRoot()
                     }
 
@@ -119,10 +129,15 @@ class MainActivity : BaseMainActivity() {
                         navigator.mediaListEntryEditorScreen(deepLinkPath.second as Int)
                     }
 
-                    DeepLinkPath.ANIME_LIST -> {false}
-                    DeepLinkPath.MANGA_LIST -> {false}
+                    DeepLinkPath.ANIME_LIST -> {
+                        false
+                    }
+
+                    DeepLinkPath.MANGA_LIST -> {
+                        false
+                    }
                 }
-                if(handle !is Boolean){
+                if (handle !is Boolean) {
                     viewModel.deepLinkPath.value = null
                 }
             }

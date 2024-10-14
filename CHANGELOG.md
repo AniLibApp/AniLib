@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+- Add display scaling to make component small [#98](https://github.com/AniLibApp/AniLib/pull/98/files)
 
 ### Fixed
 - fix crash on comparing list entry

@@ -299,7 +299,7 @@ val viewModelModules = module {
         )
     }
     viewModel { GeneralSettingsViewModel(get()) }
-    viewModel { AppearanceSettingsViewModel(get(), get()) }
+    viewModel { AppearanceSettingsViewModel(get(), get(), get()) }
     viewModel { MediaSettingsViewModel(get(), get(), get()) }
     viewModel { NotificationSettingsViewModel(get(), get(), get()) }
     viewModel { MediaListSettingsViewModel(get(), get()) }
