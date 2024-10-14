@@ -291,7 +291,13 @@ val viewModelModules = module {
     viewModel { RecommendationFilterViewModel() }
 
     //settings
-    viewModel { SettingsViewModel(get()) }
+    viewModel {
+        SettingsViewModel(
+            get(),
+            get<Context>().airingScheduleFilterDataStore,
+            get<Context>().exploreAiringScheduleFilterDataStore
+        )
+    }
     viewModel { GeneralSettingsViewModel(get()) }
     viewModel { AppearanceSettingsViewModel(get(), get()) }
     viewModel { MediaSettingsViewModel(get(), get(), get()) }

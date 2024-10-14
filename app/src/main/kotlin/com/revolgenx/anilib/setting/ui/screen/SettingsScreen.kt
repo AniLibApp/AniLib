@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.setting.ui.screen
 
 import android.content.Context
-import android.content.Intent
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -28,11 +27,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.BuildConfig
-import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.openUri
-import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.common.ShowIfNotLoggedIn
 import com.revolgenx.anilib.common.ui.component.dialog.ConfirmationDialog
@@ -51,7 +48,6 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcPalette
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPerson
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonAdd
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPersonOutline
-import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.icons.appicon.IcTune
 import com.revolgenx.anilib.common.ui.icons.appicon.IcWidgets
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
@@ -61,7 +57,6 @@ import com.revolgenx.anilib.common.util.versionName
 import com.revolgenx.anilib.setting.ui.component.TextPreferenceItem
 import com.revolgenx.anilib.setting.ui.screen.about.AboutSettingsScreen
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
 
@@ -218,7 +213,7 @@ fun SettingScreenContent(isTab: Boolean) {
                 icon = AppIcons.IcWidgets,
                 title = stringResource(I18nR.string.widget),
                 subtitle = stringResource(I18nR.string.settings_widget_desc)
-            ){
+            ) {
                 navigator.push(WidgetSettingsScreen)
             }
 
@@ -281,15 +276,7 @@ fun SettingScreenContent(isTab: Boolean) {
             message = stringResource(id = I18nR.string.settings_are_you_sure_you_want_to_log_out),
             title = stringResource(id = I18nR.string.logout)
         ) {
-            scope.launch {
-                viewModel.appPreferencesDataStore.logout()
-                context.startActivity(Intent(context, MainActivity::class.java).apply {
-                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                })
-                if (context is MainActivity) {
-                    context.finish()
-                }
-            }
+            viewModel.logout(context)
         }
     }
 

@@ -47,7 +47,8 @@ open class AiringScheduleViewModel(
                 if (newFilter == filter) return@collect
                 filter = newFilter
                 field = newFilter.toField().also { newField ->
-                    newField.userId = field.userId
+                    newField.userId = authPreferencesDataStore.userId.get()
+                    newField.mediaListIds = field.mediaListIds
                     updateFieldDateTime(newField)
                     updateFieldNeedMediaListData(newField)
                 }

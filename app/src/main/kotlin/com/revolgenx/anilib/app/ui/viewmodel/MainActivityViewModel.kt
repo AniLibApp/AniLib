@@ -5,7 +5,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.common.data.constant.MainPageOrder
 import com.revolgenx.anilib.common.data.state.MediaState
 import com.revolgenx.anilib.common.data.state.UserState
@@ -14,12 +16,18 @@ import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.mediaTitleTypeKey
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.userIdKey
 import com.revolgenx.anilib.common.ext.launch
+import com.revolgenx.anilib.home.ui.screen.HomeScreen
+import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
+import com.revolgenx.anilib.list.ui.screen.MangaListScreen
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel.Companion.type_romaji
+import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.setting.ui.viewmodel.ContentOrderData
+import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
 import com.revolgenx.anilib.user.data.field.UserSettingsField
 import com.revolgenx.anilib.user.data.service.UserService
 import com.revolgenx.anilib.user.ui.model.toMediaTitleType
+import com.revolgenx.anilib.user.ui.screen.UserScreen
 import kotlinx.coroutines.flow.single
 
 enum class DeepLinkPath {
@@ -38,6 +46,18 @@ enum class DeepLinkPath {
     LIST_ENTRY_EDITOR
 }
 
+val userScreen: UserScreen = UserScreen(isTab = true)
+
+val mainScreenTabs = listOf(
+    HomeScreen,
+    AnimeListScreen,
+    MangaListScreen,
+    ActivityUnionScreen,
+    SettingScreen,
+    userScreen
+)
+
+
 class MainActivityViewModel(
     private val preferencesDataStore: AppPreferencesDataStore,
     private val userService: UserService
@@ -51,6 +71,8 @@ class MainActivityViewModel(
             coverImageType = preferencesDataStore.mediaCoverImageType.get()!!
         )
     )
+
+    var tabWrapperNavigator: Navigator? = null
 
     var previousScreen: Screen? = null
 
@@ -86,6 +108,13 @@ class MainActivityViewModel(
                     getUserSettings(it)
                 }
             }
+        }
+    }
+
+    @OptIn(InternalVoyagerApi::class)
+    fun disposeTabs() {
+        mainScreenTabs.forEach { tabs ->
+            tabWrapperNavigator?.dispose(tabs)
         }
     }
 

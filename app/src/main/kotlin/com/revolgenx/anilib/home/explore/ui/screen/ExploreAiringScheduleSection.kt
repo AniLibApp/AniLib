@@ -66,6 +66,7 @@ fun ExploreAiringScheduleSection(viewModel: ExploreAiringScheduleViewModel) {
             text = stringResource(id = I18nR.string.airing),
             onFilter = {
                 scope.launch {
+                    filterViewModel.field = viewModel.field.copy()
                     filterBottomSheetState.expand()
                 }
             },

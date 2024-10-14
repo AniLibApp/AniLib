@@ -21,7 +21,6 @@ import androidx.compose.material3.SnackbarResult
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,10 +28,11 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import anilib.i18n.R
+import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
+import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
 import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
-import cafe.adriel.voyager.navigator.tab.TabDisposable
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -40,6 +40,7 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.revolgenx.anilib.app.ui.viewmodel.DeepLinkPath
 import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
+import com.revolgenx.anilib.app.ui.viewmodel.userScreen
 import com.revolgenx.anilib.common.data.constant.MainPageOrder
 import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.componentActivity
@@ -47,17 +48,15 @@ import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.navigation.NavigationBar
 import com.revolgenx.anilib.common.ui.composition.LocalMainTabNavigator
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
-import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.home.ui.screen.HomeScreen
 import com.revolgenx.anilib.list.ui.screen.AnimeListScreen
 import com.revolgenx.anilib.list.ui.screen.MangaListScreen
 import com.revolgenx.anilib.setting.ui.screen.SettingScreen
 import com.revolgenx.anilib.social.ui.screen.ActivityUnionScreen
-import com.revolgenx.anilib.user.ui.screen.UserScreen
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
 
 private val yearLesser = Calendar.getInstance().get(Calendar.YEAR) + 2
@@ -73,21 +72,16 @@ object MainActivityScreen : Screen {
     }
 }
 
-private var userScreen: UserScreen = UserScreen(isTab = true)
 
 @Composable
 private fun MainActivityScreenContent() {
     val snackbarHostState = remember { SnackbarHostState() }
     val viewModel: MainActivityViewModel = activityViewModel()
 
-    val dispose = remember {
-        mutableStateOf(false)
-    }
-
     val localUser = localUser()
     val mainPageScreen = remember {
         viewModel.mainPageOrder.first().let {
-            when(it.value){
+            when (it.value) {
                 MainPageOrder.HOME -> HomeScreen
                 MainPageOrder.ANIME -> AnimeListScreen
                 MainPageOrder.MANGA -> MangaListScreen
@@ -97,23 +91,9 @@ private fun MainActivityScreenContent() {
     }
 
     TabNavigator(
-        tab = mainPageScreen,
-        tabDisposable = {
-            if (dispose.value) {
-                TabDisposable(
-                    navigator = it,
-                    tabs = listOf(
-                        HomeScreen,
-                        AnimeListScreen,
-                        MangaListScreen,
-                        ActivityUnionScreen,
-                        SettingScreen,
-                        userScreen
-                    )
-                )
-            }
-        }
+        tab = mainPageScreen
     ) { tabNavigator ->
+        viewModel.tabWrapperNavigator = LocalNavigator.current
         CheckDeepLinkPath(viewModel, tabNavigator)
         Scaffold(
             snackbarHost = { SnackbarHost(snackbarHostState) },
@@ -144,14 +124,20 @@ private fun MainActivityScreenContent() {
             contentWindowInsets = NavigationBarDefaults.windowInsets,
         ) { contentPadding ->
             NotificationPermission(viewModel = viewModel, snackbarHostState)
-            Box(Modifier.padding(contentPadding).consumeWindowInsets(contentPadding)) {
+            Box(
+                Modifier
+                    .padding(contentPadding)
+                    .consumeWindowInsets(contentPadding)
+            ) {
                 CompositionLocalProvider(
                     LocalMainTabNavigator provides tabNavigator,
                     LocalSnackbarHostState provides snackbarHostState
                 ) {
                     CurrentTab()
                 }
-                BackPress(snackbarHostState = snackbarHostState, dispose = dispose)
+                BackPress(snackbarHostState = snackbarHostState, onDispose = {
+                    viewModel.disposeTabs()
+                })
             }
         }
     }
@@ -164,15 +150,17 @@ private fun CheckDeepLinkPath(
 ) {
     LaunchedEffect(viewModel.deepLinkPath.value) {
         viewModel.deepLinkPath.value?.let {
-            when(it.first){
-                DeepLinkPath.ANIME_LIST->{
+            when (it.first) {
+                DeepLinkPath.ANIME_LIST -> {
                     tabNavigator.current = AnimeListScreen
                     viewModel.deepLinkPath.value = null
                 }
-                DeepLinkPath.MANGA_LIST->{
+
+                DeepLinkPath.MANGA_LIST -> {
                     tabNavigator.current = MangaListScreen
                     viewModel.deepLinkPath.value = null
                 }
+
                 else -> {}
             }
         }
@@ -201,7 +189,7 @@ private fun RowScope.TabNavigationItem(tab: BaseTabScreen) {
 @Composable
 private fun BackPress(
     snackbarHostState: SnackbarHostState,
-    dispose: MutableState<Boolean>
+    onDispose: OnClick
 ) {
     val scope = rememberCoroutineScope()
     val context = localContext()
@@ -213,7 +201,7 @@ private fun BackPress(
     val msg = stringResource(id = R.string.press_again_to_exit)
     BackHandler {
         if (backPressed.value) {
-            dispose.value = true
+            onDispose()
             context.componentActivity()?.finish()
         } else {
             backPressed.value = true
