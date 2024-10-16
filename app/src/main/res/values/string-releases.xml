@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="release_info" translatable="false">
+        ## v2.0.1 \n
+        - Add display scaling to make component small (Settings -> Appearance) [#98](https://github.com/AniLibApp/AniLib/pull/98/files) \n
+        - fix crash on sorting list entry with null date type \n
+        - fix crashing app on too many request on app start \n
+        - fix error when airing filter is immediately applied after login. [#94](https://github.com/AniLibApp/AniLib/issues/94) \n
+        - fix add many and other in locales to fix crash with plurals \n
+
         ## v2.0.0 \n
         * **Complete App Rewrite**: Improved performance and stability with a brand-new codebase. \n
         * **Enhanced UI/UX**: Enjoy a more modern and user-friendly interface for a smoother experience. \n
