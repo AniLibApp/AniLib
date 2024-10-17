@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- Replaced library with a activity for splash screen implementation. For API >= 31 can't control splash dark/light theme from app. [#102](https://github.com/AniLibApp/AniLib/pull/102/files)
+
+### Removed
+- Removed CoreX splash library.
+
 ## [v2.0.0] - 2024-10-15
 
 ### Added
