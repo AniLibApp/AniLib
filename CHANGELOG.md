@@ -6,8 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Filter settings for tags, genre, etc 
+- Add Doujin, On-List, etc filter on browse
+- Related: [#77](https://github.com/AniLibApp/AniLib/issues/77), [#75](https://github.com/AniLibApp/AniLib/issues/75), [#74](https://github.com/AniLibApp/AniLib/issues/74), [#72](https://github.com/AniLibApp/AniLib/issues/72)
+
 ### Fixed
 - Replaced library with a activity for splash screen implementation. For API >= 31 can't control splash dark/light theme from app. [#102](https://github.com/AniLibApp/AniLib/pull/102/files)
+- Clicking on a tag of a manga will start a search of that tag on the manga section [#72](https://github.com/AniLibApp/AniLib/issues/72)
 
 ### Removed
 - Removed CoreX splash library.

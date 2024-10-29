@@ -4,6 +4,7 @@ import com.revolgenx.anilib.media.data.constant.genreCollection
 import com.revolgenx.anilib.media.data.constant.mediaTagCollection
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.model.MediaExternalLinkModel
+import com.revolgenx.anilib.media.ui.model.MediaGenreModel
 import com.revolgenx.anilib.media.ui.model.MediaTagModel
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaSeason
@@ -52,7 +53,7 @@ data class MediaTagCollectionData(
 
 @Serializable
 data class GenreCollectionData(
-    val genre: List<String> = genreCollection
+    val genre: List<MediaGenreModel> = genreCollection
 )
 
 @Serializable

@@ -45,7 +45,7 @@ data class BrowseField(
     var volumesLesser: Int? = null,
     var durationGreater: Int? = null,
     var durationLesser: Int? = null,
-    var isHentai: Boolean? = false,
+    var isHentai: Boolean? = null,
     var streamingOn: List<Int>? = null,
     var readableOn: List<Int>? = null,
     var countryOfOrigin: Int? = null,
@@ -58,13 +58,17 @@ data class BrowseField(
     var tagsIn: List<String>? = null,
     var tagsNotIn: List<String>? = null,
     var sort: MediaSort? = null,
-    var minimumTagRank: Int? = null
+    var minimumTagRank: Int? = null,
+    var onList: Boolean? = null
 ) : BaseSourceField<BrowseQuery>() {
     override var perPage: Int = 30
     val type get() = browseType.value
     override fun toQueryOrMutation(): BrowseQuery {
         val mediaType =
             if (browseType.value == BrowseTypes.ANIME) MediaType.ANIME else MediaType.MANGA
+
+        val isAdult = if(canShowAdult) isHentai else false
+
         return BrowseQuery(
             page = nn(page),
             perPage = nn(perPage),
@@ -75,8 +79,8 @@ data class BrowseField(
             tagIn = nn(tagsIn),
             tagNotIn = nn(tagsNotIn),
             formatsIn = nn(formatsIn),
-            isLicensed = nn(doujins?.takeIf { !it }),
-            isAdult = nn(isHentai),
+            isLicensed = nn(doujins?.takeIf { it }?.not()),
+            isAdult = nn(isAdult),
 
             episodesGreater = nn(episodesGreater?.minus(1)?.takeIf { mediaType.isAnime }),
             episodesLesser = nn(episodesLesser?.plus(1)?.takeIf { mediaType.isAnime }),
@@ -102,6 +106,8 @@ data class BrowseField(
             sort = nn(sort?.let { listOf(it) }),
             source = nn(source),
             minimumTagRank = nn(minimumTagRank),
+
+            onList = nn(onList),
 
             browseMedia = type == BrowseTypes.ANIME || type == BrowseTypes.MANGA,
             browseCharacter = type == BrowseTypes.CHARACTER,
@@ -144,6 +150,7 @@ data class BrowseField(
             tagsNotIn = tagsNotIn,
             sort = sort,
             minimumTagRank = minimumTagRank,
+            onList = onList
         )
     }
 
@@ -182,7 +189,7 @@ data class BrowseField(
         if (tagsNotIn != other.tagsNotIn) return false
         if (sort != other.sort) return false
         if (minimumTagRank != other.minimumTagRank) return false
-
+        if (onList != other.onList) return false
         return true
     }
 

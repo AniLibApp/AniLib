@@ -79,6 +79,11 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
 
         val currentAppVersionKey = stringPreferencesKey("current_app_version_key")
         val displayScaleKey = floatPreferencesKey("display_scale_key")
+
+        val maxEpisodesKey = intPreferencesKey("max_episodes_key")
+        val maxDurationKey = intPreferencesKey("max_duration_key")
+        val maxChaptersKey = intPreferencesKey("max_chapters_key")
+        val maxVolumesKey = intPreferencesKey("max_volumes_key")
     }
 
 
@@ -230,6 +235,30 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         dataStore = dataStore,
         prefKey = displayScaleKey,
         defaultValue = 1f
+    )
+
+    val maxEpisodes = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = maxEpisodesKey,
+        defaultValue = 150
+    )
+
+    val maxDuration = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = maxDurationKey,
+        defaultValue = 170
+    )
+
+    val maxChapters = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = maxChaptersKey,
+        defaultValue = 500
+    )
+
+    val maxVolumes = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = maxVolumesKey,
+        defaultValue = 50
     )
 
     val isLoggedIn = userId.data.map { it != null }

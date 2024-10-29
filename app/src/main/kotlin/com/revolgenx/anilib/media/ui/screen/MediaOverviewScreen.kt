@@ -53,6 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.revolgenx.anilib.browse.data.field.BrowseTypes
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naString
@@ -152,7 +153,7 @@ private fun MediaOverview(
             clipboardManager.setText(AnnotatedString(it))
         })
         MediaGenre(media.genres) {
-            navigator.browseGenreScreen(it)
+            navigator.browseGenreScreen(it, type = if(isAnime) BrowseTypes.ANIME else BrowseTypes.MANGA)
         }
         if (isAnime) {
             MediaTrailer(media.trailer) {
@@ -172,7 +173,7 @@ private fun MediaOverview(
             mediaComponentState = mediaComponentState
         )
         MediaTag(media.tags, media.tagsWithoutSpoiler ?: emptyList()) {
-            navigator.browseTagScreen(it)
+            navigator.browseTagScreen(it, type =  if(isAnime) BrowseTypes.ANIME else BrowseTypes.MANGA)
         }
         MediaExternalLink(media.externalLinks) {
             openLink(it.url)

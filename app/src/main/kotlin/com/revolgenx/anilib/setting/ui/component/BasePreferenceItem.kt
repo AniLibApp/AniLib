@@ -64,6 +64,7 @@ internal fun BasePreferenceItem(
     }
 }
 
+fun Modifier.prefPadding() = this.padding(horizontal = PrefsHorizontalPadding, vertical = PrefsVerticalPadding)
 
 internal val PrefsHorizontalPadding = 16.dp
 internal val PrefsVerticalPadding = 16.dp

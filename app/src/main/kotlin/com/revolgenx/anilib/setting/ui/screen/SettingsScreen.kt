@@ -38,6 +38,7 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcAnilib
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHeart
 import com.revolgenx.anilib.common.ui.icons.appicon.IcInfoOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcList
@@ -57,6 +58,7 @@ import com.revolgenx.anilib.common.ui.theme.support_color
 import com.revolgenx.anilib.common.util.versionName
 import com.revolgenx.anilib.setting.ui.component.TextPreferenceItem
 import com.revolgenx.anilib.setting.ui.screen.about.AboutSettingsScreen
+import com.revolgenx.anilib.setting.ui.screen.filter.FilterSettingsScreen
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -205,11 +207,14 @@ fun SettingScreenContent(isTab: Boolean) {
                 }
             }
 
-//            TextPreferenceItem(
-//                icon = AppIcons.IcFilter,
-//                title = stringResource(I18nR.string.filter),
-//                subtitle = stringResource(I18nR.string.settings_filter_desc)
-//            )
+            TextPreferenceItem(
+                icon = AppIcons.IcFilter,
+                title = stringResource(I18nR.string.filter),
+                subtitle = stringResource(I18nR.string.settings_filter_desc),
+                onClick = {
+                    navigator.push(FilterSettingsScreen)
+                }
+            )
 
             TextPreferenceItem(
                 icon = AppIcons.IcWidgets,

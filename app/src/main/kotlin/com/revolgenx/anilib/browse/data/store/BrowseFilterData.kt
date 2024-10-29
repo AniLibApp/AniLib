@@ -27,7 +27,7 @@ data class BrowseFilterData(
     val volumesLesser: Int? = null,
     val durationGreater: Int? = null,
     val durationLesser: Int? = null,
-    val isHentai: Boolean? = false,
+    val isHentai: Boolean? = null,
     val streamingOn: List<Int>? = null,
     val readableOn: List<Int>? = null,
     val countryOfOrigin: Int? = null,
@@ -40,7 +40,8 @@ data class BrowseFilterData(
     val tagsIn: List<String>? = null,
     val tagsNotIn: List<String>? = null,
     val sort: MediaSort? = null,
-    val minimumTagRank: Int? = null
+    val minimumTagRank: Int? = null,
+    val onList: Boolean? = null,
 ) {
     fun toBrowseField(): BrowseField {
         return BrowseField(
@@ -72,6 +73,7 @@ data class BrowseFilterData(
             tagsNotIn = tagsNotIn,
             sort = sort,
             minimumTagRank = minimumTagRank,
+            onList = onList
         )
     }
 }
