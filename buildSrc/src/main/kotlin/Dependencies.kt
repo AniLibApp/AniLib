@@ -27,7 +27,6 @@ object Versions{
     const val jwtdecode = "2.0.2"
     const val prettytime = "5.0.4.Final"
     const val vico = "1.15.0"
-    const val splashscreen = "1.1.0-alpha02"
     const val coreKtx = "1.13.1"
     const val sheetsM3 = "0.5.4"
     const val accompanistPermissions = "0.34.0" //compose ui 1.6
@@ -71,7 +70,6 @@ object Dependencies {
     const val datastorePreference ="androidx.datastore:datastore-preferences:${Versions.dataStore}"
 
     const val coreKtx = "androidx.core:core-ktx:${Versions.coreKtx}"
-    const val coreSplashScreen = "androidx.core:core-splashscreen:${Versions.splashscreen}"
 
     const val markwon ="io.noties.markwon:core:${Versions.markwon}"
     const val markwonHtml ="io.noties.markwon:html:${Versions.markwon}"
@@ -191,7 +189,6 @@ fun DependencyHandler.datastore() {
 
 fun DependencyHandler.core() {
     implementation(Dependencies.coreKtx)
-    implementation(Dependencies.coreSplashScreen)
 }
 
 fun DependencyHandler.jwtDecode() {
