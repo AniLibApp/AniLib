@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.home.explore.ui.screen
 
+import IcAiring
 import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -38,6 +39,7 @@ import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleFilterViewModel
@@ -64,6 +66,7 @@ fun ExploreAiringScheduleSection(viewModel: ExploreAiringScheduleViewModel) {
     Column {
         ExploreScreenHeader(
             text = stringResource(id = I18nR.string.airing),
+            icon = AppIcons.IcAiring,
             onFilter = {
                 scope.launch {
                     filterViewModel.field = viewModel.field.copy()

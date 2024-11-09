@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -166,21 +168,33 @@ private fun ExploreMediaCardContent(
                             }
                         }
 
-                        val format = stringResource(id = media.format.toStringRes())
-                        val status = stringResource(id = media.status.toStringRes())
-                        val statusColor = media.status.toColor()
-                        val year = media.seasonYear.naText()
+                        Spacer(modifier = Modifier.height(2.dp))
 
+                        val year = media.seasonYear
+                        val status = stringResource(id = media.status.toStringRes())
 
                         LightText(
-                            text = status,
-                            color = statusColor,
-                            lineHeight = 11.sp
+                            text = year?.let { stringResource(id = R.string.s_dot_s).format(status, year) } ?: status,
+                            color = media.status.toColor(),
                         )
 
+
+                        Spacer(modifier = Modifier.height(2.dp))
+
+
+                        val format = stringResource(id = media.format.toStringRes())
+                        val isAnime = media.isAnime
+                        val episodesOrChapters = if (isAnime) media.episodes else media.chapters
+                        val epOrChStr = if (isAnime) R.string.ep_s_s else R.string.ch_s_s
+
                         LightText(
-                            text = stringResource(id = R.string.s_dot_s).format(format, year),
-                            lineHeight = 11.sp
+                            modifier = Modifier.fillMaxWidth(),
+                            text = episodesOrChapters?.let {
+                                stringResource(id = epOrChStr).format(
+                                    episodesOrChapters,
+                                    format
+                                )
+                            } ?: format,
                         )
                     }
 

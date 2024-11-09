@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
@@ -57,7 +58,7 @@ fun MediaListSmallRowCard(
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .height(80.dp),
+            .height(85.dp),
         onClick = onClick,
         onLongClick = onLongClick
     ) {
@@ -70,7 +71,8 @@ fun MediaListSmallRowCard(
                 MediaCoverImageType { type ->
                     ImageAsync(
                         modifier = Modifier
-                            .size(80.dp),
+                            .width(80.dp)
+                            .fillMaxHeight(),
                         imageUrl = media.coverImage?.image(type),
                         imageOptions = ImageOptions(
                             contentScale = ContentScale.Crop, alignment = Alignment.Center
@@ -128,7 +130,7 @@ fun MediaListSmallRowCard(
                                     modifier = Modifier.padding(end = 10.dp),
                                     text = stringResource(id = media.format.toStringRes()),
                                     color = MaterialTheme.colorScheme.primary,
-                                    fontSize = 12.sp,
+                                    fontSize = 11.sp,
                                 )
 
                                 MediaListEntryScore(list = list)

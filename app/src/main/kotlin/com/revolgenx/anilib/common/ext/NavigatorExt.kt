@@ -2,6 +2,7 @@ package com.revolgenx.anilib.common.ext
 
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.airing.ui.screen.AiringScheduleScreen
+import com.revolgenx.anilib.browse.data.field.BrowseTypes
 import com.revolgenx.anilib.browse.data.store.BrowseFilterData
 import com.revolgenx.anilib.browse.ui.screen.BrowseScreen
 import com.revolgenx.anilib.character.ui.screen.CharacterScreen
@@ -72,12 +73,12 @@ fun Navigator.browseScreen(browseFilterData: BrowseFilterData? = null){
     push(BrowseScreen(browseFilterData))
 }
 
-fun Navigator.browseGenreScreen(genre: String){
-    browseScreen(BrowseFilterData(genreIn = listOf(genre)))
+fun Navigator.browseGenreScreen(genre: String, type: BrowseTypes = BrowseTypes.ANIME){
+    browseScreen(BrowseFilterData(browseType = type, genreIn = listOf(genre)))
 }
 
-fun Navigator.browseTagScreen(tag: String){
-    browseScreen(BrowseFilterData(tagsIn = listOf(tag)))
+fun Navigator.browseTagScreen(tag: String, type: BrowseTypes = BrowseTypes.ANIME){
+    browseScreen(BrowseFilterData(browseType = type, tagsIn = listOf(tag)))
 }
 
 fun Navigator.notificationScreen(){

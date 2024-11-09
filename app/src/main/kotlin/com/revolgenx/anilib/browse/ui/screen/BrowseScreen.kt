@@ -100,11 +100,13 @@ class BrowseScreen(
 @Composable
 private fun BrowseScreenContent(browseFilterData: BrowseFilterData?) {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
-    val viewModel = koinViewModel<BrowseViewModel>()
-    browseFilterData?.let { filter ->
-        viewModel.updateFromBrowseFilterData(filter)
-    }
+
+    val viewModel: BrowseViewModel = koinViewModel()
     val browseFilterViewModel: BrowseFilterViewModel = koinViewModel()
+
+    browseFilterData?.let { filter ->
+        viewModel.setFieldFromBrowseFilterData(filter)
+    }
     val navigator = localNavigator()
     val browseFilterBottomSheetState = rememberBottomSheetState()
     val scope = rememberCoroutineScope()
@@ -130,11 +132,14 @@ private fun BrowseScreenContent(browseFilterData: BrowseFilterData?) {
             )
 
         BrowsePagingContent(viewModel, mediaComponentState, navigator)
-        BrowseFilterBottomSheet(state = browseFilterBottomSheetState,
+        BrowseFilterBottomSheet(
+            state = browseFilterBottomSheetState,
             viewModel = browseFilterViewModel,
             onFilter = {
                 scope.launch {
-                    viewModel.field = browseFilterViewModel.field.copy()
+                    viewModel.isExcludedTagsFiltered = browseFilterViewModel.isExcludedTagsFiltered
+                    viewModel.isExcludedGenreFiltered = browseFilterViewModel.isExcludedGenreFiltered
+                    viewModel.updateFieldFromFilter(browseFilterViewModel.field.copy())
                     viewModel.refresh()
                     browseFilterBottomSheetState.collapse()
                 }
@@ -324,15 +329,17 @@ fun BrowseScreenTopAppbar(
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 BrowseTypes.entries.forEach { browseType ->
-                    FilterChip(colors = FilterChipDefaults.filterChipColors(),
+                    FilterChip(
+                        colors = FilterChipDefaults.filterChipColors(),
                         selected = viewModel.field.browseType.value == browseType,
                         onClick = {
-                            viewModel.field.browseType.value = browseType
+                            viewModel.updateBrowseType(browseType)
                             viewModel.refresh()
                         },
                         label = {
                             Text(text = stringResource(id = browseType.title))
-                        })
+                        }
+                    )
                 }
             }
 

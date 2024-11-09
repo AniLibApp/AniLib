@@ -79,6 +79,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcMinus
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreVert
 import com.revolgenx.anilib.common.ui.icons.appicon.IcNeutral
+import com.revolgenx.anilib.common.ui.icons.appicon.IcNew
 import com.revolgenx.anilib.common.ui.icons.appicon.IcNotification
 import com.revolgenx.anilib.common.ui.icons.appicon.IcNotificationOutline
 import com.revolgenx.anilib.common.ui.icons.appicon.IcOrderedList
@@ -259,7 +260,8 @@ val AppIcons.AllIcons: List<ImageVector>
             IcAssignment,
             IcWidgets,
             IcReply,
-            IcTranslate
+            IcTranslate,
+            IcNew
         )
         return __AllIcons!!
     }

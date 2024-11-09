@@ -29,6 +29,7 @@ query BrowseQuery(
     $durationLesser:Int,
     $durationGreater:Int,
     $minimumTagRank:Int,
+    $onList: Boolean,
     $browseMedia: Boolean!,
     $browseCharacter: Boolean!,
     $browseStaff: Boolean!,
@@ -66,7 +67,8 @@ query BrowseQuery(
             duration_greater: $durationGreater,
             duration_lesser: $durationLesser,
             isLicensed: $isLicensed,
-            minimumTagRank: $minimumTagRank
+            minimumTagRank: $minimumTagRank,
+            onList: $onList
         ) {
             ... media
         }

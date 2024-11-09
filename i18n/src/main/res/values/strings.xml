@@ -41,6 +41,7 @@
     <string name="comic">Comic</string>
     <string name="web_novel">Web Novel</string>
     <string name="live_action">Live Action</string>
+    <string name="hentai">Hentai</string>
     <string name="id">Id</string>
     <string name="id_desc">Id Desc</string>
     <string name="title_romaji">Title Romaji</string>
@@ -252,6 +253,7 @@
     <string name="airing">Airing</string>
     <string name="select_date">Select Date</string>
     <string name="weekly">Weekly</string>
+    <string name="ch_s_s">C: %1$s · %2$s</string>
     <string name="ep_s_s">E: %1$s · %2$s</string>
     <string name="ep_s_airing_in">Ep %1$d airing in</string>
     <string name="ep_s_aired_at">Ep %1$d aired at</string>
@@ -335,6 +337,19 @@
     <string name="settings_explore_section_order_desc">Change explore section order</string>
     <string name="settings_main_page_order_desc">Change main page order</string>
     <string name="settings_change_order">Change Order</string>
+    <string name="settings_exclude_tags">Exclude Tags</string>
+    <string name="settings_exclude_tags_desc">Excluded tags will be added to search filter when searching for media</string>
+    <string name="settings_exclude_tags_placeholder">Type to search</string>
+    <string name="settings_exclude_genre">Exclude Genre</string>
+    <string name="settings_exclude_genre_desc">Excluded genre will be added to search filter when searching for media</string>
+    <string name="settings_max_episodes">Max Episodes</string>
+    <string name="settings_max_episodes_desc">Set max episodes for search filter. Min is 150</string>
+    <string name="settings_max_duration">Max Duration</string>
+    <string name="settings_max_duration_desc">Set max durations for search filter. Min is 170</string>
+    <string name="settings_max_chapters">Max Chapters</string>
+    <string name="settings_max_chapters_desc">Set max chapters for search filter. Min is 500</string>
+    <string name="settings_max_volumes">Max Volumes</string>
+    <string name="settings_max_volumes_desc">"Set max volumes for search filter. Min is 50"</string>
     <string name="restart_required_msg">Restart is required for changes to take effect.</string>
     <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
     <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>
@@ -417,6 +432,7 @@
     <string name="streaming_on">Streaming On</string>
     <string name="readable_on">Readable On</string>
     <string name="year_range">Year Range</string>
+    <string name="doujin">Doujin</string>
     <string name="no_result">No Result</string>
     <string name="s_dash_s">%1$s - %2$s</string>
     <string name="text_status">Text Status</string>>    <string name="list_progress">List Progress</string>

@@ -8,6 +8,10 @@ import androidx.compose.ui.res.stringResource
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFire
+import com.revolgenx.anilib.common.ui.icons.appicon.IcNew
+import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
@@ -57,13 +61,14 @@ private fun ExploreMediaItem(
 
 @Composable
 private fun ExploreMediaHeader(viewModel: ExploreMediaViewModel, onFilter: OnClick, onMore: OnClick) {
-    val titleRes = when (viewModel) {
-        is ExploreMediaViewModel.ExploreTrendingViewModel -> I18nR.string.trending
-        is ExploreMediaViewModel.ExplorePopularViewModel -> I18nR.string.popular
-        is ExploreMediaViewModel.ExploreNewlyAddedViewModel -> I18nR.string.newly_added
+    val headerPair = when (viewModel) {
+        is ExploreMediaViewModel.ExploreTrendingViewModel -> I18nR.string.trending to AppIcons.IcFire
+        is ExploreMediaViewModel.ExplorePopularViewModel -> I18nR.string.popular to AppIcons.IcStar
+        is ExploreMediaViewModel.ExploreNewlyAddedViewModel -> I18nR.string.newly_added to AppIcons.IcNew
     }
     ExploreScreenHeader(
-        text = stringResource(id = titleRes),
+        text = stringResource(id = headerPair.first),
+        icon = headerPair.second,
         onFilter = onFilter,
         onMore = onMore
     )

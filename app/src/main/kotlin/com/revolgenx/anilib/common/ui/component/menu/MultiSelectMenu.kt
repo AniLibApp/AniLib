@@ -1,6 +1,10 @@
 package com.revolgenx.anilib.common.ui.component.menu
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -12,18 +16,23 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MenuAnchorType
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import anilib.i18n.R as I18nR
 
@@ -57,23 +66,33 @@ fun <T> MultiSelectMenu(
         val selectedItem = selectedItems.takeIf { it.isNotEmpty() }?.joinToString(", ") {
             text(it)
         } ?: stringResource(id = I18nR.string.none)
-        TextField(
-            modifier = modifier
-                .menuAnchor(type = MenuAnchorType.PrimaryNotEditable)
-                .fillMaxWidth(),
-            readOnly = true,
-            value = selectedItem,
-            onValueChange = {},
-            shape = RoundedCornerShape(8.dp),
-            label = label?.let { { Text(it) } },
-            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(
-                focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent,
-                focusedLabelColor = MaterialTheme.colorScheme.onSurfaceVariant
-            ),
-        )
 
+        Column {
+            label?.let {
+                SelectMenuLabel(label = label)
+            }
+
+            Surface(
+                color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
+                shape = RoundedCornerShape(8.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp)
+                        .menuAnchor(type = MenuAnchorType.PrimaryNotEditable),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = selectedItem,
+                        maxLines = 1,
+                        fontSize = 14.sp
+                    )
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                }
+            }
+        }
 
         DropdownMenu(
             modifier = Modifier

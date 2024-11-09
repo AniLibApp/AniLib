@@ -62,15 +62,17 @@ import com.revolgenx.anilib.review.ui.viewmodel.ReviewListFilterViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.AppearanceSettingsViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.FilterSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.GeneralSettingsViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.GenreFilterSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.MediaListSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.MediaSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.NotificationSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.TagFilterSettingsViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyServiceViewModel
-import com.revolgenx.anilib.social.ui.viewmodel.BaseActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionFilterViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionServiceViewModel
@@ -141,7 +143,14 @@ val viewModelModules = module {
 
     // season
     viewModel { SeasonViewModel(get(), get<Context>().seasonFilterDataStore) }
-    viewModel { SeasonFilterViewModel(get<Context>().seasonFilterDataStore) }
+    viewModel {
+        SeasonFilterViewModel(
+            get<Context>().seasonFilterDataStore,
+            get<Context>().mediaTagCollectionDataStore,
+        get<Context>().genreCollectionDataStore,
+        get()
+        )
+    }
 
     //character
     viewModel { CharacterAboutViewModel(get()) }
@@ -242,7 +251,7 @@ val viewModelModules = module {
     viewModel { NotificationViewModel(get(), get()) }
 
     //editor
-    viewModel { MediaListEntryEditorViewModel(get(), get(), get()) }
+    viewModel { MediaListEntryEditorViewModel(get(), get(), get(), get()) }
 
     //list
     viewModel { AnimeListViewModel(get(), get(), get(), animeListFilterDataStore()) }
@@ -268,7 +277,12 @@ val viewModelModules = module {
     viewModel { parameters -> ActivityInfoViewModel(parameters.get(), get()) }
 
     //browse
-    viewModel { BrowseViewModel(get(), get()) }
+    viewModel { BrowseViewModel(
+        get<Context>().mediaTagCollectionDataStore,
+        get<Context>().genreCollectionDataStore,
+        get(),
+        get()
+    ) }
     viewModel {
         BrowseFilterViewModel(
             get<Context>().mediaTagCollectionDataStore,
@@ -303,7 +317,9 @@ val viewModelModules = module {
     viewModel { MediaSettingsViewModel(get(), get(), get()) }
     viewModel { NotificationSettingsViewModel(get(), get(), get()) }
     viewModel { MediaListSettingsViewModel(get(), get()) }
-
+    viewModel { FilterSettingsViewModel(get()) }
+    viewModel { TagFilterSettingsViewModel(get<Context>().mediaTagCollectionDataStore, get()) }
+    viewModel { GenreFilterSettingsViewModel( get<Context>().genreCollectionDataStore, get()) }
     //explore
     viewModel {
         ExploreMediaViewModel.ExploreTrendingViewModel(
@@ -323,9 +339,30 @@ val viewModelModules = module {
             get<Context>().exploreNewlyAddedDataStore
         )
     }
-    viewModel { ExploreTrendingFilterViewModel(get<Context>().exploreTrendingDataStore) }
-    viewModel { ExplorePopularFilterViewModel(get<Context>().explorePopularDataStore) }
-    viewModel { ExploreNewlyAddedFilterViewModel(get<Context>().exploreNewlyAddedDataStore) }
+    viewModel {
+        ExploreTrendingFilterViewModel(
+            get<Context>().exploreTrendingDataStore,
+            get<Context>().mediaTagCollectionDataStore,
+            get<Context>().genreCollectionDataStore,
+            get()
+        )
+    }
+    viewModel {
+        ExplorePopularFilterViewModel(
+            get<Context>().explorePopularDataStore,
+            get<Context>().mediaTagCollectionDataStore,
+            get<Context>().genreCollectionDataStore,
+            get()
+        )
+    }
+    viewModel {
+        ExploreNewlyAddedFilterViewModel(
+            get<Context>().exploreNewlyAddedDataStore,
+            get<Context>().mediaTagCollectionDataStore,
+            get<Context>().genreCollectionDataStore,
+            get()
+        )
+    }
     viewModel { ExploreWatchingViewModel(get(), get(), get()) }
     viewModel { ExploreReadingViewModel(get(), get(), get()) }
 

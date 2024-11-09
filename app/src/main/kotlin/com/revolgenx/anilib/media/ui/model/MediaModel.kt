@@ -241,6 +241,8 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
                                 averageScore = node.averageScore,
                                 seasonYear = node.seasonYear,
                                 coverImage = nodeCoverImage,
+                                episodes = node.episodes,
+                                chapters = node.chapters,
                                 bannerImage = node.bannerImage ?: nodeCoverImage?.extraLargeImage
                             )
                         }

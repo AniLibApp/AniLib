@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.media.ui.filter
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -21,12 +20,14 @@ import com.revolgenx.anilib.common.data.tuples.to
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectModel
+import com.revolgenx.anilib.common.ui.component.menu.SelectFilterMenu
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
+import com.revolgenx.anilib.common.ui.component.menu.SelectSearchFilterMenu
+import com.revolgenx.anilib.common.ui.component.menu.SelectType
 import com.revolgenx.anilib.common.ui.component.menu.SortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.SortOrder
 import com.revolgenx.anilib.common.ui.component.menu.SortSelectMenu
 import com.revolgenx.anilib.home.season.ui.viewmodel.SeasonFilterViewModel
-import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.model.toMediaSeason
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
 import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
@@ -57,16 +58,17 @@ fun MediaFilterBottomSheet(
         behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
     ) {
         MediaFilterBottomSheetContent(
-            field = viewModel.field,
-            showSort = viewModel is SeasonFilterViewModel,
+            viewModel = viewModel,
             onPositiveClicked = {
                 viewModel.updateFilter()
+            },
+            onDismiss = {
+                scope.launch {
+                    bottomSheetState.collapse()
+                }
             }
-        ) {
-            scope.launch {
-                bottomSheetState.collapse()
-            }
-        }
+
+        )
     }
 
 }
@@ -74,25 +76,24 @@ fun MediaFilterBottomSheet(
 
 @Composable
 private fun MediaFilterBottomSheetContent(
-    modifier: Modifier = Modifier,
-    field: MediaField,
-    showSort: Boolean,
-    onNegativeClicked: (() -> Unit)? = null,
-    onPositiveClicked: (() -> Unit)? = null,
-    dismiss: (() -> Unit)? = null
+    viewModel: MediaFilterBottomSheetViewModel,
+    onPositiveClicked: () -> Unit,
+    onDismiss: () -> Unit
 ) {
+    val field = viewModel.field
+    val isSeason = viewModel is SeasonFilterViewModel
+
     Column(
-        modifier = modifier
+        modifier = Modifier
             .padding(bottom = 4.dp)
     ) {
         BottomSheetConfirmation(
             onConfirm = {
-                onPositiveClicked?.invoke()
-                dismiss?.invoke()
+                onPositiveClicked.invoke()
+                onDismiss.invoke()
             },
             onDismiss = {
-                onNegativeClicked?.invoke()
-                dismiss?.invoke()
+                onDismiss.invoke()
             }
         )
 
@@ -100,8 +101,7 @@ private fun MediaFilterBottomSheetContent(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
-                .padding(vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
+                .padding(vertical = 8.dp)
         ) {
             val selectedFormats = field.formatsIn?.map { it.ordinal }.orEmpty()
             val formats = stringArrayResource(id = R.array.media_format)
@@ -124,6 +124,7 @@ private fun MediaFilterBottomSheetContent(
                 field.formatsIn = selectedItems.takeIf { it.isNotEmpty() }
                     ?.mapNotNull { MediaFormat.entries.getOrNull(it.first) }
             }
+
             SelectMenu(
                 label = stringResource(id = I18nR.string.status),
                 entries = stringArrayResource(id = R.array.media_status),
@@ -132,16 +133,17 @@ private fun MediaFilterBottomSheetContent(
             ) { selectedItem ->
                 field.status = selectedItem.takeIf { it > -1 }?.toMediaStatus()
             }
+
             SelectMenu(
                 label = stringResource(id = I18nR.string.season),
                 entries = stringArrayResource(id = R.array.media_season),
+                showNoneItem = !isSeason,
                 selectedItemPosition = field.season?.ordinal
             ) { selectedItem ->
                 field.season = selectedItem.takeIf { it > -1 }?.toMediaSeason()
             }
 
-            if (showSort) {
-
+            if (isSeason) {
                 val sort = field.sort
                 var selectedSortIndex: Int? = null
                 var selectedSortOrder: SortOrder = SortOrder.NONE
@@ -186,12 +188,48 @@ private fun MediaFilterBottomSheetContent(
             SelectMenu(
                 label = stringResource(id = I18nR.string.year),
                 entries = yearList,
+                showNoneItem = !isSeason,
                 selectedItemPosition = field.seasonYear?.takeIf { it in yearGreater..yearLesser }
                     ?.let { yearList.indexOf(it.toString()) }
             ) { selectedItem ->
                 field.seasonYear =
                     selectedItem.takeIf { it > -1 }?.let { yearList[it].toInt() }
             }
+
+            SelectFilterMenu(
+                label = stringResource(id = anilib.i18n.R.string.genre),
+                entries = viewModel.selectGenreCollections,
+                onItemsSelected = {
+                    viewModel.field.genreIn =
+                        it.filter { it.selected.value == SelectType.INCLUDED }
+                            .map { it.data }
+                            .toMutableList()
+
+                    viewModel.field.genreNotIn =
+                        it.filter { it.selected.value == SelectType.EXCLUDED }
+                            .map { it.data }
+                            .toMutableList()
+                }
+            )
+
+            SelectSearchFilterMenu(
+                label = stringResource(id = anilib.i18n.R.string.tags),
+                entries = viewModel.selectMediaTagCollections,
+                showSearchFilter = true,
+                onItemsSelected = {
+                    viewModel.field.tagIn =
+                        it.filter { it.selected.value == SelectType.INCLUDED }
+                            .map { it.data }
+                            .toMutableList()
+                    viewModel.field.tagNotIn =
+                        it.filter { it.selected.value == SelectType.EXCLUDED }
+                            .map { it.data }
+                            .toMutableList()
+                }
+            )
+
+
+
         }
     }
 }

@@ -8,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.exception.ApolloException
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.tuples.MutablePair
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.isNotNull
+import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.entry.data.field.MediaListEntryField
 import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
@@ -16,16 +18,20 @@ import com.revolgenx.anilib.entry.data.service.MediaListEntryService
 import com.revolgenx.anilib.entry.ui.model.AdvancedScoreModel
 import com.revolgenx.anilib.entry.ui.model.UserMediaModel
 import com.revolgenx.anilib.list.data.store.MediaListEntryEventStore
+import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.type.MediaListStatus
+import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.single
 import kotlin.math.roundToInt
 
 class MediaListEntryEditorViewModel(
     private val mediaListEntryService: MediaListEntryService,
+    private val mediaService: MediaService,
     private val appPreferencesDataStore: AppPreferencesDataStore,
     private val mediaListEntryEventStore: MediaListEntryEventStore
 ) :
@@ -36,6 +42,7 @@ class MediaListEntryEditorViewModel(
         it.userId = appPreferencesDataStore.userId.get()
     }
 
+    val isLoggedIn = appPreferencesDataStore.isLoggedIn.get()
     val saveField = SaveMediaListEntryField()
     var isFavourite by mutableStateOf(false)
     var userHasMediaListEntry by mutableStateOf(false)
@@ -143,5 +150,27 @@ class MediaListEntryEditorViewModel(
                 }
                 .launchIn(viewModelScope)
         }
+    }
+
+
+    fun toggleFavourite() {
+        val mediaId = field.mediaId
+        val type = getData()?.media?.type
+        if (mediaId == -1 || type == null) return
+
+        isFavourite = !isFavourite
+
+        launch {
+            val toggled = mediaService.toggleFavourite(mediaId = mediaId, type = type).single()
+            if (!toggled) {
+                isFavourite = !isFavourite
+                showOperationFailedMsg()
+            }
+        }
+    }
+
+
+    private fun showOperationFailedMsg() {
+        errorMsg = anilib.i18n.R.string.operation_failed
     }
 }

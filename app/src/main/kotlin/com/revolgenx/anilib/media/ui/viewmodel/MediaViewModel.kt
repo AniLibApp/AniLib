@@ -3,6 +3,7 @@ package com.revolgenx.anilib.media.ui.viewmodel
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -89,17 +90,9 @@ class MediaViewModel(
         mutableStateOf(false)
     )
 
-
+    private val isLoggedIn = appPreferencesDataStore.isLoggedIn.get()
     private val socialPage =
-        MediaScreenPage(MediaScreenPageType.SOCIAL, I18nR.string.social, AppIcons.IcForum)
-
-    init {
-        launch {
-            appPreferencesDataStore.isLoggedIn.collect {
-                socialPage.isVisible.value = it
-            }
-        }
-    }
+        MediaScreenPage(MediaScreenPageType.SOCIAL, I18nR.string.social, AppIcons.IcForum, isVisible = mutableStateOf(isLoggedIn))
 
     val pages = listOf(
         MediaScreenPage(MediaScreenPageType.OVERVIEW, I18nR.string.overview, AppIcons.IcFire),

@@ -39,6 +39,9 @@ import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localTabNavigator
 import com.revolgenx.anilib.common.ui.composition.localUser
+import com.revolgenx.anilib.common.ui.icons.AppIcons
+import com.revolgenx.anilib.common.ui.icons.appicon.IcBook
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
@@ -262,11 +265,11 @@ private fun ExploreMediaListContent(
 @Composable
 private fun ExploreMediaListHeader(type: MediaType, filter: OnClick, more: OnClick) {
     val header = when (type) {
-        MediaType.MANGA -> stringResource(id = R.string.reading)
-        else -> stringResource(id = R.string.watching)
+        MediaType.MANGA -> stringResource(id = R.string.reading) to AppIcons.IcBook
+        else -> stringResource(id = R.string.watching) to AppIcons.IcMedia
     }
 
-    ExploreScreenHeader(text = header, onFilter = filter, onMore = more)
+    ExploreScreenHeader(text = header.first, icon = header.second, onFilter = filter, onMore = more)
 }
 
 val ExploreMediaListCardWidth = 160.dp

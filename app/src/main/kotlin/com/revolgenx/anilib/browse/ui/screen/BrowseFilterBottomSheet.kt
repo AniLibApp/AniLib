@@ -23,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.state.ToggleableState
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dokar.sheets.BottomSheetState
@@ -34,6 +35,8 @@ import com.revolgenx.anilib.browse.ui.model.FuzzyDateIntModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseFilterViewModel
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.tuples.to
+import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
+import com.revolgenx.anilib.common.ui.component.checkbox.TextTriStateCheckbox
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectModel
 import com.revolgenx.anilib.common.ui.component.menu.SelectFilterMenu
@@ -76,7 +79,7 @@ fun BrowseFilterBottomSheet(
                 modifier = Modifier
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
-                    .padding(8.dp),
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
@@ -87,8 +90,9 @@ fun BrowseFilterBottomSheet(
                             entries = stringArrayResource(id = R.array.browse_type_menu),
                             selectedItemPosition = viewModel.field.browseType.value.ordinal,
                             onItemSelected = {
-                                viewModel.field.browseType.value = BrowseTypes.entries[it]
-                            })
+                                viewModel.updateBrowseType(BrowseTypes.entries[it])
+                            }
+                        )
                     }
 
 
@@ -227,6 +231,42 @@ fun BrowseFilterBottomSheet(
                     }
                 }
 
+                if (viewModel.isLoggedIn) {
+                    Row {
+                        BrowseFilterRowItem {
+                            TriStateCheckboxFilter(
+                                text = stringResource(id = anilib.i18n.R.string.on_list),
+                                isChecked = viewModel.field.onList
+                            ) { onList ->
+                                viewModel.field.onList = onList
+                            }
+                        }
+
+
+                        if (viewModel.canShowAdultContent) {
+                            BrowseFilterRowItem {
+                                TriStateCheckboxFilter(
+                                    text = stringResource(id = anilib.i18n.R.string.hentai),
+                                    isChecked = viewModel.field.isHentai
+                                ) { isHentai ->
+                                    viewModel.field.isHentai = isHentai
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Row {
+                    BrowseFilterRowItem {
+                        TextCheckbox(
+                            text = stringResource(id = anilib.i18n.R.string.doujin),
+                            checked = viewModel.field.doujins == true
+                        ) {
+                            viewModel.field.doujins = it
+                        }
+                    }
+                }
+
                 TextHeaderContent(
                     modifier = Modifier.fillMaxWidth(),
                     heading = stringResource(id = anilib.i18n.R.string.genre)
@@ -234,10 +274,13 @@ fun BrowseFilterBottomSheet(
                     SelectFilterMenu(
                         entries = viewModel.selectGenreCollections.value,
                         onItemsSelected = {
+                            viewModel.isExcludedGenreFiltered = true
+
                             viewModel.field.genreIn =
                                 it.filter { it.selected.value == SelectType.INCLUDED }
                                     .map { it.data }
                                     .toMutableList()
+
                             viewModel.field.genreNotIn =
                                 it.filter { it.selected.value == SelectType.EXCLUDED }
                                     .map { it.data }
@@ -254,6 +297,8 @@ fun BrowseFilterBottomSheet(
                         entries = viewModel.selectMediaTagCollections.value,
                         showSearchFilter = true,
                         onItemsSelected = {
+                            viewModel.isExcludedTagsFiltered = true
+
                             viewModel.field.tagsIn =
                                 it.filter { it.selected.value == SelectType.INCLUDED }
                                     .map { it.data }
@@ -262,7 +307,8 @@ fun BrowseFilterBottomSheet(
                                 it.filter { it.selected.value == SelectType.EXCLUDED }
                                     .map { it.data }
                                     .toMutableList()
-                        })
+                        }
+                    )
                 }
 
                 ExternalLinkFilter(viewModel)
@@ -277,7 +323,7 @@ fun BrowseFilterBottomSheet(
                     .fillMaxWidth()
                     .padding(8.dp),
                 onClick = {
-                    viewModel.updateFilter()
+                    viewModel.saveFilterData()
                     onFilter()
                 }) {
                 Box(
@@ -312,14 +358,14 @@ fun BrowseFilterBottomSheet(
     }
 }
 
-private val episodesLessThan = 150f
-private val chaptersLessThan = 500f
 
 @Composable
 fun EpisodesOrChaptersRangeFilter(viewModel: BrowseFilterViewModel) {
     val field = viewModel.field
     val isAnime = field.browseType.value == BrowseTypes.ANIME
 
+    val episodesLessThan = viewModel.episodesLessThan
+    val chaptersLessThan = viewModel.chaptersLessThan
 
     val sliderPosition = remember(field, field.browseType.value) {
         if (isAnime) {
@@ -357,16 +403,13 @@ fun EpisodesOrChaptersRangeFilter(viewModel: BrowseFilterViewModel) {
     }
 }
 
-
-private val durationLessThan = 170f
-private val volumesLessThan = 50f
-
-
 @Composable
 fun DurationOrVolumesRangeFilter(viewModel: BrowseFilterViewModel) {
     val field = viewModel.field
     val isAnime = field.browseType.value == BrowseTypes.ANIME
 
+    val durationLessThan = viewModel.durationLessThan
+    val volumesLessThan = viewModel.volumesLessThan
 
     val sliderPosition = remember(field, field.browseType.value) {
         if (isAnime) {
@@ -402,6 +445,37 @@ fun DurationOrVolumesRangeFilter(viewModel: BrowseFilterViewModel) {
         }
 
     }
+}
+
+@Composable
+private fun TriStateCheckboxFilter(
+    text: String,
+    isChecked: Boolean?,
+    onCheckChange: (checked: Boolean?) -> Unit
+) {
+    val currentToggleState = remember(isChecked) {
+        mutableStateOf(
+            when (isChecked) {
+                true -> ToggleableState.On
+                false -> ToggleableState.Indeterminate
+                null -> ToggleableState.Off
+            }
+        )
+    }
+    TextTriStateCheckbox(
+        text = text,
+        toggleState = currentToggleState.value,
+        onToggleStateChange = {
+            currentToggleState.value = it
+            onCheckChange(
+                when (it) {
+                    ToggleableState.On -> true
+                    ToggleableState.Indeterminate -> false
+                    ToggleableState.Off -> null
+                }
+            )
+        }
+    )
 }
 
 
@@ -499,7 +573,8 @@ private fun ExternalLinkFilter(viewModel: BrowseFilterViewModel) {
 @Composable
 private fun BrowseFilterRow(content: @Composable RowScope.() -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         content()
     }
