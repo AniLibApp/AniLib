@@ -49,6 +49,12 @@ class BrowseFilterViewModel(
     private val excludedAnimeGenre = genreCollections.filter { it.isExcludedInAnime }
     private val excludedMangaGenre = genreCollections.filter { it.isExcludedInManga }
 
+    val episodesLessThan = appPreferencesDataStore.maxEpisodes.get()!!.toFloat()
+    val chaptersLessThan = appPreferencesDataStore.maxChapters.get()!!.toFloat()
+
+    val durationLessThan = appPreferencesDataStore.maxDuration.get()!!.toFloat()
+    val volumesLessThan = appPreferencesDataStore.maxVolumes.get()!!.toFloat()
+
     val selectMediaTagCollections =
         mutableStateOf(emptyList<SelectFilterModel<String>>())
     val selectStreamingOnCollections =
@@ -87,12 +93,18 @@ class BrowseFilterViewModel(
 
                     val tagsNotIn = excludedTags.map { it.name }.toMutableList()
                     previousField.tagsNotIn?.forEach {
-                        if(!tagsNotIn.contains(it)){
+                        if (!tagsNotIn.contains(it)) {
                             tagsNotIn.add(it)
                         }
                     }
 
                     previousField.tagsNotIn = tagsNotIn
+
+
+                    if (!previousField.tagsIn.isNullOrEmpty() || !previousField.tagsNotIn.isNullOrEmpty()) {
+                        isExcludedTagsFiltered = true
+                    }
+
                 }
 
 
@@ -110,11 +122,17 @@ class BrowseFilterViewModel(
 
                     val genreNotIn = excludedGenre.map { it.name }.toMutableList()
                     previousField.genreNotIn?.forEach {
-                        if(!genreNotIn.contains(it)){
+                        if (!genreNotIn.contains(it)) {
                             genreNotIn.add(it)
                         }
                     }
                     previousField.genreNotIn = genreNotIn
+
+
+                    if (!previousField.genreIn.isNullOrEmpty() || !previousField.genreNotIn.isNullOrEmpty()) {
+                        isExcludedGenreFiltered = true
+                    }
+
                 }
             }
             updateField(previousField)
@@ -125,9 +143,9 @@ class BrowseFilterViewModel(
         updateField(BrowseField(search = field.search))
     }
 
-    fun updateFilter() {
+    fun saveFilterData() {
         launch {
-            if(field.browseType.value == BrowseTypes.ANIME || field.browseType.value == BrowseTypes.MANGA){
+            if (field.browseType.value == BrowseTypes.ANIME || field.browseType.value == BrowseTypes.MANGA) {
                 browseFilterDataStore.updateData {
                     field.toBrowseFilter()
                 }
@@ -142,6 +160,25 @@ class BrowseFilterViewModel(
 
     fun updateBrowseType(browseTypes: BrowseTypes) {
         field.browseType.value = browseTypes
+        updateExcludedFields()
+        updateUIFilters()
+    }
+
+    private fun updateExcludedFields() {
+        val browseType = field.browseType.value
+        if (browseType == BrowseTypes.ANIME || browseType == BrowseTypes.MANGA) {
+            if (!isExcludedTagsFiltered) {
+                val excludedTags =
+                    if (browseType == BrowseTypes.ANIME) excludedAnimeTags else excludedMangaTags
+                field.tagsNotIn = excludedTags.map { it.name }.toMutableList()
+            }
+
+            if (!isExcludedGenreFiltered) {
+                val excludedGenre =
+                    if (browseType == BrowseTypes.ANIME) excludedAnimeGenre else excludedMangaGenre
+                field.genreNotIn = excludedGenre.map { it.name }.toMutableList()
+            }
+        }
     }
 
     private fun updateUIFilters() {

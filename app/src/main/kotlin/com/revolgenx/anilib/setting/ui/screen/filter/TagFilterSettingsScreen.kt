@@ -188,6 +188,7 @@ private fun FilterTags(
                 )
             }
             tags.forEach { option ->
+                if (!option.isVisible) return@forEach
                 DropdownMenuItem(
                     text = {
                         Row(

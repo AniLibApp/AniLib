@@ -253,6 +253,7 @@
     <string name="airing">Airing</string>
     <string name="select_date">Select Date</string>
     <string name="weekly">Weekly</string>
+    <string name="ch_s_s">C: %1$s · %2$s</string>
     <string name="ep_s_s">E: %1$s · %2$s</string>
     <string name="ep_s_airing_in">Ep %1$d airing in</string>
     <string name="ep_s_aired_at">Ep %1$d aired at</string>
@@ -342,13 +343,13 @@
     <string name="settings_exclude_genre">Exclude Genre</string>
     <string name="settings_exclude_genre_desc">Excluded genre will be added to search filter when searching for media</string>
     <string name="settings_max_episodes">Max Episodes</string>
-    <string name="settings_max_episodes_desc">Set max episodes for search filter. Default is 150</string>
+    <string name="settings_max_episodes_desc">Set max episodes for search filter. Min is 150</string>
     <string name="settings_max_duration">Max Duration</string>
-    <string name="settings_max_duration_desc">Set max durations for search filter. Default is 170</string>
+    <string name="settings_max_duration_desc">Set max durations for search filter. Min is 170</string>
     <string name="settings_max_chapters">Max Chapters</string>
-    <string name="settings_max_chapters_desc">Set max chapters for search filter. Default is 500</string>
+    <string name="settings_max_chapters_desc">Set max chapters for search filter. Min is 500</string>
     <string name="settings_max_volumes">Max Volumes</string>
-    <string name="settings_max_volumes_desc">"Set max volumes for search filter. Default is 50"</string>
+    <string name="settings_max_volumes_desc">"Set max volumes for search filter. Min is 50"</string>
     <string name="restart_required_msg">Restart is required for changes to take effect.</string>
     <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
     <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>

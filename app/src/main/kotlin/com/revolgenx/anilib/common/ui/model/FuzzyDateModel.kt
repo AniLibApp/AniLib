@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.common.ui.model
 
 import com.revolgenx.anilib.fragment.FuzzyDate
-import java.time.LocalDate
+    import java.time.LocalDate
 import java.time.Month
 import java.time.ZoneOffset
 import java.time.ZonedDateTime

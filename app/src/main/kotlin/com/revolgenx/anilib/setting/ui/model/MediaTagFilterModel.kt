@@ -3,7 +3,12 @@ package com.revolgenx.anilib.setting.ui.model
 import androidx.compose.runtime.MutableState
 import com.revolgenx.anilib.common.ui.model.BaseModel
 
-data class MediaTagFilterModel(val name: String, var isSelected: MutableState<Boolean>, val data: BaseModel) {
+data class MediaTagFilterModel(
+    val name: String,
+    var isSelected: MutableState<Boolean>,
+    val isVisible: Boolean,
+    val data: BaseModel
+) {
     override fun equals(other: Any?): Boolean {
         if (other is MediaTagFilterModel) {
             return this.name == other.name

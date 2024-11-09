@@ -15,6 +15,7 @@ import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import java.time.Instant
 import java.time.LocalTime
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import java.time.temporal.WeekFields
 import java.util.Locale
@@ -87,18 +88,18 @@ open class AiringScheduleViewModel(
 
     fun updateStartDate(startDate: Long) {
         startDateTime =
-            Instant.ofEpochMilli(startDate).atZone(ZoneId.systemDefault()).with(LocalTime.MIN)
+            Instant.ofEpochMilli(startDate).atZone(ZoneOffset.UTC).with(LocalTime.MIN)
         endDateTime =
-            Instant.ofEpochMilli(startDate).atZone(ZoneId.systemDefault()).with(LocalTime.MAX)
+            Instant.ofEpochMilli(startDate).atZone(ZoneOffset.UTC).with(LocalTime.MAX)
         updateFieldDateTime()
         refresh()
     }
 
     fun updateDates(startDate: Long, endDate: Long) {
         startDateTime =
-            Instant.ofEpochMilli(startDate).atZone(ZoneId.systemDefault()).with(LocalTime.MIN)
+            Instant.ofEpochMilli(startDate).atZone(ZoneOffset.UTC).with(LocalTime.MIN)
         endDateTime =
-            Instant.ofEpochMilli(endDate).atZone(ZoneId.systemDefault()).with(LocalTime.MAX)
+            Instant.ofEpochMilli(endDate).atZone(ZoneOffset.UTC).with(LocalTime.MAX)
         updateFieldDateTime()
         refresh()
     }

@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.common.ui.component.checkbox
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,7 +27,7 @@ fun TextCheckbox(
     checked: Boolean,
     onCheckChange: (checked: Boolean) -> Unit
 ) {
-    val (checkedState, onStateChange) = remember { mutableStateOf(checked) }
+    val (checkedState, onStateChange) = remember(checked) { mutableStateOf(checked) }
     Row(
         Modifier
             .fillMaxWidth()

@@ -2,6 +2,7 @@ package com.revolgenx.anilib.entry.ui.screen
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -23,11 +25,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -35,17 +40,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.checkbox.TextCheckbox
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.date.CalendarBottomSheet
@@ -78,6 +84,7 @@ import kotlinx.coroutines.coroutineScope
 import org.koin.androidx.compose.koinViewModel
 import java.time.Instant
 import java.time.ZoneId
+import java.time.ZoneOffset
 import java.time.ZonedDateTime
 import anilib.i18n.R as I18nR
 
@@ -109,7 +116,9 @@ private fun MediaListEditScreenContent(
         title = title,
         scrollBehavior = scrollBehavior,
         actions = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                viewModel.toggleFavourite()
+            }) {
                 Icon(
                     imageVector = if (viewModel.isFavourite) AppIcons.IcHeart else AppIcons.IcHeartOutline,
                     contentDescription = stringResource(id = I18nR.string.favourite)
@@ -135,6 +144,16 @@ private fun MediaListEditScreenContent(
         },
         contentWindowInsets = NavigationBarDefaults.windowInsets
     ) { snackbar ->
+
+        LaunchedEffect(viewModel.errorMsg) {
+            viewModel.errorMsg?.let {
+                snackbar.showSnackbar(
+                    context.getString(it),
+                    withDismissAction = true
+                )
+                viewModel.errorMsg = null
+            }
+        }
 
         LaunchedEffect(viewModel.deleteResource) {
             when (viewModel.deleteResource) {
@@ -198,7 +217,8 @@ private fun MediaListEditScreenContent(
                 .fillMaxSize()
                 .imePadding()
                 .verticalScroll(rememberScrollState())
-                .padding(8.dp)
+                .padding(horizontal = 10.dp)
+                .padding(bottom = 10.dp)
         ) {
             ResourceScreen(viewModel = viewModel) { userMedia ->
                 val media = userMedia.media ?: return@ResourceScreen
@@ -218,15 +238,13 @@ private fun MediaListEditScreenContent(
 
                 val focusManager = LocalFocusManager.current
                 Column(
-                    modifier = Modifier.pointerInput (Unit) {
+                    modifier = Modifier.pointerInput(Unit) {
                         coroutineScope {
                             detectTapGestures {
                                 focusManager.clearFocus()
                             }
                         }
                     },
-                    verticalArrangement = Arrangement.spacedBy(6.dp)
-
                 ) {
 
                     Row(
@@ -234,7 +252,7 @@ private fun MediaListEditScreenContent(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
 
-                        CardHeaderContent(
+                        SurfaceHeadingColumn(
                             modifier = Modifier.weight(1f),
                             heading = stringResource(I18nR.string.status),
                             fixedCardHeight = false
@@ -243,6 +261,7 @@ private fun MediaListEditScreenContent(
                                 getAlMediaListStatusForType(type = media.type)
                             val mediaListStatus = entryField.status
                             SelectMenu(
+                                modifier = Modifier.padding(vertical = 4.dp),
                                 entries = mediaListStatusEntries,
                                 selectedItemPosition = mediaListStatus.toAlMediaListStatus()
                             ) { newStatus ->
@@ -250,7 +269,7 @@ private fun MediaListEditScreenContent(
                             }
                         }
 
-                        CardHeaderContent(
+                        SurfaceHeadingColumn(
                             modifier = Modifier.weight(1f),
                             heading = stringResource(I18nR.string.score)
                         ) {
@@ -268,7 +287,7 @@ private fun MediaListEditScreenContent(
                         modifier = Modifier.padding(4.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        CardHeaderContent(
+                        SurfaceHeadingColumn(
                             modifier = Modifier.weight(1f),
                             heading = stringResource(if (isAnime) I18nR.string.episode_progress else I18nR.string.chapter_progress)
                         ) {
@@ -281,7 +300,7 @@ private fun MediaListEditScreenContent(
                         }
 
 
-                        CardHeaderContent(
+                        SurfaceHeadingColumn(
                             modifier = Modifier.weight(1f),
                             heading = stringResource(if (isAnime) I18nR.string.total_rewatches else I18nR.string.total_rereads)
                         ) {
@@ -298,7 +317,7 @@ private fun MediaListEditScreenContent(
                         modifier = Modifier.padding(4.dp),
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
-                        CardHeaderContent(
+                        SurfaceHeadingColumn(
                             modifier = Modifier.weight(1f),
                             heading = stringResource(I18nR.string.start_date)
                         ) {
@@ -311,16 +330,13 @@ private fun MediaListEditScreenContent(
                                     entryField.startedAt = null
                                 },
                                 onDateSelected = { selectedDateMillis ->
-                                    val newStartedAt = ZonedDateTime.ofInstant(
-                                        Instant.ofEpochMilli(selectedDateMillis),
-                                        ZoneId.systemDefault()
-                                    )
+                                    val newStartedAt = Instant.ofEpochMilli(selectedDateMillis).atZone(ZoneOffset.UTC)
                                     entryField.startedAt = FuzzyDateModel.from(newStartedAt)
                                 })
 
                         }
 
-                        CardHeaderContent(
+                        SurfaceHeadingColumn(
                             modifier = Modifier.weight(1f),
                             heading = stringResource(I18nR.string.end_date)
                         ) {
@@ -334,10 +350,7 @@ private fun MediaListEditScreenContent(
                                     entryField.completedAt = null
                                 },
                                 onDateSelected = { selectedDateMillis ->
-                                    val newCompletedAt = ZonedDateTime.ofInstant(
-                                        Instant.ofEpochMilli(selectedDateMillis),
-                                        ZoneId.systemDefault()
-                                    )
+                                    val newCompletedAt = Instant.ofEpochMilli(selectedDateMillis).atZone(ZoneOffset.UTC)
                                     entryField.completedAt = FuzzyDateModel.from(newCompletedAt)
                                 })
                         }
@@ -348,7 +361,7 @@ private fun MediaListEditScreenContent(
                             modifier = Modifier.padding(4.dp),
                             horizontalArrangement = Arrangement.spacedBy(8.dp)
                         ) {
-                            CardHeaderContent(
+                            SurfaceHeadingColumn(
                                 modifier = Modifier.weight(1f),
                                 heading = stringResource(I18nR.string.volume_progress)
                             ) {
@@ -362,22 +375,27 @@ private fun MediaListEditScreenContent(
                         }
                     }
 
-                    CardHeaderContent(
+                    SurfaceHeadingColumn(
+                        modifier = Modifier.padding(bottom = 8.dp),
                         heading = stringResource(I18nR.string.notes), fixedCardHeight = false
                     ) {
                         TextField(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 8.dp)
-                                .padding(bottom = 12.dp),
+                                .fillMaxWidth(),
                             value = entryField.notes ?: "",
                             onValueChange = {
                                 entryField.notes = it
-                            })
+                            },
+                            colors = TextFieldDefaults.colors(
+                                unfocusedContainerColor = Color.Transparent,
+                                focusedContainerColor = Color.Transparent,
+                                focusedIndicatorColor = Color.Transparent,
+                                unfocusedIndicatorColor = Color.Transparent
+                            )
+                        )
                     }
 
 
-                    val hasCustomList = entryField.customLists.isNullOrEmpty().not()
 
                     TextCheckbox(
                         text = stringResource(id = I18nR.string._private),
@@ -386,8 +404,9 @@ private fun MediaListEditScreenContent(
                         entryField.private = it
                     }
 
-                    if (hasCustomList) {
+                    val hasCustomList = entryField.customLists.isNullOrEmpty().not()
 
+                    if (hasCustomList) {
                         TextCheckbox(
                             text = stringResource(id = I18nR.string.hide_from_status_lists),
                             checked = entryField.hiddenFromStatusLists ?: false
@@ -398,7 +417,12 @@ private fun MediaListEditScreenContent(
                     }
 
 
-                    HorizontalDivider(modifier = Modifier.padding(4.dp))
+                    HorizontalDivider(
+                        modifier = Modifier.padding(
+                            horizontal = 4.dp,
+                            vertical = 12.dp
+                        )
+                    )
 
                     TextHeaderContent(
                         heading = stringResource(I18nR.string.custom_lists)
@@ -421,7 +445,13 @@ private fun MediaListEditScreenContent(
 
                     user.mediaListOptions?.takeIf { if (media.isAnime) it.isAnimeAdvancedScoreEnabled else it.isMangaAdvancedScoreEnabled }
                         ?.let {
-                            HorizontalDivider(modifier = Modifier.padding(4.dp))
+                            HorizontalDivider(
+                                modifier = Modifier.padding(
+                                    horizontal = 4.dp,
+                                    vertical = 12.dp
+                                )
+                            )
+
                             TextHeaderContent(
                                 heading = stringResource(id = I18nR.string.advanced_scores),
                             ) {
@@ -432,7 +462,7 @@ private fun MediaListEditScreenContent(
                                         rowSpacing = 8.dp,
                                         columnSpacing = 8.dp
                                     ) { scoreModel ->
-                                        CardHeaderContent(
+                                        SurfaceHeadingColumn(
                                             heading = scoreModel.heading
                                         ) {
                                             DoubleCountEditor(
@@ -463,26 +493,22 @@ private fun MediaListEditScreenContent(
 private val FilterContentHeight = 56.dp
 
 @Composable
-private fun CardHeaderContent(
+private fun SurfaceHeadingColumn(
     modifier: Modifier = Modifier,
     heading: String,
     fixedCardHeight: Boolean = true,
     content: @Composable () -> Unit
 ) {
-    Card(
-        modifier = modifier
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        Column(
-            modifier = Modifier.padding(top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+        Header(label = heading)
+
+        Surface(
+            color = MaterialTheme.colorScheme.surfaceColorAtElevation(4.dp),
+            shape = RoundedCornerShape(8.dp)
         ) {
-            Text(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                text = heading,
-                maxLines = 1,
-                color = MaterialTheme.colorScheme.onSurface,
-                style = MaterialTheme.typography.bodySmall
-            )
             Box(modifier = Modifier.let {
                 if (fixedCardHeight) {
                     it.height(FilterContentHeight)
@@ -525,13 +551,23 @@ private fun CalendarPicker(
         initialSelectedDateMillis = selectedDateMillis,
         onDateSelected = onDateSelected
     )
-    TextButton(
-        modifier = Modifier.fillMaxSize(),
-        onClick = { openCalendar.value = true },
-        colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.onSurface)
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(horizontal = 12.dp)
+            .clickable(
+                interactionSource = remember {
+                    MutableInteractionSource()
+                },
+                indication = null
+            ) {
+                openCalendar.value = true
+            },
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
-            imageVector = AppIcons.IcCalendar, contentDescription = "calendar"
+            imageVector = AppIcons.IcCalendar, contentDescription = "calendar",
+            tint = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
             modifier = Modifier
@@ -552,8 +588,14 @@ private fun CalendarPicker(
 }
 
 
-@Preview
 @Composable
-fun HeaderContentPreview() {
-
+private fun Header(label: String) {
+    Text(
+        modifier = Modifier.padding(vertical = 8.dp, horizontal = 4.dp),
+        text = label,
+        fontSize = 14.sp,
+        fontWeight = FontWeight.Medium,
+        maxLines = 1,
+        color = MaterialTheme.colorScheme.onSurfaceVariant
+    )
 }

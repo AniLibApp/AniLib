@@ -53,6 +53,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import anilib.i18n.R
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
@@ -97,6 +98,7 @@ import com.revolgenx.anilib.media.ui.model.MediaTagModel
 import com.revolgenx.anilib.media.ui.model.MediaTrailerModel
 import com.revolgenx.anilib.media.ui.model.TrailerSource
 import com.revolgenx.anilib.media.ui.model.isAnime
+import com.revolgenx.anilib.media.ui.model.toColor
 import com.revolgenx.anilib.media.ui.model.toStringRes
 import com.revolgenx.anilib.media.ui.viewmodel.MediaViewModel
 import com.revolgenx.anilib.studio.ui.model.StudioConnectionModel
@@ -153,7 +155,10 @@ private fun MediaOverview(
             clipboardManager.setText(AnnotatedString(it))
         })
         MediaGenre(media.genres) {
-            navigator.browseGenreScreen(it, type = if(isAnime) BrowseTypes.ANIME else BrowseTypes.MANGA)
+            navigator.browseGenreScreen(
+                it,
+                type = if (isAnime) BrowseTypes.ANIME else BrowseTypes.MANGA
+            )
         }
         if (isAnime) {
             MediaTrailer(media.trailer) {
@@ -173,7 +178,10 @@ private fun MediaOverview(
             mediaComponentState = mediaComponentState
         )
         MediaTag(media.tags, media.tagsWithoutSpoiler ?: emptyList()) {
-            navigator.browseTagScreen(it, type =  if(isAnime) BrowseTypes.ANIME else BrowseTypes.MANGA)
+            navigator.browseTagScreen(
+                it,
+                type = if (isAnime) BrowseTypes.ANIME else BrowseTypes.MANGA
+            )
         }
         MediaExternalLink(media.externalLinks) {
             openLink(it.url)
@@ -237,22 +245,41 @@ fun MediaRelationCard(
     MediaItemColumnCard(
         media = media,
         width = 140.dp,
+        height = 266.dp,
         footerContent = {
             val format = stringResource(id = media.format.toStringRes())
             val status = stringResource(id = media.status.toStringRes())
             val source = stringResource(id = mediaEdgeModel.relationType.toStringRes())
-            val seasonYear = media.seasonYear.naText()
-            val sourceYearText = if (media.isAnime) {
-                stringResource(id = I18nR.string.s_dot_s).format(source, seasonYear)
-            } else {
-                source
-            }
+            val year = media.seasonYear
+
             LightText(
-                text = sourceYearText,
+                text = source,
                 lineHeight = 11.sp
             )
+
+            Spacer(modifier = Modifier.height(2.dp))
+
             LightText(
-                text = stringResource(id = I18nR.string.s_dot_s).format(format, status),
+                text = year?.let { stringResource(id = R.string.s_dot_s).format(status, year) }
+                    ?: status,
+                color = media.status.toColor(),
+                lineHeight = 11.sp
+            )
+
+            Spacer(modifier = Modifier.height(2.dp))
+
+            val isAnime = media.isAnime
+            val episodesOrChapters = if (isAnime) media.episodes else media.chapters
+            val epOrChStr = if (isAnime) R.string.ep_s_s else R.string.ch_s_s
+
+            LightText(
+                modifier = Modifier.fillMaxWidth(),
+                text = episodesOrChapters?.let {
+                    stringResource(id = epOrChStr).format(
+                        episodesOrChapters,
+                        format
+                    )
+                } ?: format,
                 lineHeight = 11.sp
             )
         },

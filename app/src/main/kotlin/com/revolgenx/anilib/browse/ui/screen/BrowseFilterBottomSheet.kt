@@ -79,7 +79,7 @@ fun BrowseFilterBottomSheet(
                 modifier = Modifier
                     .weight(1f)
                     .verticalScroll(rememberScrollState())
-                    .padding(8.dp),
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
                 verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
 
@@ -232,7 +232,7 @@ fun BrowseFilterBottomSheet(
                 }
 
                 if (viewModel.isLoggedIn) {
-                    BrowseFilterRow {
+                    Row {
                         BrowseFilterRowItem {
                             TriStateCheckboxFilter(
                                 text = stringResource(id = anilib.i18n.R.string.on_list),
@@ -256,7 +256,7 @@ fun BrowseFilterBottomSheet(
                     }
                 }
 
-                BrowseFilterRow {
+                Row {
                     BrowseFilterRowItem {
                         TextCheckbox(
                             text = stringResource(id = anilib.i18n.R.string.doujin),
@@ -323,7 +323,7 @@ fun BrowseFilterBottomSheet(
                     .fillMaxWidth()
                     .padding(8.dp),
                 onClick = {
-                    viewModel.updateFilter()
+                    viewModel.saveFilterData()
                     onFilter()
                 }) {
                 Box(
@@ -358,14 +358,14 @@ fun BrowseFilterBottomSheet(
     }
 }
 
-private val episodesLessThan = 150f
-private val chaptersLessThan = 500f
 
 @Composable
 fun EpisodesOrChaptersRangeFilter(viewModel: BrowseFilterViewModel) {
     val field = viewModel.field
     val isAnime = field.browseType.value == BrowseTypes.ANIME
 
+    val episodesLessThan = viewModel.episodesLessThan
+    val chaptersLessThan = viewModel.chaptersLessThan
 
     val sliderPosition = remember(field, field.browseType.value) {
         if (isAnime) {
@@ -403,16 +403,13 @@ fun EpisodesOrChaptersRangeFilter(viewModel: BrowseFilterViewModel) {
     }
 }
 
-
-private val durationLessThan = 170f
-private val volumesLessThan = 50f
-
-
 @Composable
 fun DurationOrVolumesRangeFilter(viewModel: BrowseFilterViewModel) {
     val field = viewModel.field
     val isAnime = field.browseType.value == BrowseTypes.ANIME
 
+    val durationLessThan = viewModel.durationLessThan
+    val volumesLessThan = viewModel.volumesLessThan
 
     val sliderPosition = remember(field, field.browseType.value) {
         if (isAnime) {
@@ -477,7 +474,8 @@ private fun TriStateCheckboxFilter(
                     ToggleableState.Off -> null
                 }
             )
-        })
+        }
+    )
 }
 
 
@@ -575,7 +573,8 @@ private fun ExternalLinkFilter(viewModel: BrowseFilterViewModel) {
 @Composable
 private fun BrowseFilterRow(content: @Composable RowScope.() -> Unit) {
     Row(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         content()
     }

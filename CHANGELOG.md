@@ -7,13 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-- Filter settings for tags, genre, etc 
-- Add Doujin, On-List, etc filter on browse
-- Related: [#77](https://github.com/AniLibApp/AniLib/issues/77), [#75](https://github.com/AniLibApp/AniLib/issues/75), [#74](https://github.com/AniLibApp/AniLib/issues/74), [#72](https://github.com/AniLibApp/AniLib/issues/72)
+- Added filter settings
+- Exclude tags and genre for anime and manga separately. Manually adjustment to this filter in search will stop adding default filters for anime and manga separately. [#74](https://github.com/AniLibApp/AniLib/issues/74)
+- Excluded filter will be added when reloading previous filter [#75](https://github.com/AniLibApp/AniLib/issues/75)
+- Add Doujin, On-List, etc filter on search filter
+- Show episodes and chapters in almost all cards
+- Add genre and tags filter in explore and season
+- Update some themes filter themes
 
 ### Fixed
 - Replaced library with a activity for splash screen implementation. For API >= 31 can't control splash dark/light theme from app. [#102](https://github.com/AniLibApp/AniLib/pull/102/files)
 - Clicking on a tag of a manga will start a search of that tag on the manga section [#72](https://github.com/AniLibApp/AniLib/issues/72)
+- Show none in year, season inside explore filters
+- Date picker using wrong date in list editor and airing [#107](https://github.com/AniLibApp/AniLib/issues/107)
 
 ### Removed
 - Removed CoreX splash library.

@@ -31,12 +31,14 @@ data class MediaField(
             seasonYear = nn(seasonYear),
             year = nnString(year?.let { "$it%" }),
             sort = nn(sort?.let { listOf(it) }),
-            format_in = nn(formatsIn),
+            formatIn = nn(formatsIn),
             idIn = nn(idIn),
             isAdult = nn(isAdult ?: canShowAdult.takeIf { it.not() }),
             status = nn(status),
-            genre_in = nn(genreIn),
-            tag_in = nn(tagIn)
+            genreIn = nn(genreIn),
+            tagsIn = nn(tagIn),
+            genreNotIn = nn(genreNotIn),
+            tagsNotIn = nn(genreNotIn)
         )
     }
 

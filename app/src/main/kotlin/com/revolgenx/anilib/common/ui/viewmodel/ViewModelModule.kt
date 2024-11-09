@@ -143,7 +143,14 @@ val viewModelModules = module {
 
     // season
     viewModel { SeasonViewModel(get(), get<Context>().seasonFilterDataStore) }
-    viewModel { SeasonFilterViewModel(get<Context>().seasonFilterDataStore) }
+    viewModel {
+        SeasonFilterViewModel(
+            get<Context>().seasonFilterDataStore,
+            get<Context>().mediaTagCollectionDataStore,
+        get<Context>().genreCollectionDataStore,
+        get()
+        )
+    }
 
     //character
     viewModel { CharacterAboutViewModel(get()) }
@@ -244,7 +251,7 @@ val viewModelModules = module {
     viewModel { NotificationViewModel(get(), get()) }
 
     //editor
-    viewModel { MediaListEntryEditorViewModel(get(), get(), get()) }
+    viewModel { MediaListEntryEditorViewModel(get(), get(), get(), get()) }
 
     //list
     viewModel { AnimeListViewModel(get(), get(), get(), animeListFilterDataStore()) }
@@ -332,9 +339,30 @@ val viewModelModules = module {
             get<Context>().exploreNewlyAddedDataStore
         )
     }
-    viewModel { ExploreTrendingFilterViewModel(get<Context>().exploreTrendingDataStore) }
-    viewModel { ExplorePopularFilterViewModel(get<Context>().explorePopularDataStore) }
-    viewModel { ExploreNewlyAddedFilterViewModel(get<Context>().exploreNewlyAddedDataStore) }
+    viewModel {
+        ExploreTrendingFilterViewModel(
+            get<Context>().exploreTrendingDataStore,
+            get<Context>().mediaTagCollectionDataStore,
+            get<Context>().genreCollectionDataStore,
+            get()
+        )
+    }
+    viewModel {
+        ExplorePopularFilterViewModel(
+            get<Context>().explorePopularDataStore,
+            get<Context>().mediaTagCollectionDataStore,
+            get<Context>().genreCollectionDataStore,
+            get()
+        )
+    }
+    viewModel {
+        ExploreNewlyAddedFilterViewModel(
+            get<Context>().exploreNewlyAddedDataStore,
+            get<Context>().mediaTagCollectionDataStore,
+            get<Context>().genreCollectionDataStore,
+            get()
+        )
+    }
     viewModel { ExploreWatchingViewModel(get(), get(), get()) }
     viewModel { ExploreReadingViewModel(get(), get(), get()) }
 

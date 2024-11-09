@@ -23,6 +23,7 @@ import anilib.i18n.R
 import com.revolgenx.anilib.common.ext.mediaListEntryEditorScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
+import com.revolgenx.anilib.common.ext.orNa
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
 import com.revolgenx.anilib.common.ui.component.image.ImageOptions
 import com.revolgenx.anilib.common.ui.component.text.LightText
@@ -119,18 +120,28 @@ fun MediaRowCommonContent(
             }
 
 
+            val year = media.seasonYear
+            val status = stringResource(id = media.status.toStringRes())
+
             Text(
-                stringResource(id = media.status.toStringRes()),
+                text = year?.let { stringResource(id = R.string.s_dot_s).format(status, year) } ?: status,
                 color = media.status.toColor(),
                 fontSize = 12.sp
             )
 
             val format = stringResource(id = media.format.toStringRes())
-            val year = media.seasonYear.naText()
+            val isAnime = media.isAnime
+            val episodesOrChapters = if (isAnime) media.episodes else media.chapters
+            val epOrChStr = if (isAnime) R.string.ep_s_s else R.string.ch_s_s
 
             LightText(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.s_dot_s).format(format, year),
+                text = episodesOrChapters?.let {
+                    stringResource(id = epOrChStr).format(
+                        episodesOrChapters,
+                        format
+                    )
+                } ?: format,
             )
 
             content()
@@ -196,20 +207,30 @@ fun MediaRowCommonContentEnd(
             }
 
 
+
+            val year = media.seasonYear
+            val status = stringResource(id = media.status.toStringRes())
+
             Text(
-                stringResource(id = media.status.toStringRes()),
+                text = year?.let { stringResource(id = R.string.s_dot_s).format(status, year) } ?: status,
                 color = media.status.toColor(),
                 fontSize = 12.sp,
                 textAlign = TextAlign.End,
             )
 
             val format = stringResource(id = media.format.toStringRes())
-
-            val year = media.seasonYear.naText()
+            val isAnime = media.isAnime
+            val episodesOrChapters = if (isAnime) media.episodes else media.chapters
+            val epOrChStr = if (isAnime) R.string.ep_s_s else R.string.ch_s_s
 
             LightText(
                 modifier = Modifier.fillMaxWidth(),
-                text = stringResource(id = R.string.s_dot_s).format(format, year),
+                text = episodesOrChapters?.let {
+                    stringResource(id = epOrChStr).format(
+                        episodesOrChapters,
+                        format
+                    )
+                } ?: format,
                 textAlign = TextAlign.End,
             )
 

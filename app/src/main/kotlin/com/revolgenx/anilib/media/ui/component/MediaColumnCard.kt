@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -215,24 +216,28 @@ private fun MediaColumnCardContent(
             } else {
                 val format = stringResource(id = media.format.toStringRes())
                 val status = stringResource(id = media.status.toStringRes())
-                val statusColor = media.status.toColor()
                 val year = media.seasonYear
-
-
-                LightText(
-                    text = status,
-                    color = statusColor,
-                    lineHeight = 11.sp
-                )
 
                 LightText(
                     text = year?.let {
                         stringResource(id = I18nR.string.s_dot_s).format(
-                            format,
+                            status,
                             year
                         )
-                    } ?: format,
+                    } ?: status,
+                    color = media.status.toColor(),
                     lineHeight = 11.sp
+                )
+
+                Spacer(modifier = Modifier.height(2.dp))
+
+                val isAnime = media.isAnime
+                val episodesOrChapters  = if (isAnime) media.episodes else media.chapters
+                val epOrChStr = if(isAnime) anilib.i18n.R.string.ep_s_s else anilib.i18n.R.string.ch_s_s
+
+                LightText(
+                    modifier = Modifier.fillMaxWidth(),
+                    text = episodesOrChapters?.let { stringResource(id = epOrChStr).format(episodesOrChapters, format) } ?: format,
                 )
             }
         }

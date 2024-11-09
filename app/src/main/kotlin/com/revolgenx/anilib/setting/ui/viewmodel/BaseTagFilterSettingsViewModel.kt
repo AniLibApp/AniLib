@@ -47,17 +47,16 @@ class TagFilterSettingsViewModel(
 
     init {
         mediaTagCollection.forEach {
-            if (it.isAdult && !canShowAdultContent) {
-                return@forEach
-            }
             excludedAnimeTagCollection += MediaTagFilterModel(
                 name = it.name,
                 isSelected = mutableStateOf(it.isExcludedInAnime),
+                isVisible = if(canShowAdultContent) true else !it.isAdult,
                 data = it
             )
             excludedMangaTagCollection += MediaTagFilterModel(
                 name = it.name,
                 isSelected = mutableStateOf(it.isExcludedInManga),
+                isVisible = if(canShowAdultContent) true else !it.isAdult,
                 data = it
             )
         }
@@ -95,17 +94,17 @@ class GenreFilterSettingsViewModel(
 
     init {
         mediaGenreCollection.forEach {
-            if (it.name.contains("Hentai", ignoreCase = true) && !canShowAdultContent) {
-                return@forEach
-            }
+            val isAdult = it.name.contains("Hentai", ignoreCase = true)
             excludedAnimeTagCollection += MediaTagFilterModel(
                 name = it.name,
                 isSelected = mutableStateOf(it.isExcludedInAnime),
+                isVisible = if(canShowAdultContent) true else !isAdult,
                 data = it
             )
             excludedMangaTagCollection += MediaTagFilterModel(
                 name = it.name,
                 isSelected = mutableStateOf(it.isExcludedInManga),
+                isVisible = if(canShowAdultContent) true else !isAdult,
                 data = it
             )
         }

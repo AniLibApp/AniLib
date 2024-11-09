@@ -69,6 +69,7 @@ object FilterSettingsScreen : AndroidScreen() {
                         title = stringResource(id = R.string.settings_max_episodes),
                         subtitle = stringResource(id = R.string.settings_max_episodes_desc),
                         value = viewModel.maxEpisodesPref.get()!!.toString(),
+                        minValue = 150,
                         onIntValueChange = {
                             scope.launch {
                                 viewModel.maxEpisodesPref.set(it)
@@ -80,6 +81,7 @@ object FilterSettingsScreen : AndroidScreen() {
                         title = stringResource(id = R.string.settings_max_duration),
                         subtitle = stringResource(id = R.string.settings_max_duration_desc),
                         value = viewModel.maxDurationsPref.get()!!.toString(),
+                        minValue = 170,
                         onIntValueChange = {
                             scope.launch {
                                 viewModel.maxDurationsPref.set(it)
@@ -113,6 +115,7 @@ object FilterSettingsScreen : AndroidScreen() {
                         title = stringResource(id = R.string.settings_max_chapters),
                         subtitle = stringResource(id = R.string.settings_max_chapters_desc),
                         value = viewModel.maxChaptersPref.get()!!.toString(),
+                        minValue = 500,
                         onIntValueChange = {
                             scope.launch {
                                 viewModel.maxChaptersPref.set(it)
@@ -124,6 +127,7 @@ object FilterSettingsScreen : AndroidScreen() {
                         title = stringResource(id = R.string.settings_max_volumes),
                         subtitle = stringResource(id = R.string.settings_max_volumes_desc),
                         value = viewModel.maxVolumesPref.get()!!.toString(),
+                        minValue = 50,
                         onIntValueChange = {
                             scope.launch {
                                 viewModel.maxVolumesPref.set(it)
@@ -142,6 +146,7 @@ private fun MaximumNumberFilter(
     title: String,
     subtitle: String,
     value: String,
+    minValue: Int,
     onIntValueChange: (Int) -> Unit
 ) {
     val number = remember(value) {
@@ -167,7 +172,7 @@ private fun MaximumNumberFilter(
             onValueChange = {
                 number.value = it
                 val newIntValue = it.toIntOrNull()
-                if (it.isNotEmpty() && newIntValue != null && newIntValue > 0) {
+                if (it.isNotEmpty() && newIntValue != null && newIntValue >= minValue) {
                     onIntValueChange(newIntValue)
                 }
             }
