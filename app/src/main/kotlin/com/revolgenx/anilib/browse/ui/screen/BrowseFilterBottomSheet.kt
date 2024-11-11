@@ -72,7 +72,7 @@ fun BrowseFilterBottomSheet(
     BottomSheet(
         state = state,
         skipPeeked = true,
-        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(navigationBarColor = BottomSheetDefaults.backgroundColor)
     ) {
         Column {
             Column(

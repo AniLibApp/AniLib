@@ -202,7 +202,7 @@ private fun StaffMediaRoleFilterBottomSheet(
     BottomSheet(
         state = bottomSheetState,
         skipPeeked = true,
-        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(navigationBarColor = BottomSheetDefaults.backgroundColor)
     ) {
         StaffMediaRoleFilterBottomSheetContent(
             viewModel = viewModel,

@@ -224,7 +224,7 @@ fun ActivityUnionFilterBottomSheet(
     BottomSheet(
         state = bottomSheetState,
         skipPeeked = true,
-        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(navigationBarColor = BottomSheetDefaults.backgroundColor)
     ) {
         ActivityUnionFilterBottomSheetContent(
             field = viewModel.field,

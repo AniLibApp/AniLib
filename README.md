@@ -9,9 +9,11 @@
 ### An Unofficial Client for [AniList](https://anilist.co)
 Track your anime and manga progress, discover new titles, customize your lists, and much more—all in one app!
 
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/AniLibApp/AniLib/build.yml)
-![GitHub License](https://img.shields.io/github/license/AniLibApp/AniLib)
+
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/AniLibApp/AniLib/build.yml)](https://github.com/rev0lgenX/AniLib/actions)
+[![GitHub License](https://img.shields.io/github/license/AniLibApp/AniLib)](https://github.com/AniLibApp/AniLib/blob/master/LICENSE)
 [![Translation](https://img.shields.io/badge/translation-76.17%25-blue)](https://poeditor.com/join/project?hash=d9NRHxgZSb)
+[![Discord](https://img.shields.io/discord/762249048748589066?color=%236E85D3&label=Discord&logo=Discord)](https://discord.gg/Gd2TVQT)
 
 <div style="display:flex; align-items:center; justify-content:center;">
 <table>

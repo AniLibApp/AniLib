@@ -128,7 +128,7 @@ private fun MediaCharacterFilterBottomSheet(
     BottomSheet(
         state = bottomSheetState,
         skipPeeked = true,
-        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(navigationBarColor = BottomSheetDefaults.backgroundColor)
     ) {
         Column(
             modifier = Modifier

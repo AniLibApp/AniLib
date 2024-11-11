@@ -171,7 +171,7 @@ private fun ExploreMediaListFilterBottomSheet(
     BottomSheet(
         state = bottomSheetState,
         skipPeeked = true,
-        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(navigationBarColor = BottomSheetDefaults.backgroundColor)
     ) {
         val mediaListSortList =
             stringArrayResource(id = com.revolgenx.anilib.R.array.media_list_sort)

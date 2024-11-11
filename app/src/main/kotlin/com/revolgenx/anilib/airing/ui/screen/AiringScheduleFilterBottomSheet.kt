@@ -36,7 +36,7 @@ fun AiringScheduleFilterBottomSheet(
     BottomSheet(
         state = bottomSheetState,
         skipPeeked = true,
-        behaviors = BottomSheetDefaults.dialogSheetBehaviors(lightNavigationBar = true)
+        behaviors = BottomSheetDefaults.dialogSheetBehaviors(navigationBarColor = BottomSheetDefaults.backgroundColor)
     ) {
         AiringScheduleFilterBottomSheetContent(
             field = viewModel.field,

@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="release_info" translatable="false">
+        ## v2.0.2 \n
+
+        ### Added \n
+        - Added filter settings \n
+        - Exclude tags and genre for anime and manga separately. Manually adjustment to this filter in search will stop adding default filters for anime and manga separately. \n
+        - Excluded filter will be added when reloading previous filter \n
+        - Add Doujin, On-List, etc filter on search filter \n
+        - Show episodes and chapters in almost all cards \n
+        - Add genre and tags filter in explore and season \n
+        - Update some themes in filters \n
+
+        ### Fixed \n
+        - Replaced library with a activity for splash screen implementation. For API >= 31 can\'t control splash dark/light theme from app.  \n
+        - Clicking on a tag of a manga will start a search of that tag on the manga section \n
+        - Show none in year, season inside explore filters \n
+        - Date picker using wrong date in list editor and airing \n
+
+
         ## v2.0.1 \n
         - Add display scaling to make component small (Settings -> Appearance) [#98](https://github.com/AniLibApp/AniLib/pull/98/files) \n
         - fix crash on sorting list entry with null date type \n
