@@ -14,12 +14,12 @@ class MediaListCollectionSortComparator(
         val media2 = item2.media!!
         return when (type) {
             MediaListSortType.TITLE -> {
-                media1.title?.title(titleType).orEmpty()
-                    .compareTo(media2.title?.title(titleType).orEmpty())
+                media1.title?.title(titleType)?.lowercase().orEmpty()
+                    .compareTo(media2.title?.title(titleType)?.lowercase().orEmpty())
             }
             MediaListSortType.TITLE_DESC -> {
-                media2.title?.title(titleType).orEmpty()
-                    .compareTo(media1.title?.title(titleType).orEmpty())
+                media2.title?.title(titleType)?.lowercase().orEmpty()
+                    .compareTo(media1.title?.title(titleType)?.lowercase().orEmpty())
             }
             MediaListSortType.SCORE -> {
                 item1.score.orZero().compareTo(item2.score.orZero())
