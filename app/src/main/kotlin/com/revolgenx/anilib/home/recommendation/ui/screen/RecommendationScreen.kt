@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -24,7 +26,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -34,6 +35,9 @@ import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
+import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.showLoginMsg
@@ -46,8 +50,6 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
-import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
-import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -66,6 +68,7 @@ import com.revolgenx.anilib.media.ui.component.MediaRowCommonContent
 import com.revolgenx.anilib.media.ui.component.MediaRowCommonContentEnd
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.type.RecommendationRating
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -74,6 +77,8 @@ import org.koin.androidx.compose.koinViewModel
 fun RecommendationScreen() {
     val viewModel: RecommendationViewModel = koinViewModel()
     val filterViewModel: RecommendationFilterViewModel = koinViewModel()
+    val scrollViewModel: ScrollViewModel = activityViewModel()
+
     val filterBottomSheetState = rememberBottomSheetState()
 
     val context = localContext()
@@ -82,6 +87,7 @@ fun RecommendationScreen() {
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
     val bottomScrollConnection =
         remember { BottomNestedScrollConnection(state = scrollState) }
+
 
 
     ScreenScaffold(
@@ -107,8 +113,17 @@ fun RecommendationScreen() {
             }
         }
 
+
+        val listScrollState = rememberLazyListState()
+
+        LaunchedEffect(scrollViewModel) {
+            scrollViewModel.scrollEventFor(ScrollTarget.HOME).collectLatest {
+                listScrollState.animateScrollToItem(0)
+            }
+        }
+
         val mediaComponentState = rememberMediaComponentState(navigator = navigator)
-        RecommendationPagingContent(viewModel, mediaComponentState)
+        RecommendationPagingContent(viewModel, listScrollState, mediaComponentState)
         RecommendationFilterBottomSheet(
             bottomSheetState = filterBottomSheetState,
             viewModel = filterViewModel
@@ -122,6 +137,7 @@ fun RecommendationScreen() {
 @Composable
 private fun RecommendationPagingContent(
     viewModel: RecommendationViewModel,
+    listScrollState: LazyListState,
     mediaComponentState: MediaComponentState
 ) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
@@ -133,6 +149,7 @@ private fun RecommendationPagingContent(
 
     LazyPagingList(
         pagingItems = pagingItems,
+        scrollState = listScrollState,
         onRefresh = {
             viewModel.refresh()
         },

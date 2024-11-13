@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
@@ -14,6 +16,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,8 +26,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
 import com.revolgenx.anilib.character.ui.component.CharacterCard
 import com.revolgenx.anilib.character.ui.model.CharacterModel
+import com.revolgenx.anilib.common.ext.activityViewModel
+import com.revolgenx.anilib.common.ext.animateScrollToItem
 import com.revolgenx.anilib.common.ext.characterScreen
 import com.revolgenx.anilib.common.ext.hideBottomSheet
 import com.revolgenx.anilib.common.ext.staffScreen
@@ -50,6 +57,7 @@ import com.revolgenx.anilib.studio.ui.model.StudioModel
 import com.revolgenx.anilib.user.data.field.UserFavouriteType
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteContentViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.UserFavouriteViewModel
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 import org.koin.core.qualifier.named
 import anilib.i18n.R as I18nR
@@ -88,6 +96,7 @@ fun UserFavouritesScreen(
         koinViewModel(named(UserFavouriteType.STAFF))
     val favStudioViewModel: UserFavouriteContentViewModel =
         koinViewModel(named(UserFavouriteType.STUDIO))
+    val scrollViewModel: ScrollViewModel = activityViewModel()
 
     favAnimeViewModel.field.userId = userId
     favMangaViewModel.field.userId = userId
@@ -125,7 +134,7 @@ fun UserFavouritesScreen(
                 UserFavouriteType.STAFF -> favStaffViewModel
                 UserFavouriteType.STUDIO -> favStudioViewModel
             }
-            UserFavouritePageScreen(contentViewModel)
+            UserFavouritePageScreen(contentViewModel, scrollViewModel)
             FavouriteTypeFilterBottomSheet(
                 openBottomSheet = openFavouriteTypeFilter,
                 selectedFavouriteType = viewModel.favouriteType.value
@@ -137,14 +146,27 @@ fun UserFavouritesScreen(
 }
 
 @Composable
-private fun UserFavouritePageScreen(viewModel: UserFavouriteContentViewModel) {
+private fun UserFavouritePageScreen(
+    viewModel: UserFavouriteContentViewModel,
+    scrollViewModel: ScrollViewModel
+) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
     val navigator = localNavigator()
     val mediaComponentState = rememberMediaComponentState(navigator = navigator)
 
+    val isColumn = viewModel.field.type == UserFavouriteType.STUDIO
+    val scrollableState = if(isColumn) rememberLazyListState() else rememberLazyGridState()
+
+    LaunchedEffect(scrollViewModel) {
+        scrollViewModel.scrollEventFor(ScrollTarget.USER).collectLatest {
+            scrollableState.animateScrollToItem(0)
+        }
+    }
+
     LazyPagingList(
         pagingItems = pagingItems,
-        type = if (viewModel.field.type == UserFavouriteType.STUDIO) ListPagingListType.COLUMN else ListPagingListType.GRID,
+        type = if (isColumn) ListPagingListType.COLUMN else ListPagingListType.GRID,
+        scrollState = scrollableState,
         onRefresh = {
             viewModel.refresh()
         },

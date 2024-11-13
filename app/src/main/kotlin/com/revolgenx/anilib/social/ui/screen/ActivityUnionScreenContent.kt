@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
 import com.revolgenx.anilib.common.ui.component.card.Card
@@ -33,7 +34,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
 import com.revolgenx.anilib.common.ext.activityScreen
+import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaScreen
@@ -70,16 +74,19 @@ import com.revolgenx.anilib.social.ui.model.MessageActivityModel
 import com.revolgenx.anilib.social.ui.model.TextActivityModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionServiceViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
+import kotlinx.coroutines.flow.collectLatest
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ActivityUnionScreenContent(
     viewModel: ActivityUnionViewModel,
+    scrollTarget: ScrollTarget,
     onShowReplies: OnClickWithId,
     onEditTextActivity: (model: TextActivityModel) -> Unit,
     onEditMessageActivity: (model: MessageActivityModel) -> Unit,
 ) {
     val activityUnionServiceViewModel: ActivityUnionServiceViewModel = koinViewModel()
+    val scrollViewModel: ScrollViewModel = activityViewModel()
     val navigator = localNavigator()
     val pagingItems = viewModel.collectAsLazyPagingItems()
     val snackbarHostState = localSnackbarHostState()
@@ -106,8 +113,16 @@ fun ActivityUnionScreenContent(
         }
     }
 
+    val scrollableState = rememberLazyListState()
+    LaunchedEffect(scrollViewModel) {
+        scrollViewModel.scrollEventFor(scrollTarget).collectLatest {
+            scrollableState.animateScrollToItem(0)
+        }
+    }
+
     LazyPagingList(
         pagingItems = pagingItems,
+        scrollState = scrollableState,
         onRefresh = {
             viewModel.refresh()
         },

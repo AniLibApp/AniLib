@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
@@ -24,8 +25,11 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.unit.dp
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
 import com.revolgenx.anilib.browse.data.store.BrowseFilterData
 import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
+import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.browseScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.button.RefreshButton
@@ -47,6 +51,7 @@ import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreViewModel
 import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
 import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
 import com.revolgenx.anilib.type.MediaSort
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -71,6 +76,8 @@ fun ExploreScreen() {
         koinViewModel()
     val exploreWatchingViewModel: ExploreWatchingViewModel = koinViewModel()
     val exploreReadingViewModel: ExploreReadingViewModel = koinViewModel()
+
+    val scrollViewModel: ScrollViewModel = activityViewModel()
 
     localUser.userId?.let {
         exploreReadingViewModel.field.userId = it
@@ -109,6 +116,14 @@ fun ExploreScreen() {
         }
     }
 
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(scrollViewModel){
+        scrollViewModel.scrollEventFor(ScrollTarget.HOME).collectLatest {
+            scrollState.animateScrollTo(0)
+        }
+    }
+
     PullToRefreshBox(
         isRefreshing = isRefreshing,
         onRefresh = {
@@ -117,7 +132,7 @@ fun ExploreScreen() {
         }
     ) {
         Column(
-            modifier = Modifier.verticalScroll(rememberScrollState())
+            modifier = Modifier.verticalScroll(scrollState)
         ) {
 
             viewModel.exploreSectionContentOrderData.forEach {

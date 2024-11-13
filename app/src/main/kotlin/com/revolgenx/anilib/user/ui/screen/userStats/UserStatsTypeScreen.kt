@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Text
@@ -23,6 +24,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
 import com.revolgenx.anilib.common.ext.browseGenreScreen
 import com.revolgenx.anilib.common.ext.browseTagScreen
 import com.revolgenx.anilib.common.ext.naText
@@ -45,13 +48,26 @@ import com.revolgenx.anilib.user.ui.model.statistics.UserStudioStatisticModel
 import com.revolgenx.anilib.user.ui.model.statistics.UserTagStatisticModel
 import com.revolgenx.anilib.user.ui.model.statistics.UserVoiceActorStatisticModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeViewModel
+import kotlinx.coroutines.flow.collectLatest
 import anilib.i18n.R as I18nR
 
 @Composable
-fun UserStatsTypeScreen(type: MediaType, viewModel: UserStatsTypeViewModel) {
+fun UserStatsTypeScreen(
+    type: MediaType,
+    viewModel: UserStatsTypeViewModel,
+    scrollViewModel: ScrollViewModel
+) {
     val navigator = localNavigator()
     LaunchedEffect(viewModel) {
         viewModel.getResource()
+    }
+
+    val listScrollState = rememberLazyListState()
+
+    LaunchedEffect(scrollViewModel) {
+        scrollViewModel.scrollEventFor(ScrollTarget.USER).collectLatest {
+            listScrollState.animateScrollToItem(0)
+        }
     }
 
     val isAnime = type.isAnime
@@ -62,6 +78,7 @@ fun UserStatsTypeScreen(type: MediaType, viewModel: UserStatsTypeViewModel) {
         }else{
             LazyPagingList(
                 items = it,
+                scrollState = listScrollState,
                 onRefresh = {
                     viewModel.refresh()
                 }

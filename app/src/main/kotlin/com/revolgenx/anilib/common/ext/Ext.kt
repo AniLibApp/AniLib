@@ -6,11 +6,14 @@ import android.content.ContextWrapper
 import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
+import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBarDefaults
 import androidx.compose.material3.SheetState
@@ -169,4 +172,13 @@ val markdown get() = MarkdownFactoryImpl.markwon
 
 fun anilify(text: String?): String {
     return MarkdownFactoryImpl.anilify(text)
+}
+
+
+suspend fun ScrollableState.animateScrollToItem(index: Int){
+    if(this is LazyListState){
+        this.animateScrollToItem(index)
+    }else if (this is LazyGridState){
+        this.animateScrollToItem(index)
+    }
 }

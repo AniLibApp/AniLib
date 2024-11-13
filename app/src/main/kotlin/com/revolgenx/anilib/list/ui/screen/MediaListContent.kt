@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.verticalScroll
@@ -22,7 +24,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -30,9 +31,13 @@ import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.m3.BottomSheetDefaults
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.store.MediaListDisplayMode
 import com.revolgenx.anilib.common.data.tuples.to
+import com.revolgenx.anilib.common.ext.activityViewModel
+import com.revolgenx.anilib.common.ext.animateScrollToItem
 import com.revolgenx.anilib.common.ext.hideBottomSheet
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
@@ -54,7 +59,6 @@ import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.compose.paging.GridOptions
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.compose.paging.ListPagingListType
-import com.revolgenx.anilib.common.ui.composition.LocalUserState
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.screen.state.EmptyScreen
@@ -70,6 +74,7 @@ import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
 import com.revolgenx.anilib.type.MediaFormat
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import anilib.i18n.R as I18nR
 
@@ -78,8 +83,9 @@ import anilib.i18n.R as I18nR
 fun MediaListContent(
     viewModel: MediaListViewModel,
     filterViewModel: MediaListFilterViewModel,
-    bottomSheetState: BottomSheetState
+    bottomSheetState: BottomSheetState,
 ) {
+    val scrollViewModel: ScrollViewModel = activityViewModel()
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
     val bottomNestedScrollConnection =
         remember { BottomNestedScrollConnection(state = scrollState) }
@@ -138,10 +144,18 @@ fun MediaListContent(
                 if (mediaListCollection.isEmpty()) {
                     EmptyScreen()
                 } else {
+                    val isGrid = gridOptions != null
+                    val scrollableState = if(isGrid) rememberLazyGridState() else rememberLazyListState()
+                    LaunchedEffect(scrollViewModel) {
+                        scrollViewModel.scrollEventFor(ScrollTarget.MEDIA_LIST).collectLatest {
+                            scrollableState.animateScrollToItem(0)
+                        }
+                    }
                     LazyPagingList(
                         items = mediaListCollection,
-                        type = if (gridOptions != null) ListPagingListType.GRID else ListPagingListType.COLUMN,
+                        type = if (isGrid) ListPagingListType.GRID else ListPagingListType.COLUMN,
                         gridOptions = gridOptions,
+                        scrollState = scrollableState,
                         onRefresh = {
                             viewModel.refresh()
                         }

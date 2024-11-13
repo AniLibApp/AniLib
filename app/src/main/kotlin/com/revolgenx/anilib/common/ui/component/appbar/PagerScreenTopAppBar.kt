@@ -55,7 +55,6 @@ fun <T> PagerScreenTopAppBar(
     }
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun <T> PagerScreenTabRow(
     pages: List<PagerScreen<T>>,

@@ -31,7 +31,6 @@ import anilib.i18n.R
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.tab.CurrentTab
-import cafe.adriel.voyager.navigator.tab.LocalTabNavigator
 import cafe.adriel.voyager.navigator.tab.TabNavigator
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.isGranted
@@ -39,6 +38,8 @@ import com.google.accompanist.permissions.rememberPermissionState
 import com.google.accompanist.permissions.shouldShowRationale
 import com.revolgenx.anilib.app.ui.viewmodel.DeepLinkPath
 import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
 import com.revolgenx.anilib.app.ui.viewmodel.userScreen
 import com.revolgenx.anilib.common.data.constant.MainPageOrder
 import com.revolgenx.anilib.common.ext.activityViewModel
@@ -76,6 +77,7 @@ object MainActivityScreen : Screen {
 private fun MainActivityScreenContent() {
     val snackbarHostState = remember { SnackbarHostState() }
     val viewModel: MainActivityViewModel = activityViewModel()
+    val scrollViewModel: ScrollViewModel = activityViewModel()
 
     val localUser = localUser()
     val mainPageScreen = remember {
@@ -100,23 +102,60 @@ private fun MainActivityScreenContent() {
                 NavigationBar {
                     viewModel.mainPageOrder.forEach {
                         if (it.value == MainPageOrder.HOME) {
-                            TabNavigationItem(tab = HomeScreen)
+                            TabNavigationItem(
+                                tab = HomeScreen,
+                                tabNavigator = tabNavigator,
+                                onCurrentTabClick = {
+                                    scrollViewModel.scrollToTop(ScrollTarget.HOME)
+                                }
+                            )
                         } else {
                             if (localUser.isLoggedIn.not()) return@forEach
                             when (it.value) {
-                                MainPageOrder.ANIME -> TabNavigationItem(tab = AnimeListScreen)
-                                MainPageOrder.MANGA -> TabNavigationItem(tab = MangaListScreen)
-                                MainPageOrder.ACTIVITY -> TabNavigationItem(tab = ActivityUnionScreen)
+                                MainPageOrder.ANIME -> TabNavigationItem(
+                                    tab = AnimeListScreen,
+                                    tabNavigator = tabNavigator,
+                                    onCurrentTabClick = {
+                                        scrollViewModel.scrollToTop(ScrollTarget.MEDIA_LIST)
+                                    }
+                                )
+
+                                MainPageOrder.MANGA -> TabNavigationItem(
+                                    tab = MangaListScreen,
+                                    tabNavigator = tabNavigator,
+                                    onCurrentTabClick = {
+                                        scrollViewModel.scrollToTop(ScrollTarget.MEDIA_LIST)
+                                    }
+                                )
+
+                                MainPageOrder.ACTIVITY -> TabNavigationItem(
+                                    tab = ActivityUnionScreen,
+                                    tabNavigator = tabNavigator,
+                                    onCurrentTabClick = {
+                                        scrollViewModel.scrollToTop(ScrollTarget.ACTIVITY)
+                                    }
+                                )
+
                                 else -> {}
                             }
                         }
                     }
 
                     if (localUser.isLoggedIn) {
-                        TabNavigationItem(tab = userScreen.also { it.id = localUser.userId })
+                        TabNavigationItem(
+                            tab = userScreen.also { it.id = localUser.userId },
+                            tabNavigator = tabNavigator,
+                            onCurrentTabClick = {
+                                scrollViewModel.scrollToTop(ScrollTarget.USER)
+                            }
+                        )
                     } else {
                         SettingScreen.isTab = true
-                        TabNavigationItem(tab = SettingScreen)
+                        TabNavigationItem(
+                            tab = SettingScreen,
+                            tabNavigator = tabNavigator,
+                            onCurrentTabClick = {}
+                        )
                     }
                 }
             },
@@ -167,14 +206,20 @@ private fun CheckDeepLinkPath(
 }
 
 @Composable
-private fun RowScope.TabNavigationItem(tab: BaseTabScreen) {
-    val tabNavigator = LocalTabNavigator.current
+private fun RowScope.TabNavigationItem(
+    tab: BaseTabScreen,
+    tabNavigator: TabNavigator,
+    onCurrentTabClick: OnClick
+) {
     val selected = tabNavigator.current == tab
 
     NavigationBarItem(
         selected = selected,
         onClick = {
             tabNavigator.current = tab
+            if(selected){
+                onCurrentTabClick()
+            }
         },
         icon = {
             Icon(

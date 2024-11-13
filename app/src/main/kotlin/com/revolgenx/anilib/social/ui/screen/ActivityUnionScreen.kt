@@ -24,6 +24,7 @@ import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
 import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
@@ -139,6 +140,7 @@ object ActivityUnionScreen : BaseTabScreen() {
         ) {
             ActivityUnionScreenContent(
                 viewModel = viewModel,
+                scrollTarget = ScrollTarget.ACTIVITY,
                 onShowReplies = {
                     scope.launch {
                         viewModel.activityId = it

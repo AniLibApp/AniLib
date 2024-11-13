@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.media.ui.screen
 
 import androidx.compose.runtime.Composable
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
 import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.social.ui.model.MessageActivityModel
 import com.revolgenx.anilib.social.ui.model.TextActivityModel
@@ -18,6 +19,7 @@ fun MediaSocialActivityScreen(
         viewModel = viewModel,
         onShowReplies = onShowReplies,
         onEditTextActivity = onEditTextActivity,
-        onEditMessageActivity = onEditMessageActivity
+        onEditMessageActivity = onEditMessageActivity,
+        scrollTarget = ScrollTarget.MEDIA_SOCIAL_ACTIVITY
     )
 }

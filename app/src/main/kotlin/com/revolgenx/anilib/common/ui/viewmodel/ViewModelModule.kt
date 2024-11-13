@@ -4,6 +4,7 @@ import android.content.Context
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
 import com.revolgenx.anilib.app.ui.viewmodel.SharedActivityViewModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseFilterViewModel
 import com.revolgenx.anilib.browse.ui.viewmodel.BrowseViewModel
@@ -368,4 +369,5 @@ val viewModelModules = module {
 
 
     viewModel { AdsViewModel(get()) }
+    viewModel{ ScrollViewModel() }
 }

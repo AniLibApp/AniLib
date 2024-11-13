@@ -6,18 +6,23 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
+import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.orNa
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
@@ -37,6 +42,7 @@ import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toImageVector
 import com.revolgenx.anilib.media.ui.model.toStringRes
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import androidx.compose.material3.Card as MCard
@@ -45,11 +51,20 @@ import androidx.compose.material3.Card as MCard
 fun SeasonScreen() {
     val viewModel = koinViewModel<SeasonViewModel>()
     val seasonFilterViewModel = koinViewModel<SeasonFilterViewModel>()
+    val scrollViewModel: ScrollViewModel = activityViewModel()
     val navigator = LocalMainNavigator.current
     val bottomSheetState = rememberBottomSheetState()
     val mediaComponentState = rememberMediaComponentState(navigator = navigator)
     val scope = rememberCoroutineScope()
 
+
+    val scrollState = rememberLazyListState()
+
+    LaunchedEffect(scrollViewModel) {
+        scrollViewModel.scrollEventFor(ScrollTarget.HOME).collectLatest {
+            scrollState.animateScrollToItem(0)
+        }
+    }
 
     BottomBarLayout(bottomBar = {
         SeasonFilter(
@@ -71,6 +86,7 @@ fun SeasonScreen() {
 
         LazyPagingList(
             pagingItems = pagingItems,
+            scrollState = scrollState,
             onRefresh = {
                 viewModel.refresh()
             }

@@ -26,13 +26,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.patrykandpatrick.vico.compose.axis.horizontal.bottomAxis
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
 import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
 import com.patrykandpatrick.vico.core.marker.Marker
 import com.patrykandpatrick.vico.core.scroll.InitialScroll
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.component.button.SegmentedButton
@@ -60,13 +61,26 @@ import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.user.ui.model.statistics.BaseStatisticModel
 import com.revolgenx.anilib.user.ui.model.statistics.UserStatisticsModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsOverviewViewModel
+import kotlinx.coroutines.flow.collectLatest
 import anilib.i18n.R as I18nR
 
 @Composable
-fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewViewModel) {
+fun UserStatsOverviewScreen(
+    mediaType: MediaType,
+    viewModel: UserStatsOverviewViewModel,
+    scrollViewModel: ScrollViewModel
+) {
 
     LaunchedEffect(viewModel) {
         viewModel.getResource()
+    }
+
+    val scrollState = rememberScrollState()
+
+    LaunchedEffect(scrollViewModel) {
+        scrollViewModel.scrollEventFor(ScrollTarget.USER).collectLatest {
+            scrollState.animateScrollTo(0)
+        }
     }
 
     ResourceScreen(
@@ -79,7 +93,7 @@ fun UserStatsOverviewScreen(mediaType: MediaType, viewModel: UserStatsOverviewVi
 
             Column(
                 modifier = Modifier
-                    .verticalScroll(rememberScrollState())
+                    .verticalScroll(scrollState)
                     .padding(8.dp)
             ) {
                 val isAnime = mediaType.isAnime

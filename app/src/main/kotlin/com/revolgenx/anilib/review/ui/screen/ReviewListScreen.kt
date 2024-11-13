@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -20,6 +22,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -39,6 +42,9 @@ import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.m3.BottomSheetDefaults
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
+import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.reviewScreen
@@ -75,6 +81,7 @@ import com.revolgenx.anilib.review.data.field.ReviewListSort
 import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListFilterViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
@@ -84,6 +91,7 @@ import anilib.i18n.R as I18nR
 fun ReviewListScreen() {
     val viewModel: ReviewListViewModel = koinViewModel()
     val filterViewModel: ReviewListFilterViewModel = koinViewModel()
+    val scrollViewModel: ScrollViewModel = activityViewModel()
     val filterBottomSheetState = rememberBottomSheetState()
 
     val navigator = localNavigator()
@@ -91,6 +99,7 @@ fun ReviewListScreen() {
     val scrollState = remember { mutableStateOf<ScrollState>(ScrollState.ScrollDown) }
     val bottomScrollConnection =
         remember { BottomNestedScrollConnection(state = scrollState) }
+
 
     ScreenScaffold(
         topBar = {},
@@ -104,7 +113,16 @@ fun ReviewListScreen() {
         },
         bottomNestedScrollConnection = bottomScrollConnection,
     ) {
-        ReviewListScreenContent(viewModel, navigator)
+
+        val listScrollState = rememberLazyListState()
+
+        LaunchedEffect(scrollViewModel) {
+            scrollViewModel.scrollEventFor(ScrollTarget.HOME).collectLatest {
+                listScrollState.animateScrollToItem(0)
+            }
+        }
+
+        ReviewListScreenContent(viewModel, listScrollState, navigator)
         ReviewListFilterBottomSheet(
             bottomSheetState = filterBottomSheetState,
             viewModel = filterViewModel
@@ -118,6 +136,7 @@ fun ReviewListScreen() {
 @Composable
 private fun ReviewListScreenContent(
     viewModel: ReviewListViewModel,
+    listScrollState: LazyListState,
     navigator: Navigator
 ) {
     val pagingItems = viewModel.collectAsLazyPagingItems()
@@ -125,6 +144,7 @@ private fun ReviewListScreenContent(
 
     LazyPagingList(
         pagingItems = pagingItems,
+        scrollState = listScrollState,
         onRefresh = {
             viewModel.refresh()
         },

@@ -22,7 +22,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
+import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.hideBottomSheet
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
@@ -57,8 +58,9 @@ fun UserStatsScreen(userId: Int?, type: MediaType) {
         koinViewModel(named(if (isAnime) UserStatsTypeMediaType.USER_STATS_TAGS_ANIME else UserStatsTypeMediaType.USER_STATS_TAGS_MANGA))
     val staffViewModel: UserStatsStaffViewModel =
         koinViewModel(named(if (isAnime) UserStatsTypeMediaType.USER_STATS_STAFF_ANIME else UserStatsTypeMediaType.USER_STATS_STAFF_MANGA))
-     val studioViewModel: UserStatsStudioViewModel = koinViewModel()
-     val voiceActorsViewModel: UserStatsVoiceActorsViewModel = koinViewModel()
+    val studioViewModel: UserStatsStudioViewModel = koinViewModel()
+    val voiceActorsViewModel: UserStatsVoiceActorsViewModel = koinViewModel()
+    val scrollViewModel: ScrollViewModel = activityViewModel()
 
     overviewViewModel.field.userId = userId
     genreViewModel.field.userId = userId
@@ -99,12 +101,12 @@ fun UserStatsScreen(userId: Int?, type: MediaType) {
                 .nestedScroll(bottomNestedScrollConnection)
         ) {
             when (viewModel.statsScreenType.value) {
-                UserStatsType.OVERVIEW -> UserStatsOverviewScreen(type, overviewViewModel)
-                UserStatsType.GENRE -> UserStatsTypeScreen(type, genreViewModel)
-                UserStatsType.TAGS -> UserStatsTypeScreen(type, tagsViewModel)
-                UserStatsType.VOICE_ACTORS -> UserStatsTypeScreen(type, voiceActorsViewModel)
-                UserStatsType.STUDIO -> UserStatsTypeScreen(type, studioViewModel)
-                UserStatsType.STAFF -> UserStatsTypeScreen(type, staffViewModel)
+                UserStatsType.OVERVIEW -> UserStatsOverviewScreen(type, overviewViewModel, scrollViewModel)
+                UserStatsType.GENRE -> UserStatsTypeScreen(type, genreViewModel, scrollViewModel)
+                UserStatsType.TAGS -> UserStatsTypeScreen(type, tagsViewModel, scrollViewModel)
+                UserStatsType.VOICE_ACTORS -> UserStatsTypeScreen(type, voiceActorsViewModel, scrollViewModel)
+                UserStatsType.STUDIO -> UserStatsTypeScreen(type, studioViewModel, scrollViewModel)
+                UserStatsType.STAFF -> UserStatsTypeScreen(type, staffViewModel, scrollViewModel)
             }
         }
     }

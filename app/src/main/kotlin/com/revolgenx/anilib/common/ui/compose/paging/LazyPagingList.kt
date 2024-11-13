@@ -1,39 +1,35 @@
 package com.revolgenx.anilib.common.ui.compose.paging
 
+import androidx.compose.foundation.gestures.ScrollableState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyGridItemScope
 import androidx.compose.foundation.lazy.grid.LazyGridItemSpanScope
 import androidx.compose.foundation.lazy.grid.LazyGridScope
+import androidx.compose.foundation.lazy.grid.LazyGridState
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.SideEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import com.revolgenx.anilib.common.ui.model.BaseModel
@@ -62,6 +58,7 @@ fun <M : BaseModel> LazyPagingList(
     gridOptions: GridOptions? = null,
     onPullRefresh: Boolean = true,
     onRefresh: OnClick? = null,
+    scrollState: ScrollableState? = null,
     divider: @Composable (() -> Unit)? = null,
     itemContentIndex: (@Composable Any.(index: Int, value: M?) -> Unit)? = null,
     itemContent: (@Composable Any.(value: M?) -> Unit)? = null
@@ -77,7 +74,8 @@ fun <M : BaseModel> LazyPagingList(
                 pagingItems = pagingItems,
                 divider = divider,
                 itemContent = itemContent,
-                itemContentIndex = itemContentIndex
+                itemContentIndex = itemContentIndex,
+                state = scrollState as? LazyListState
             )
 
             ListPagingListType.ROW -> LazyRowLayout(
@@ -93,7 +91,8 @@ fun <M : BaseModel> LazyPagingList(
                 gridOptions = gridOptions!!,
                 span = span,
                 itemContent = itemContent,
-                itemContentIndex = itemContentIndex
+                itemContentIndex = itemContentIndex,
+                state = scrollState as? LazyGridState
             )
         }
     }
@@ -136,12 +135,14 @@ private fun LazyPagingListBox(
 private fun <M : BaseModel> LazyColumnLayout(
     items: List<M>?,
     pagingItems: LazyPagingItems<M>?,
-    divider: @Composable (() -> Unit)? = null,
-    itemContentIndex: (@Composable LazyItemScope.(index: Int, value: M?) -> Unit)? = null,
-    itemContent: (@Composable LazyItemScope.(value: M?) -> Unit)? = null
+    divider: @Composable() (() -> Unit)? = null,
+    itemContentIndex: @Composable() (LazyItemScope.(index: Int, value: M?) -> Unit)? = null,
+    itemContent: @Composable() (LazyItemScope.(value: M?) -> Unit)? = null,
+    state: LazyListState?
 ) {
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
+        state = state ?: rememberLazyListState()
     ) {
         pagingItems?.let {
             itemsIndexed(
@@ -249,10 +250,11 @@ private fun <M : BaseModel> LazyGridLayout(
     gridOptions: GridOptions,
     span: (LazyGridItemSpanScope.(index: Int) -> GridItemSpan)? = null,
     itemContent: @Composable() (LazyGridItemScope.(value: M?) -> Unit)? = null,
-    itemContentIndex: (@Composable LazyGridItemScope.(index: Int, value: M?) -> Unit)? = null,
+    itemContentIndex: @Composable() (LazyGridItemScope.(index: Int, value: M?) -> Unit)? = null,
+    state: LazyGridState?,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
-        LazyVerticalGrid(columns = gridOptions.columns) {
+        LazyVerticalGrid(columns = gridOptions.columns, state = state ?: rememberLazyGridState()) {
             pagingItems?.let {
                 itemsIndexed(
                     items = pagingItems,

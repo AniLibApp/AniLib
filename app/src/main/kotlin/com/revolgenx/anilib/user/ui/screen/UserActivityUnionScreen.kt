@@ -24,6 +24,7 @@ import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.PeekHeight
 import com.dokar.sheets.m3.BottomSheetLayout
 import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.BottomSheetConfirmation
 import com.revolgenx.anilib.common.ui.component.action.DisappearingFAB
@@ -126,6 +127,7 @@ fun UserActivityUnionScreen(viewModel: ActivityUnionViewModel) {
     ) {
         ActivityUnionScreenContent(
             viewModel = viewModel,
+            scrollTarget = ScrollTarget.USER,
             onShowReplies = {
                 scope.launch {
                     viewModel.activityId = it
