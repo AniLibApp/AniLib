@@ -16,12 +16,12 @@ import com.revolgenx.anilib.type.MediaListStatus
 class SaveMediaListEntryField() : BaseField<SaveMediaListEntryMutation>() {
     var id: Int? = null
     var mediaId: Int? = null
-    var status by mutableStateOf(MediaListStatus.CURRENT)
-    var score by mutableDoubleStateOf(0.0)
+    var status by mutableStateOf<MediaListStatus?>(null)
+    var score by mutableStateOf<Double?>(null)
     var advancedScores: List<AdvancedScoreModel>? = null
     var progress by mutableStateOf<Int?>(null)
     var progressVolumes by mutableStateOf<Int?>(null)
-    var private: Boolean = false
+    var private: Boolean? = null
     var hiddenFromStatusLists: Boolean? = null
     var repeat by mutableStateOf<Int?>(null)
     var notes by mutableStateOf<String?>(null)

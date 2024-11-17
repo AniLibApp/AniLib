@@ -20,7 +20,6 @@ import com.revolgenx.anilib.entry.ui.model.UserMediaModel
 import com.revolgenx.anilib.list.data.store.MediaListEntryEventStore
 import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.type.MediaListStatus
-import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ScoreFormat
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
@@ -67,16 +66,17 @@ class MediaListEntryEditorViewModel(
                 saveField.progressVolumes = progressVolumes
                 saveField.customLists = customLists
                 saveField.startedAt = startedAt
-                saveField.private = private ?: false
+                saveField.private = private
                 saveField.hiddenFromStatusLists = hiddenFromStatusLists
                 saveField.notes = notes
                 saveField.repeat = repeat
-                saveField.status = status.value ?: MediaListStatus.CURRENT
-                saveField.score = score ?: 0.0
+                saveField.status = status.value
+                saveField.score = score
                 saveField.completedAt = completedAt
                 saveField.advancedScores = advancedScores
             } ?: let {
                 saveField.mediaId = media.id
+                saveField.status = MediaListStatus.CURRENT
                 val listOptions = userModel?.mediaListOptions?.let { mediaListOptionModel ->
                     if (mediaModel.isAnime) {
                         mediaListOptionModel.animeList

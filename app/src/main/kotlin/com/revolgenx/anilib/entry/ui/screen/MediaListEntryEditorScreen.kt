@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -27,7 +26,6 @@ import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TopAppBarDefaults
@@ -79,13 +77,12 @@ import com.revolgenx.anilib.list.ui.model.getAlMediaListStatusForType
 import com.revolgenx.anilib.list.ui.model.getStatusFromAlMediaListStatus
 import com.revolgenx.anilib.list.ui.model.toAlMediaListStatus
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
+import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.ScoreFormat
 import kotlinx.coroutines.coroutineScope
 import org.koin.androidx.compose.koinViewModel
 import java.time.Instant
-import java.time.ZoneId
 import java.time.ZoneOffset
-import java.time.ZonedDateTime
 import anilib.i18n.R as I18nR
 
 class MediaListEntryEditorScreen(private val mediaId: Int) :
@@ -259,7 +256,7 @@ private fun MediaListEditScreenContent(
                         ) {
                             val mediaListStatusEntries =
                                 getAlMediaListStatusForType(type = media.type)
-                            val mediaListStatus = entryField.status
+                            val mediaListStatus = entryField.status ?: MediaListStatus.CURRENT
                             SelectMenu(
                                 modifier = Modifier.padding(vertical = 4.dp),
                                 entries = mediaListStatusEntries,
@@ -274,7 +271,7 @@ private fun MediaListEditScreenContent(
                             heading = stringResource(I18nR.string.score)
                         ) {
                             MediaListEntryScore(
-                                score = entryField.score,
+                                score = entryField.score ?: 0.0,
                                 scoreFormat = user.mediaListOptions?.scoreFormat
                                     ?: ScoreFormat.POINT_100
                             ) { score ->
@@ -399,7 +396,7 @@ private fun MediaListEditScreenContent(
 
                     TextCheckbox(
                         text = stringResource(id = I18nR.string._private),
-                        checked = entryField.private
+                        checked = entryField.private ?: false
                     ) {
                         entryField.private = it
                     }
@@ -413,7 +410,6 @@ private fun MediaListEditScreenContent(
                         ) {
                             entryField.hiddenFromStatusLists = it
                         }
-
                     }
 
 
