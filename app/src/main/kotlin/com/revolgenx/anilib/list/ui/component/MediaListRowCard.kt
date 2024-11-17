@@ -145,7 +145,7 @@ fun MediaListRowCard(
                 )
 
 
-                MediaListEntryScore(list)
+                MediaListEntryScore(list = list)
 
 
                 Spacer(modifier = Modifier.weight(1f))

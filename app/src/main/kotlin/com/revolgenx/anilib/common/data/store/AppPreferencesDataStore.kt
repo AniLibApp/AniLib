@@ -374,7 +374,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
 }
 
 enum class MediaListDisplayMode(val value: Int) {
-    LIST(0), LIST_COMPACT(1), GRID(2), GRID_COMPACT(3);
+    LIST(0), LIST_COMPACT(1), LIST_GRID_COMPACT(2), GRID(3), GRID_COMPACT(4);
 
     companion object {
         fun fromValue(value: Int): MediaListDisplayMode {
@@ -387,6 +387,7 @@ fun MediaListDisplayMode.toStringRes(): Int {
     return when (this) {
         MediaListDisplayMode.LIST -> R.string.list
         MediaListDisplayMode.LIST_COMPACT -> R.string.list_compact
+        MediaListDisplayMode.LIST_GRID_COMPACT -> R.string.list_grid_compact
         MediaListDisplayMode.GRID -> R.string.grid
         MediaListDisplayMode.GRID_COMPACT -> R.string.grid_compact
     }

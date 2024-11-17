@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+- Add scroll-to-top functionality from home screen's bottom navigation bar.
+- Add grid compact in media list display mode (previously known as Classic Mode)
+
+### Fixed
+- Fix start & end dates not automatically added on watching and completing list. [#110](https://github.com/AniLibApp/AniLib/issues/110)
+- Increasing progress will now stop resetting status and other fields. [#89](https://github.com/AniLibApp/AniLib/issues/89)
+- Fix bug in title comparison caused by inconsistent casing
 
 ## [v2.0.2] - 2024-11-9
 ### Added

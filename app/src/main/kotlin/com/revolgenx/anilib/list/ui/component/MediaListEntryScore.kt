@@ -8,6 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import anilib.i18n.R
@@ -22,7 +24,13 @@ import com.revolgenx.anilib.list.ui.model.MediaListModel
 import com.revolgenx.anilib.type.ScoreFormat
 
 @Composable
-fun MediaListEntryScore(list: MediaListModel) {
+fun MediaListEntryScore(
+    modifier: Modifier = Modifier,
+    list: MediaListModel,
+    fontSize: TextUnit = 12.sp,
+    lineHeight: TextUnit = 13.sp,
+    iconSize: Dp = 18.dp
+) {
     val scoreFormat = list.user?.mediaListOptions?.scoreFormat
     val score = list.score?.takeIf { it != 0.0 }
 
@@ -35,13 +43,15 @@ fun MediaListEntryScore(list: MediaListModel) {
     }
 
     Row(
+        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
         RegularText(
             stringResource(id = R.string.score_s).format(
                 userScore
             ),
-            fontSize = 12.sp,
+            fontSize = fontSize,
+            lineHeight = lineHeight
         )
 
         val scoreIcon = when (scoreFormat) {
@@ -59,7 +69,7 @@ fun MediaListEntryScore(list: MediaListModel) {
         }
         scoreIcon?.let {
             Icon(
-                modifier = Modifier.size(18.dp),
+                modifier = Modifier.size(iconSize),
                 imageVector = it,
                 contentDescription = null,
                 tint = MaterialTheme.colorScheme.primary

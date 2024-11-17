@@ -55,7 +55,7 @@ fun MediaListColumnCard(
 
     Card(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(6.dp)
             .width(160.dp)
             .height(270.dp),
         onClick = onClick,
@@ -138,13 +138,14 @@ fun MediaListColumnCard(
             ) {
 
 
-                MediaListEntryScore(list = list)
+                MediaListEntryScore(list = list, fontSize = 11.sp)
                 Spacer(modifier = Modifier.weight(1f))
 
                 val progress = list.progressState?.value
                 RegularText(
                     text = "${progress.naText()} / ${media.totalEpisodesOrChapters.naText()}",
-                    fontSize = 13.sp
+                    fontSize = 11.sp,
+                    lineHeight = 12.sp
                 )
 
                 val canShowIncreaseButton =
@@ -158,7 +159,7 @@ fun MediaListColumnCard(
                         Icon(
                             modifier = Modifier
                                 .padding(4.dp)
-                                .size(20.dp),
+                                .size(18.dp),
                             imageVector = AppIcons.IcPlus,
                             contentDescription = null
                         )

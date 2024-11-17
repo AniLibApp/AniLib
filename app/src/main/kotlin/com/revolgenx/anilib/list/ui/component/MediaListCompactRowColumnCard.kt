@@ -1,6 +1,6 @@
 package com.revolgenx.anilib.list.ui.component
 
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,9 +9,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -35,44 +35,46 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcPlus
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnLongClick
 import com.revolgenx.anilib.list.ui.model.MediaListModel
+import com.revolgenx.anilib.media.ui.component.MediaCardTitleBottomPadding
 import com.revolgenx.anilib.media.ui.component.MediaCoverImageType
 import com.revolgenx.anilib.media.ui.component.MediaStatsBadge
 import com.revolgenx.anilib.media.ui.component.MediaTitleType
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.media.ui.model.toStringRes
+import com.revolgenx.anilib.type.MediaListStatus
+
 
 @Composable
-fun MediaListCompactRowCard(
+fun MediaListCompactRowColumnCard(
     list: MediaListModel,
     showIncreaseButton: Boolean,
     increaseProgress: OnClick,
     onLongClick: OnLongClick,
-    onClick: OnClick,
+    onClick: OnClick
 ) {
+
     val media = list.media ?: return
 
     Card(
         modifier = Modifier
-            .padding(8.dp)
-            .height(85.dp),
+            .padding(4.dp)
+            .width(160.dp)
+            .height(100.dp),
         onClick = onClick,
         onLongClick = onLongClick
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+        Row {
             Box {
                 MediaCoverImageType { type ->
                     ImageAsync(
                         modifier = Modifier
-                            .width(80.dp)
-                            .fillMaxHeight(),
+                            .fillMaxHeight()
+                            .width(66.dp),
                         imageUrl = media.coverImage?.image(type),
                         imageOptions = ImageOptions(
-                            contentScale = ContentScale.Crop, alignment = Alignment.Center
+                            contentScale = ContentScale.Crop,
+                            alignment = Alignment.Center
                         ),
                         previewPlaceholder = R.drawable.bleach
                     )
@@ -82,94 +84,81 @@ fun MediaListCompactRowCard(
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .padding(4.dp),
-                    media = media
+                    media = media,
+                    fontSize = 10.sp,
+                    iconSize = 12.dp
                 )
+
             }
 
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .fillMaxHeight(),
-                verticalArrangement = Arrangement.spacedBy(1.dp)
             ) {
-
-                Column(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(horizontal = 8.dp)
-                        .padding(top = 4.dp)
-                ) {
+                Column(modifier = Modifier.padding(horizontal = 3.dp).padding(top = 2.dp)) {
                     MediaTitleType { type ->
                         MediumText(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = MediaCardTitleBottomPadding),
                             text = media.title?.title(type).naText(),
-                            fontSize = 16.sp,
-                            lineHeight = 20.sp,
+                            fontSize = 13.sp,
                         )
                     }
-
-
-                    Row(
-                        modifier = Modifier
-                            .weight(1f)
-                            .padding(bottom = 2.dp),
-                        verticalAlignment = Alignment.Bottom
-                    ) {
-
-                        Column(
-                            modifier = Modifier,
-                        ) {
-
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-
-                                RegularText(
-                                    modifier = Modifier.padding(end = 10.dp),
-                                    text = stringResource(id = media.format.toStringRes()),
-                                    color = MaterialTheme.colorScheme.primary,
-                                    fontSize = 11.sp,
-                                )
-
-                                MediaListEntryScore(list = list)
-
-                            }
-
-
-                            MediaListEntryProgressBehind(list = list)
-
-
-                        }
-
-
-                        Spacer(modifier = Modifier.weight(1f))
-
-                        Box(modifier = Modifier) {
-
-                            RegularText(
-                                modifier = Modifier
-                                    .padding(6.dp)
-                                    .align(Alignment.BottomEnd),
-                                text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
-                                fontSize = 13.sp
-                            )
-                        }
-                    }
+                    MediaListEntryScore(modifier = Modifier.padding(bottom = 1.dp), list = list, iconSize = 13.dp, fontSize = 11.sp)
+                    MediaListEntryProgressBehind(list = list)
 
                 }
 
-                MediaListEntryLinearProgressIndicator(list = list)
-            }
+                Spacer(modifier = Modifier.weight(1f))
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .padding(horizontal = 2.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .padding(vertical = 3.dp),
+                        ) {
+                            RegularText(
+                                modifier = Modifier.weight(1f),
+                                text = stringResource(id = media.format.toStringRes()),
+                                color = MaterialTheme.colorScheme.primary,
+                                fontSize = 12.sp,
+                                maxLines = 1
+                            )
 
-            val progress = list.progressState?.value
-            val canShowIncreaseButton =
-                progress == null || media.totalEpisodesOrChapters == null || progress < media.totalEpisodesOrChapters
+                            RegularText(
+                                text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
+                                fontSize = 12.sp
+                            )
+                        }
+
+                        val progress = list.progressState?.value
+                        val canShowIncreaseButton =
+                            progress == null || media.totalEpisodesOrChapters == null || progress < media.totalEpisodesOrChapters
+
+                        if (showIncreaseButton && canShowIncreaseButton) {
+                            Box(
+                                modifier = Modifier.clickable { increaseProgress() }
+                            ) {
+
+                                Icon(
+                                    modifier = Modifier
+                                        .padding(horizontal = 4.dp)
+                                        .size(20.dp),
+                                    imageVector = AppIcons.IcPlus,
+                                    contentDescription = null
+                                )
+                            }
+                        }
+                    }
+                    MediaListEntryLinearProgressIndicator(list = list)
 
 
-            if(showIncreaseButton && canShowIncreaseButton){
-                IconButton(
-                    onClick = increaseProgress
-                ) {
-                    Icon(imageVector = AppIcons.IcPlus, contentDescription = null)
                 }
             }
         }
@@ -178,21 +167,27 @@ fun MediaListCompactRowCard(
 
 @Preview(showBackground = true)
 @Composable
-private fun MediaListSmallRowCardPreview() {
-    MediaListCompactRowCard(
+private fun MediaListCompactColumnCardPreview() {
+    MediaListCompactRowColumnCard(
         list = MediaListModel(
             media = MediaModel(
-                title = MediaTitleModel(romaji = ""),
-                currentEpisode = 10
+                title = MediaTitleModel(romaji = "One Punch Man Season 2"),
+                currentEpisode = 10,
+                averageScore = 20,
+                mediaListEntry = MediaListModel(
+                    status = remember {
+                        mutableStateOf(MediaListStatus.CURRENT)
+                    }
+                )
             ),
             progressState = remember {
                 mutableStateOf(2)
             },
             score = 10.0
         ),
+        showIncreaseButton = true,
         onClick = {},
         onLongClick = {},
-        increaseProgress = {},
-        showIncreaseButton = true
+        increaseProgress = {}
     )
 }
