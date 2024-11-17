@@ -10,4 +10,5 @@ interface MediaListEntryService {
     fun saveMediaListEntry(field: SaveMediaListEntryField): Flow<MediaListModel?>
     fun getMediaListEntry(field: MediaListEntryField): Flow<UserMediaModel>
     fun deleteMediaListEntry(id: Int): Flow<Boolean>
+    fun increaseProgress(mediaList: MediaListModel): Flow<MediaListModel?>
 }

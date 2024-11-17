@@ -162,14 +162,19 @@ fun MediaListRowCard(
                             .padding(4.dp)
                             .weight(1f)
                     )
+
+                    val progress = list.progressState?.value
+
                     RegularText(
                         modifier = Modifier.padding(2.dp),
-                        text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
+                        text = "${progress.naText()} / ${media.totalEpisodesOrChapters.naText()}",
                         fontSize = 13.sp
                     )
 
+                    val canShowIncreaseButton =
+                        progress == null || media.totalEpisodesOrChapters == null || progress < media.totalEpisodesOrChapters
 
-                    if(showIncreaseButton){
+                    if(showIncreaseButton && canShowIncreaseButton){
                         Box(
                             modifier = Modifier.clickable {
                                 increaseProgress()

@@ -9,7 +9,7 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 
-data class FuzzyDateModel(val day: Int?, val month: Int?, val year: Int?) {
+data class FuzzyDateModel(val day: Int? = null, val month: Int? = null, val year: Int? = null) {
     val shortDate
         get() = "${
             month?.let { m ->

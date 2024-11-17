@@ -140,12 +140,17 @@ fun MediaListColumnCard(
 
                 MediaListEntryScore(list = list)
                 Spacer(modifier = Modifier.weight(1f))
+
+                val progress = list.progressState?.value
                 RegularText(
-                    text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
+                    text = "${progress.naText()} / ${media.totalEpisodesOrChapters.naText()}",
                     fontSize = 13.sp
                 )
 
-                if(showIncreaseButton){
+                val canShowIncreaseButton =
+                    progress == null || media.totalEpisodesOrChapters == null || progress < media.totalEpisodesOrChapters
+
+                if (showIncreaseButton && canShowIncreaseButton) {
                     Box(
                         modifier = Modifier.clickable { increaseProgress() }
                     ) {

@@ -30,13 +30,17 @@ class SaveMediaListEntryField() : BaseField<SaveMediaListEntryMutation>() {
     var customLists: List<MutablePair<String, Boolean>>? = null
 
     override fun toQueryOrMutation(): SaveMediaListEntryMutation {
-        val startedAt = Optional.Present(startedAt?.let { fd ->
-            FuzzyDateInput(nn(fd.year), nn(fd.month), nn(fd.day))
-        })
+        val startedAt = startedAt?.let {
+            Optional.Present(it.takeIf { !it.isEmpty() }?.let { fd ->
+                FuzzyDateInput(nn(fd.year), nn(fd.month), nn(fd.day))
+            })
+        } ?: Optional.Absent
 
-        val completedAt = Optional.Present(completedAt?.let { fd ->
-            FuzzyDateInput(nn(fd.year), nn(fd.month), nn(fd.day))
-        })
+        val completedAt = completedAt?.let {
+            Optional.Present(it.takeIf { !it.isEmpty() }?.let { fd ->
+                FuzzyDateInput(nn(fd.year), nn(fd.month), nn(fd.day))
+            })
+        } ?: Optional.Absent
 
         return SaveMediaListEntryMutation(
             id = nn(id),

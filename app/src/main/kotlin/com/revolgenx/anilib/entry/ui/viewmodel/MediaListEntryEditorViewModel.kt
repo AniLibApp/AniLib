@@ -115,6 +115,21 @@ class MediaListEntryEditorViewModel(
 
     override fun save() {
         super.save()
+        val currentMedia = getData()?.media
+        currentMedia?.mediaListEntry?.let { currentEntry ->
+            val currentProgress = currentEntry.progress
+            val initialProgress = currentProgress == null || currentProgress == 0
+            val newProgress = saveField.progress
+            val currentStatus = currentEntry.status.value
+
+            if (saveField.status == MediaListStatus.PLANNING && currentStatus == MediaListStatus.PLANNING && initialProgress && newProgress != null && newProgress > 0) {
+                saveField.status = MediaListStatus.CURRENT
+            }
+
+            if(saveField.status == MediaListStatus.CURRENT && currentStatus == MediaListStatus.CURRENT && newProgress != null && newProgress == currentMedia.totalEpisodesOrChapters){
+                saveField.status = MediaListStatus.COMPLETED
+            }
+        }
         mediaListEntryService.saveMediaListEntry(saveField)
             .onEach { listModel ->
                 saveComplete(listModel)

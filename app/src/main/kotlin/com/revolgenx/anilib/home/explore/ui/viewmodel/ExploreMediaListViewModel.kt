@@ -60,20 +60,14 @@ sealed class ExploreMediaListViewModel(
     }
 
     fun increaseProgress(mediaList: MediaListModel) {
-        val oldProgress = mediaList.progress
-        val newProgress = (oldProgress ?: 0) + 1
-        val episodesOrChapters = mediaList.media?.totalEpisodesOrChapters
-
-        if (episodesOrChapters != null && newProgress > episodesOrChapters) return
-
-        val progressSaveField = SaveMediaListEntryField().also {
-            it.id = mediaList.id
-            it.progress = newProgress
-        }
-        mediaListEntryService.saveMediaListEntry(progressSaveField)
+        mediaListEntryService.increaseProgress(mediaList)
             .onEach {
-                mediaList.progress = it?.progress
-                mediaList.progressState?.value = it?.progress
+                it?.let {listModel->
+                    mediaList.progress = listModel.progress
+                    mediaList.progressState?.value = listModel.progress
+                    mediaList.status.value = listModel.status.value
+                    listModel.media?.mediaListEntry?.status?.value = listModel.status.value
+                }
             }.catch {
                 saveFailed(it)
             }.launchIn(viewModelScope)

@@ -140,7 +140,11 @@ fun MediaListCompactColumnCard(
                             )
                         }
 
-                        if (showIncreaseButton) {
+                        val progress = list.progressState?.value
+                        val canShowIncreaseButton =
+                            progress == null || media.totalEpisodesOrChapters == null || progress < media.totalEpisodesOrChapters
+
+                        if (showIncreaseButton && canShowIncreaseButton) {
                             Box(
                                 modifier = Modifier.clickable { increaseProgress() }
                             ) {

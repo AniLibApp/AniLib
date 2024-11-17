@@ -324,7 +324,7 @@ private fun MediaListEditScreenContent(
                                 selectedDateMillis = startedAt?.toInstant()?.toEpochMilli(),
                                 text = entryField.startedAt?.toString() ?: "",
                                 onClear = {
-                                    entryField.startedAt = null
+                                    entryField.startedAt = FuzzyDateModel()
                                 },
                                 onDateSelected = { selectedDateMillis ->
                                     val newStartedAt = Instant.ofEpochMilli(selectedDateMillis).atZone(ZoneOffset.UTC)
@@ -344,7 +344,7 @@ private fun MediaListEditScreenContent(
                                 selectedDateMillis = completedAt?.toInstant()?.toEpochMilli(),
                                 text = entryField.completedAt?.toString() ?: "",
                                 onClear = {
-                                    entryField.completedAt = null
+                                    entryField.completedAt = FuzzyDateModel()
                                 },
                                 onDateSelected = { selectedDateMillis ->
                                     val newCompletedAt = Instant.ofEpochMilli(selectedDateMillis).atZone(ZoneOffset.UTC)

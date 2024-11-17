@@ -1,9 +1,7 @@
 package com.revolgenx.anilib.list.ui.model
 
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.MediaListCollectionQuery
-import com.revolgenx.anilib.airing.ui.model.AiringScheduleModel
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel

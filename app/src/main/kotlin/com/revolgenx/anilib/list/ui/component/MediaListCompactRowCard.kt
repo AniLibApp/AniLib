@@ -163,7 +163,12 @@ fun MediaListSmallRowCard(
                 MediaListEntryLinearProgressIndicator(list = list)
             }
 
-            if(showIncreaseButton){
+            val progress = list.progressState?.value
+            val canShowIncreaseButton =
+                progress == null || media.totalEpisodesOrChapters == null || progress < media.totalEpisodesOrChapters
+
+
+            if(showIncreaseButton && canShowIncreaseButton){
                 IconButton(
                     onClick = increaseProgress
                 ) {
