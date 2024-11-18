@@ -9,6 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Add scroll-to-top functionality from home screen's bottom navigation bar.
 - Add grid compact in media list display mode (previously known as Classic Mode)
+- Add different widget appearance settings in widget settings.
+- 
 
 ### Fixed
 - Fix start & end dates not automatically added on watching and completing list. [#110](https://github.com/AniLibApp/AniLib/issues/110)

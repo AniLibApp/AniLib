@@ -71,6 +71,7 @@ import com.revolgenx.anilib.setting.ui.viewmodel.MediaSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.NotificationSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.TagFilterSettingsViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.WidgetSettingsViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityInfoViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityReplyServiceViewModel
@@ -314,13 +315,14 @@ val viewModelModules = module {
         )
     }
     viewModel { GeneralSettingsViewModel(get()) }
-    viewModel { AppearanceSettingsViewModel(get(), get(), get()) }
+    viewModel { AppearanceSettingsViewModel(get(), get(), get(), get()) }
     viewModel { MediaSettingsViewModel(get(), get(), get()) }
     viewModel { NotificationSettingsViewModel(get(), get(), get()) }
     viewModel { MediaListSettingsViewModel(get(), get()) }
     viewModel { FilterSettingsViewModel(get(), get()) }
     viewModel { TagFilterSettingsViewModel(get<Context>().mediaTagCollectionDataStore, get()) }
     viewModel { GenreFilterSettingsViewModel( get<Context>().genreCollectionDataStore, get()) }
+    viewModel { WidgetSettingsViewModel(get(), get(), get())}
     //explore
     viewModel {
         ExploreMediaViewModel.ExploreTrendingViewModel(

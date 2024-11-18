@@ -109,3 +109,4 @@ class ThemeDataSerializer(
 
 class ThemeDataStore(dataStore: DataStore<ThemeData>) : BaseDataStore<ThemeData>(dataStore)
 class CustomThemeDataStore(dataStore: DataStore<ThemeData>) : BaseDataStore<ThemeData>(dataStore)
+class WidgetThemeDataStore(dataStore: DataStore<ThemeData>) : BaseDataStore<ThemeData>(dataStore)

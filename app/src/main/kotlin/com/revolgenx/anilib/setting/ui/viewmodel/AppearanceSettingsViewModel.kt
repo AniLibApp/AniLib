@@ -1,7 +1,9 @@
 package com.revolgenx.anilib.setting.ui.viewmodel
 
+import android.content.Context
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
+import androidx.glance.appwidget.updateAll
 import androidx.lifecycle.ViewModel
 import com.materialkolor.Contrast
 import com.materialkolor.dynamicColorScheme
@@ -16,6 +18,7 @@ import com.revolgenx.anilib.common.data.constant.ThemeModes
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.theme.CustomThemeDataStore
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
+import com.revolgenx.anilib.common.data.store.theme.WidgetThemeDataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ui.theme.beeDarkTheme
 import com.revolgenx.anilib.common.ui.theme.beeTheme
@@ -30,12 +33,14 @@ import com.revolgenx.anilib.common.ui.theme.strawberryTheme
 import com.revolgenx.anilib.common.ui.theme.tealDarkTheme
 import com.revolgenx.anilib.common.ui.theme.tealTheme
 import com.revolgenx.anilib.common.util.isColorDark
+import com.revolgenx.anilib.widget.ui.AiringScheduleWidget
 
 
 class AppearanceSettingsViewModel(
     val themeDataStore: ThemeDataStore,
     private val customThemeDataStore: CustomThemeDataStore,
-    appPreferencesDataStore: AppPreferencesDataStore
+    private val widgetThemeDataStore: WidgetThemeDataStore,
+    private val appPreferencesDataStore: AppPreferencesDataStore
 ) : ViewModel() {
     companion object {
         val colors = MaterialDynamicColors(false)
@@ -52,7 +57,8 @@ class AppearanceSettingsViewModel(
     fun setTheme(
         theme: ThemeModes,
         isDarkTheme: Boolean,
-        darkMode: Boolean?
+        darkMode: Boolean?,
+        context: Context
     ) {
         launch {
             themeDataStore.source.updateData {
@@ -80,6 +86,8 @@ class AppearanceSettingsViewModel(
                     }
                 }.copy(darkMode = darkMode)
             }
+
+            updateWidgetTheme(context)
         }
     }
 
@@ -147,7 +155,7 @@ class AppearanceSettingsViewModel(
         }
     }
 
-    fun setBackground(color: Int) {
+    fun setBackground(color: Int, context: Context) {
         launch {
             val onBg = foregroundColor(color)
             val customTheme = customThemeDataStore.source.updateData {
@@ -159,7 +167,7 @@ class AppearanceSettingsViewModel(
             }
 
             themeDataStore.source.updateData { customTheme }
-
+            updateWidgetTheme(context)
         }
     }
 
@@ -190,7 +198,22 @@ class AppearanceSettingsViewModel(
         }
     }
 
-    private fun foregroundColor(color: Int): Color {
+    private suspend fun updateWidgetTheme(context: Context){
+        val widgetHaveSameBackground = appPreferencesDataStore.widgetBackgroundSameAsApp.get()!!
+        if(widgetHaveSameBackground){
+            val appTheme = themeDataStore.get()
+            widgetThemeDataStore.source.updateData {
+                it.copy(
+                    background = appTheme.background,
+                    onBackground = appTheme.onBackground,
+                    onSurfaceVariant = Color(appTheme.onBackground).copy(alpha = 0.9f).toArgb()
+                )
+            }
+            AiringScheduleWidget().updateAll(context = context)
+        }
+    }
+
+    private fun  foregroundColor(color: Int): Color {
         val bg = Color(color)
         val bgHct = bg.toHct()
         val isDark = isColorDark(bg)

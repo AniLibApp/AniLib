@@ -7,6 +7,7 @@ import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
 import com.revolgenx.anilib.common.data.store.AiringScheduleFilterDataStore
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.theme.WidgetThemeDataStore
 import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
 import kotlinx.coroutines.flow.map

@@ -109,7 +109,8 @@ object AppearanceSettingsScreen : PreferencesScreen() {
                     viewModel.setTheme(
                         themeData.theme,
                         isDarkTheme = darkMode ?: systemInDarkTheme,
-                        darkMode = darkMode
+                        darkMode = darkMode,
+                        context = context
                     )
                 }
             }
@@ -122,7 +123,8 @@ object AppearanceSettingsScreen : PreferencesScreen() {
                 viewModel.setTheme(
                     selectedTheme!!,
                     isDarkTheme = isDarkTheme,
-                    darkMode = themeData.darkMode
+                    darkMode = themeData.darkMode,
+                    context = context
                 )
             }
         }
@@ -137,7 +139,7 @@ object AppearanceSettingsScreen : PreferencesScreen() {
                 enabled = isCustomTheme,
                 colorsInt = surfaceColors
             ) { selectedColor ->
-                viewModel.setBackground(selectedColor)
+                viewModel.setBackground(selectedColor, context)
             }
 
 

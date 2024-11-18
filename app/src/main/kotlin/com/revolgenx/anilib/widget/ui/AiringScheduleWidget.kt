@@ -58,6 +58,7 @@ import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.common.data.constant.dateFormat
 import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.common.data.store.theme.WidgetThemeDataStore
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.activity.BaseMainActivity
 import com.revolgenx.anilib.common.ui.component.image.coilImageLoader
@@ -76,12 +77,9 @@ import java.time.format.TextStyle as TimeTextStyle
 class AiringScheduleWidget : GlanceAppWidget(), KoinComponent {
     private val appPreferencesDataStore: AppPreferencesDataStore = get()
     private val airingWidgetResource: AiringWidgetResource = get()
+    private val widgetThemeDataStore: WidgetThemeDataStore = get()
 
     companion object {
-        private val colors = ColorProviders(
-            light = defaultTheme.lightColorScheme,
-            dark = defaultDarkTheme.darkColorScheme
-        )
         private val mediaIdKey = ActionParameters.Key<Int>(
             BaseMainActivity.WIDGET_MEDIA_ID_KEY
         )
@@ -100,7 +98,8 @@ class AiringScheduleWidget : GlanceAppWidget(), KoinComponent {
             }
 
             CompositionLocalProvider(LocalContext provides context) {
-                GlanceTheme(colors = colors) {
+                val widgetTheme = widgetThemeDataStore.collectAsState().value
+                GlanceTheme(colors = ColorProviders(widgetTheme.darkColorScheme)) {
                     Box(
                         modifier = GlanceModifier
                             .fillMaxSize()
@@ -136,6 +135,7 @@ class AiringScheduleWidget : GlanceAppWidget(), KoinComponent {
                                 }
                                 Spacer(modifier = GlanceModifier.defaultWeight())
                                 CircleIconButton(
+                                    backgroundColor = null,
                                     imageProvider = ImageProvider(R.drawable.ic_open_in_new),
                                     contentDescription = null,
                                     onClick = actionStartActivity<MainActivity>(
@@ -145,6 +145,7 @@ class AiringScheduleWidget : GlanceAppWidget(), KoinComponent {
                                     )
                                 )
                                 CircleIconButton(
+                                    backgroundColor = null,
                                     imageProvider = ImageProvider(R.drawable.ic_refresh),
                                     contentDescription = null,
                                     onClick = {

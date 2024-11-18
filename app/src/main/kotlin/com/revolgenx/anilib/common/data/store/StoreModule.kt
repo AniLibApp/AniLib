@@ -3,6 +3,7 @@ package com.revolgenx.anilib.common.data.store
 import android.content.Context
 import com.revolgenx.anilib.common.data.store.theme.CustomThemeDataStore
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
+import com.revolgenx.anilib.common.data.store.theme.WidgetThemeDataStore
 import com.revolgenx.anilib.list.data.store.MediaListEntryEventStore
 import com.revolgenx.anilib.notification.data.store.NotificationDataStore
 import com.revolgenx.anilib.widget.viewmodel.AiringWidgetResource
@@ -16,6 +17,7 @@ val storeModules = module {
     single(named("theme_data_store")) { androidContext().themeDataStore }
     single { ThemeDataStore(get(named("theme_data_store"))) }
     single { CustomThemeDataStore(androidContext().customThemeDataStore(get(named("theme_data_store")))) }
+    single { WidgetThemeDataStore(androidContext().widgetThemeDataStore(get(named("theme_data_store")))) }
     single { AppPreferencesDataStore(get()) }
     single { MediaListEntryEventStore() }
     single { NotificationDataStore(get()) }

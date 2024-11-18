@@ -17,8 +17,8 @@ class App : Application() {
     private val koinMoules = listOf(
         repositoryModules,
         serviceModules,
-        viewModelModules,
         storeModules,
+        viewModelModules,
         workerModules
     )
 

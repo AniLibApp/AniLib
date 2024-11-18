@@ -152,3 +152,10 @@ fun Context.customThemeDataStore(themeDataStore: DataStore<ThemeData>): DataStor
         produceFile = { applicationContext.dataStoreFile("custom_theme_data_store.json") }
     )
 }
+
+fun Context.widgetThemeDataStore(themeDataStore: DataStore<ThemeData>): DataStore<ThemeData> {
+    return DataStoreFactory.create(
+        serializer = ThemeDataSerializer(themeDataStore.get()),
+        produceFile = { applicationContext.dataStoreFile("widget_theme_data_store.json") }
+    )
+}

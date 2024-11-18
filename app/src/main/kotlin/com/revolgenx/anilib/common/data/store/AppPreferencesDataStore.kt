@@ -76,6 +76,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val widgetOnlyWatchingKey = booleanPreferencesKey("widget_only_watching_key")
         val widgetOnlyPlanningKey = booleanPreferencesKey("widget_only_planning_key")
         val widgetAiringSortKey = intPreferencesKey("widget_airing_sort_key")
+        val widgetBackgroundSameAsAppKey = booleanPreferencesKey("widget_background_same_as_app_key")
 
         val currentAppVersionKey = stringPreferencesKey("current_app_version_key")
         val displayScaleKey = floatPreferencesKey("display_scale_key")
@@ -223,6 +224,12 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         dataStore = dataStore,
         prefKey = widgetAiringSortKey,
         defaultValue = AiringSort.TIME.ordinal
+    )
+
+    val widgetBackgroundSameAsApp = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = widgetBackgroundSameAsAppKey,
+        defaultValue = true
     )
 
     val currentAppVersion = PreferencesDataStore(
