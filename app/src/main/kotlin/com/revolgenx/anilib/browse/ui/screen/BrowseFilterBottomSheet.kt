@@ -448,7 +448,7 @@ fun DurationOrVolumesRangeFilter(viewModel: BrowseFilterViewModel) {
 }
 
 @Composable
-private fun TriStateCheckboxFilter(
+fun TriStateCheckboxFilter(
     text: String,
     isChecked: Boolean?,
     onCheckChange: (checked: Boolean?) -> Unit

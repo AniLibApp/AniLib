@@ -154,7 +154,7 @@ private fun MediaListScreenContent(
                                 }
                                 IconButton(onClick = {
                                     scope.launch {
-                                        viewModel.filter?.let {
+                                        viewModel.filter.let {
                                             filterViewModel.filter = it.copy()
                                             openFilterBottomSheet.expand()
                                         }

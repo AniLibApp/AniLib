@@ -34,6 +34,7 @@ import com.dokar.sheets.m3.BottomSheetDefaults
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
 import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
+import com.revolgenx.anilib.browse.ui.screen.TriStateCheckboxFilter
 import com.revolgenx.anilib.common.data.constant.AlMediaSort
 import com.revolgenx.anilib.common.data.store.MediaListDisplayMode
 import com.revolgenx.anilib.common.data.tuples.to
@@ -137,9 +138,11 @@ fun MediaListContent(
                     MediaListDisplayMode.GRID, MediaListDisplayMode.LIST_GRID_COMPACT -> {
                         GridOptions(GridCells.Adaptive(168.dp))
                     }
-                    MediaListDisplayMode.GRID_COMPACT->{
+
+                    MediaListDisplayMode.GRID_COMPACT -> {
                         GridOptions(GridCells.Adaptive(106.dp))
                     }
+
                     else -> null
                 }
                 val mediaListCollection = viewModel.mediaListCollection
@@ -148,7 +151,8 @@ fun MediaListContent(
                     EmptyScreen()
                 } else {
                     val isGrid = gridOptions != null
-                    val scrollableState = if(isGrid) rememberLazyGridState() else rememberLazyListState()
+                    val scrollableState =
+                        if (isGrid) rememberLazyGridState() else rememberLazyListState()
                     LaunchedEffect(scrollViewModel) {
                         scrollViewModel.scrollEventFor(ScrollTarget.MEDIA_LIST).collectLatest {
                             scrollableState.animateScrollToItem(0)
@@ -220,7 +224,7 @@ fun MediaListContent(
                                 )
                             }
 
-                            MediaListDisplayMode.LIST_GRID_COMPACT->{
+                            MediaListDisplayMode.LIST_GRID_COMPACT -> {
                                 MediaListCompactRowColumnCard(
                                     list = mediaList,
                                     showIncreaseButton = viewModel.isLoggedInUserList,
@@ -230,7 +234,7 @@ fun MediaListContent(
                                 )
                             }
 
-                            MediaListDisplayMode.GRID-> {
+                            MediaListDisplayMode.GRID -> {
                                 MediaListColumnCard(
                                     list = mediaList,
                                     showIncreaseButton = viewModel.isLoggedInUserList,
@@ -377,7 +381,6 @@ fun MediaListFilterBottomSheetContent(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
                 .padding(vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
 
             val selectedFormats = viewModel.filter.formatsIn?.map { it.ordinal }.orEmpty()
@@ -461,6 +464,18 @@ fun MediaListFilterBottomSheetContent(
                 viewModel.filter = viewModel.filter.copy(
                     sort = mediaListSortType
                 )
+            }
+
+            val canShowAdultContent = viewModel.canShowAdultContent.collectAsState()
+            if (canShowAdultContent.value == true) {
+                TriStateCheckboxFilter(
+                    text = stringResource(id = anilib.i18n.R.string.hentai),
+                    isChecked = viewModel.filter.isHentai
+                ) { isHentai ->
+                    viewModel.filter = viewModel.filter.copy(
+                        isHentai = isHentai
+                    )
+                }
             }
         }
 

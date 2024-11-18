@@ -521,7 +521,7 @@ private fun SurfaceHeadingColumn(
 private fun TextHeaderContent(
     modifier: Modifier = Modifier, heading: String, content: @Composable () -> Unit
 ) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
+    Column(modifier = modifier) {
         MediumText(
             modifier = Modifier.padding(start = 5.dp, bottom = 3.dp),
             text = heading,

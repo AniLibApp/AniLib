@@ -200,6 +200,7 @@ private fun ExploreMediaListFilterBottomSheet(
         Column(
             modifier = Modifier
                 .padding(bottom = 4.dp)
+                .padding(horizontal = 16.dp)
         ) {
             BottomSheetConfirmation(
                 onConfirm = {

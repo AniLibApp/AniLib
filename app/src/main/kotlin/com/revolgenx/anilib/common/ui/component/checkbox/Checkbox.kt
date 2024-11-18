@@ -31,6 +31,7 @@ fun TextCheckbox(
     Row(
         Modifier
             .fillMaxWidth()
+            .padding(vertical = 2.dp)
             .height(40.dp)
             .toggleable(
                 value = checkedState,
@@ -40,8 +41,7 @@ fun TextCheckbox(
                     onCheckChange(newState)
                 },
                 role = Role.Checkbox
-            )
-            .padding(horizontal = 12.dp),
+            ),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Checkbox(
@@ -66,8 +66,8 @@ fun TextTriStateCheckbox(
     Row(
         Modifier
             .fillMaxWidth()
+            .padding(vertical = 6.dp)
             .height(40.dp)
-            .padding(horizontal = 12.dp)
             .triStateToggleable(
                 state = toggleState,
                 onClick = {

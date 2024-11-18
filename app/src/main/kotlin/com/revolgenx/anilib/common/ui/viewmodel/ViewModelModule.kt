@@ -258,8 +258,8 @@ val viewModelModules = module {
     //list
     viewModel { AnimeListViewModel(get(), get(), get(), animeListFilterDataStore()) }
     viewModel { MangaListViewModel(get(), get(), get(), mangaListFilterDataStore()) }
-    viewModel { AnimeListFilterViewModel() }
-    viewModel { MangaListFilterViewModel() }
+    viewModel { AnimeListFilterViewModel(get()) }
+    viewModel { MangaListFilterViewModel(get()) }
 
     //activity union
     viewModel {
