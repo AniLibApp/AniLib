@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.common.data.service
 
+import android.content.Context
 import com.revolgenx.anilib.airing.data.service.AiringScheduleService
 import com.revolgenx.anilib.airing.data.service.AiringScheduleServiceImpl
 import com.revolgenx.anilib.browse.data.service.BrowseServiceImpl
@@ -23,6 +24,8 @@ import com.revolgenx.anilib.setting.data.service.SettingsServiceImpl
 import com.revolgenx.anilib.social.data.service.ActivityUnionService
 import com.revolgenx.anilib.social.data.service.ActivityUnionServiceImpl
 import com.revolgenx.anilib.common.data.service.ToggleServiceImpl
+import com.revolgenx.anilib.common.data.store.genreCollectionDataStore
+import com.revolgenx.anilib.common.data.store.mediaTagCollectionDataStore
 import com.revolgenx.anilib.staff.data.service.StaffService
 import com.revolgenx.anilib.staff.data.service.StaffServiceImpl
 import com.revolgenx.anilib.studio.data.service.StudioService
@@ -47,6 +50,13 @@ val serviceModules = module {
     factoryOf(::BrowseServiceImpl) { bind<BrowseService>() }
     factoryOf(::ReviewServiceImpl) { bind<ReviewService>() }
     factoryOf(::RecommendationServiceImpl) { bind<RecommendationService>() }
-    factoryOf(::SettingsServiceImpl) { bind<SettingsService>() }
+    factory<SettingsService> {
+        SettingsServiceImpl(
+            get(),
+            get(),
+            get<Context>().mediaTagCollectionDataStore,
+            get<Context>().genreCollectionDataStore
+        )
+    }
     factoryOf(::ToggleServiceImpl) { bind<ToggleService>() }
 }

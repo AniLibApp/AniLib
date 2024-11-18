@@ -318,7 +318,7 @@ val viewModelModules = module {
     viewModel { MediaSettingsViewModel(get(), get(), get()) }
     viewModel { NotificationSettingsViewModel(get(), get(), get()) }
     viewModel { MediaListSettingsViewModel(get(), get()) }
-    viewModel { FilterSettingsViewModel(get()) }
+    viewModel { FilterSettingsViewModel(get(), get()) }
     viewModel { TagFilterSettingsViewModel(get<Context>().mediaTagCollectionDataStore, get()) }
     viewModel { GenreFilterSettingsViewModel( get<Context>().genreCollectionDataStore, get()) }
     //explore

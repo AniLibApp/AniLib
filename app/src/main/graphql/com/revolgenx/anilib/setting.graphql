@@ -26,6 +26,15 @@ query UserMediaListOptionsQuery($id:Int, $name:String){
     }
 }
 
+query TagsAndGenreCollectionQuery{
+    MediaTagCollection{
+        name
+        isAdult
+    }
+
+    GenreCollection
+}
+
 
 mutation UserMediaSettingMutation(
     $title:UserTitleLanguage,

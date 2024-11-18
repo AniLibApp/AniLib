@@ -342,6 +342,8 @@
     <string name="settings_exclude_tags_placeholder">Type to search</string>
     <string name="settings_exclude_genre">Exclude Genre</string>
     <string name="settings_exclude_genre_desc">Excluded genre will be added to search filter when searching for media</string>
+    <string name="settings_refresh_tags">Refresh tags and genre</string>
+    <string name="settings_refresh_tags_desc">Click to pull and sync the latest tags and genre from AniList.</string>
     <string name="settings_max_episodes">Max Episodes</string>
     <string name="settings_max_episodes_desc">Set max episodes for search filter. Min is 150</string>
     <string name="settings_max_duration">Max Duration</string>

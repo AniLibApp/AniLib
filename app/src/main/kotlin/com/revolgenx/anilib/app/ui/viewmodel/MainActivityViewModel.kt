@@ -99,8 +99,7 @@ class MainActivityViewModel(
             preferencesDataStore.dataStore.data.collect {
                 val userId = it[userIdKey]
                 val mediaTitleType = it[mediaTitleTypeKey] ?: type_romaji
-                val mediaCoverImageType =
-                    it[mediaCoverImageTypeKey] ?: MediaCoverImageModel.type_large
+                val mediaCoverImageType = it[mediaCoverImageTypeKey] ?: MediaCoverImageModel.type_extra_large
                 userState = userState.copy(userId = userId)
                 mediaState = mediaState.copy(
                     titleType = mediaTitleType,

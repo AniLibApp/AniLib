@@ -20,4 +20,5 @@ interface SettingsService {
     fun saveMediaSettings(field: SaveMediaSettingsField): Flow<Boolean>
     fun getMediaListSettings(field: MediaListSettingsField): Flow<MediaListSettingsModel?>
     fun saveMediaListSettings(field: SaveMediaListSettingsField): Flow<Boolean>
+    fun refreshTagsAndGenreCollection(): Flow<Unit>
 }

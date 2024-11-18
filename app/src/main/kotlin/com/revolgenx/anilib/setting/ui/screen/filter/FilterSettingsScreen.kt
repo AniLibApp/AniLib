@@ -8,9 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -19,7 +22,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import anilib.i18n.R
+import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
+import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
@@ -37,16 +42,42 @@ object FilterSettingsScreen : AndroidScreen() {
         val navigator = localNavigator()
         val viewModel: FilterSettingsViewModel = koinViewModel()
         val scope = rememberCoroutineScope()
+        val context = localContext()
 
         ScreenScaffold(
             title = stringResource(id = R.string.filter),
             contentWindowInsets = horizontalBottomWindowInsets()
-        ) {
+        ) {snackbar->
+            LaunchedEffect(viewModel.refreshTagsState.value) {
+                when(viewModel.refreshTagsState.value){
+                    is ResourceState.Error -> {
+                        snackbar.showSnackbar(context.getString(R.string.operation_failed), duration = SnackbarDuration.Short, withDismissAction = true)
+                        viewModel.refreshTagsState.value = null
+                    }
+                    is ResourceState.Success ->{
+                        snackbar.showSnackbar(context.getString(R.string.success), duration = SnackbarDuration.Short, withDismissAction = true)
+                        viewModel.refreshTagsState.value = null
+                    }
+                    else -> {}
+                }
+            }
             Column(
                 modifier = Modifier
                     .imePadding()
                     .verticalScroll(rememberScrollState())
             ) {
+                TextPreferenceItem(
+                    title = stringResource(id = R.string.settings_refresh_tags),
+                    subtitle = stringResource(id = R.string.settings_refresh_tags_desc),
+                    onClick = {
+                        viewModel.refreshTagsAndGenre()
+                    },
+                    widget = {
+                        if(viewModel.refreshTagsState.value is ResourceState.Loading){
+                            CircularProgressIndicator()
+                        }
+                    }
+                )
 
                 GroupPreferenceItem(title = stringResource(id = R.string.anime)) {
                     TextPreferenceItem(

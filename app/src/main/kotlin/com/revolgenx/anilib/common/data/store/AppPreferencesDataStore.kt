@@ -100,7 +100,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     val mediaCoverImageType = PreferencesDataStore(
         dataStore = dataStore,
         prefKey = mediaCoverImageTypeKey,
-        defaultValue = MediaCoverImageModel.type_large
+        defaultValue = MediaCoverImageModel.type_extra_large
     )
 
     val notificationRefreshInterval = PreferencesDataStore(
