@@ -6,6 +6,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [v2.0.3] - 2024-11-18
 ### Added
 - Add scroll-to-top functionality from home screen's bottom navigation bar.
 - Add grid compact in media list display mode (previously known as Classic Mode)
@@ -53,5 +55,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Note**: Any missing feature like filter settings will be added later on. ML translate is removed and won\'t be added.
 - **Enjoy AniLib!**
 
-[v2.0.1]: https://github.com/AniLibApp/AniLib/compare/v2.0.1...v2.0.2
+[v2.0.3]: https://github.com/AniLibApp/AniLib/compare/v2.0.2...v2.0.3
+[v2.0.2]: https://github.com/AniLibApp/AniLib/compare/v2.0.1...v2.0.2
 [v2.0.1]: https://github.com/AniLibApp/AniLib/compare/v2.0.0...v2.0.1

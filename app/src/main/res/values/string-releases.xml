@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="release_info" translatable="false">
+        ## v2.0.3 \n
+        ### Added \n
+        - Add scroll-to-top functionality from home screen\'s bottom navigation bar. \n
+        - Add grid compact in media list display mode (previously known as Classic Mode) \n
+        - Add different widget appearance settings in widget settings. \n
+        - Add missing filter in media list filter bottomsheet \n
+        - Add refresh genre and tags button to sync with anilist inside filter setting \n
+
+        ### Fixed \n
+        - Fix start and end dates not automatically added on watching and completing list. \n
+        - Increasing progress will now stop resetting status and other fields. \n
+        - Fix bug in title comparison caused by inconsistent casing \n
+
+
         ## v2.0.2 \n
 
         ### Added \n
