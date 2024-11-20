@@ -118,7 +118,7 @@ private fun WidgetSettingsScreenContent() {
                     widgetSettingsViewModel.setBackground(it, context)
                 }
 
-                HeaderPreferenceItem(title = stringResource(id = R.string.background_alpha)) {
+                HeaderPreferenceItem(title = stringResource(id = R.string.background_transparency)) {
                     val widgetBackground = Color(widgetTheme.background)
                     val alpha = widgetBackground.alpha.takeIf { it >= 0.6f } ?: 0.6f
                     val alphaState = remember(alpha){

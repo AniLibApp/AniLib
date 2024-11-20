@@ -415,7 +415,7 @@
     <string name="widget_same_background_as_app">Same background as app</string>
     <string name="widget_same_background_as_app_desc">Switch off to choose a different background for the widget.</string>
     <string name="widget_background_color">Widget background color</string>
-    <string name="background_alpha">Background alpha</string>
+    <string name="background_transparency">Background transparency</string>
     <string name="open_in_browser">Open in browser</string>
     <string name="share">Share</string>
     <string name="popular">Popular</string>
