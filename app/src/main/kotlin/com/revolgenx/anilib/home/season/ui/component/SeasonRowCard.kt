@@ -3,12 +3,14 @@ package com.revolgenx.anilib.home.season.ui.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
@@ -62,8 +64,9 @@ private fun SeasonRowCardContent(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(172.dp)
-            .padding(8.dp),
+            .padding(8.dp)
+            .heightIn(min = 172.dp)
+            .height(IntrinsicSize.Min),
         onClick = {
             onMediaClick(media.id, media.type)
         },

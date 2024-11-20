@@ -3,6 +3,8 @@ package com.revolgenx.anilib.list.ui.component
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import anilib.i18n.R
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.list.ui.model.MediaListModel
@@ -12,6 +14,8 @@ import com.revolgenx.anilib.media.ui.model.MediaModel
 fun MediaListEntryProgressBehind(
     modifier: Modifier = Modifier,
     list: MediaListModel,
+    fontSize: TextUnit = 11.sp,
+    lineHeight: TextUnit = 12.sp,
     compIfNotPresent: @Composable (() ->  Unit)? = null
 ) {
     val  media = list.media?: return
@@ -26,7 +30,9 @@ fun MediaListEntryProgressBehind(
             text = pluralStringResource(
                 id = R.plurals.s_episodes_behind,
                 progressBehind
-            ).format(progressBehind)
+            ).format(progressBehind),
+            fontSize = fontSize,
+            lineHeight = lineHeight
         )
     }
 

@@ -48,6 +48,7 @@ fun MediumText(
     text: String,
     modifier: Modifier = Modifier,
     fontSize: TextUnit? = null,
+    minLines: Int = 1,
     maxLines: Int? = null,
     lineHeight: TextUnit? = null,
     textAlign: TextAlign? = null,
@@ -57,6 +58,7 @@ fun MediumText(
     Text(
         modifier = modifier,
         text = text,
+        minLines = minLines,
         maxLines = maxLines ?: 2,
         fontSize = fontSize ?: 14.sp,
         lineHeight = lineHeight ?: 16.sp,

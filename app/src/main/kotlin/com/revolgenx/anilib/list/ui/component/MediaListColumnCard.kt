@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -61,12 +62,13 @@ fun MediaListColumnCard(
         onClick = onClick,
         onLongClick = onLongClick
     ) {
-        Box {
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
             MediaCoverImageType { type ->
                 ImageAsync(
                     modifier = Modifier
-                        .height(178.dp)
-                        .fillMaxWidth(),
+                        .fillMaxSize(),
                     imageUrl = media.coverImage?.image(type),
                     imageOptions = ImageOptions(
                         contentScale = ContentScale.Crop,
@@ -88,7 +90,6 @@ fun MediaListColumnCard(
         Column(
             modifier = Modifier
                 .padding(3.dp)
-                .weight(1f)
         ) {
             MediaTitleType { type ->
                 MediumText(
@@ -99,7 +100,7 @@ fun MediaListColumnCard(
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.size(1.dp))
 
             Row {
                 val format = stringResource(id = media.format.toStringRes())

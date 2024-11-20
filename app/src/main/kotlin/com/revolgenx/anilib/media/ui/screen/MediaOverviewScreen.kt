@@ -245,7 +245,6 @@ fun MediaRelationCard(
     MediaItemColumnCard(
         media = media,
         width = 140.dp,
-        height = 266.dp,
         footerContent = {
             val format = stringResource(id = media.format.toStringRes())
             val status = stringResource(id = media.status.toStringRes())

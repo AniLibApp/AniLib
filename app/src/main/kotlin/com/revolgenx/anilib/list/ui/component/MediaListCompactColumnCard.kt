@@ -5,11 +5,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -65,12 +67,13 @@ fun MediaListCompactColumnCard(
         onClick = onClick,
         onLongClick = onLongClick
     ) {
-        Box {
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
             MediaCoverImageType { type ->
                 ImageAsync(
                     modifier = Modifier
-                        .height(158.dp)
-                        .fillMaxWidth(),
+                        .fillMaxSize(),
                     imageUrl = media.coverImage?.image(type),
                     imageOptions = ImageOptions(
                         contentScale = ContentScale.Crop,
@@ -92,7 +95,6 @@ fun MediaListCompactColumnCard(
         Column(
             modifier = Modifier
                 .padding(3.dp)
-                .weight(1f)
         ) {
             MediaTitleType { type ->
                 MediumText(
@@ -100,41 +102,36 @@ fun MediaListCompactColumnCard(
                         .fillMaxWidth()
                         .padding(bottom = MediaCardTitleBottomPadding),
                     text = media.title?.title(type).naText(),
+                    minLines = 2
                 )
             }
 
-            Spacer(modifier = Modifier.weight(1f))
 
-            MediaListEntryProgressBehind(list = list) {
+            MediaListEntryProgressBehind(list = list, fontSize = 10.sp, lineHeight = 10.sp) {
                 Row {
+                    val year = media.seasonYear
+
                     val status = stringResource(id = media.status.toStringRes())
                     val statusColor = media.status.toColor()
 
                     LightText(
                         text = status,
+                        fontSize = 10.sp,
+                        lineHeight = 10.sp,
                         color = statusColor,
-                        fontSize = 10.sp,
-                        lineHeight = 10.sp
                     )
-
-                    val format = stringResource(id = media.format.toStringRes())
-                    val year = media.seasonYear
-
-                    LightText(
-                        modifier = Modifier.padding(start = 6.dp),
-                        text = year?.let {
-                            stringResource(id = anilib.i18n.R.string.s_dot_s).format(
-                                format,
-                                year
-                            )
-                        } ?: format,
-                        fontSize = 10.sp,
-                        lineHeight = 10.sp
-                    )
+                    year?.let {
+                        LightText(
+                            modifier = Modifier.padding(horizontal = 2.dp),
+                            text = year.toString(),
+                            fontSize = 10.sp,
+                            lineHeight = 10.sp
+                        )
+                    }
                 }
             }
 
-            Spacer(modifier = Modifier.padding(2.dp))
+            Spacer(modifier = Modifier.size(1.dp))
 
             Row(
                 modifier = Modifier.fillMaxWidth()
@@ -145,16 +142,31 @@ fun MediaListCompactColumnCard(
                 Column(modifier = Modifier.weight(1f)) {
                     MediaListEntryScore(
                         list = list,
-                        fontSize = 11.sp,
-                        lineHeight = 12.sp,
-                        iconSize = 12.dp
+                        fontSize = 10.sp,
+                        lineHeight = 11.sp,
+                        iconSize = 11.dp
                     )
 
-                    RegularText(
-                        text = "${progress.naText()} / ${media.totalEpisodesOrChapters.naText()}",
-                        fontSize = 11.sp,
-                        lineHeight = 12.sp
-                    )
+                    Spacer(modifier = Modifier.size(1.dp))
+
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        val format = stringResource(id = media.format.toStringRes())
+
+                        RegularText(
+                            modifier = Modifier.weight(1f),
+                            text = format,
+                            fontSize = 10.sp,
+                            lineHeight = 10.sp,
+                            maxLines = 1
+                        )
+
+                        RegularText(
+                            text = "${progress.naText()} / ${media.totalEpisodesOrChapters.naText()}",
+                            fontSize = 10.sp,
+                            lineHeight = 11.sp,
+                            maxLines = 1
+                        )
+                    }
                 }
 
 
@@ -190,7 +202,7 @@ private fun MediaListColumnCardPreview() {
     MediaListCompactColumnCard(
         list = MediaListModel(
             media = MediaModel(
-                title = MediaTitleModel(romaji = "One Punch Man Season 2"),
+                title = MediaTitleModel(romaji = "One Punch"),
                 currentEpisode = 10
             ),
             progressState = remember {

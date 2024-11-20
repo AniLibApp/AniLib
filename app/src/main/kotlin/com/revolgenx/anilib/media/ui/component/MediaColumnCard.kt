@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
@@ -108,7 +110,7 @@ fun rememberMediaComponentState(
 fun MediaItemColumnCard(
     media: MediaModel,
     width: Dp? = null,
-    height: Dp = 254.dp,
+    height: Dp = 240.dp,
     footerContent: @Composable (ColumnScope.() -> Unit)? = null,
     mediaComponentState: MediaComponentState
 ) {
@@ -147,7 +149,7 @@ fun MediaItemColumnCard(
 private fun MediaColumnCardContent(
     media: MediaModel,
     width: Dp? = null,
-    height: Dp = 248.dp,
+    height: Dp = 240.dp,
     footerContent: @Composable (ColumnScope.() -> Unit)? = null,
     onMediaClick: OnMediaClick,
     onMediaLongClick: OnMediaClick
@@ -170,13 +172,14 @@ private fun MediaColumnCardContent(
             onMediaLongClick(media.id, media.type)
         },
     ) {
-        Box {
+        Box(
+            modifier = Modifier.weight(1f)
+        ) {
 
             MediaCoverImageType { type ->
                 ImageAsync(
                     modifier = Modifier
-                        .height(165.dp)
-                        .fillMaxWidth(),
+                        .fillMaxSize(),
                     imageUrl = media.coverImage?.image(type),
                     imageOptions = ImageOptions(
                         contentScale = ContentScale.Crop,
@@ -209,7 +212,7 @@ private fun MediaColumnCardContent(
                     text = media.title?.title(type).naText()
                 )
             }
-            Spacer(modifier = Modifier.weight(1f))
+            Spacer(modifier = Modifier.size(1.dp))
 
             if (footerContent != null) {
                 footerContent()

@@ -1,16 +1,20 @@
 package com.revolgenx.anilib.list.ui.component
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
@@ -60,17 +64,22 @@ fun MediaListCompactRowColumnCard(
         modifier = Modifier
             .padding(4.dp)
             .width(160.dp)
-            .height(100.dp),
+            .heightIn(min = 100.dp)
+            .height(IntrinsicSize.Min),
         onClick = onClick,
         onLongClick = onLongClick
     ) {
         Row {
-            Box {
+            Box(
+                modifier = Modifier
+                    .widthIn(min = 66.dp)
+                    .width(IntrinsicSize.Min)
+                    .fillMaxHeight()
+            ) {
                 MediaCoverImageType { type ->
                     ImageAsync(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .width(66.dp),
+                            .matchParentSize(),
                         imageUrl = media.coverImage?.image(type),
                         imageOptions = ImageOptions(
                             contentScale = ContentScale.Crop,
@@ -85,7 +94,7 @@ fun MediaListCompactRowColumnCard(
                         .align(Alignment.TopStart)
                         .padding(4.dp),
                     media = media,
-                    fontSize = 10.sp,
+                    fontSize = 9.sp,
                     iconSize = 12.dp
                 )
 
@@ -95,18 +104,33 @@ fun MediaListCompactRowColumnCard(
                 modifier = Modifier
                     .weight(1f)
             ) {
-                Column(modifier = Modifier.padding(horizontal = 3.dp).padding(top = 2.dp)) {
+                Column(modifier = Modifier
+                    .padding(horizontal = 3.dp)
+                    .padding(top = 2.dp)) {
                     MediaTitleType { type ->
                         MediumText(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = MediaCardTitleBottomPadding),
                             text = media.title?.title(type).naText(),
-                            fontSize = 13.sp,
+                            fontSize = 13.sp
                         )
                     }
-                    MediaListEntryScore(modifier = Modifier.padding(bottom = 1.dp), list = list, iconSize = 13.dp, fontSize = 11.sp)
-                    MediaListEntryProgressBehind(list = list)
+                    MediaListEntryScore(
+                        modifier = Modifier.padding(bottom = 1.dp),
+                        list = list,
+                        iconSize = 11.dp,
+                        fontSize = 10.sp
+                    )
+                    MediaListEntryProgressBehind(list = list, fontSize = 10.sp, lineHeight = 10.sp){
+                        RegularText(
+                            text = stringResource(id = media.format.toStringRes()),
+                            color = MaterialTheme.colorScheme.primary,
+                            fontSize = 10.sp,
+                            lineHeight = 10.sp,
+                            maxLines = 1
+                        )
+                    }
 
                 }
 
@@ -116,26 +140,14 @@ fun MediaListCompactRowColumnCard(
                         modifier = Modifier
                             .padding(horizontal = 2.dp)
                             .fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Row(
-                            modifier = Modifier
-                                .weight(1f)
-                                .padding(vertical = 3.dp),
-                        ) {
-                            RegularText(
-                                modifier = Modifier.weight(1f),
-                                text = stringResource(id = media.format.toStringRes()),
-                                color = MaterialTheme.colorScheme.primary,
-                                fontSize = 12.sp,
-                                maxLines = 1
-                            )
 
-                            RegularText(
-                                text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
-                                fontSize = 12.sp
-                            )
-                        }
+                        RegularText(
+                            text = "${list.progressState?.value.naText()} / ${media.totalEpisodesOrChapters.naText()}",
+                            fontSize = 11.sp
+                        )
 
                         val progress = list.progressState?.value
                         val canShowIncreaseButton =

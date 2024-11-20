@@ -3,13 +3,16 @@ package com.revolgenx.anilib.list.ui.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -55,21 +58,22 @@ fun MediaListCompactRowCard(
     Card(
         modifier = Modifier
             .padding(8.dp)
-            .height(85.dp),
+            .heightIn(min = 85.dp)
+            .height(IntrinsicSize.Min),
         onClick = onClick,
         onLongClick = onLongClick
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Box {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .widthIn(min = 80.dp)
+                    .width(IntrinsicSize.Min)
+                    .fillMaxHeight()
+            ) {
                 MediaCoverImageType { type ->
                     ImageAsync(
                         modifier = Modifier
-                            .width(80.dp)
-                            .fillMaxHeight(),
+                            .matchParentSize(),
                         imageUrl = media.coverImage?.image(type),
                         imageOptions = ImageOptions(
                             contentScale = ContentScale.Crop, alignment = Alignment.Center
@@ -182,7 +186,7 @@ private fun MediaListSmallRowCardPreview() {
     MediaListCompactRowCard(
         list = MediaListModel(
             media = MediaModel(
-                title = MediaTitleModel(romaji = ""),
+                title = MediaTitleModel(romaji = "One punch"),
                 currentEpisode = 10
             ),
             progressState = remember {
