@@ -523,7 +523,6 @@ country of origin -->
     <string name="surface_container_low_color">Cor Baixa do Contêiner de Superfície</string>
     <string name="surface_container_low_color_desc">Cartão, etc</string>
     <string name="grant_notification_permission_message">Por favor, conceda permissão de notificação para mostrar notificações</string>
-    <string name="support">Suporte</string>
     <string name="settings_list_100_point">100 Pontos (55/100)</string>
     <string name="settings_list_10_point_decimal">10 Pontos Decimal (5.5/10)</string>
     <string name="settings_list_10_point">10 Pontos (5/10)</string>
@@ -545,8 +544,8 @@ country of origin -->
     <string name="ads_every_other_day">Dia Sim, Dia Não</string>
     <string name="ads_every_week">Toda Semana</string>
     <string name="ads_play_support_message">Um anúncio está prestes a ser exibido. Você pode pular a qualquer momento, mas assistir ajuda a apoiar o desenvolvimento do aplicativo.\nObrigado pelo seu apoio! 🙏</string>
-    <string name="ads_support_the_app">Apoie o Aplicativo! \\uD83D\\uDC96</string>
-    <string name="ads_support_button_message">\\uD83D\\uDCAC Se você gostaria de apoiar o aplicativo, pode assistir a anúncios pressionando o botão abaixo.</string>
+    <string name="ads_support_the_app">Apoie o Aplicativo! \uD83D\uDC96</string>
+    <string name="ads_support_button_message">\uD83D\uDCAC Se você gostaria de apoiar o aplicativo, pode assistir a anúncios pressionando o botão abaixo.</string>
     <string name="datetime_days">Dias</string>
     <string name="datetime_hour">Hora</string>
     <string name="datetime_min">Min</string>

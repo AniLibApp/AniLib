@@ -35,6 +35,7 @@ object Versions{
     const val glance = "1.1.0"
     const val firebase = "33.2.0"
     const val admob = "23.3.0"
+    const val billing = "7.1.1"
 }
 
 object Dependencies {
@@ -110,6 +111,7 @@ object Dependencies {
     const val admob = "com.google.android.gms:play-services-ads:${Versions.admob}"
     const val firebaseAnalytics = "com.google.firebase:firebase-analytics"
     const val firebaseCrashlytics = "com.google.firebase:firebase-crashlytics"
+    const val billing = "com.android.billingclient:billing-ktx:${Versions.billing}"
 }
 
 
@@ -224,4 +226,8 @@ fun DependencyHandler.firebase(){
 
 fun DependencyHandler.admob(){
     implementation(Dependencies.admob)
+}
+
+fun DependencyHandler.billing(){
+    implementation(Dependencies.billing)
 }

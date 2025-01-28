@@ -63,6 +63,7 @@ import com.revolgenx.anilib.review.ui.viewmodel.ReviewListFilterViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewListViewModel
 import com.revolgenx.anilib.review.ui.viewmodel.ReviewViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.AppearanceSettingsViewModel
+import com.revolgenx.anilib.setting.ui.viewmodel.BillingViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.FilterSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.GeneralSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.GenreFilterSettingsViewModel
@@ -103,6 +104,7 @@ import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTagsViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsTypeMediaType
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsViewModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsVoiceActorsViewModel
+import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
@@ -372,4 +374,5 @@ val viewModelModules = module {
 
     viewModel { AdsViewModel(get()) }
     viewModel{ ScrollViewModel() }
+    viewModel { BillingViewModel(androidContext(), get()) }
 }

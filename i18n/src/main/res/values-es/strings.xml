@@ -528,7 +528,6 @@ country of origin -->
     <string name="surface_container_low_color">Color bajo del contenedor de superficie</string>
     <string name="surface_container_low_color_desc">Tarjeta, etc.</string>
     <string name="grant_notification_permission_message">Por favor, concede permiso de notificación para mostrar notificaciones</string>
-    <string name="support">Soporte</string>
     <string name="settings_list_100_point">100 puntos (55/100)</string>
     <string name="settings_list_10_point_decimal">10 puntos decimal (5.5/10)</string>
     <string name="settings_list_10_point">10 puntos (5/10)</string>

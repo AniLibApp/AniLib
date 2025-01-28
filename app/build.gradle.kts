@@ -23,8 +23,8 @@ android {
     defaultConfig {
         applicationId = "com.revolgenx.anilib"
 
-        versionCode = 45
-        versionName = "2.0.3"
+        versionCode = 46
+        versionName = "2.0.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -44,6 +44,7 @@ android {
             isDebuggable = true
             loadConfig("secret.debug.properties")
         }
+
         named("release") {
             isMinifyEnabled = false
             setProguardFiles(
@@ -53,6 +54,13 @@ android {
                 )
             )
             loadConfig("secret.properties")
+        }
+
+        create("standard") {
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = true
+            loadConfig("secret.debug.properties")
+            matchingFallbacks.add("release")
         }
     }
 
@@ -93,17 +101,17 @@ fun ApplicationBuildType.loadConfig(file: String){
     buildConfigField(
         "String",
         "CLIENT_ID",
-        secretPropslistOf(secretProps, "client_id")
+        secretPropsFrom(secretProps, "client_id")
     )
     buildConfigField(
         "String",
         "INTERSTITIAL_ADS_ID",
-        secretPropslistOf(secretProps, "interstitial_ads_id")
+        secretPropsFrom(secretProps, "interstitial_ads_id")
     )
     buildConfigField(
         "String",
         "REWARDED_INTERSTITIAL_ADS_ID",
-        secretPropslistOf(secretProps, "rewarded_interstitial_ads_id")
+        secretPropsFrom(secretProps, "rewarded_interstitial_ads_id")
     )
 }
 
@@ -133,6 +141,7 @@ dependencies {
     glance()
     firebase()
     admob()
+    billing()
 
     implementation("com.materialkolor:material-kolor:1.4.4")
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.3.0")
@@ -160,5 +169,5 @@ fun Project.loadProperties(file: String) = if (file(file).exists()) {
 } else null
 
 
-fun secretPropslistOf(secretProps: Properties?, name: String, default: String = ""): String =
+fun secretPropsFrom(secretProps: Properties?, name: String, default: String = ""): String =
     secretProps?.getProperty(name) ?: "\"$default\""

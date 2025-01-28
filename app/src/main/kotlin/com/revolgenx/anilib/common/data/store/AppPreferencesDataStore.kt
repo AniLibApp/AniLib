@@ -85,6 +85,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val maxDurationKey = intPreferencesKey("max_duration_key")
         val maxChaptersKey = intPreferencesKey("max_chapters_key")
         val maxVolumesKey = intPreferencesKey("max_volumes_key")
+
     }
 
 

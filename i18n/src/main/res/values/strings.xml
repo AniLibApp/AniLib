@@ -319,8 +319,8 @@
     <string name="settings_manga_list">Manga List</string>
     <string name="settings_notifications_desc">Activity subscriptions, social, site data changes</string>
     <string name="settings_are_you_sure_you_want_to_log_out">Are you sure you want to log out?</string>
-    <string name="settings_support">Support</string>
-    <string name="settings_support_desc">Support the app</string>
+    <string name="settings_support">Support (Remove Ads)</string>
+    <string name="settings_support_desc">Help support the app by removing ads with a one-time purchase</string>
     <string name="settings_placeholder_search">Search Settings</string>
     <string name="settings_theme_dark_mode">Dark mode</string>
     <string name="settings_theme_dark_follow_system">Follow system</string>
@@ -352,6 +352,7 @@
     <string name="settings_max_chapters_desc">Set max chapters for search filter. Min is 500</string>
     <string name="settings_max_volumes">Max Volumes</string>
     <string name="settings_max_volumes_desc">"Set max volumes for search filter. Min is 50"</string>
+    <string name="settings_ads">Ads</string>
     <string name="restart_required_msg">Restart is required for changes to take effect.</string>
     <string name="automatically_subscribe_me_to_activity_i_create">Automatically subscribe me to activity I create</string>
     <string name="automatically_subscribe_me_to_activity_i_reply_to">Automatically subscribe me to activity I reply to</string>
@@ -498,7 +499,6 @@
     <string name="surface_container_low_color">Surface Container Low Color</string>
     <string name="surface_container_low_color_desc">Card, etc</string>
     <string name="grant_notification_permission_message">Please grant notification permission to show notifications</string>
-    <string name="support">Support</string>
     <string name="settings_list_100_point">100 Point (55/100)</string>
     <string name="settings_list_10_point_decimal">10 Point Decimal (5.5/10)</string>
     <string name="settings_list_10_point">10 Point (5/10)</string>
@@ -545,4 +545,5 @@
     <string name="translate">Translate</string>
     <string name="help_to_translate">Help to translate?</string>
     <string name="display_scale">Display Scale</string>
+    <string name="restart">Restart</string>
 </resources>

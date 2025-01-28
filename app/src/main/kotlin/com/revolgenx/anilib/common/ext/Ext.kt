@@ -3,6 +3,7 @@ package com.revolgenx.anilib.common.ext
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
+import android.content.Intent
 import android.view.Window
 import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
@@ -25,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogWindowProvider
 import androidx.datastore.core.DataStore
 import com.apollographql.apollo3.exception.ApolloException
+import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.common.ui.composition.LocalSnackbarHostState
 import com.revolgenx.anilib.social.factory.MarkdownFactoryImpl
 import kotlinx.coroutines.CoroutineScope
@@ -180,5 +182,15 @@ suspend fun ScrollableState.animateScrollToItem(index: Int){
         this.animateScrollToItem(index)
     }else if (this is LazyGridState){
         this.animateScrollToItem(index)
+    }
+}
+
+fun Context.restart(){
+    startActivity(Intent(this, MainActivity::class.java).apply {
+        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    })
+
+    if (this is MainActivity) {
+        this.finish()
     }
 }

@@ -484,7 +484,6 @@ country of origin -->
     <string name="surface_container_low_color">Conteneur de surface à faible couleur</string>
     <string name="surface_container_low_color_desc">Carte, etc.</string>
     <string name="grant_notification_permission_message">Veuillez accorder l\'autorisation de notification pour afficher les notifications</string>
-    <string name="support">Soutien</string>
     <string name="settings_list_100_point">100 points (55/100)</string>
     <string name="settings_list_10_point_decimal">10 points décimaux (5,5/10)</string>
     <string name="settings_list_10_point">10 points (5/10)</string>
@@ -505,8 +504,8 @@ country of origin -->
     <string name="ads_every_other_day">Tous les deux jours</string>
     <string name="ads_every_week">Chaque semaine</string>
     <string name="ads_play_support_message">Une publicité est sur le point d\'être diffusée. Vous pouvez la passer à tout moment, mais la regarder permet de soutenir le développement de l\'application.\nMerci pour votre soutien ! 🙏</string>
-    <string name="ads_support_the_app">Soutenez l\'application ! \\uD83D\\uDC96</string>
-    <string name="ads_support_button_message">\\uD83D\\uDCAC Si vous souhaitez soutenir l\'application, vous pouvez regarder des publicités en appuyant sur le bouton ci-dessous.</string>
+    <string name="ads_support_the_app">Soutenez l\'application ! \uD83D\uDC96</string>
+    <string name="ads_support_button_message">\uD83D\uDCAC Si vous souhaitez soutenir l\'application, vous pouvez regarder des publicités en appuyant sur le bouton ci-dessous.</string>
     <string name="datetime_days">Jour</string>
     <string name="datetime_hour">Heure</string>
     <string name="datetime_min">Min</string>
