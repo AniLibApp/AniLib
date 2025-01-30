@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+- Add color picker [#101](https://github.com/AniLibApp/AniLib/issues/101)
 
 ### Fixed
 - Improved text compatibility with system font size settings for better readability across all devices.

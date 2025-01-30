@@ -545,4 +545,9 @@
     <string name="translate">Translate</string>
     <string name="help_to_translate">Help to translate?</string>
     <string name="display_scale">Display Scale</string>
+    <string name="hsv">HSV</string>
+    <string name="rgb">RGB</string>
+    <string name="cmyk">CMYK</string>
+    <string name="presets">Presets</string>
+    <string name="pick">Pick</string>
 </resources>

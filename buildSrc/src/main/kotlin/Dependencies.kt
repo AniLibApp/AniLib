@@ -12,7 +12,7 @@ object PackagingOptions {
 }
 
 object Versions{
-    const val composeMaterial = "1.3.0"
+    const val composeMaterial = "1.3.1"
     const val composeActivity = "1.9.1"
     const val composeBom = "2024.09.00"
     const val voyager = "1.1.0-beta02"
