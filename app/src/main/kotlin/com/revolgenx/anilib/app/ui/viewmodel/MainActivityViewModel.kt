@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.app.ui.viewmodel
 
+import android.content.Context
+import android.content.Intent
 import android.text.Spanned
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,9 +11,11 @@ import androidx.lifecycle.viewModelScope
 import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
+import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.common.data.constant.MainPageOrder
 import com.revolgenx.anilib.common.data.state.MediaState
 import com.revolgenx.anilib.common.data.state.UserState
+import com.revolgenx.anilib.common.data.store.AiringScheduleFilterDataStore
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.mediaCoverImageTypeKey
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.mediaTitleTypeKey
@@ -63,7 +67,9 @@ val mainScreenTabs = listOf(
 
 class MainActivityViewModel(
     private val preferencesDataStore: AppPreferencesDataStore,
-    private val userService: UserService
+    private val userService: UserService,
+    private val airingScheduleFilterDataStore: AiringScheduleFilterDataStore,
+    private val exploreAiringScheduleFilterDataStore: AiringScheduleFilterDataStore
 ) :
     ViewModel() {
     val currentAppVersion = preferencesDataStore.currentAppVersion
@@ -131,6 +137,27 @@ class MainActivityViewModel(
             }
         }.catch {}
             .launchIn(viewModelScope)
+    }
 
+
+    fun logout(context: Context){
+        launch {
+            preferencesDataStore.logout()
+            airingScheduleFilterDataStore.updateData {
+                it.copy(showOnlyPlanning = false, showOnlyWatching = false)
+            }
+
+            exploreAiringScheduleFilterDataStore.updateData {
+                it.copy(showOnlyPlanning = false, showOnlyWatching = false)
+            }
+
+            context.startActivity(Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            })
+
+            if (context is MainActivity) {
+                context.finish()
+            }
+        }
     }
 }

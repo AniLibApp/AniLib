@@ -545,4 +545,6 @@
     <string name="translate">Translate</string>
     <string name="help_to_translate">Help to translate?</string>
     <string name="display_scale">Display Scale</string>
+    <string name="session_expired">Session Expired</string>
+    <string name="session_expired_desc">Your session has expired. Please log in again to continue.</string>
 </resources>

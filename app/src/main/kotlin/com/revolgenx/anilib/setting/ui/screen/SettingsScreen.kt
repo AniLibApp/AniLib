@@ -28,7 +28,9 @@ import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import cafe.adriel.voyager.navigator.tab.TabOptions
 import com.revolgenx.anilib.BuildConfig
+import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
 import com.revolgenx.anilib.common.data.constant.Config
+import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
@@ -93,6 +95,7 @@ object SettingScreen : BaseTabScreen() {
 @Composable
 fun SettingScreenContent(isTab: Boolean) {
     val viewModel: SettingsViewModel = koinViewModel()
+    val mainActivityViewModel: MainActivityViewModel = activityViewModel()
     val context = localContext()
     val scope = rememberCoroutineScope()
     val navigator = localNavigator()
@@ -293,7 +296,7 @@ fun SettingScreenContent(isTab: Boolean) {
             message = stringResource(id = I18nR.string.settings_are_you_sure_you_want_to_log_out),
             title = stringResource(id = I18nR.string.logout)
         ) {
-            viewModel.logout(context)
+            mainActivityViewModel.logout(context)
         }
     }
 

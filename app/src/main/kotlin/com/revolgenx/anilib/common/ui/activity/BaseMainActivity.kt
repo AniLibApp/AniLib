@@ -13,9 +13,12 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.DrawableRes
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.lifecycle.flowWithLifecycle
+import androidx.compose.ui.res.stringResource
 import androidx.lifecycle.lifecycleScope
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
@@ -44,10 +47,9 @@ import com.revolgenx.anilib.common.data.event.registerForEvent
 import com.revolgenx.anilib.common.data.event.unRegisterForEvent
 import com.revolgenx.anilib.common.data.logger.AniLibDebugTree
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
-import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.notificationRefreshIntervalKey
-import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore.Companion.userIdKey
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.ext.characterScreen
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.openUri
@@ -256,35 +258,45 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
 
     private fun createNotificationWorker() {
         lifecycleScope.launch {
-            appPreferencesDataStore.dataStore.data.flowWithLifecycle(lifecycle).collect {
-                val isLoggedIn = it[userIdKey] != null
-
+            appPreferencesDataStore.isLoggedIn.collect { isLoggedIn ->
                 if (isLoggedIn) {
-                    val interval = it[notificationRefreshIntervalKey] ?: 15
-                    val constraints = Constraints.Builder()
-                        .setRequiredNetworkType(NetworkType.CONNECTED)
-                        .build()
-                    val periodicWork =
-                        PeriodicWorkRequestBuilder<NotificationWorker>(
-                            interval.toLong(),
-                            TimeUnit.MINUTES
-                        )
-                            .setConstraints(constraints)
-                            .build()
-
-                    WorkManager.getInstance(this@BaseMainActivity).enqueueUniquePeriodicWork(
-                        NotificationWorker.NOTIFICATION_WORKER_TAG,
-                        ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
-                        periodicWork
-                    )
+                    val interval = appPreferencesDataStore.notificationRefreshInterval.get()!!
+                    enqueuePeriodicWork(interval)
                 } else {
                     WorkManager.getInstance(this@BaseMainActivity)
                         .cancelUniqueWork(NotificationWorker.NOTIFICATION_WORKER_TAG)
                 }
+
                 setAppShortcuts(isLoggedIn = isLoggedIn)
+            }
+
+            appPreferencesDataStore.notificationRefreshInterval.collect {
+                val isLoggedIn = appPreferencesDataStore.isLoggedIn.get()
+                if (isLoggedIn) {
+                    enqueuePeriodicWork(it!!)
+                }
             }
         }
 
+    }
+
+    private fun enqueuePeriodicWork(interval: Int) {
+        val constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        val periodicWork =
+            PeriodicWorkRequestBuilder<NotificationWorker>(
+                interval.toLong(),
+                TimeUnit.MINUTES
+            )
+                .setConstraints(constraints)
+                .build()
+
+        WorkManager.getInstance(this@BaseMainActivity).enqueueUniquePeriodicWork(
+            NotificationWorker.NOTIFICATION_WORKER_TAG,
+            ExistingPeriodicWorkPolicy.CANCEL_AND_REENQUEUE,
+            periodicWork
+        )
     }
 
 
@@ -421,7 +433,7 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
     }
 
     @Composable
-    fun CheckWhatsNew() {
+    protected fun CheckWhatsNew() {
         val bottomSheetState = rememberBottomSheetState()
         LaunchedEffect(viewModel) {
             if (viewModel.currentAppVersion.get() != versionName) {
@@ -434,7 +446,29 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
     }
 
     @Composable
-    fun CanShowAds() {
+    protected fun CheckTokenHasExpired() {
+        val tokenHasExpired = appPreferencesDataStore.tokenHasExpired
+        if (tokenHasExpired.value) {
+            AlertDialog(
+                onDismissRequest = { },
+                confirmButton = {
+                    TextButton(
+                        onClick = {
+                            tokenHasExpired.value = false
+                            viewModel.logout(this)
+                        }
+                    ) {
+                        Text(text = stringResource(id = anilib.i18n.R.string.ok))
+                    }
+                },
+                title = { Text(text = stringResource(id = anilib.i18n.R.string.session_expired)) },
+                text = { Text(text = stringResource(id = anilib.i18n.R.string.session_expired_desc)) }
+            )
+        }
+    }
+
+    @Composable
+    protected fun CanShowAds() {
         CheckAds(
             navigator = navigator,
             activity = this,
@@ -443,9 +477,5 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
         )
     }
 
-    override fun onDestroy() {
-        MarkdownFactoryImpl.destroy()
-        super.onDestroy()
-    }
 
 }

@@ -69,7 +69,7 @@ class MainActivity : BaseMainActivity() {
                 )
 
                 CheckWhatsNew()
-
+                CheckTokenHasExpired()
                 SpoilerBottomSheet(
                     openBottomSheet = viewModel.openSpoilerBottomSheet,
                     bottomSheetState = bottomSheetState,

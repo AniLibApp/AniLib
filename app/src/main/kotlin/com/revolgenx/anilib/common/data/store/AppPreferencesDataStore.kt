@@ -2,6 +2,7 @@ package com.revolgenx.anilib.common.data.store
 
 import android.content.Context
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
@@ -12,26 +13,29 @@ import androidx.datastore.preferences.core.longPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import anilib.i18n.R
 import com.auth0.android.jwt.JWT
+import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
+import com.revolgenx.anilib.common.data.constant.InterstitialAdsInterval
+import com.revolgenx.anilib.common.data.constant.MainPageOrder
+import com.revolgenx.anilib.common.data.constant.RewardedInterstitialAdsInterval
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.media.ui.model.MediaTitleModel
 import com.revolgenx.anilib.notification.data.store.NotificationDataStore
-import com.revolgenx.anilib.common.data.constant.InterstitialAdsInterval
-import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
-import com.revolgenx.anilib.common.data.constant.MainPageOrder
-import com.revolgenx.anilib.common.data.constant.RewardedInterstitialAdsInterval
-import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import com.revolgenx.anilib.type.AiringSort
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     val data get() = dataStore.data
 
     companion object {
         val authTokenKey = stringPreferencesKey("auth_token_key")
+        val authTokenExpiresAtKey = longPreferencesKey("auth_token_expires_at_key")
         val userIdKey = intPreferencesKey("user_id_key")
         val notificationRefreshIntervalKey = intPreferencesKey("notification_refresh_interval_key")
         val mediaCoverImageTypeKey = intPreferencesKey("media_cover_image_type_key")
@@ -43,10 +47,14 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val displayAdultContentKey = booleanPreferencesKey("display_adult_content_key")
         val mediaListDisplayModeKey = intPreferencesKey("media_list_display_mode_key")
         val otherMediaListDisplayModeKey = intPreferencesKey("other_media_list_display_mode_key")
-        val displayInterstitialAdsIntervalKey = intPreferencesKey("display_interstitial_ads_interval_key")
-        val displayRewardedInterstitialAdsIntervalKey = intPreferencesKey("display_rewarded_interstitial_ads_interval_key")
-        val interstitialAdsDisplayedDateTimeKey = longPreferencesKey("interstitial_ads_displayed_date_time_key")
-        val rewardedInterstitialAdsDisplayedDateTimeKey = longPreferencesKey("rewarded_interstitial_ads_displayed_date_time_key")
+        val displayInterstitialAdsIntervalKey =
+            intPreferencesKey("display_interstitial_ads_interval_key")
+        val displayRewardedInterstitialAdsIntervalKey =
+            intPreferencesKey("display_rewarded_interstitial_ads_interval_key")
+        val interstitialAdsDisplayedDateTimeKey =
+            longPreferencesKey("interstitial_ads_displayed_date_time_key")
+        val rewardedInterstitialAdsDisplayedDateTimeKey =
+            longPreferencesKey("rewarded_interstitial_ads_displayed_date_time_key")
         val autoPlayGifKey = booleanPreferencesKey("auto_play_gif_key")
         val showUserAboutKey = booleanPreferencesKey("show_user_about_key")
         val exploreAiringOrderKey = intPreferencesKey("explore_airing_order_key")
@@ -76,7 +84,8 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val widgetOnlyWatchingKey = booleanPreferencesKey("widget_only_watching_key")
         val widgetOnlyPlanningKey = booleanPreferencesKey("widget_only_planning_key")
         val widgetAiringSortKey = intPreferencesKey("widget_airing_sort_key")
-        val widgetBackgroundSameAsAppKey = booleanPreferencesKey("widget_background_same_as_app_key")
+        val widgetBackgroundSameAsAppKey =
+            booleanPreferencesKey("widget_background_same_as_app_key")
 
         val currentAppVersionKey = stringPreferencesKey("current_app_version_key")
         val displayScaleKey = floatPreferencesKey("display_scale_key")
@@ -91,6 +100,11 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     val token = PreferencesDataStore(
         dataStore = dataStore,
         prefKey = authTokenKey
+    )
+
+    val tokenExpiresAt = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = authTokenExpiresAtKey
     )
 
     val userId = PreferencesDataStore(
@@ -269,6 +283,8 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     )
 
     val isLoggedIn = userId.data.map { it != null }
+    val tokenHasExpired =
+        mutableStateOf(tokenExpiresAt.get().let { it != null && it < System.currentTimeMillis() })
 
     @Composable
     fun isLoggedIn(): Boolean {
@@ -276,7 +292,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     }
 
     fun getMainPageOrder(mainPageOrder: MainPageOrder): Int {
-        return when(mainPageOrder){
+        return when (mainPageOrder) {
             MainPageOrder.HOME -> data.map { it[homePageOrderKey] ?: 0 }.get()
             MainPageOrder.ANIME -> data.map { it[animePageOrderKey] ?: 1 }.get()
             MainPageOrder.MANGA -> data.map { it[mangaPageOrderKey] ?: 2 }.get()
@@ -284,9 +300,9 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         }
     }
 
-    suspend fun setMainPageOrder(mainPageOrder: MainPageOrder, order: Int){
+    suspend fun setMainPageOrder(mainPageOrder: MainPageOrder, order: Int) {
         dataStore.edit {
-            when(mainPageOrder){
+            when (mainPageOrder) {
                 MainPageOrder.HOME -> it[homePageOrderKey] = order
                 MainPageOrder.ANIME -> it[animePageOrderKey] = order
                 MainPageOrder.MANGA -> it[mangaPageOrderKey] = order
@@ -297,7 +313,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
 
 
     fun getExploreSectionOrder(exploreSectionOrder: ExploreSectionOrder): Int {
-        return when(exploreSectionOrder){
+        return when (exploreSectionOrder) {
             ExploreSectionOrder.AIRING -> data.map { it[exploreAiringOrderKey] ?: 0 }.get()
             ExploreSectionOrder.TRENDING -> data.map { it[exploreTrendingOrderKey] ?: 1 }.get()
             ExploreSectionOrder.POPULAR -> data.map { it[explorePopularOrderKey] ?: 2 }.get()
@@ -307,9 +323,9 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         }
     }
 
-    suspend fun setExploreSectionOrder(exploreSectionOrder: ExploreSectionOrder, order: Int){
+    suspend fun setExploreSectionOrder(exploreSectionOrder: ExploreSectionOrder, order: Int) {
         dataStore.edit {
-            when(exploreSectionOrder){
+            when (exploreSectionOrder) {
                 ExploreSectionOrder.AIRING -> it[exploreAiringOrderKey] = order
                 ExploreSectionOrder.TRENDING -> it[exploreTrendingOrderKey] = order
                 ExploreSectionOrder.POPULAR -> it[explorePopularOrderKey] = order
@@ -321,19 +337,24 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     }
 
     fun isExploreSectionEnabled(exploreSectionOrder: ExploreSectionOrder): Boolean {
-        return when(exploreSectionOrder){
+        return when (exploreSectionOrder) {
             ExploreSectionOrder.AIRING -> data.map { it[exploreAiringEnabledKey] ?: true }.get()
             ExploreSectionOrder.TRENDING -> data.map { it[exploreTrendingEnabledKey] ?: true }.get()
             ExploreSectionOrder.POPULAR -> data.map { it[explorePopularEnabledKey] ?: true }.get()
-            ExploreSectionOrder.NEWLY_ADDED -> data.map { it[exploreNewlyAddedEnabledKey] ?: true }.get()
+            ExploreSectionOrder.NEWLY_ADDED -> data.map { it[exploreNewlyAddedEnabledKey] ?: true }
+                .get()
+
             ExploreSectionOrder.WATCHING -> data.map { it[exploreWatchingEnabledKey] ?: true }.get()
             ExploreSectionOrder.READING -> data.map { it[exploreReadingEnabledKey] ?: true }.get()
         }
     }
 
-    suspend fun setExploreSectionEnabled(exploreSectionOrder: ExploreSectionOrder,enabled: Boolean){
+    suspend fun setExploreSectionEnabled(
+        exploreSectionOrder: ExploreSectionOrder,
+        enabled: Boolean
+    ) {
         dataStore.edit {
-            when(exploreSectionOrder){
+            when (exploreSectionOrder) {
                 ExploreSectionOrder.AIRING -> it[exploreAiringEnabledKey] = enabled
                 ExploreSectionOrder.TRENDING -> it[exploreTrendingEnabledKey] = enabled
                 ExploreSectionOrder.POPULAR -> it[explorePopularEnabledKey] = enabled
@@ -359,16 +380,22 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
     }
 
     suspend fun login(mToken: String) {
-        val userId = JWT(mToken).subject!!.trim().toInt()
+        val jwtToken = JWT(mToken)
+        val userId = jwtToken.subject!!.trim().toInt()
+        val expiresAt =
+            jwtToken.expiresAt?.time ?: Instant.now().plus(364, ChronoUnit.DAYS).toEpochMilli()
+
         dataStore.edit { pref ->
             pref[authTokenKey] = mToken
             pref[userIdKey] = userId
+            pref[authTokenExpiresAtKey] = expiresAt
         }
     }
 
     suspend fun logout() {
         dataStore.edit { pref ->
             pref.remove(authTokenKey)
+            pref.remove(authTokenExpiresAtKey)
             pref.remove(userIdKey)
             pref.remove(NotificationDataStore.lastShownNotificationIdKey)
             pref.remove(displayAdultContentKey)
