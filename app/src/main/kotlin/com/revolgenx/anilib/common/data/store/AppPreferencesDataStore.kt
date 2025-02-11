@@ -392,6 +392,10 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         }
     }
 
+    suspend fun setTokenExpiresAt(token: String){
+        tokenExpiresAt.set(JWT(token).expiresAt?.time ?: Instant.now().plus(364, ChronoUnit.DAYS).toEpochMilli())
+    }
+
     suspend fun logout() {
         dataStore.edit { pref ->
             pref.remove(authTokenKey)

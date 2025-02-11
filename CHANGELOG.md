@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 - Improved text compatibility with system font size settings for better readability across all devices.
 - Fix error when browsing media overview after logout
+- Add worker for Airing Schedule Widget and store it in data store.
 
 ## [v2.0.3] - 2024-11-18
 ### Added

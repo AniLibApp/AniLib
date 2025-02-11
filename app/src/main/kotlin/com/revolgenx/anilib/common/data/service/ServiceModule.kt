@@ -23,7 +23,7 @@ import com.revolgenx.anilib.setting.data.service.SettingsService
 import com.revolgenx.anilib.setting.data.service.SettingsServiceImpl
 import com.revolgenx.anilib.social.data.service.ActivityUnionService
 import com.revolgenx.anilib.social.data.service.ActivityUnionServiceImpl
-import com.revolgenx.anilib.common.data.service.ToggleServiceImpl
+import com.revolgenx.anilib.common.data.store.airingScheduleWidgetDataStore
 import com.revolgenx.anilib.common.data.store.genreCollectionDataStore
 import com.revolgenx.anilib.common.data.store.mediaTagCollectionDataStore
 import com.revolgenx.anilib.staff.data.service.StaffService
@@ -32,6 +32,8 @@ import com.revolgenx.anilib.studio.data.service.StudioService
 import com.revolgenx.anilib.studio.data.service.StudioServiceImpl
 import com.revolgenx.anilib.user.data.service.UserService
 import com.revolgenx.anilib.user.data.service.UserServiceImpl
+import com.revolgenx.anilib.widget.data.service.AiringScheduleWidgetService
+import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.bind
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
@@ -59,4 +61,5 @@ val serviceModules = module {
         )
     }
     factoryOf(::ToggleServiceImpl) { bind<ToggleService>() }
+    factory { AiringScheduleWidgetService(get(), get(), androidContext().airingScheduleWidgetDataStore) }
 }

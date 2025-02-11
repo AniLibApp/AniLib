@@ -2,7 +2,9 @@ package com.revolgenx.anilib.media.ui.model
 
 import androidx.annotation.IntDef
 import com.revolgenx.anilib.fragment.MediaTitle
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class MediaTitleModel(
     val english: String? = null,
     val romaji: String? = null,

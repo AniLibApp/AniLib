@@ -2,7 +2,10 @@ package com.revolgenx.anilib.media.ui.model
 
 import androidx.annotation.IntDef
 import com.revolgenx.anilib.fragment.MediaCoverImage
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
+@Serializable
 data class MediaCoverImageModel(
     val medium: String?,
     val large: String?,
@@ -18,7 +21,9 @@ data class MediaCoverImageModel(
         const val type_extra_large = 2
     }
 
+    @Transient
     var color: String? = null
+    @Transient
     val extraLargeImage = extraLarge ?: large ?: medium
     fun image(@MediaCoverImageType which: Int) = when (which) {
         type_extra_large -> extraLargeImage

@@ -5,6 +5,7 @@ import com.apollographql.apollo3.network.okHttpClient
 import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.common.data.constant.Config
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import kotlinx.coroutines.runBlocking
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
@@ -23,10 +24,18 @@ object Apollo {
                         it.proceed(it.request().let { req ->
                             val token = appPreferencesDataStore.token.get()
                             if (token != null) {
-                                val tokenExpiresAt = appPreferencesDataStore.tokenExpiresAt.get()
-                                if (tokenExpiresAt!! < System.currentTimeMillis()) {
+                                var tokenExpiresAt = appPreferencesDataStore.tokenExpiresAt.get()
+                                if (tokenExpiresAt == null) {
+                                    tokenExpiresAt = runBlocking {
+                                        appPreferencesDataStore.setTokenExpiresAt(token)
+                                        appPreferencesDataStore.tokenExpiresAt.get()!!
+                                    }
+                                }
+
+                                if (tokenExpiresAt < System.currentTimeMillis()) {
                                     appPreferencesDataStore.tokenHasExpired.value = true
                                 }
+
                                 req.newBuilder()
                                     .addHeader(
                                         "Authorization",
