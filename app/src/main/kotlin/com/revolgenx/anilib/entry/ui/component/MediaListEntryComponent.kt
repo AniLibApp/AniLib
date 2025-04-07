@@ -198,7 +198,7 @@ fun DoubleCountEditor(
                             if (it.length > 1) trimStart('0')
                         }
                     }.ifBlank { "0" }
-                    val newScore = text.toDouble().let(::getScoreWithInRange)
+                    val newScore = text.toDoubleOrNull()?.let(::getScoreWithInRange) ?: return@TextField
                     if (newScore == count) {
                         textFieldValueState = textFieldValue.copy(scoreValue)
                     } else {
@@ -210,7 +210,7 @@ fun DoubleCountEditor(
                     textFieldValueState = textFieldValue.copy(text)
                 } else {
                     val text = textFieldValue.text.trimStart('0').trim('.').ifBlank { "0" }
-                    val newScore = text.toDouble().let(::getScoreWithInRange)
+                    val newScore = text.toDoubleOrNull()?.let(::getScoreWithInRange)  ?: return@TextField
                     onScoreChange(newScore)
                 }
             },
