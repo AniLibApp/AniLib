@@ -13,7 +13,6 @@ import com.revolgenx.anilib.list.ui.model.toModel
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
 import com.revolgenx.anilib.user.ui.model.UserModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class MediaListServiceImpl(
     apolloRepository: ApolloRepository,

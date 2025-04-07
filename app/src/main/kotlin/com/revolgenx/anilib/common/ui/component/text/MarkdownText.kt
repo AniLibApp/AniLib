@@ -16,15 +16,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.isSpecified
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.res.ResourcesCompat
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.isNotNull
-import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.ext.markdown
+import com.revolgenx.anilib.common.util.OnClick
 
 
 class MarkdownTextView(context: Context, attributeSet: AttributeSet?, style: Int) :

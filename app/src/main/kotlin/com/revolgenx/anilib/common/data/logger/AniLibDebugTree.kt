@@ -4,8 +4,8 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.analytics.analytics
 import com.google.firebase.crashlytics.crashlytics
-import timber.log.Timber
 import com.revolgenx.anilib.BuildConfig
+import timber.log.Timber
 
 class AniLibDebugTree(enableCrashReport: Boolean) : Timber.DebugTree() {
     private val priorityKey = "priority"

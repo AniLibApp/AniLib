@@ -3,10 +3,13 @@ package com.revolgenx.anilib.common.data.service
 import android.content.Context
 import com.revolgenx.anilib.airing.data.service.AiringScheduleService
 import com.revolgenx.anilib.airing.data.service.AiringScheduleServiceImpl
-import com.revolgenx.anilib.browse.data.service.BrowseServiceImpl
 import com.revolgenx.anilib.browse.data.service.BrowseService
+import com.revolgenx.anilib.browse.data.service.BrowseServiceImpl
 import com.revolgenx.anilib.character.data.service.CharacterService
 import com.revolgenx.anilib.character.data.service.CharacterServiceImpl
+import com.revolgenx.anilib.common.data.store.airingScheduleWidgetDataStore
+import com.revolgenx.anilib.common.data.store.genreCollectionDataStore
+import com.revolgenx.anilib.common.data.store.mediaTagCollectionDataStore
 import com.revolgenx.anilib.entry.data.service.MediaListEntryService
 import com.revolgenx.anilib.entry.data.service.MediaListEntryServiceImpl
 import com.revolgenx.anilib.home.recommendation.data.service.RecommendationService
@@ -23,9 +26,6 @@ import com.revolgenx.anilib.setting.data.service.SettingsService
 import com.revolgenx.anilib.setting.data.service.SettingsServiceImpl
 import com.revolgenx.anilib.social.data.service.ActivityUnionService
 import com.revolgenx.anilib.social.data.service.ActivityUnionServiceImpl
-import com.revolgenx.anilib.common.data.store.airingScheduleWidgetDataStore
-import com.revolgenx.anilib.common.data.store.genreCollectionDataStore
-import com.revolgenx.anilib.common.data.store.mediaTagCollectionDataStore
 import com.revolgenx.anilib.staff.data.service.StaffService
 import com.revolgenx.anilib.staff.data.service.StaffServiceImpl
 import com.revolgenx.anilib.studio.data.service.StudioService

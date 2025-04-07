@@ -10,10 +10,7 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
-import com.revolgenx.anilib.common.ext.horizontalWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.OpenInBrowserOverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
 import com.revolgenx.anilib.common.ui.component.action.ShareOverflowMenu
@@ -23,6 +20,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcAbout
 import com.revolgenx.anilib.common.ui.icons.appicon.IcGroup
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffAboutViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaCharacterViewModel
 import com.revolgenx.anilib.staff.ui.viewmodel.StaffMediaRoleViewModel

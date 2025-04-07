@@ -15,7 +15,6 @@ import com.revolgenx.anilib.review.ui.model.ReviewModel
 import com.revolgenx.anilib.review.ui.model.toModel
 import com.revolgenx.anilib.type.ReviewRating
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class ReviewServiceImpl(apolloRepository: ApolloRepository, appPreferencesDataStore: AppPreferencesDataStore) : BaseService(apolloRepository, appPreferencesDataStore), ReviewService {
     override fun getReviewList(field: ReviewListField): Flow<PageModel<ReviewModel>> {

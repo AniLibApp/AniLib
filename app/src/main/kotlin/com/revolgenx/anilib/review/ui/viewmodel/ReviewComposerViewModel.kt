@@ -12,13 +12,13 @@ import androidx.lifecycle.viewModelScope
 import com.apollographql.apollo3.exception.ApolloException
 import com.apollographql.apollo3.exception.ApolloHttpException
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.common.ext.anilify
+import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.review.data.field.ReviewField
 import com.revolgenx.anilib.review.data.field.SaveReviewField
 import com.revolgenx.anilib.review.data.service.ReviewService
 import com.revolgenx.anilib.review.ui.model.ReviewModel
-import com.revolgenx.anilib.common.ext.markdown
-import com.revolgenx.anilib.common.ext.anilify
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn

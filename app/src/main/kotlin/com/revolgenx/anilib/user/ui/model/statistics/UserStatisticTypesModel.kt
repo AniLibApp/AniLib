@@ -1,9 +1,9 @@
 package com.revolgenx.anilib.user.ui.model.statistics
 
-import com.patrykandpatrick.vico.core.entry.entryOf
-import com.revolgenx.anilib.fragment.UserStatisticsOverview
 import com.patrykandpatrick.vico.core.entry.entryModelOf
+import com.patrykandpatrick.vico.core.entry.entryOf
 import com.revolgenx.anilib.common.ext.nullIfEmpty
+import com.revolgenx.anilib.fragment.UserStatisticsOverview
 
 
 data class UserStatisticTypesModel(

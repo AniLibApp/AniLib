@@ -15,7 +15,6 @@ import com.revolgenx.anilib.common.ext.isNotNull
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
-import com.revolgenx.anilib.entry.data.field.SaveMediaListEntryField
 import com.revolgenx.anilib.entry.data.service.MediaListEntryService
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter

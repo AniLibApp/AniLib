@@ -2,7 +2,6 @@ package com.revolgenx.anilib.media.data.service
 
 import com.revolgenx.anilib.character.ui.model.CharacterEdgeModel
 import com.revolgenx.anilib.common.data.model.PageModel
-import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationModel
 import com.revolgenx.anilib.media.data.field.MediaCharacterField
 import com.revolgenx.anilib.media.data.field.MediaField

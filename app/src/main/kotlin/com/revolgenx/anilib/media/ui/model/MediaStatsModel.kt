@@ -11,9 +11,6 @@ import com.revolgenx.anilib.common.ui.model.stats.StatusDistributionModel
 import com.revolgenx.anilib.type.MediaListStatus
 import com.revolgenx.anilib.type.MediaRankType
 import com.revolgenx.anilib.type.MediaSeason
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
 
 
 data class MediaStatsModel(

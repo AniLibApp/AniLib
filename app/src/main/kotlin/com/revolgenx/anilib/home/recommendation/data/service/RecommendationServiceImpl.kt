@@ -12,7 +12,6 @@ import com.revolgenx.anilib.home.recommendation.ui.model.SaveRecommendationModel
 import com.revolgenx.anilib.home.recommendation.ui.model.toModel
 import com.revolgenx.anilib.type.RecommendationRating
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class RecommendationServiceImpl(
     apolloRepository: ApolloRepository,

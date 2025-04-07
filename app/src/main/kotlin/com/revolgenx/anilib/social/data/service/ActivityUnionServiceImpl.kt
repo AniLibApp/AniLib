@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.social.data.service
 
-import androidx.compose.ui.util.fastMap
 import com.apollographql.apollo3.api.Optional
 import com.revolgenx.anilib.DeleteActivityMutation
 import com.revolgenx.anilib.DeleteActivityReplyMutation

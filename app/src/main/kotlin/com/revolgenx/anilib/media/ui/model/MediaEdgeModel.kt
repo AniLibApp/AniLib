@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.media.ui.model
 
 import androidx.annotation.StringRes
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.StaffRoleType

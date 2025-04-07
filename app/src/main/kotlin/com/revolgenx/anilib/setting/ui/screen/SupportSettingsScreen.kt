@@ -71,7 +71,7 @@ fun SupportSettingsScreenContent() {
     val appIsSupported = billingViewModel.isAppDevSupported.collectAsState(false)
 
     LaunchedEffect(billingViewModel) {
-        if (billingViewModel.billingConnectionState.intValue == ConnectionState.DISCONNECTED && !billingViewModel.isAppDevSupported.get()) {
+        if (billingViewModel.billingConnectionState.intValue == ConnectionState.DISCONNECTED) {
             billingViewModel.restartBillingConnection()
         }
     }

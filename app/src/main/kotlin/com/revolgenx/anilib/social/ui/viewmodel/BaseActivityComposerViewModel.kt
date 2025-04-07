@@ -9,12 +9,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.revolgenx.anilib.common.data.state.ResourceState
+import com.revolgenx.anilib.common.ext.anilify
+import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.social.data.field.SaveActivityReplyField
 import com.revolgenx.anilib.social.data.field.SaveMessageActivityField
 import com.revolgenx.anilib.social.data.field.SaveTextActivityField
 import com.revolgenx.anilib.social.data.service.ActivityUnionService
-import com.revolgenx.anilib.common.ext.markdown
-import com.revolgenx.anilib.common.ext.anilify
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach

@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.media.ui.model
 
-import androidx.compose.ui.graphics.Color
 import kotlinx.serialization.Serializable
 
 @Serializable

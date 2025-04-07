@@ -40,16 +40,15 @@ import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
-import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.toggle.TextSwitch
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSend
+import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.screen.state.LinearLoadingSection
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.social.ui.component.MarkdownEditor
 import com.revolgenx.anilib.social.ui.viewmodel.BaseActivityComposerViewModel
-import com.revolgenx.anilib.social.ui.viewmodel.ActivityType
 import kotlinx.coroutines.launch
 import anilib.i18n.R as I18nR
 

@@ -1,8 +1,6 @@
 package com.revolgenx.anilib.notification.ui.model
 
-import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.media.ui.model.MediaModel
-import com.revolgenx.anilib.notification.ui.model.NotificationModel
 import com.revolgenx.anilib.type.NotificationType
 
 data class RelatedMediaNotificationModel(

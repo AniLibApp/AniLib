@@ -15,6 +15,7 @@ import com.revolgenx.anilib.character.ui.model.CharacterEdgeModel
 import com.revolgenx.anilib.character.ui.model.CharacterImageModel
 import com.revolgenx.anilib.character.ui.model.CharacterModel
 import com.revolgenx.anilib.character.ui.model.CharacterNameModel
+import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.common.ext.nullIfEmpty
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
@@ -29,7 +30,6 @@ import com.revolgenx.anilib.fragment.Media
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
 import com.revolgenx.anilib.home.recommendation.ui.model.toModel
 import com.revolgenx.anilib.list.ui.model.MediaListModel
-import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.studio.ui.model.StudioConnectionModel
 import com.revolgenx.anilib.studio.ui.model.StudioEdgeModel

@@ -3,7 +3,6 @@ package com.revolgenx.anilib.user.ui.viewmodel.userStats
 import androidx.annotation.StringRes
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.revolgenx.anilib.R
 import anilib.i18n.R as I18nR
 
 enum class UserStatsType(@StringRes val res: Int) {

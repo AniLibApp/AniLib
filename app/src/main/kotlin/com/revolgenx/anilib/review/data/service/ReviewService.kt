@@ -7,7 +7,6 @@ import com.revolgenx.anilib.review.data.field.ReviewListField
 import com.revolgenx.anilib.review.data.field.SaveReviewField
 import com.revolgenx.anilib.review.ui.model.RateReviewModel
 import com.revolgenx.anilib.review.ui.model.ReviewModel
-import com.revolgenx.anilib.type.ReviewRating
 import kotlinx.coroutines.flow.Flow
 
 interface ReviewService {

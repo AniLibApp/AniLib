@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.common.ui.screen.tab
 
 import androidx.compose.ui.graphics.vector.ImageVector
-import cafe.adriel.voyager.androidx.AndroidScreenLifecycleOwner
 import cafe.adriel.voyager.core.annotation.InternalVoyagerApi
 import cafe.adriel.voyager.core.lifecycle.DefaultScreenLifecycleOwner
 import cafe.adriel.voyager.core.lifecycle.ScreenLifecycleOwner

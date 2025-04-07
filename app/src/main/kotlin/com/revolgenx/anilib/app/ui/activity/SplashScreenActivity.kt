@@ -19,12 +19,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.core.view.WindowCompat
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.data.store.theme.ThemeDataStore
 import com.revolgenx.anilib.common.data.store.theme.isDarkMode
-import com.revolgenx.anilib.common.ui.icons.AppIcons
-import com.revolgenx.anilib.common.ui.icons.appicon.IcAnilib
 import kotlinx.coroutines.delay
 import org.koin.android.ext.android.inject
 

@@ -7,8 +7,8 @@ import com.revolgenx.anilib.user.data.field.UserFavouriteField
 import com.revolgenx.anilib.user.data.field.UserField
 import com.revolgenx.anilib.user.data.field.UserSettingsField
 import com.revolgenx.anilib.user.data.field.UserSocialCountField
-import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.field.UserStatsOverviewField
+import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.field.UserToggleFollowField
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.model.UserSocialCountModel

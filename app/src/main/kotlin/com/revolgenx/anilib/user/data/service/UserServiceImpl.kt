@@ -7,7 +7,6 @@ import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
 import com.revolgenx.anilib.common.data.service.ToggleService
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
-import com.revolgenx.anilib.common.ext.logException
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.PageInfo
@@ -21,8 +20,8 @@ import com.revolgenx.anilib.user.data.field.UserFavouriteField
 import com.revolgenx.anilib.user.data.field.UserField
 import com.revolgenx.anilib.user.data.field.UserSettingsField
 import com.revolgenx.anilib.user.data.field.UserSocialCountField
-import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.field.UserStatsOverviewField
+import com.revolgenx.anilib.user.data.field.UserStatsTypeField
 import com.revolgenx.anilib.user.data.field.UserToggleFollowField
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
 import com.revolgenx.anilib.user.ui.model.UserModel
@@ -39,7 +38,6 @@ import com.revolgenx.anilib.user.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.firstOrNull
-import kotlinx.coroutines.flow.map
 import org.jetbrains.annotations.Nullable
 
 class UserServiceImpl(

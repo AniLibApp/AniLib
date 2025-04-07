@@ -55,13 +55,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import anilib.i18n.R
 import com.revolgenx.anilib.browse.data.field.BrowseTypes
+import com.revolgenx.anilib.common.ext.browseGenreScreen
+import com.revolgenx.anilib.common.ext.browseTagScreen
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.naString
 import com.revolgenx.anilib.common.ext.naText
-import com.revolgenx.anilib.common.ext.browseGenreScreen
 import com.revolgenx.anilib.common.ext.openUri
-import com.revolgenx.anilib.common.ext.browseTagScreen
 import com.revolgenx.anilib.common.ext.orNa
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.orZeroString
@@ -71,8 +71,8 @@ import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.common.HeaderBox
 import com.revolgenx.anilib.common.ui.component.image.ImageAsync
-import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.component.text.shadow
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -87,8 +87,8 @@ import com.revolgenx.anilib.common.ui.screen.state.ResourceScreen
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.home.recommendation.ui.model.RecommendationConnectionModel
-import com.revolgenx.anilib.media.ui.component.MediaItemColumnCard
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
+import com.revolgenx.anilib.media.ui.component.MediaItemColumnCard
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaConnectionModel
 import com.revolgenx.anilib.media.ui.model.MediaEdgeModel

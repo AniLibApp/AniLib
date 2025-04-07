@@ -30,7 +30,6 @@ import com.revolgenx.anilib.staff.ui.model.StaffEdgeModel
 import com.revolgenx.anilib.staff.ui.model.toModel
 import com.revolgenx.anilib.type.MediaType
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class MediaServiceImpl(
     apolloRepository: ApolloRepository,

@@ -6,7 +6,6 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -17,9 +16,7 @@ import androidx.compose.ui.res.stringResource
 import cafe.adriel.voyager.navigator.Navigator
 import com.revolgenx.anilib.app.ui.screen.MainActivityScreen
 import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
-import com.revolgenx.anilib.common.ext.launch
 import kotlinx.coroutines.delay
-import timber.log.Timber
 
 
 @Composable
@@ -32,13 +29,6 @@ fun CheckAds(
     navigator ?: return
     val isAppDevSupported = adsViewModel.isAppDevSupported.collectAsState(false)
     if (isAppDevSupported.value) return
-
-    LaunchedEffect(viewModel) {
-        while (true) {
-            delay(2000)
-            Timber.d("Showing lots of ads....................")
-        }
-    }
 
     val currentScreen = navigator.lastItem
 

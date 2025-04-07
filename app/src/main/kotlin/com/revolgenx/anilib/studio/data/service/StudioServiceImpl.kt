@@ -11,7 +11,6 @@ import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.studio.data.field.StudioField
 import com.revolgenx.anilib.studio.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class StudioServiceImpl(
     apolloRepository: ApolloRepository,

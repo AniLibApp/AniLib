@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.lifecycle.ViewModelStoreOwner
 import cafe.adriel.voyager.navigator.Navigator

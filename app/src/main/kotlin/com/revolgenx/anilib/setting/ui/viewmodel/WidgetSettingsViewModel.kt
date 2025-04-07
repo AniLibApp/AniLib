@@ -18,7 +18,6 @@ import com.revolgenx.anilib.common.data.store.theme.WidgetThemeDataStore
 import com.revolgenx.anilib.common.ext.launch
 import com.revolgenx.anilib.common.util.isColorDark
 import com.revolgenx.anilib.widget.ui.AiringScheduleWidget
-import kotlinx.coroutines.launch
 
 class WidgetSettingsViewModel(
     val appPreferencesDataStore: AppPreferencesDataStore,

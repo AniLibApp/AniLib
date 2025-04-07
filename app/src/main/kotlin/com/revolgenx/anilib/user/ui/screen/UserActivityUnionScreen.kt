@@ -21,7 +21,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import anilib.i18n.R
 import com.dokar.sheets.BottomSheetState
-import com.dokar.sheets.PeekHeight
 import com.dokar.sheets.m3.BottomSheetLayout
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget

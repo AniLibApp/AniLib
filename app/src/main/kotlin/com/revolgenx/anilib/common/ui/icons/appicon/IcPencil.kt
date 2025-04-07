@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.common.ui.icons.appicon
 
 import androidx.compose.material.icons.materialIcon
-import androidx.compose.material.icons.materialPath
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathFillType
 import androidx.compose.ui.graphics.SolidColor

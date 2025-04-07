@@ -14,9 +14,9 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcNew
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
 import com.revolgenx.anilib.common.ui.viewmodel.collectAsLazyPagingItems
 import com.revolgenx.anilib.common.util.OnClick
-import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
 import com.revolgenx.anilib.home.explore.component.ExploreMediaCard
 import com.revolgenx.anilib.home.explore.component.ExploreMediaCardHeight
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
 import com.revolgenx.anilib.media.ui.component.MediaComponentState
 import com.revolgenx.anilib.media.ui.component.rememberMediaComponentState
 import com.revolgenx.anilib.media.ui.model.MediaModel

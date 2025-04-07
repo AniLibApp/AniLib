@@ -5,7 +5,6 @@ import com.apollographql.apollo3.api.ApolloResponse
 import com.apollographql.apollo3.api.Mutation
 import com.apollographql.apollo3.api.Query
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class ApolloRepositoryImpl(private val apolloClient: ApolloClient) : ApolloRepository {
     override fun <D : Query.Data> query(query: Query<D>): Flow<ApolloResponse<D>> {

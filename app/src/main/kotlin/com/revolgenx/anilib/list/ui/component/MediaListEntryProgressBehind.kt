@@ -8,7 +8,6 @@ import androidx.compose.ui.unit.sp
 import anilib.i18n.R
 import com.revolgenx.anilib.common.ui.component.text.LightText
 import com.revolgenx.anilib.list.ui.model.MediaListModel
-import com.revolgenx.anilib.media.ui.model.MediaModel
 
 @Composable
 fun MediaListEntryProgressBehind(

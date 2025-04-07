@@ -40,8 +40,8 @@ import com.revolgenx.anilib.common.ui.component.checkbox.TextTriStateCheckbox
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectMenu
 import com.revolgenx.anilib.common.ui.component.menu.MultiSelectModel
 import com.revolgenx.anilib.common.ui.component.menu.SelectFilterMenu
-import com.revolgenx.anilib.common.ui.component.menu.SelectSearchFilterMenu
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
+import com.revolgenx.anilib.common.ui.component.menu.SelectSearchFilterMenu
 import com.revolgenx.anilib.common.ui.component.menu.SelectType
 import com.revolgenx.anilib.common.ui.component.menu.SortMenuItem
 import com.revolgenx.anilib.common.ui.component.menu.SortOrder

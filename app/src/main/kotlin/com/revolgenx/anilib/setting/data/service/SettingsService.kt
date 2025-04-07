@@ -9,8 +9,6 @@ import com.revolgenx.anilib.setting.data.field.SaveNotificationSettingsField
 import com.revolgenx.anilib.setting.ui.model.MediaListSettingsModel
 import com.revolgenx.anilib.setting.ui.model.MediaSettingsModel
 import com.revolgenx.anilib.type.NotificationType
-import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
-import com.revolgenx.anilib.user.ui.model.UserOptionsModel
 import kotlinx.coroutines.flow.Flow
 
 interface SettingsService {

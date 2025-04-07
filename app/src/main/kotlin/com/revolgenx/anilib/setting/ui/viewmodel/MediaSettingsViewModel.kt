@@ -1,11 +1,11 @@
 package com.revolgenx.anilib.setting.ui.viewmodel
 
 import androidx.lifecycle.viewModelScope
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ui.viewmodel.ResourceViewModel
 import com.revolgenx.anilib.setting.data.field.MediaSettingsField
 import com.revolgenx.anilib.setting.data.field.SaveMediaSettingsField
 import com.revolgenx.anilib.setting.data.service.SettingsService
-import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.setting.ui.model.MediaSettingsModel
 import com.revolgenx.anilib.user.ui.model.UserOptionsModel
 import com.revolgenx.anilib.user.ui.model.toMediaTitleType

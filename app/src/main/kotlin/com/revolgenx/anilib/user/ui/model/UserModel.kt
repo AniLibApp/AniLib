@@ -4,12 +4,12 @@ import android.text.Spanned
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.UserQuery
+import com.revolgenx.anilib.common.ext.anilify
+import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.common.ext.nullIfEmpty
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.DateModel
 import com.revolgenx.anilib.fragment.UserRelation
-import com.revolgenx.anilib.common.ext.markdown
-import com.revolgenx.anilib.common.ext.anilify
 import com.revolgenx.anilib.user.ui.model.statistics.UserGenreStatisticModel
 import com.revolgenx.anilib.user.ui.model.statistics.UserStatisticTypesModel
 import com.revolgenx.anilib.user.ui.model.statistics.UserStatisticsModel

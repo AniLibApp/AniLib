@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.media.ui.model
 
 import com.revolgenx.anilib.MediaSocialFollowingQuery
-import com.revolgenx.anilib.app.App
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcHappy
 import com.revolgenx.anilib.common.ui.icons.appicon.IcNeutral

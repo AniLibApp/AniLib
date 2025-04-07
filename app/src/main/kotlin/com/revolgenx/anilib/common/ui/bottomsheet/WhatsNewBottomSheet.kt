@@ -12,7 +12,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -23,10 +22,9 @@ import com.dokar.sheets.PeekHeight
 import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.m3.BottomSheetDefaults
 import com.revolgenx.anilib.common.ui.component.text.MarkdownText
+import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
-import androidx.compose.ui.graphics.compositeOver
-import com.revolgenx.anilib.common.ui.component.text.SemiBoldText
 
 
 @Composable

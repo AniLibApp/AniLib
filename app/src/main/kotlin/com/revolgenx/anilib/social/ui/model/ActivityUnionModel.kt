@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.social.ui.model
 
-import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.ActivityUser
 import com.revolgenx.anilib.fragment.LikeUsers
 import com.revolgenx.anilib.fragment.MessengerUser

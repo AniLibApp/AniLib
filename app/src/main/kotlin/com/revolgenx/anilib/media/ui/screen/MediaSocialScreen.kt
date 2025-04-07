@@ -27,14 +27,12 @@ import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConn
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
 import com.revolgenx.anilib.common.ui.component.radio.TextRadioButton
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.util.OnClickWithId
 import com.revolgenx.anilib.common.util.OnClickWithValue
 import com.revolgenx.anilib.media.ui.viewmodel.MediaSocialFollowingScreenViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaSocialScreenType
 import com.revolgenx.anilib.media.ui.viewmodel.MediaSocialScreenViewModel
 import com.revolgenx.anilib.social.ui.screen.ActivityComposerBottomSheet
 import com.revolgenx.anilib.social.ui.screen.ActivityReplyBottomSheet
-import com.revolgenx.anilib.social.ui.viewmodel.ActivityComposerViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ActivityUnionViewModel
 import com.revolgenx.anilib.social.ui.viewmodel.ReplyComposerViewModel
 import kotlinx.coroutines.CoroutineScope

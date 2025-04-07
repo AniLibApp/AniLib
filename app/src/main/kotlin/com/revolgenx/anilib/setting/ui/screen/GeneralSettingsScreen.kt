@@ -41,8 +41,8 @@ import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.SwitchPreferenceItem
 import com.revolgenx.anilib.setting.ui.component.TextPreferenceItem
-import com.revolgenx.anilib.setting.ui.viewmodel.GeneralSettingsViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.ContentOrderData
+import com.revolgenx.anilib.setting.ui.viewmodel.GeneralSettingsViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.xmlpull.v1.XmlPullParser

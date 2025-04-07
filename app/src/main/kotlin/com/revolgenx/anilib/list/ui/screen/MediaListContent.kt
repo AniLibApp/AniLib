@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.list.ui.screen
 
 import MediaListCompactColumnCard
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -69,9 +68,9 @@ import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.list.data.filter.MediaListCollectionFilter
 import com.revolgenx.anilib.list.data.sort.MediaListSortType
 import com.revolgenx.anilib.list.ui.component.MediaListColumnCard
+import com.revolgenx.anilib.list.ui.component.MediaListCompactRowCard
 import com.revolgenx.anilib.list.ui.component.MediaListCompactRowColumnCard
 import com.revolgenx.anilib.list.ui.component.MediaListRowCard
-import com.revolgenx.anilib.list.ui.component.MediaListCompactRowCard
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.toMediaStatus

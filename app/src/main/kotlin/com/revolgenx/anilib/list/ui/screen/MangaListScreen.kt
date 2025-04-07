@@ -12,7 +12,6 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcBook
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBookOutline
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
-import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR

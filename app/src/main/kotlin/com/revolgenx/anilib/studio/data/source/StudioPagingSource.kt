@@ -7,7 +7,6 @@ import com.revolgenx.anilib.common.ui.model.HeaderModel
 import com.revolgenx.anilib.studio.data.field.StudioField
 import com.revolgenx.anilib.studio.data.field.StudioMediaSort
 import com.revolgenx.anilib.studio.data.service.StudioService
-import com.revolgenx.anilib.type.MediaSort
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.single
 

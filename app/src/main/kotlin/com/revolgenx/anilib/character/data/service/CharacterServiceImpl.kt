@@ -17,7 +17,6 @@ import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.StaffNameModel
 import com.revolgenx.anilib.staff.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class CharacterServiceImpl(
     apolloRepository: ApolloRepository,

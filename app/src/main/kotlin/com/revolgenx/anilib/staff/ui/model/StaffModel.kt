@@ -5,15 +5,14 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.StaffQuery
 import com.revolgenx.anilib.character.ui.model.CharacterConnectionModel
+import com.revolgenx.anilib.common.ext.anilify
+import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
 import com.revolgenx.anilib.common.ui.model.toModel
 import com.revolgenx.anilib.fragment.SmallStaff
-import com.revolgenx.anilib.fragment.StaffImage
 import com.revolgenx.anilib.media.ui.model.MediaConnectionModel
-import com.revolgenx.anilib.common.ext.markdown
-import com.revolgenx.anilib.common.ext.anilify
 import java.time.Month
 import java.time.format.TextStyle
 import java.util.Locale

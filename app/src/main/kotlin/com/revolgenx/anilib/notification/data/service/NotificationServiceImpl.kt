@@ -3,12 +3,11 @@ package com.revolgenx.anilib.notification.data.service
 import com.revolgenx.anilib.common.data.model.PageModel
 import com.revolgenx.anilib.common.data.repository.ApolloRepository
 import com.revolgenx.anilib.common.data.service.BaseService
+import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.notification.data.field.NotificationField
 import com.revolgenx.anilib.notification.ui.model.NotificationModel
 import com.revolgenx.anilib.notification.ui.model.toModel
-import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class NotificationServiceImpl(
     apolloRepository: ApolloRepository,

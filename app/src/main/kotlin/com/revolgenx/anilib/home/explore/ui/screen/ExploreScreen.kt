@@ -41,13 +41,13 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreHoriz
 import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreAiringScheduleViewModel
-import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreWatchingViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreMediaViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreNewlyAddedFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExplorePopularFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreReadingViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreTrendingFilterViewModel
 import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreViewModel
+import com.revolgenx.anilib.home.explore.ui.viewmodel.ExploreWatchingViewModel
 import com.revolgenx.anilib.media.ui.filter.MediaFilterBottomSheet
 import com.revolgenx.anilib.media.ui.viewmodel.MediaFilterBottomSheetViewModel
 import com.revolgenx.anilib.type.MediaSort

@@ -18,7 +18,6 @@ import com.revolgenx.anilib.staff.data.field.StaffMediaRoleField
 import com.revolgenx.anilib.staff.ui.model.StaffModel
 import com.revolgenx.anilib.staff.ui.model.toModel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
 
 class StaffServiceImpl(
     apolloRepository: ApolloRepository,

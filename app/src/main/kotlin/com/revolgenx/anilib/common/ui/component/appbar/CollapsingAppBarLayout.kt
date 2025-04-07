@@ -31,9 +31,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
-import com.revolgenx.anilib.common.ext.emptyWindowInsets
-import com.revolgenx.anilib.common.ext.horizontalWindowInsets
-import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.NavigationIcon
 
 

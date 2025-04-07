@@ -1,7 +1,6 @@
 package com.revolgenx.anilib.media.ui.model
 
 import androidx.annotation.StringRes
-import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFall
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSpring

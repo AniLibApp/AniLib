@@ -8,14 +8,14 @@ import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.MediaReviewQuery
 import com.revolgenx.anilib.ReviewListQuery
 import com.revolgenx.anilib.ReviewQuery
+import com.revolgenx.anilib.common.ext.anilify
+import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.prettyTime
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.fragment.ReviewFragment
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.toModel
-import com.revolgenx.anilib.common.ext.markdown
-import com.revolgenx.anilib.common.ext.anilify
 import com.revolgenx.anilib.type.MediaType
 import com.revolgenx.anilib.type.ReviewRating
 import com.revolgenx.anilib.user.ui.model.UserModel

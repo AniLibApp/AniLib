@@ -1,12 +1,8 @@
 package com.revolgenx.anilib.common.ui.icons.appicon
 
-import androidx.compose.foundation.Image
 import androidx.compose.material.icons.materialIcon
 import androidx.compose.material.icons.materialPath
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 
 

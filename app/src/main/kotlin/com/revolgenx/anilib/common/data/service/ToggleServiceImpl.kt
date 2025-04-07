@@ -9,7 +9,6 @@ import com.revolgenx.anilib.social.ui.model.LikeableUnionModel
 import com.revolgenx.anilib.user.data.field.UserToggleFollowField
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.map
 
 class ToggleServiceImpl(
     apolloRepository: ApolloRepository,
