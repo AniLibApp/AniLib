@@ -23,8 +23,8 @@ android {
     defaultConfig {
         applicationId = "com.revolgenx.anilib"
 
-        versionCode = 46
-        versionName = "2.0.4"
+        versionCode = 47
+        versionName = "2.0.5"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

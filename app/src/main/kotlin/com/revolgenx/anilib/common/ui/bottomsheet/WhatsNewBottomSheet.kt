@@ -66,7 +66,7 @@ private fun WhatsNewContent() {
         }
 
         SemiBoldText(
-            modifier = Modifier.padding(vertical = 8.dp),
+            modifier = Modifier.padding(vertical = 8.dp).padding(bottom = 4.dp),
             text = stringResource(id = R.string.no_watching_feature_desc),
             fontSize = 12.sp,
             maxLines = Int.MAX_VALUE

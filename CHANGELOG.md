@@ -6,8 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## v[2.0.5] 
 ### Added
 - Add color picker [#101](https://github.com/AniLibApp/AniLib/issues/101)
+- Added a one-time purchase to remove ads and support the app — thank you for your support! 💖
 
 ### Fixed
 - Improved text compatibility with system font size settings for better readability across all devices.

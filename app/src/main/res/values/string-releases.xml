@@ -1,6 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="release_info" translatable="false">
+
+        ### 🗒️Notes: \n
+        - **If the UI is too big**, you can reduce it from **Settings → Appearance → Display Scale**. \n
+        - **If there are too many ads**, you can change the frequency from **Settings → Support → Ads**. \n
+
+        ## v2.0.5 \n
+        ### Added \n
+        - Add old style color picker [#101](https://github.com/AniLibApp/AniLib/issues/101) \n
+
+        ### Fixed \n
+        - Improved text compatibility with system font size settings for better readability across all devices. \n
+        - Fix error when browsing media overview after logout. \n
+        - Add worker for Airing Schedule Widget and store it in data store. \n
+
+
         ## v2.0.3 \n
         ### Added \n
         - Add scroll-to-top functionality from home screen\'s bottom navigation bar. \n
