@@ -13,11 +13,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -28,14 +28,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import anilib.i18n.R
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.color.ColorDialog
-import com.maxkeppeler.sheets.color.models.ColorConfig
-import com.maxkeppeler.sheets.color.models.ColorSelection
-import com.maxkeppeler.sheets.color.models.MultipleColors
-import com.maxkeppeler.sheets.color.models.SingleColor
 import com.revolgenx.anilib.common.data.constant.ThemeModes
 import com.revolgenx.anilib.common.ext.localContext
+import com.revolgenx.anilib.common.ui.color.ColorPickerDialog
 import com.revolgenx.anilib.common.ui.theme.primaryColors
 import com.revolgenx.anilib.common.ui.theme.primaryContainerColors
 import com.revolgenx.anilib.common.ui.theme.surfaceColors
@@ -70,11 +65,14 @@ object AppearanceSettingsScreen : PreferencesScreen() {
 
         GroupPreferenceItem(title = context.getString(I18nR.string.display_scale)) {
             val displayScaleValue = viewModel.displayScale.collectAsState()
-            val displayScale = remember(displayScaleValue.value){
+            val displayScale = remember(displayScaleValue.value) {
                 mutableFloatStateOf(displayScaleValue.value!!)
             }
             Slider(
-                modifier = Modifier.padding(horizontal = PrefsHorizontalPadding, vertical = PrefsVerticalPadding),
+                modifier = Modifier.padding(
+                    horizontal = PrefsHorizontalPadding,
+                    vertical = PrefsVerticalPadding
+                ),
                 value = displayScale.floatValue,
                 steps = 6,
                 onValueChange = { range ->
@@ -203,7 +201,6 @@ object AppearanceSettingsScreen : PreferencesScreen() {
     }
 
     @Composable
-    @OptIn(ExperimentalMaterial3Api::class)
     private fun ColorGroupContent(
         color: Int,
         title: String,
@@ -212,24 +209,23 @@ object AppearanceSettingsScreen : PreferencesScreen() {
         colorsInt: List<Int> = listOf(),
         onColorSelected: OnClickWithValue<Int>
     ) {
-        val state = rememberUseCaseState()
-        ColorDialog(
-            state = state,
-            selection = ColorSelection(
-                selectedColor = SingleColor(colorInt = color),
-                onSelectColor = { selectedColor ->
-                    onColorSelected(selectedColor)
-                }
-            ),
-            config = ColorConfig(
-                templateColors = MultipleColors.ColorsInt(colorsInt)
-            ))
+        val openColorPickerDialog = remember {
+            mutableStateOf(false)
+        }
+
+        ColorPickerDialog(
+            openDialog = openColorPickerDialog,
+            title = title,
+            selectedColor = color,
+            colorsInt = colorsInt.toTypedArray(),
+            onColorSelected = onColorSelected
+        )
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .alpha(if (enabled) 1f else 0.5f)
                 .clickable(enabled = enabled) {
-                    state.show()
+                    openColorPickerDialog.value = true
                 },
             verticalAlignment = Alignment.CenterVertically
         ) {

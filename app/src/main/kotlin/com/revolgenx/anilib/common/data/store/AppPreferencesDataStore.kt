@@ -86,6 +86,7 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         val maxChaptersKey = intPreferencesKey("max_chapters_key")
         val maxVolumesKey = intPreferencesKey("max_volumes_key")
 
+        val recentColorPresetsKey = stringPreferencesKey("recent_color_presets_key")
     }
 
 
@@ -267,6 +268,12 @@ class AppPreferencesDataStore(val dataStore: DataStore<Preferences>) {
         dataStore = dataStore,
         prefKey = maxVolumesKey,
         defaultValue = 50
+    )
+
+    val recentColorPresets = PreferencesDataStore(
+        dataStore = dataStore,
+        prefKey = recentColorPresetsKey,
+        defaultValue = ""
     )
 
     val isLoggedIn = userId.data.map { it != null }
