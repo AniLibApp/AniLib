@@ -10,7 +10,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedCard
@@ -36,6 +35,7 @@ import com.revolgenx.anilib.common.data.constant.InterstitialAdsInterval
 import com.revolgenx.anilib.common.data.constant.RewardedInterstitialAdsInterval
 import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.componentActivity
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.ads.AdsViewModel
@@ -68,10 +68,10 @@ fun SupportSettingsScreenContent() {
 
     val context = localContext()
     val scope = rememberCoroutineScope()
-    val appIsSupported = billingViewModel.appIsSupported.collectAsState(false)
+    val appIsSupported = billingViewModel.isAppDevSupported.collectAsState(false)
 
     LaunchedEffect(billingViewModel) {
-        if (billingViewModel.billingConnectionState.intValue == ConnectionState.DISCONNECTED) {
+        if (billingViewModel.billingConnectionState.intValue == ConnectionState.DISCONNECTED && !billingViewModel.isAppDevSupported.get()) {
             billingViewModel.restartBillingConnection()
         }
     }

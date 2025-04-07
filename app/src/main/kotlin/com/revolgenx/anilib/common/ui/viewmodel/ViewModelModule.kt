@@ -158,8 +158,8 @@ val viewModelModules = module {
         SeasonFilterViewModel(
             get<Context>().seasonFilterDataStore,
             get<Context>().mediaTagCollectionDataStore,
-        get<Context>().genreCollectionDataStore,
-        get()
+            get<Context>().genreCollectionDataStore,
+            get()
         )
     }
 
@@ -288,12 +288,14 @@ val viewModelModules = module {
     viewModel { parameters -> ActivityInfoViewModel(parameters.get(), get()) }
 
     //browse
-    viewModel { BrowseViewModel(
-        get<Context>().mediaTagCollectionDataStore,
-        get<Context>().genreCollectionDataStore,
-        get(),
-        get()
-    ) }
+    viewModel {
+        BrowseViewModel(
+            get<Context>().mediaTagCollectionDataStore,
+            get<Context>().genreCollectionDataStore,
+            get(),
+            get()
+        )
+    }
     viewModel {
         BrowseFilterViewModel(
             get<Context>().mediaTagCollectionDataStore,
@@ -316,13 +318,7 @@ val viewModelModules = module {
     viewModel { RecommendationFilterViewModel() }
 
     //settings
-    viewModel {
-        SettingsViewModel(
-            get(),
-            get<Context>().airingScheduleFilterDataStore,
-            get<Context>().exploreAiringScheduleFilterDataStore
-        )
-    }
+    viewModel { SettingsViewModel(get()) }
     viewModel { GeneralSettingsViewModel(get()) }
     viewModel { AppearanceSettingsViewModel(get(), get(), get(), get()) }
     viewModel { MediaSettingsViewModel(get(), get(), get()) }
@@ -330,8 +326,8 @@ val viewModelModules = module {
     viewModel { MediaListSettingsViewModel(get(), get()) }
     viewModel { FilterSettingsViewModel(get(), get()) }
     viewModel { TagFilterSettingsViewModel(get<Context>().mediaTagCollectionDataStore, get()) }
-    viewModel { GenreFilterSettingsViewModel( get<Context>().genreCollectionDataStore, get()) }
-    viewModel { WidgetSettingsViewModel(get(), get(), get())}
+    viewModel { GenreFilterSettingsViewModel(get<Context>().genreCollectionDataStore, get()) }
+    viewModel { WidgetSettingsViewModel(get(), get(), get()) }
     //explore
     viewModel {
         ExploreMediaViewModel.ExploreTrendingViewModel(
@@ -380,6 +376,6 @@ val viewModelModules = module {
 
 
     viewModel { AdsViewModel(get(), get()) }
-    viewModel{ ScrollViewModel() }
+    viewModel { ScrollViewModel() }
     viewModel { BillingViewModel(get()) }
 }

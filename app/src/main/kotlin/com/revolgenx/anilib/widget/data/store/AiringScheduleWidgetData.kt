@@ -71,7 +71,7 @@ fun AiringScheduleModelData.toModel(): AiringScheduleModel {
         mediaId = mediaId,
         media = media?.let {
             MediaModel(
-                id = id,
+                id = it.id,
                 title = it.title,
                 coverImage = it.coverImageModel,
                 isAdult = it.isAdult,

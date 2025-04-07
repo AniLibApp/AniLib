@@ -37,7 +37,7 @@ class BillingViewModel(
     val billingConnectionState = mutableIntStateOf(ConnectionState.DISCONNECTED)
     private var launchingBillingFlow = false
 
-    val appIsSupported = billingDataStore.isAppDevSupported
+    val isAppDevSupported = billingDataStore.isAppDevSupported
 
     val hasPendingPurchase = mutableStateOf(false)
 
@@ -102,6 +102,7 @@ class BillingViewModel(
 
     fun queryPurchases() {
         hasPendingPurchase.value = false
+        failedToPurchase.value = false
         val params = QueryPurchasesParams
             .newBuilder()
             .setProductType(BillingClient.ProductType.INAPP)
