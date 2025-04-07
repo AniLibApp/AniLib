@@ -15,8 +15,7 @@ object MarkdownFactoryImpl : MarkdownFactory {
         autoPlayGif: Boolean,
         markdownCallback: MarkdownCallback
     ): Markwon {
-        _markwon =
-            _markwon ?: AlMarkdown.create(context, primaryColor, autoPlayGif, markdownCallback)
+        _markwon = AlMarkdown.create(context, primaryColor, autoPlayGif, markdownCallback)
         return _markwon!!
     }
 
@@ -24,7 +23,4 @@ object MarkdownFactoryImpl : MarkdownFactory {
         return AlMarkdown.anilify(text)
     }
 
-    override fun destroy() {
-        _markwon = null
-    }
 }
