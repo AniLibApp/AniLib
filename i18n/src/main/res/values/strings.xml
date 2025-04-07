@@ -551,4 +551,6 @@
     <string name="cmyk">CMYK</string>
     <string name="presets">Presets</string>
     <string name="pick">Pick</string>
+    <string name="session_expired">Session Expired</string>
+    <string name="session_expired_desc">Your session has expired. Please log in again to continue.</string>
 </resources>

@@ -111,7 +111,14 @@ import org.koin.dsl.module
 
 val viewModelModules = module {
     //main activity
-    viewModel { MainActivityViewModel(get(), get()) }
+    viewModel {
+        MainActivityViewModel(
+            get(),
+            get(),
+            get<Context>().airingScheduleFilterDataStore,
+            get<Context>().exploreAiringScheduleFilterDataStore
+        )
+    }
     viewModel { SharedActivityViewModel() }
 
     //airing

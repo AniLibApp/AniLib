@@ -4,11 +4,9 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
@@ -53,7 +51,6 @@ import coil.request.ErrorResult
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import com.revolgenx.anilib.R
-import com.revolgenx.anilib.airing.data.service.AiringScheduleServiceImpl
 import com.revolgenx.anilib.app.ui.activity.MainActivity
 import com.revolgenx.anilib.common.data.constant.dateFormat
 import com.revolgenx.anilib.common.data.state.ResourceState
@@ -62,11 +59,9 @@ import com.revolgenx.anilib.common.data.store.theme.WidgetThemeDataStore
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.activity.BaseMainActivity
 import com.revolgenx.anilib.common.ui.component.image.coilImageLoader
-import com.revolgenx.anilib.common.ui.theme.defaultDarkTheme
-import com.revolgenx.anilib.common.ui.theme.defaultTheme
 import com.revolgenx.anilib.media.ui.model.MediaCoverImageModel
 import com.revolgenx.anilib.type.MediaType
-import com.revolgenx.anilib.widget.viewmodel.AiringWidgetResource
+import kotlinx.coroutines.launch
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.get
 import java.time.format.DateTimeFormatter
@@ -74,9 +69,9 @@ import java.util.Locale
 import java.time.format.TextStyle as TimeTextStyle
 
 
-class AiringScheduleWidget : GlanceAppWidget(), KoinComponent {
+class AiringScheduleWidget() : GlanceAppWidget(), KoinComponent {
     private val appPreferencesDataStore: AppPreferencesDataStore = get()
-    private val airingWidgetResource: AiringWidgetResource = get()
+    private val airingWidgetResource: AiringScheduleWidgetResource = get()
     private val widgetThemeDataStore: WidgetThemeDataStore = get()
 
     companion object {
@@ -93,8 +88,14 @@ class AiringScheduleWidget : GlanceAppWidget(), KoinComponent {
 
     override suspend fun provideGlance(context: Context, id: GlanceId) {
         provideContent {
+            val scope = rememberCoroutineScope()
             LaunchedEffect(airingWidgetResource) {
-                airingWidgetResource.watchSettings()
+                launch {
+                    airingWidgetResource.getScheduleData()
+                }
+                launch {
+                    airingWidgetResource.watchSettings()
+                }
             }
 
             CompositionLocalProvider(LocalContext provides context) {
@@ -106,7 +107,6 @@ class AiringScheduleWidget : GlanceAppWidget(), KoinComponent {
                             .appWidgetBackground()
                             .background(GlanceTheme.colors.surface)
                     ) {
-                        airingWidgetResource.getResource()
                         Column {
                             Row(
                                 modifier = GlanceModifier.fillMaxWidth()
@@ -149,7 +149,9 @@ class AiringScheduleWidget : GlanceAppWidget(), KoinComponent {
                                     imageProvider = ImageProvider(R.drawable.ic_refresh),
                                     contentDescription = null,
                                     onClick = {
-                                        airingWidgetResource.refresh()
+                                        scope.launch {
+                                            airingWidgetResource.refresh()
+                                        }
                                     }
                                 )
                             }
@@ -190,10 +192,9 @@ class AiringScheduleWidget : GlanceAppWidget(), KoinComponent {
                                 }
 
                                 is ResourceState.Success -> {
-                                    val data = resourceValue.stateValue ?: return@Column
-                                    val items = data.data ?: return@Column
+                                    val items = resourceValue.stateValue ?: return@Column
 
-                                    if(items.isEmpty()){
+                                    if (items.isEmpty()) {
                                         Box(
                                             modifier = GlanceModifier.fillMaxSize(),
                                             contentAlignment = Alignment.Center

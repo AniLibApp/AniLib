@@ -35,6 +35,8 @@ import com.revolgenx.anilib.media.ui.model.seasonFromMonth
 import com.revolgenx.anilib.social.data.data.ActivityUnionFilterData
 import com.revolgenx.anilib.social.data.data.ActivityUnionFilterDataSerializer
 import com.revolgenx.anilib.type.MediaSort
+import com.revolgenx.anilib.widget.data.store.AiringScheduleWidgetData
+import com.revolgenx.anilib.widget.data.store.AiringScheduleWidgetDataSerializer
 import java.time.LocalDateTime
 
 typealias SeasonFilterDataStore = DataStore<MediaFilterData>
@@ -46,6 +48,7 @@ typealias ReadableOnCollectionDataStore = DataStore<ExternalLinkSourceCollection
 typealias BrowseFilterDataStore = DataStore<BrowseFilterData>
 typealias AiringScheduleFilterDataStore = DataStore<AiringScheduleFilterData>
 typealias ActivityUnionFilterDataStore = DataStore<ActivityUnionFilterData>
+typealias AiringScheduleWidgetDataStore = DataStore<AiringScheduleWidgetData>
 
 val Context.browseFilterDataStore by dataStore(
     fileName = "browse_filter_data_store.json",
@@ -123,6 +126,12 @@ val Context.exploreAiringScheduleFilterDataStore by dataStore(
 val Context.activityUnionFilterDataStore by dataStore(
     fileName = "activity_union_filter_data_store.json",
     serializer = ActivityUnionFilterDataSerializer()
+)
+
+
+val Context.airingScheduleWidgetDataStore by dataStore(
+    fileName = "airing_schedule_widget_data_store.json",
+    serializer = AiringScheduleWidgetDataSerializer()
 )
 
 val Context.preferencesDataStore: DataStore<Preferences> by preferencesDataStore(name = "preferences_data_store.json")

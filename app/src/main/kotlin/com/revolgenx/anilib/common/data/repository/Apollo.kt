@@ -10,20 +10,32 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 
 object Apollo {
-    fun provideApolloClient(appPreferencesDataStore: AppPreferencesDataStore): ApolloClient = ApolloClient.Builder()
-        .okHttpClient(
-            OkHttpClient.Builder().apply {
-                if (BuildConfig.DEBUG) {
-                    addInterceptor(HttpLoggingInterceptor().apply {
-                        level = HttpLoggingInterceptor.Level.BODY
-                    })
+    fun provideApolloClient(appPreferencesDataStore: AppPreferencesDataStore): ApolloClient =
+        ApolloClient.Builder()
+            .okHttpClient(
+                OkHttpClient.Builder().apply {
+                    if (BuildConfig.DEBUG) {
+                        addInterceptor(HttpLoggingInterceptor().apply {
+                            level = HttpLoggingInterceptor.Level.BODY
+                        })
+                    }
                 }
-            }
-                .addInterceptor {
-                    it.proceed(it.request().let { req ->
-                        runBlocking {
+                    .addInterceptor {
+                        it.proceed(it.request().let { req ->
                             val token = appPreferencesDataStore.token.get()
                             if (token != null) {
+                                var tokenExpiresAt = appPreferencesDataStore.tokenExpiresAt.get()
+                                if (tokenExpiresAt == null) {
+                                    tokenExpiresAt = runBlocking {
+                                        appPreferencesDataStore.setTokenExpiresAt(token)
+                                        appPreferencesDataStore.tokenExpiresAt.get()!!
+                                    }
+                                }
+
+                                if (tokenExpiresAt < System.currentTimeMillis()) {
+                                    appPreferencesDataStore.tokenHasExpired.value = true
+                                }
+
                                 req.newBuilder()
                                     .addHeader(
                                         "Authorization",
@@ -31,10 +43,10 @@ object Apollo {
                                     )
                                     .build()
                             } else req
-                        }
-                    })
-                }
-                .build())
-        .serverUrl(Config.API_URL)
-        .build()
+
+                        })
+                    }
+                    .build())
+            .serverUrl(Config.API_URL)
+            .build()
 }

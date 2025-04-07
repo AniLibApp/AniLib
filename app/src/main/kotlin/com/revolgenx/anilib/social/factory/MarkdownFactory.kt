@@ -11,5 +11,4 @@ interface MarkdownFactory {
         markdownCallback: MarkdownCallback
     ): Markwon
     fun anilify(text: String?): String
-    fun destroy()
 }

@@ -51,7 +51,7 @@ object MarkdownFactoryImpl : MarkdownFactory {
         autoPlayGif: Boolean,
         markdownCallback: MarkdownCallback
     ): Markwon {
-        _markwon = _markwon ?: createMarkdown(
+        _markwon = createMarkdown(
             context,
             primaryColor,
             autoPlayGif,
@@ -74,7 +74,4 @@ object MarkdownFactoryImpl : MarkdownFactory {
 
     }
 
-    override fun destroy() {
-        _markwon = null
-    }
 }

@@ -7,7 +7,7 @@ import com.revolgenx.anilib.common.data.store.theme.WidgetThemeDataStore
 import com.revolgenx.anilib.list.data.store.MediaListEntryEventStore
 import com.revolgenx.anilib.notification.data.store.NotificationDataStore
 import com.revolgenx.anilib.setting.data.store.BillingDataStore
-import com.revolgenx.anilib.widget.viewmodel.AiringWidgetResource
+import com.revolgenx.anilib.widget.ui.AiringScheduleWidgetResource
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
@@ -22,8 +22,8 @@ val storeModules = module {
     single { AppPreferencesDataStore(get()) }
     single { MediaListEntryEventStore() }
     single { NotificationDataStore(get()) }
-    single { AiringWidgetResource(get(), get()) }
     single { BillingDataStore(androidContext().preferencesDataStore) }
+    single { AiringScheduleWidgetResource(get(), get()) }
 }
 
 fun Scope.animeListFilterDataStore() = androidContext().animeListFilterDataStore
