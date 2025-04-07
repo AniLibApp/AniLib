@@ -19,7 +19,9 @@ import com.revolgenx.anilib.BuildConfig
 import com.revolgenx.anilib.common.data.constant.InterstitialAdsInterval
 import com.revolgenx.anilib.common.data.constant.RewardedInterstitialAdsInterval
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
+import com.revolgenx.anilib.setting.data.store.BillingDataStore
 import kotlinx.coroutines.delay
 import timber.log.Timber
 import java.time.Instant
@@ -27,7 +29,10 @@ import java.time.temporal.ChronoUnit
 import kotlin.time.DurationUnit
 import kotlin.time.toDuration
 
-class AdsViewModel(preferencesDataStore: AppPreferencesDataStore) : ViewModel() {
+class AdsViewModel(
+    preferencesDataStore: AppPreferencesDataStore,
+    billingDataStore: BillingDataStore,
+) : ViewModel() {
     private val displayInterstitialAdsInterval = preferencesDataStore.displayInterstitialAdsInterval
     private val displayRewardedInterstitialAdsInterval =
         preferencesDataStore.displayRewardedInterstitialAdsInterval
@@ -35,6 +40,7 @@ class AdsViewModel(preferencesDataStore: AppPreferencesDataStore) : ViewModel() 
         preferencesDataStore.interstitialAdsDisplayedDateTime
     private val rewardedInterstitialAdsDisplayedDateTime =
         preferencesDataStore.rewardedInterstitialAdsDisplayedDateTime
+    val isAppDevSupported = billingDataStore.isAppDevSupported
 
     private var mInterstitialAd: InterstitialAd? = null
         set(value) {
@@ -101,13 +107,26 @@ class AdsViewModel(preferencesDataStore: AppPreferencesDataStore) : ViewModel() 
     var canShowRewardedInterstitialAd = false
 
     init {
-        checkCanShowAds()
-        launch {
-            while (true) {
-                delay(30000)
-                checkCanShowAds()
-            }
-        }
+       if (!isAppDevSupported.get()){
+           checkCanShowAds()
+           val canShowAdsJob = launch {
+               while (true) {
+                   delay(30000)
+                   checkCanShowAds()
+               }
+           }
+
+           launch {
+               isAppDevSupported.collect{
+                   if (it){
+                       canShowInterstitialAd = false
+                       canShowRewardedInterstitialAd = false
+                       canShowAdsJob.cancel()
+                   }
+               }
+           }
+       }
+
     }
 
     fun initAds(context: Context) {
@@ -158,6 +177,8 @@ class AdsViewModel(preferencesDataStore: AppPreferencesDataStore) : ViewModel() 
     }
 
     private fun checkCanShowAds() {
+        if(isAppDevSupported.get()) return
+
         val currentEpochSecond = Instant.now().epochSecond
 
         launch {

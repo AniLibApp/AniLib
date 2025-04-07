@@ -1,6 +1,5 @@
 package com.revolgenx.anilib.setting.ui.screen
 
-import android.content.Context
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,10 +17,9 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
@@ -34,25 +32,23 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import anilib.i18n.R
 import com.android.billingclient.api.BillingClient.ConnectionState
-import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
-import com.revolgenx.anilib.common.ext.localContext
-import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
-import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.data.constant.InterstitialAdsInterval
 import com.revolgenx.anilib.common.data.constant.RewardedInterstitialAdsInterval
 import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.componentActivity
-import com.revolgenx.anilib.common.ext.restart
+import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
+import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ui.ads.AdsViewModel
 import com.revolgenx.anilib.common.ui.component.common.HeaderText
+import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMinus
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPlus
+import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceEntry
 import com.revolgenx.anilib.setting.ui.component.ListPreferenceItem
 import com.revolgenx.anilib.setting.ui.viewmodel.BillingViewModel
 import com.revolgenx.anilib.setting.ui.viewmodel.SettingsViewModel
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -74,6 +70,11 @@ fun SupportSettingsScreenContent() {
     val scope = rememberCoroutineScope()
     val appIsSupported = billingViewModel.appIsSupported.collectAsState(false)
 
+    LaunchedEffect(billingViewModel) {
+        if (billingViewModel.billingConnectionState.intValue == ConnectionState.DISCONNECTED) {
+            billingViewModel.restartBillingConnection()
+        }
+    }
     ScreenScaffold(
         title = stringResource(id = R.string.settings_support),
         actions = {},
@@ -85,119 +86,147 @@ fun SupportSettingsScreenContent() {
                 .padding(8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-
-            if (!appIsSupported.value) {
+            if (appIsSupported.value) {
+                OutlinedCard {
+                    Text(
+                        modifier = Modifier.padding(16.dp),
+                        text = "Thank you for supporting the app! Your purchase means a lot! \uD83E\uDD73 \uD83E\uDD73"
+                    )
+                }
+            } else {
                 OutlinedCard {
                     Text(
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth(),
-                        text = "♥️ You can support by making a one-time purchase to remove ads or watching ads at regular intervals. Your support keeps me motivated and is greatly appreciated! \uD83D\uDE4F\uD83D\uDE4F\uD83D\uDE4F"
+                        text = "♥️ Support the app by making a one-time purchase to remove ads or by watching ads at regular intervals. Your support keeps me motivated and is greatly appreciated! \uD83D\uDE4F"
                     )
                 }
+            }
 
-                OutlinedCard() {
+            OutlinedCard() {
+                Text(
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp, vertical = 12.dp)
+                        .fillMaxWidth(),
+                    fontSize = 11.sp,
+                    text = "Billing Service Status: ${
+                        when (billingViewModel.billingConnectionState.intValue) {
+                            ConnectionState.CONNECTED -> "Connected"
+                            ConnectionState.DISCONNECTED -> "Disconnected"
+                            ConnectionState.CONNECTING -> "Connecting"
+                            ConnectionState.CLOSED -> "Closed"
+                            else -> "Disconnected"
+                        }
+                    }"
+                )
+
+                if (billingViewModel.hasPendingPurchase.value) {
                     Text(
                         modifier = Modifier
                             .padding(horizontal = 16.dp, vertical = 12.dp)
                             .fillMaxWidth(),
-                        fontSize = 12.sp,
-                        text = "Billing Service Status: ${
-                            when (billingViewModel.billingConnectionState.intValue) {
-                                ConnectionState.CONNECTED -> "Connected"
-                                ConnectionState.DISCONNECTED -> "Disconnected"
-                                ConnectionState.CONNECTING -> "Connecting"
-                                ConnectionState.CLOSED -> "Closed"
-                                else -> "Disconnected"
-                            }
-                        }"
+                        fontSize = 14.sp,
+                        text = "Purchase Status: Pending"
                     )
                 }
-                OutlinedCard() {
 
-                    val purchaseQuantity = remember {
-                        mutableIntStateOf(1)
-                    }
-
-                    SingleChoiceSegmentedButtonRow(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(top = 16.dp)
-                    ) {
-                        SegmentedButton(
-                            selected = false,
-                            onClick = {
-                                if (purchaseQuantity.intValue > 1) purchaseQuantity.intValue--
-                            },
-                            shape = SegmentedButtonDefaults.itemShape(index = 0, count = 3)
-                        ) {
-                            Icon(imageVector = AppIcons.IcMinus, contentDescription = null)
-                        }
-
-                        SegmentedButton(
-                            selected = true,
-                            onClick = { },
-                            enabled = false,
-                            colors = SegmentedButtonDefaults.colors(
-                                disabledActiveContainerColor = MaterialTheme.colorScheme.secondaryContainer,
-                                disabledActiveContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
-                                disabledActiveBorderColor = MaterialTheme.colorScheme.outline
-                            ),
-                            shape = SegmentedButtonDefaults.itemShape(index = 1, count = 3),
-                            icon = {}
-                        ) {
-                            Text(text = purchaseQuantity.intValue.toString())
-                        }
-
-                        SegmentedButton(
-                            selected = false,
-                            onClick = {
-                                if (purchaseQuantity.intValue < 5) purchaseQuantity.intValue++
-                            },
-                            shape = SegmentedButtonDefaults.itemShape(index = 2, count = 3)
-                        ) {
-                            Icon(imageVector = AppIcons.IcPlus, contentDescription = null)
-                        }
-                    }
-
-
+                if (billingViewModel.failedToPurchase.value) {
                     Text(
-                        modifier = Modifier.fillMaxWidth().padding(top = 12.dp, bottom = 4.dp),
-                        textAlign = TextAlign.Center,
-                        fontWeight = FontWeight.SemiBold,
-                        text = "$1.99 x ${purchaseQuantity.intValue}"
-                    )
-
-                    Button(
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp)
-                            .padding(bottom = 16.dp),
-                        enabled = billingViewModel.billingConnectionState.intValue == ConnectionState.CONNECTED,
+                            .padding(horizontal = 16.dp, vertical = 12.dp)
+                            .fillMaxWidth(),
+                        fontSize = 14.sp,
+                        text = "Purchase Status: Failed"
+                    )
+                }
+
+                val purchaseQuantity = remember {
+                    mutableIntStateOf(2)
+                }
+
+                SingleChoiceSegmentedButtonRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 16.dp, bottom = 4.dp)
+                ) {
+                    SegmentedButton(
+                        selected = false,
                         onClick = {
-                            context.componentActivity()?.let {
-                                billingViewModel.startPurchase(it, purchaseQuantity.intValue)
-                            }
-                        }
+                            if (purchaseQuantity.intValue > 1) purchaseQuantity.intValue--
+                        },
+                        shape = SegmentedButtonDefaults.itemShape(index = 0, count = 3)
                     ) {
-                        Text(text = "Purchase")
+                        Icon(imageVector = AppIcons.IcMinus, contentDescription = null)
+                    }
+
+                    SegmentedButton(
+                        selected = true,
+                        onClick = { },
+                        enabled = false,
+                        colors = SegmentedButtonDefaults.colors(
+                            disabledActiveContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                            disabledActiveContentColor = MaterialTheme.colorScheme.onSecondaryContainer,
+                            disabledActiveBorderColor = MaterialTheme.colorScheme.outline
+                        ),
+                        shape = SegmentedButtonDefaults.itemShape(index = 1, count = 3),
+                        icon = {}
+                    ) {
+
+                        Text(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            textAlign = TextAlign.Center,
+                            fontWeight = FontWeight.SemiBold,
+                            text = "$${2 * purchaseQuantity.intValue - 1}.99"
+                        )
+                    }
+
+                    SegmentedButton(
+                        selected = false,
+                        onClick = {
+                            if (purchaseQuantity.intValue < 5) purchaseQuantity.intValue++
+                        },
+                        shape = SegmentedButtonDefaults.itemShape(index = 2, count = 3)
+                    ) {
+                        Icon(imageVector = AppIcons.IcPlus, contentDescription = null)
                     }
                 }
 
 
-                SupportSettingsHeader(title = "Already purchased?")
-
-
-                OutlinedCard {
-                    Text(
-                        modifier = Modifier.padding(16.dp),
-                        text = "\uD83D\uDCE2 To restore your purchases, you must use the same Google Play account that was used to make the purchase. Switching accounts may result in the inability to access purchased features. "
-                    )
-                }
 
                 Button(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp),
+                    enabled = billingViewModel.billingConnectionState.intValue == ConnectionState.CONNECTED,
+                    onClick = {
+                        context.componentActivity()?.let {
+                            billingViewModel.startPurchase(it, purchaseQuantity.intValue)
+                        }
+                    }
+                ) {
+                    Text(text = "Purchase")
+                }
+            }
+
+
+            SupportSettingsHeader(title = "Already purchased?")
+
+
+            OutlinedCard {
+                Text(
+                    modifier = Modifier.padding(16.dp),
+                    text = "\uD83D\uDCE2 To restore your purchases, you must use the same Google Play account that was used to make the purchase. Switching accounts may result in the inability to access purchased features. "
+                )
+
+                Button(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 16.dp)
+                        .padding(bottom = 16.dp),
                     enabled = billingViewModel.billingConnectionState.intValue == ConnectionState.CONNECTED,
                     onClick = {
                         billingViewModel.queryPurchases()
@@ -205,10 +234,11 @@ fun SupportSettingsScreenContent() {
                 ) {
                     Text(text = "Check Purchase")
                 }
+            }
 
 
 
-                HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
+            if (!appIsSupported.value) {
 
                 SupportSettingsHeader(title = "Ads")
 
@@ -299,31 +329,21 @@ fun SupportSettingsScreenContent() {
                         modifier = Modifier.padding(16.dp),
                         text = stringResource(id = R.string.ads_support_button_message)
                     )
-                }
 
-                Button(modifier = Modifier.fillMaxWidth(), onClick = {
-                    context.componentActivity()?.let {
-                        adsViewModel.showRewardedInterstitialAdsFromSupport(it)
+                    Button(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                            .padding(bottom = 16.dp),
+                        onClick = {
+                            context.componentActivity()?.let {
+                                adsViewModel.showRewardedInterstitialAdsFromSupport(it)
+                            }
+                        }) {
+                        Text(text = "Show ads")
                     }
-                }) {
-                    Text(text = "Show ads")
                 }
-
-            } else {
-
-                OutlinedCard {
-                    Text(
-                        modifier = Modifier.padding(16.dp),
-                        text = "Thank you for supporting the app! Your purchase means a lot! \uD83E\uDD73 \uD83E\uDD73"
-                    )
-                }
-
-
-                HorizontalDivider(modifier = Modifier.padding(top = 8.dp))
-
             }
-
-
         }
     }
 }

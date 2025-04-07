@@ -1,9 +1,9 @@
 import org.gradle.api.artifacts.dsl.DependencyHandler
 
 object AndroidConfig {
-    const val compileSdk = 34
+    const val compileSdk = 35
     const val minSdk = 21
-    const val targetSdk = 34
+    const val targetSdk = 35
 }
 
 object PackagingOptions {

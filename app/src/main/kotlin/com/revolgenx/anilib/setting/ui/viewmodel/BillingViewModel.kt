@@ -24,7 +24,6 @@ import kotlinx.coroutines.delay
 import kotlin.math.min
 
 class BillingViewModel(
-    context: Context,
     private val billingDataStore: BillingDataStore
 ) : ViewModel() {
     private lateinit var billingClient: BillingClient
@@ -36,17 +35,17 @@ class BillingViewModel(
     private val maxDelay = 1000L * 60L * 15L
 
     val billingConnectionState = mutableIntStateOf(ConnectionState.DISCONNECTED)
-    var launchingBillingFlow = false
+    private var launchingBillingFlow = false
 
-    val appIsSupported = billingDataStore.appIsSupported
+    val appIsSupported = billingDataStore.isAppDevSupported
 
-    //Show pending state if pending
     val hasPendingPurchase = mutableStateOf(false)
 
     val failedToPurchase = mutableStateOf(false)
 
     private val purchasesUpdatedListener =
         PurchasesUpdatedListener { billingResult, purchases ->
+
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK && purchases != null) {
                 handlePurchases(purchases)
             } else {
@@ -54,12 +53,9 @@ class BillingViewModel(
             }
         }
 
-    init {
-        setupBillingClient(context)
-    }
+    fun setupBillingClient(context: Context) {
+        if(billingConnectionState.intValue == ConnectionState.CONNECTED) return
 
-
-    private fun setupBillingClient(context: Context) {
         billingClient = BillingClient.newBuilder(context)
             .setListener(purchasesUpdatedListener)
             .enablePendingPurchases(
@@ -67,15 +63,7 @@ class BillingViewModel(
             )
             .build()
 
-        if (!billingDataStore.appIsSupported.get()) {
-            startBillingConnection()
-        }
-    }
-
-    fun restartBillingConnection(){
-        if (::startConnectionJob.isInitialized) {
-            startConnectionJob.cancel()
-            retryBillingServiceCount = 0
+        if (!billingDataStore.isAppDevSupported.get()) {
             startBillingConnection()
         }
     }
@@ -113,6 +101,7 @@ class BillingViewModel(
     }
 
     fun queryPurchases() {
+        hasPendingPurchase.value = false
         val params = QueryPurchasesParams
             .newBuilder()
             .setProductType(BillingClient.ProductType.INAPP)
@@ -130,7 +119,6 @@ class BillingViewModel(
             when (purchase.purchaseState) {
                 Purchase.PurchaseState.PENDING -> {
                     hasPendingPurchase.value = true
-                    break
                 }
 
                 Purchase.PurchaseState.PURCHASED -> {
@@ -148,16 +136,23 @@ class BillingViewModel(
                     } else {
                         storePurchaseInfo(purchase)
                     }
-                    break
                 }
             }
         }
     }
 
     fun startPurchase(activity: Activity, purchaseQuantity: Int) {
+        failedToPurchase.value = false
         launchBillingFlow(activity, "remove_ads_${purchaseQuantity}")
     }
 
+    fun restartBillingConnection(){
+        if (::startConnectionJob.isInitialized) {
+            startConnectionJob.cancel()
+            retryBillingServiceCount = 0
+        }
+        startBillingConnection()
+    }
 
     private fun launchBillingFlow(activity: Activity, productId: String) {
         if(launchingBillingFlow) return

@@ -59,6 +59,7 @@ import com.revolgenx.anilib.common.ui.ads.CheckAds
 import com.revolgenx.anilib.common.ui.bottomsheet.WhatsNewBottomSheet
 import com.revolgenx.anilib.common.util.versionName
 import com.revolgenx.anilib.notification.data.worker.NotificationWorker
+import com.revolgenx.anilib.setting.ui.viewmodel.BillingViewModel
 import com.revolgenx.anilib.social.factory.MarkdownCallbackImpl
 import com.revolgenx.anilib.social.factory.MarkdownFactoryImpl
 import com.revolgenx.anilib.type.MediaType
@@ -78,6 +79,7 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
     protected val appPreferencesDataStore: AppPreferencesDataStore by inject()
 
     private val adsViewModel: AdsViewModel by viewModel<AdsViewModel>()
+    private val billingViewModel: BillingViewModel by viewModel()
 
 
     companion object {
@@ -125,6 +127,7 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
         setupNotification()
         setupMarkdown()
         checkIntent(intent)
+        initBilling()
         initAds()
     }
 
@@ -418,6 +421,10 @@ abstract class BaseMainActivity : AppCompatActivity(), EventBusListener {
 
     private fun initAds() {
         adsViewModel.initAds(this)
+    }
+
+    private fun initBilling(){
+        billingViewModel.setupBillingClient(this)
     }
 
     @Composable

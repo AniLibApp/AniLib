@@ -372,7 +372,7 @@ val viewModelModules = module {
     viewModel { ExploreReadingViewModel(get(), get(), get()) }
 
 
-    viewModel { AdsViewModel(get()) }
+    viewModel { AdsViewModel(get(), get()) }
     viewModel{ ScrollViewModel() }
-    viewModel { BillingViewModel(androidContext(), get()) }
+    viewModel { BillingViewModel(get()) }
 }
