@@ -556,4 +556,18 @@
     <string name="pick">Pick</string>
     <string name="session_expired">Session Expired</string>
     <string name="session_expired_desc">Your session has expired. Please log in again to continue.</string>
+    <string name="purchase">Purchase</string>
+    <string name="already_purchased">Already purchased?</string>
+    <string name="restore_purchase_desc">"📢 To restore your purchases, you must use the same Google Play account that was used to make the purchase. Switching accounts may result in the inability to access purchased features. "</string>
+    <string name="check_purchase">Check Purchase</string>
+    <string name="purchased_message">Thank you for supporting the app! Your purchase means a lot! 🥳 🥳</string>
+    <string name="support_message">♥️ Support the app by making a one-time purchase to remove ads or by watching ads at regular intervals. Your support keeps me motivated and is greatly appreciated! 🙏</string>
+    <string name="connected">Connected</string>
+    <string name="disconnected">Disconnected</string>
+    <string name="connecting">Connecting</string>
+    <string name="closed">Closed</string>
+    <string name="purchase_status">Purchase Status: %1$s</string>
+    <string name="pending">Pending</string>
+    <string name="failed">Failed</string>
+    <string name="billing_service_status">Billing Service Status: %1$s</string>
 </resources>

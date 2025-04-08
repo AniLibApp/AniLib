@@ -90,7 +90,7 @@ fun SupportSettingsScreenContent() {
                 OutlinedCard {
                     Text(
                         modifier = Modifier.padding(16.dp),
-                        text = "Thank you for supporting the app! Your purchase means a lot! \uD83E\uDD73 \uD83E\uDD73"
+                        text = stringResource(R.string.purchased_message)
                     )
                 }
             } else {
@@ -99,7 +99,7 @@ fun SupportSettingsScreenContent() {
                         modifier = Modifier
                             .padding(16.dp)
                             .fillMaxWidth(),
-                        text = "♥️ Support the app by making a one-time purchase to remove ads or by watching ads at regular intervals. Your support keeps me motivated and is greatly appreciated! \uD83D\uDE4F"
+                        text = stringResource(R.string.support_message)
                     )
                 }
             }
@@ -110,15 +110,15 @@ fun SupportSettingsScreenContent() {
                         .padding(horizontal = 16.dp, vertical = 12.dp)
                         .fillMaxWidth(),
                     fontSize = 11.sp,
-                    text = "Billing Service Status: ${
+                    text = stringResource(R.string.billing_service_status).format(
                         when (billingViewModel.billingConnectionState.intValue) {
-                            ConnectionState.CONNECTED -> "Connected"
-                            ConnectionState.DISCONNECTED -> "Disconnected"
-                            ConnectionState.CONNECTING -> "Connecting"
-                            ConnectionState.CLOSED -> "Closed"
-                            else -> "Disconnected"
+                            ConnectionState.CONNECTED -> stringResource(R.string.connected)
+                            ConnectionState.DISCONNECTED -> stringResource(R.string.disconnected)
+                            ConnectionState.CONNECTING -> stringResource(R.string.connecting)
+                            ConnectionState.CLOSED -> stringResource(R.string.closed)
+                            else -> stringResource(R.string.disconnected)
                         }
-                    }"
+                    )
                 )
 
                 if (billingViewModel.hasPendingPurchase.value) {
@@ -127,7 +127,7 @@ fun SupportSettingsScreenContent() {
                             .padding(horizontal = 16.dp, vertical = 12.dp)
                             .fillMaxWidth(),
                         fontSize = 14.sp,
-                        text = "Purchase Status: Pending"
+                        text = stringResource(R.string.purchase_status).format(stringResource(R.string.pending))
                     )
                 }
 
@@ -137,7 +137,7 @@ fun SupportSettingsScreenContent() {
                             .padding(horizontal = 16.dp, vertical = 12.dp)
                             .fillMaxWidth(),
                         fontSize = 14.sp,
-                        text = "Purchase Status: Failed"
+                        text = stringResource(R.string.purchase_status).format(stringResource(R.string.failed))
                     )
                 }
 
@@ -208,18 +208,18 @@ fun SupportSettingsScreenContent() {
                         }
                     }
                 ) {
-                    Text(text = "Purchase")
+                    Text(text = stringResource(R.string.purchase))
                 }
             }
 
 
-            SupportSettingsHeader(title = "Already purchased?")
+            SupportSettingsHeader(title = stringResource(R.string.already_purchased))
 
 
             OutlinedCard {
                 Text(
                     modifier = Modifier.padding(16.dp),
-                    text = "\uD83D\uDCE2 To restore your purchases, you must use the same Google Play account that was used to make the purchase. Switching accounts may result in the inability to access purchased features. "
+                    text = stringResource(R.string.restore_purchase_desc)
                 )
 
                 Button(
@@ -232,7 +232,7 @@ fun SupportSettingsScreenContent() {
                         billingViewModel.queryPurchases()
                     }
                 ) {
-                    Text(text = "Check Purchase")
+                    Text(text = stringResource(R.string.check_purchase))
                 }
             }
 
@@ -240,7 +240,7 @@ fun SupportSettingsScreenContent() {
 
             if (!appIsSupported.value) {
 
-                SupportSettingsHeader(title = "Ads")
+                SupportSettingsHeader(title = stringResource(R.string.settings_ads))
 
 
                 val displayInterstitialAdsInterval = viewModel.displayInterstitialAdsInterval
