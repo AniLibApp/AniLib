@@ -276,7 +276,7 @@
     <string name="category">"Kategoria"</string>
     <string name="rank">"Ranking"</string>
     <string name="tag_name_percent">"%1$s · %2$d%%"</string>
-    <string name="status_distribution_string">"%1$s Użytkownik\n%2$s"</string>
+    <string name="status_distribution_string">"%1$s Użytkowników\n%2$s"</string>
     <string name="trailer">"Zwiastun"</string>
     <string name="airing_score_progression">"Ocena wychodzących odcinków"</string>
     <string name="airing_watchers_progression">"Postęp oglądania wychodzących odcinków"</string>
@@ -443,6 +443,9 @@ country of origin -->
     <string name="settings_title_language">"Język tytułów"</string>
     <string name="settings_adult_content">"Treści 18+"</string>
     <string name="settings_airing_anime_notifications">"Powiadomienia o nadchodzących"</string>
+
+    <!-- idk what this do -->
+    <string name="settings_activity_merge_time">"Czas łączenia aktywności"</string>
     <string name="settings_explore_section_order">"Układ zakładki eksploruj"</string>
     <string name="settings_main_page_order">"Układ strony głównej"</string>
     <string name="settings_explore_section_order_desc">"Zmień układ zakładki eksploruj"</string>
@@ -548,6 +551,7 @@ Dzięki za wsparcie! 🙏"</string>
     <string name="ads_every_6_hours">"Co 6 godzin"</string>
     <string name="display_scale">"Skala wyświetlania"</string>
     <string name="hentai">"Henati"</string>
+    <string name="ch_s_s">"Odc: %1$s · %2$s"</string>
     <string name="settings_exclude_tags">"Wykluczone tagi"</string>
     <string name="settings_exclude_tags_desc">"Wykluczone tagi zostaną dodane do filtra wyszukiwania podczas wyszukiwania mediów."</string>
     <string name="settings_exclude_tags_placeholder">"Wpisz aby wyszukać"</string>
@@ -577,4 +581,20 @@ Dzięki za wsparcie! 🙏"</string>
     <string name="pick">"Wybierz"</string>
     <string name="session_expired">"Sesja przedawniona"</string>
     <string name="session_expired_desc">"Twoja sesja się przedawniła. Zaloguj się ponownie, aby kontynuować."</string>
+    <string name="birthday">"Urodziny"</string>
+    <string name="present">"Dziś"</string>
+    <string name="purchase">"Zakup"</string>
+    <string name="already_purchased">"Zakupiono?"</string>
+    <string name="check_purchase">"Sprawdź płatność"</string>
+    <string name="purchased_message">"Dzięki za wsparcie!
+Twój zakup wiele dla mnie znaczy! 🥳 🥳"</string>
+    <string name="support_message">"♥️ Wesprzyj i usuń reklamy poprzez jednorazową płatność lub poprzez regularne oglądanie reklam. Twoje wsparcie motywuje mnie do dalszego działania.🙏"</string>
+    <string name="connected">"Połączono"</string>
+    <string name="disconnected">"Rozłączono"</string>
+    <string name="connecting">"Łączenie"</string>
+    <string name="closed">"Zamknięte"</string>
+    <string name="purchase_status">"Status płatności: %1$s"</string>
+    <string name="pending">"Przetwarzanie"</string>
+    <string name="failed">"Błąd"</string>
+    <string name="billing_service_status">"Status serwisu płatności: %1$s"</string>
 </resources>
