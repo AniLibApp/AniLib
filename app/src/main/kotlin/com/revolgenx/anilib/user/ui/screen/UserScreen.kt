@@ -2,6 +2,7 @@ package com.revolgenx.anilib.user.ui.screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,8 +35,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalClipboardManager
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -127,6 +131,7 @@ private fun UserScreenContent(
     val localUser = localUser()
     val context = localContext()
     val scope = rememberCoroutineScope()
+    val clipboardManager = LocalClipboardManager.current
 
     val viewModel: UserViewModel = koinViewModel()
     val activityUnionViewModel: ActivityUnionViewModel = koinViewModel()
@@ -182,6 +187,9 @@ private fun UserScreenContent(
                     }else{
                         snackbar.showLoginMsg(context, scope)
                     }
+                },
+                copyToClipboard = {
+                    clipboardManager.setText(AnnotatedString(it))
                 }
             )
         },
@@ -261,7 +269,8 @@ private fun UserScreenTopAppbar(
     isLoggedInUser: State<Boolean>,
     isTab: Boolean = false,
     blockUser: OnClick,
-    onFollow: OnClick
+    onFollow: OnClick,
+    copyToClipboard: (value: String) -> Unit
 ) {
     val tabNavigator = if (isTab) localTabNavigator() else null
     val navigator = localNavigator()
@@ -339,6 +348,15 @@ private fun UserScreenTopAppbar(
                         horizontalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
                         Text(
+                            modifier = Modifier.pointerInput(Unit) {
+                                detectTapGestures(
+                                    onLongPress = {
+                                        user?.name?.let {
+                                            copyToClipboard(it)
+                                        }
+                                    }
+                                )
+                            },
                             text = user?.name.orEmpty(),
                             fontSize = 20.sp,
                             fontWeight = FontWeight.SemiBold,
