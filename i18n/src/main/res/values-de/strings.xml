@@ -292,7 +292,7 @@
     <string name="category">Kategorie</string>
     <string name="rank">Rang</string>
     <string name="tag_name_percent">%1$s · %2$d%%</string>
-    <string name="status_distribution_string">%1$s Benutzer %2$s</string>
+    <string name="status_distribution_string">%1$s Benutzer\n%2$s</string>
     <string name="trailer">Trailer</string>
     <string name="airing_score_progression">Laufend Punkte Fortschritt</string>
     <string name="airing_watchers_progression">Laufend Zuschauer Fortschritt</string>

@@ -274,7 +274,7 @@
     <string name="category">Kategori</string>
     <string name="rank">Sıralama</string>
     <string name="tag_name_percent">%1$s · %2$d%%</string>
-    <string name="status_distribution_string">%1$s Kullanıcı %2$s</string>
+    <string name="status_distribution_string">%1$s Kullanıcı\n%2$s</string>
     <string name="trailer">Fragman</string>
     <string name="airing_score_progression">Yayınlanan Puan İlerlemesi</string>
     <string name="airing_watchers_progression">Yayınlanan İzleyici İlerlemesi</string>

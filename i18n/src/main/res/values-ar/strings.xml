@@ -508,8 +508,8 @@ country of origin -->
     <string name="ads_every_other_day">كل يوم آخر</string>
     <string name="ads_every_week">كل اسبوع</string>
     <string name="ads_play_support_message">سيتم تشغيل إعلان قريبًا. يمكنك تخطيه في أي وقت، ولكن المشاهدة تساعد في دعم تطوير التطبيق.\nشكرًا على دعمك! 🙏</string>
-    <string name="ads_support_the_app">ادعم التطبيق! \uD83D\uDC96</string>
-    <string name="ads_support_button_message">\uD83D\uDCAC إذا كنت ترغب في دعم التطبيق، يمكنك مشاهدة الإعلانات بالضغط على الزر الموجود بالأسفل.</string>
+    <string name="ads_support_the_app"> 💖 ادعم التطبيق!</string>
+    <string name="ads_support_button_message">💬 إذا كنت ترغب في دعم التطبيق، يمكنك مشاهدة الإعلانات بالضغط على الزر الموجود بالأسفل.</string>
     <string name="datetime_days">ايام</string>
     <string name="datetime_hour">ساعات</string>
     <string name="datetime_min">دقائق</string>

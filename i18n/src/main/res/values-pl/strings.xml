@@ -276,7 +276,7 @@
     <string name="category">"Kategoria"</string>
     <string name="rank">"Ranking"</string>
     <string name="tag_name_percent">"%1$s · %2$d%%"</string>
-    <string name="status_distribution_string">"%1$s Użytkownik \n %2$s"</string>
+    <string name="status_distribution_string">"%1$s Użytkownik\n%2$s"</string>
     <string name="trailer">"Zwiastun"</string>
     <string name="airing_score_progression">"Ocena wychodzących odcinków"</string>
     <string name="airing_watchers_progression">"Postęp oglądania wychodzących odcinków"</string>

@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -189,7 +190,8 @@ private fun StatsStatusDistributionSection(
         ) {
             Text(
                 modifier = Modifier
-                    .align(Alignment.CenterStart)
+                    .fillMaxWidth()
+                    .align(Alignment.Center)
                     .clickable {
                         onAmountClick(item.amount)
                     },
@@ -197,7 +199,9 @@ private fun StatsStatusDistributionSection(
                     item.amount.prettyNumberFormat(),
                     listStatus
                 ),
+                textAlign = TextAlign.Center,
                 color = Color.White,
+                fontSize = 13.sp,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )

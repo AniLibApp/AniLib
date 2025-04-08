@@ -2,11 +2,14 @@ package com.revolgenx.anilib.character.ui.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import com.revolgenx.anilib.character.ui.viewmodel.CharacterAboutViewModel
+import com.revolgenx.anilib.common.ext.anilify
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.showLoginMsg
@@ -35,6 +38,9 @@ fun CharacterAboutScreen(
     }
 
     ResourceScreen(viewModel = viewModel) { character ->
+        val description = remember(viewModel) {
+            markdown.toMarkdown(character.generalDescription(context) + anilify(character.description))
+        }
         EntityAboutScreenContent(
             name = character.name?.full.naText(),
             alternative = character.name?.alternativeText,
@@ -42,7 +48,7 @@ fun CharacterAboutScreen(
             favourites = character.favourites.orZero(),
             isFavourite = character.isFavourite.value,
             description = character.description,
-            spannedDescription = character.spannedDescription,
+            spannedDescription = description,
             onFavouriteClick = {
                 if(isLoggedIn){
                     viewModel.toggleFavorite()

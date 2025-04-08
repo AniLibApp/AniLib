@@ -2,10 +2,13 @@ package com.revolgenx.anilib.staff.ui.screen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import com.revolgenx.anilib.common.ext.anilify
 import com.revolgenx.anilib.common.ext.imageViewerScreen
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
+import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ext.showLoginMsg
@@ -35,6 +38,9 @@ fun StaffAboutScreen(
     }
 
     ResourceScreen(viewModel = viewModel) { staff ->
+        val description = remember(viewModel) {
+                markdown.toMarkdown(staff.generalDescription(context) + anilify(staff.description))
+        }
         EntityAboutScreenContent(
             name = staff.name?.full.naText(),
             alternative = staff.name?.alternativeText,
@@ -42,7 +48,7 @@ fun StaffAboutScreen(
             favourites = staff.favourites.orZero(),
             isFavourite = staff.isFavourite.value,
             description = staff.description,
-            spannedDescription = staff.spannedDescription,
+            spannedDescription = description,
             onFavouriteClick = {
                 if(isLoggedIn){
                     viewModel.toggleFavorite()

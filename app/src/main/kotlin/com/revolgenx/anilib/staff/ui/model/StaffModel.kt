@@ -1,12 +1,10 @@
 package com.revolgenx.anilib.staff.ui.model
 
-import android.text.Spanned
+import android.content.Context
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.StaffQuery
 import com.revolgenx.anilib.character.ui.model.CharacterConnectionModel
-import com.revolgenx.anilib.common.ext.anilify
-import com.revolgenx.anilib.common.ext.markdown
 import com.revolgenx.anilib.common.ext.naText
 import com.revolgenx.anilib.common.ui.model.BaseModel
 import com.revolgenx.anilib.common.ui.model.FuzzyDateModel
@@ -48,10 +46,8 @@ data class StaffModel(
     //    Media where the staff member has a production role
     val staffMedia: MediaConnectionModel? = null,
     val yearsActive: List<Int>? = null,
-
-    var spannedDescription: Spanned? = null,
 ) : BaseModel {
-    fun generalDescription(): String {
+    fun generalDescription(context: Context): String {
         var generalInfo = ""
         dateOfBirth?.let {
             val month = it.month?.let { m ->
@@ -59,7 +55,7 @@ data class StaffModel(
             } ?: ""
             val day = it.day ?: ""
             val year = it.year ?: ""
-            generalInfo += "<b>Birth:</b> $month $day, $year \n"
+            generalInfo += "<b>${context.getString(anilib.i18n.R.string.birth)}:</b> $month $day, $year \n"
         }
         dateOfDeath?.let {
             val month = it.month?.let { m ->
@@ -67,25 +63,25 @@ data class StaffModel(
             } ?: ""
             val day = it.day ?: ""
             val year = it.year ?: ""
-            generalInfo += "<b>Death:</b> $month $day, $year \n"
+            generalInfo += "<b>${context.getString(anilib.i18n.R.string.death)}:</b> $month $day, $year \n"
         }
         age?.let {
-            generalInfo += "<b>Age:</b> $it \n"
+            generalInfo += "<b>${context.getString(anilib.i18n.R.string.age)}:</b> $it \n"
         }
         gender?.let {
-            generalInfo += "<b>Gender:</b> $it \n"
+            generalInfo += "<b>${context.getString(anilib.i18n.R.string.gender)}:</b> $it \n"
         }
         bloodType?.let {
-            generalInfo += "<b>Blood Type:</b> $it \n"
+            generalInfo += "<b>${context.getString(anilib.i18n.R.string.blood_type)}:</b> $it \n"
         }
         yearsActive?.takeIf { it.isNotEmpty() }?.let {
             val firstDate = it.getOrNull(0).naText()
-            val lastDate = it.getOrNull(1) ?: "Present"
-            generalInfo += "<b>Years active:</b> $firstDate-$lastDate \n"
+            val lastDate = it.getOrNull(1) ?: context.getString(anilib.i18n.R.string.present)
+            generalInfo += "<b>${context.getString(anilib.i18n.R.string.years_active)}:</b> $firstDate-$lastDate \n"
         }
 
         homeTown?.let {
-            generalInfo += "<b>Hometown:</b> $it \n"
+            generalInfo += "<b>${context.getString(anilib.i18n.R.string.hometown)}:</b> $it \n"
         }
 
         if (generalInfo.isNotBlank()) {
@@ -118,8 +114,6 @@ fun StaffQuery.Staff.toModel(): StaffModel {
         yearsActive = yearsActive?.filterNotNull()
     )
 
-    model.spannedDescription =
-        markdown.toMarkdown(model.generalDescription() + anilify(model.description))
     return model
 }
 
