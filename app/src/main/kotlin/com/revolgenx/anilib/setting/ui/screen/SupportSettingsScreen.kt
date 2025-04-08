@@ -340,7 +340,7 @@ fun SupportSettingsScreenContent() {
                                 adsViewModel.showRewardedInterstitialAdsFromSupport(it)
                             }
                         }) {
-                        Text(text = "Show ads")
+                        Text(text = stringResource(R.string.show_ads))
                     }
                 }
             }

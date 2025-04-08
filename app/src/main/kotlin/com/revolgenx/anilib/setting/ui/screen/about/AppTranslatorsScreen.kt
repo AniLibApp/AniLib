@@ -47,7 +47,8 @@ private val translators = listOf(
         flag = R.drawable.ic_flag_de
     ),
     Translator(language = "Français", authors = "natsuthelight", flag = R.drawable.ic_flag_fr),
-    Translator(language = "Türkçe", authors = "kyoya", flag = R.drawable.ic_flag_tr)
+    Translator(language = "Türkçe", authors = "kyoya", flag = R.drawable.ic_flag_tr),
+    Translator(language = "Polski", authors = "paplyke", flag = R.drawable.ic_flag_pl)
 )
 
 
