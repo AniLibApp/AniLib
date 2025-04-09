@@ -9,6 +9,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## Added
 - Added Polish language by paplyke
 
+## Fixed
+- Fix crash with new API 35 when removing last item from list (issue)[https://youtrack.jetbrains.com/issue/KT-71375/Prevent-Kotlins-removeFirst-and-removeLast-from-causing-crashes-on-Android-14-and-below-after-upgrading-to-Android-API-Level-35]
+
+
 ## v[2.0.6] 
 ### Added
 - Add color picker [#101](https://github.com/AniLibApp/AniLib/issues/101)
@@ -67,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Note**: Any missing feature like filter settings will be added later on. ML translate is removed and won\'t be added.
 - **Enjoy AniLib!**
 
+[v2.0.6]: https://github.com/AniLibApp/AniLib/compare/v2.0.3...v2.0.6
 [v2.0.3]: https://github.com/AniLibApp/AniLib/compare/v2.0.2...v2.0.3
 [v2.0.2]: https://github.com/AniLibApp/AniLib/compare/v2.0.1...v2.0.2
 [v2.0.1]: https://github.com/AniLibApp/AniLib/compare/v2.0.0...v2.0.1

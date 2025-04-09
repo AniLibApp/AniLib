@@ -245,7 +245,7 @@ abstract class MediaListViewModel(
         history.remove(search)
         history.add(0, search)
         if (history.size > 10) {
-            history.removeLast()
+            history.removeAt(history.lastIndex)
         }
         launch {
             appPreferencesDataStore.mediaListSearchHistory.set(
