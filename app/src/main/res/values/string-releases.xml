@@ -6,6 +6,14 @@
         - **If the UI is too big**, you can reduce it from **Settings → Appearance → Display Scale**. \n
         - **If there are too many ads**, you can change the frequency from **Settings → Support → Ads**. \n
 
+
+        ## v2.0.7 \n
+        ### Added \n
+        - Added Polish language by paplyke \n
+
+        ### Fixed \n
+        - Fix crash when saving searched history \n
+
         ## v2.0.6 \n
         ### Added \n
         - Add old style color picker [#101](https://github.com/AniLibApp/AniLib/issues/101) \n
