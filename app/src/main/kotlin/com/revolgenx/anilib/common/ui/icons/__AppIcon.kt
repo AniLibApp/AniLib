@@ -36,6 +36,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronLeft
 import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronRight
 import com.revolgenx.anilib.common.ui.icons.appicon.IcClose
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCode
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCompare
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCreate
 import com.revolgenx.anilib.common.ui.icons.appicon.IcDelete
 import com.revolgenx.anilib.common.ui.icons.appicon.IcDropped
@@ -108,6 +109,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcSadAnilib
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSave
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSettings
+import com.revolgenx.anilib.common.ui.icons.appicon.IcShuffle
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSpoiler
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSpring
 import com.revolgenx.anilib.common.ui.icons.appicon.IcStar
@@ -261,7 +263,9 @@ val AppIcons.AllIcons: List<ImageVector>
             IcWidgets,
             IcReply,
             IcTranslate,
-            IcNew
+            IcNew,
+            IcShuffle,
+            IcCompare
         )
         return __AllIcons!!
     }

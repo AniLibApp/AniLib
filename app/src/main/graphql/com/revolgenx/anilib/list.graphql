@@ -147,6 +147,63 @@ query MediaListEntryQuery(
 
 
 
+
+query MediaListComparePageQuery(
+    $page:Int,
+    $perPage:Int,
+    $userId:Int,
+    $userName:String,
+    $type:MediaType,
+){
+    user: User(id:$userId
+        , name:$userName){
+        id,
+        name,
+        mediaListOptions{
+            scoreFormat
+        }
+    }
+    page: Page(page:$page, perPage:$perPage) @nonnull{
+        pageInfo @nonnull{
+            ... pageInfo
+        }
+        mediaList(userId:$userId
+            , userName:$userName
+            , type:$type
+            , compareWithAuthList: true,
+            , status_not: PLANNING
+            , sort: [SCORE_DESC]){
+            id
+            score
+            status
+            user{id}
+            media{
+                id,
+                title {
+                    ...mediaTitle
+                }
+                coverImage {
+                    ...mediaCoverImage
+                }
+                isAdult
+                mediaListEntry {
+                    id
+                    status
+                    score
+                    user {
+                        id
+                        mediaListOptions {
+                            scoreFormat
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
 mutation SaveMediaListEntryMutation(
     $id:Int, $mediaId:Int,
     $status:MediaListStatus,

@@ -59,7 +59,7 @@ fun MediaListEntryScore(
         }
 
         ScoreFormat.POINT_10 -> {
-            CountEditor(count = score.toInt()) { newScore ->
+            CountEditor(count = score.toInt(), max = 10) { newScore ->
                 onScoreChange(newScore.toDouble())
             }
         }
@@ -79,7 +79,7 @@ fun MediaListEntryScore(
 
 @Composable
 fun CountEditor(
-    count: Int, max: Int? = 10, onScoreChange: (count: Int) -> Unit
+    count: Int, max: Int?, onScoreChange: (count: Int) -> Unit
 ) {
     val min = 0
     val scoreValue = "$count"
@@ -198,7 +198,8 @@ fun DoubleCountEditor(
                             if (it.length > 1) trimStart('0')
                         }
                     }.ifBlank { "0" }
-                    val newScore = text.toDoubleOrNull()?.let(::getScoreWithInRange) ?: return@TextField
+                    val newScore =
+                        text.toDoubleOrNull()?.let(::getScoreWithInRange) ?: return@TextField
                     if (newScore == count) {
                         textFieldValueState = textFieldValue.copy(scoreValue)
                     } else {
@@ -210,7 +211,8 @@ fun DoubleCountEditor(
                     textFieldValueState = textFieldValue.copy(text)
                 } else {
                     val text = textFieldValue.text.trimStart('0').trim('.').ifBlank { "0" }
-                    val newScore = text.toDoubleOrNull()?.let(::getScoreWithInRange)  ?: return@TextField
+                    val newScore =
+                        text.toDoubleOrNull()?.let(::getScoreWithInRange) ?: return@TextField
                     onScoreChange(newScore)
                 }
             },

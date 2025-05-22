@@ -2,11 +2,13 @@ package com.revolgenx.anilib.list.ui.screen
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -28,19 +30,24 @@ import androidx.compose.ui.unit.dp
 import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.data.store.MediaListDisplayMode
 import com.revolgenx.anilib.common.data.store.toStringRes
+import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.action.OverflowRadioMenuItem
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
 import com.revolgenx.anilib.common.ui.component.chip.ClearAssistChip
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
+import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcLayoutStyle
+import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreVert
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
+import com.revolgenx.anilib.common.ui.icons.appicon.IcShuffle
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
@@ -72,6 +79,7 @@ private fun MediaListScreenContent(
 ) {
     val openFilterBottomSheet = rememberBottomSheetState()
     val scope = rememberCoroutineScope()
+    val navigator = localNavigator()
 
 
     var active by rememberSaveable { mutableStateOf(false) }
@@ -113,12 +121,18 @@ private fun MediaListScreenContent(
                         onActiveChange = {
                             active = it
                         },
-                        placeholder = { Text(text = stringResource(id = if (isAnime) I18nR.string.search_anime else I18nR.string.search_manga)) },
-                        leadingIcon = {
-                            Icon(
-                                imageVector = AppIcons.IcSearch,
-                                contentDescription = stringResource(id = if (isAnime) I18nR.string.search_anime else I18nR.string.search_manga)
-                            )
+                        placeholder = {
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                Text(text = stringResource(id = if (isAnime) I18nR.string.search_anime else I18nR.string.search_manga))
+                                Icon(
+                                    modifier = Modifier.size(16.dp),
+                                    imageVector = AppIcons.IcSearch,
+                                    contentDescription = stringResource(id = if (isAnime) I18nR.string.search_anime else I18nR.string.search_manga)
+                                )
+                            }
                         },
                         trailingIcon = {
                             Row {
@@ -164,6 +178,19 @@ private fun MediaListScreenContent(
                                         imageVector = AppIcons.IcFilter,
                                         contentDescription = stringResource(id = I18nR.string.filter)
                                     )
+                                }
+
+
+                                OverflowMenu(icon = AppIcons.IcMoreVert) { isOpen ->
+                                    OverflowMenuItem(
+                                        textRes = anilib.i18n.R.string.open_random_list_entry,
+                                        icon = AppIcons.IcShuffle
+                                    ) {
+                                        isOpen.value = false
+                                        viewModel.getRandomMedia()?.media?.let {
+                                            navigator.mediaScreen(mediaId = it.id, type = it.type)
+                                        }
+                                    }
                                 }
                             }
                         }

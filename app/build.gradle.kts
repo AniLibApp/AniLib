@@ -23,8 +23,8 @@ android {
     defaultConfig {
         applicationId = "com.revolgenx.anilib"
 
-        versionCode = 49
-        versionName = "2.0.7"
+        versionCode = 50
+        versionName = "2.0.8"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -144,8 +144,6 @@ dependencies {
     billing()
 
     implementation("com.materialkolor:material-kolor:1.4.4")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:core:1.3.0")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:color:1.3.0")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

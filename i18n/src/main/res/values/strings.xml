@@ -571,4 +571,8 @@
     <string name="failed">Failed</string>
     <string name="billing_service_status">Billing Service Status: %1$s</string>
     <string name="show_ads">Show Ads</string>
+    <string name="open_random_list_entry">Open random list entry</string>
+    <string name="compare_with_your_list">Compare with your list</string>
+    <string name="your_score">Your score</string>
+    <string name="s_other_score">%1$s score</string>
 </resources>

@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+
+## [v2.0.8]
+## Added
+- Added option to open a random entry from your media list.
+- Added compare with your media list using another user's list.
+
+## Fixed
+- Fixed issue where manga volumes wouldn't display correctly beyond volume 10.
+
+
+## [v2.0.7]
 ## Added
 - Added Polish language by paplyke
 
@@ -13,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fix crash with new API 35 when removing last item from list (issue)[https://youtrack.jetbrains.com/issue/KT-71375/Prevent-Kotlins-removeFirst-and-removeLast-from-causing-crashes-on-Android-14-and-below-after-upgrading-to-Android-API-Level-35]
 
 
-## v[2.0.6] 
+## [v2.0.6] 
 ### Added
 - Add color picker [#101](https://github.com/AniLibApp/AniLib/issues/101)
 - Added a one-time purchase to remove ads and support the app — thank you for your support! 💖
@@ -71,6 +82,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Note**: Any missing feature like filter settings will be added later on. ML translate is removed and won\'t be added.
 - **Enjoy AniLib!**
 
+
+[v2.0.8]: https://github.com/AniLibApp/AniLib/compare/v2.0.7...v2.0.8
+[v2.0.7]: https://github.com/AniLibApp/AniLib/compare/v2.0.6...v2.0.7
 [v2.0.6]: https://github.com/AniLibApp/AniLib/compare/v2.0.3...v2.0.6
 [v2.0.3]: https://github.com/AniLibApp/AniLib/compare/v2.0.2...v2.0.3
 [v2.0.2]: https://github.com/AniLibApp/AniLib/compare/v2.0.1...v2.0.2

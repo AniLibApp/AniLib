@@ -256,4 +256,6 @@ abstract class MediaListViewModel(
         }
     }
 
+    fun getRandomMedia() = mediaListCollection.randomOrNull()
+
 }

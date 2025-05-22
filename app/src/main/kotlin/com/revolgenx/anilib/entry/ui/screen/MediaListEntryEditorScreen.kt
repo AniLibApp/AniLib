@@ -303,6 +303,7 @@ private fun MediaListEditScreenContent(
                         ) {
                             CountEditor(
                                 count = entryField.repeat ?: 0,
+                                max = null
                             ) { count ->
                                 entryField.repeat = count
                             }
@@ -364,6 +365,7 @@ private fun MediaListEditScreenContent(
                             ) {
                                 CountEditor(
                                     count = entryField.progressVolumes ?: 0,
+                                    max = media.volumes
                                 ) { count ->
                                     entryField.progressVolumes = count
                                 }

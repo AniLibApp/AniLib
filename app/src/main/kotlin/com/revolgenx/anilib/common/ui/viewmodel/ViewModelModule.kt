@@ -46,6 +46,7 @@ import com.revolgenx.anilib.list.ui.viewmodel.AnimeListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.AnimeListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
+import com.revolgenx.anilib.list.ui.viewmodel.MediaListCompareViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterFilterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaCharacterViewModel
 import com.revolgenx.anilib.media.ui.viewmodel.MediaRecommendationViewModel
@@ -268,6 +269,7 @@ val viewModelModules = module {
     viewModel { MangaListViewModel(get(), get(), get(), mangaListFilterDataStore()) }
     viewModel { AnimeListFilterViewModel(get()) }
     viewModel { MangaListFilterViewModel(get()) }
+    viewModel { MediaListCompareViewModel(get()) }
 
     //activity union
     viewModel {

@@ -168,38 +168,46 @@ fun MediaListContent(
                     ) { mediaList ->
                         mediaList ?: return@LazyPagingList
 
-                        val openMediaListEditorScreen = {
-                            if (isLoggedIn) {
-                                navigator.mediaListEntryEditorScreen(mediaId = mediaList.mediaId)
-                            } else {
-                                snackbar.showLoginMsg(context = context, scope = scope)
+                        val openMediaListEditorScreen = remember(isLoggedIn) {
+                            {
+                                if (isLoggedIn) {
+                                    navigator.mediaListEntryEditorScreen(mediaId = mediaList.mediaId)
+                                } else {
+                                    snackbar.showLoginMsg(context = context, scope = scope)
+                                }
                             }
                         }
 
-                        val onMediaClick = {
-                            if (openEditorScreen.value == true) {
-                                openMediaListEditorScreen()
-                            } else {
-                                navigator.mediaScreen(
-                                    mediaId = mediaList.mediaId,
-                                    type = mediaList.media?.type
-                                )
+                        val onMediaClick = remember {
+                            {
+                                if (openEditorScreen.value == true) {
+                                    openMediaListEditorScreen()
+                                } else {
+                                    navigator.mediaScreen(
+                                        mediaId = mediaList.mediaId,
+                                        type = mediaList.media?.type
+                                    )
+                                }
                             }
                         }
 
-                        val onMediaLongClick = {
-                            if (openEditorScreen.value == true) {
-                                navigator.mediaScreen(
-                                    mediaId = mediaList.mediaId,
-                                    type = mediaList.media?.type
-                                )
-                            } else {
-                                openMediaListEditorScreen()
+                        val onMediaLongClick = remember {
+                            {
+                                if (openEditorScreen.value == true) {
+                                    navigator.mediaScreen(
+                                        mediaId = mediaList.mediaId,
+                                        type = mediaList.media?.type
+                                    )
+                                } else {
+                                    openMediaListEditorScreen()
+                                }
                             }
                         }
 
-                        val increaseProgress = {
-                            viewModel.increaseProgress(mediaList)
+                        val increaseProgress = remember {
+                            {
+                                viewModel.increaseProgress(mediaList)
+                            }
                         }
 
                         when (displayMode) {

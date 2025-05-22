@@ -30,19 +30,25 @@ import com.dokar.sheets.rememberBottomSheetState
 import com.revolgenx.anilib.common.data.store.MediaListDisplayMode
 import com.revolgenx.anilib.common.data.store.toStringRes
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
+import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
+import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.action.OverflowRadioMenuItem
 import com.revolgenx.anilib.common.ui.component.chip.ClearAssistChip
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
+import com.revolgenx.anilib.common.ui.composition.localNavigator
+import com.revolgenx.anilib.common.ui.composition.localUser
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcBook
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
+import com.revolgenx.anilib.common.ui.icons.appicon.IcCompare
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcLayoutStyle
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMedia
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
+import com.revolgenx.anilib.common.ui.icons.appicon.IcShuffle
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.screen.voyager.AndroidScreen
 import com.revolgenx.anilib.common.util.OnClick
@@ -52,6 +58,7 @@ import com.revolgenx.anilib.list.ui.viewmodel.MangaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MangaListViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
+import com.revolgenx.anilib.type.MediaType
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import anilib.i18n.R as I18nR
@@ -90,6 +97,10 @@ private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
         }
     }
 
+
+    val user = localUser()
+    val isLoggedIn = user.isLoggedIn
+
     val animeSearchBar = rememberSaveable { mutableStateOf(false) }
     val mangaSearchBar = rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
@@ -102,6 +113,8 @@ private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
     val mangaListFilterViewModel: MangaListFilterViewModel = koinViewModel()
 
     val filterBottomSheetState = rememberBottomSheetState()
+
+    val navigator = localNavigator()
 
     animeListViewModel.field.userId = userId
     mangaListViewModel.field.userId = userId
@@ -122,35 +135,73 @@ private fun UserMediaListScreenContent(userId: Int, mangaTab: Boolean) {
 
             OverflowMenu(
                 icon = AppIcons.IcLayoutStyle
-            ) { isOpen ->
+            ) { menuIsOpen ->
                 MediaListDisplayMode.entries.forEach {
                     OverflowRadioMenuItem(
                         text = stringResource(id = it.toStringRes()),
                         selected = displayMode.value == it.value
                     ) {
-                        isOpen.value = false
+                        menuIsOpen.value = false
                         scope.launch {
                             displayModePref.set(it.value)
                         }
                     }
                 }
             }
-            ActionMenu(icon = AppIcons.IcFilter) {
-                scope.launch {
+            OverflowMenu {menuIsOpen->
+                OverflowMenuItem(textRes = anilib.i18n.R.string.filter, icon = AppIcons.IcFilter) {
+                    menuIsOpen.value = false
+                    scope.launch {
+                        when (pagerState.currentPage) {
+                            0 -> {
+                                if (animeListViewModel.isSuccess) {
+                                    animeListFilterViewModel.filter =
+                                        animeListViewModel.filter.copy()
+                                    filterBottomSheetState.expand()
+                                }
+                            }
+
+                            1 -> {
+                                if (mangaListViewModel.isSuccess) {
+                                    mangaListFilterViewModel.filter =
+                                        mangaListViewModel.filter.copy()
+                                    filterBottomSheetState.expand()
+                                }
+                            }
+                        }
+                    }
+                }
+                OverflowMenuItem(
+                    textRes = anilib.i18n.R.string.open_random_list_entry,
+                    icon = AppIcons.IcShuffle
+                ) {
+                    menuIsOpen.value = false
                     when (pagerState.currentPage) {
                         0 -> {
-                            if(animeListViewModel.isSuccess){
-                                animeListFilterViewModel.filter = animeListViewModel.filter.copy()
-                                filterBottomSheetState.expand()
-                            }
+                           animeListViewModel.getRandomMedia()?.let {
+                               navigator.mediaScreen(mediaId = it.mediaId, type = MediaType.ANIME)
+                           }
                         }
-
                         1 -> {
-                            if(mangaListViewModel.isSuccess) {
-                                mangaListFilterViewModel.filter = mangaListViewModel.filter.copy()
-                                filterBottomSheetState.expand()
+                            mangaListViewModel.getRandomMedia()?.let {
+                                navigator.mediaScreen(mediaId = it.mediaId, type = MediaType.MANGA)
                             }
                         }
+                    }
+                }
+
+                if (!animeListViewModel.isLoggedInUserList && isLoggedIn) {
+                    OverflowMenuItem(
+                        textRes = anilib.i18n.R.string.compare_with_your_list,
+                        icon = AppIcons.IcCompare
+                    ) {
+                        menuIsOpen.value = false
+                        navigator.push(
+                            MediaListCompareScreen(
+                                type = if (pagerState.currentPage == 0) MediaType.ANIME else MediaType.MANGA,
+                                userId = userId
+                            )
+                        )
                     }
                 }
             }
