@@ -1,6 +1,7 @@
 package com.revolgenx.anilib.list.ui.screen
 
 import MediaListCompactColumnCard
+import android.content.Context
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -13,11 +14,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -27,6 +30,7 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import cafe.adriel.voyager.navigator.Navigator
 import com.dokar.sheets.BottomSheetState
 import com.dokar.sheets.m3.BottomSheet
 import com.dokar.sheets.m3.BottomSheetDefaults
@@ -71,10 +75,12 @@ import com.revolgenx.anilib.list.ui.component.MediaListColumnCard
 import com.revolgenx.anilib.list.ui.component.MediaListCompactRowCard
 import com.revolgenx.anilib.list.ui.component.MediaListCompactRowColumnCard
 import com.revolgenx.anilib.list.ui.component.MediaListRowCard
+import com.revolgenx.anilib.list.ui.model.MediaListModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListFilterViewModel
 import com.revolgenx.anilib.list.ui.viewmodel.MediaListViewModel
 import com.revolgenx.anilib.media.ui.model.toMediaStatus
 import com.revolgenx.anilib.type.MediaFormat
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import anilib.i18n.R as I18nR
@@ -105,23 +111,18 @@ fun MediaListContent(
 
     val snackbar = localSnackbarHostState()
 
-    ScreenScaffold(
-        topBar = {},
-        floatingActionButton = {
-            DisappearingFAB(
-                scrollState = scrollState,
-                content = {
-                    Box(modifier = Modifier.padding(horizontal = 20.dp)) {
-                        Text(text = viewModel.currentGroupName)
-                    }
-                }) {
-                openGroupNameBottomSheet.value = true
-            }
+    ScreenScaffold(topBar = {}, floatingActionButton = {
+        DisappearingFAB(
+            scrollState = scrollState, content = {
+                Box(modifier = Modifier.padding(horizontal = 20.dp)) {
+                    Text(text = viewModel.currentGroupName)
+                }
+            }) {
+            openGroupNameBottomSheet.value = true
         }
-    ) {
+    }) {
         ResourceScreen(
-            viewModel = viewModel,
-            showRetry = false
+            viewModel = viewModel, showRetry = false
         ) {
             Box(
                 modifier = Modifier.nestedScroll(bottomNestedScrollConnection),
@@ -164,101 +165,164 @@ fun MediaListContent(
                         scrollState = scrollableState,
                         onRefresh = {
                             viewModel.refresh()
-                        }
-                    ) { mediaList ->
+                        }) { mediaList ->
                         mediaList ?: return@LazyPagingList
 
-                        val openMediaListEditorScreen = remember(isLoggedIn) {
-                            {
-                                if (isLoggedIn) {
-                                    navigator.mediaListEntryEditorScreen(mediaId = mediaList.mediaId)
-                                } else {
-                                    snackbar.showLoginMsg(context = context, scope = scope)
-                                }
-                            }
-                        }
-
-                        val onMediaClick = remember {
-                            {
-                                if (openEditorScreen.value == true) {
-                                    openMediaListEditorScreen()
-                                } else {
-                                    navigator.mediaScreen(
-                                        mediaId = mediaList.mediaId,
-                                        type = mediaList.media?.type
-                                    )
-                                }
-                            }
-                        }
-
-                        val onMediaLongClick = remember {
-                            {
-                                if (openEditorScreen.value == true) {
-                                    navigator.mediaScreen(
-                                        mediaId = mediaList.mediaId,
-                                        type = mediaList.media?.type
-                                    )
-                                } else {
-                                    openMediaListEditorScreen()
-                                }
-                            }
-                        }
-
-                        val increaseProgress = remember {
-                            {
-                                viewModel.increaseProgress(mediaList)
-                            }
-                        }
 
                         when (displayMode) {
                             MediaListDisplayMode.LIST -> {
                                 MediaListRowCard(
                                     list = mediaList,
                                     showIncreaseButton = viewModel.isLoggedInUserList,
-                                    increaseProgress = increaseProgress,
-                                    onClick = onMediaClick,
-                                    onLongClick = onMediaLongClick
-                                )
+                                    increaseProgress = {
+                                        viewModel.increaseProgress(mediaList)
+                                    },
+                                    onClick = {
+                                        onMediaClick(
+                                            openEditorScreen = openEditorScreen.value == true,
+                                            navigator = navigator,
+                                            mediaList = mediaList,
+                                            context = context,
+                                            scope = scope,
+                                            snackbar = snackbar,
+                                            isLoggedIn = isLoggedIn
+                                        )
+                                    },
+                                    onLongClick = {
+                                        onMediaLongClick(
+                                            openEditorScreen = openEditorScreen.value == true,
+                                            navigator = navigator,
+                                            mediaList = mediaList,
+                                            context = context,
+                                            scope = scope,
+                                            snackbar = snackbar,
+                                            isLoggedIn = isLoggedIn
+                                        )
+                                    })
                             }
 
                             MediaListDisplayMode.LIST_COMPACT -> {
                                 MediaListCompactRowCard(
                                     list = mediaList,
                                     showIncreaseButton = viewModel.isLoggedInUserList,
-                                    increaseProgress = increaseProgress,
-                                    onClick = onMediaClick,
-                                    onLongClick = onMediaLongClick
-                                )
+                                    increaseProgress = {
+                                        viewModel.increaseProgress(mediaList)
+                                    },
+                                    onClick = {
+                                        onMediaClick(
+                                            openEditorScreen = openEditorScreen.value == true,
+                                            navigator = navigator,
+                                            mediaList = mediaList,
+                                            context = context,
+                                            scope = scope,
+                                            snackbar = snackbar,
+                                            isLoggedIn = isLoggedIn
+                                        )
+                                    },
+                                    onLongClick = {
+                                        onMediaLongClick(
+                                            openEditorScreen = openEditorScreen.value == true,
+                                            navigator = navigator,
+                                            mediaList = mediaList,
+                                            context = context,
+                                            scope = scope,
+                                            snackbar = snackbar,
+                                            isLoggedIn = isLoggedIn
+                                        )
+                                    })
                             }
 
                             MediaListDisplayMode.LIST_GRID_COMPACT -> {
                                 MediaListCompactRowColumnCard(
                                     list = mediaList,
                                     showIncreaseButton = viewModel.isLoggedInUserList,
-                                    increaseProgress = increaseProgress,
-                                    onClick = onMediaClick,
-                                    onLongClick = onMediaLongClick
-                                )
+                                    increaseProgress = {
+                                        viewModel.increaseProgress(mediaList)
+                                    },
+                                    onClick = {
+                                        onMediaClick(
+                                            openEditorScreen = openEditorScreen.value == true,
+                                            navigator = navigator,
+                                            mediaList = mediaList,
+                                            context = context,
+                                            scope = scope,
+                                            snackbar = snackbar,
+                                            isLoggedIn = isLoggedIn
+                                        )
+                                    },
+                                    onLongClick = {
+                                        onMediaLongClick(
+                                            openEditorScreen = openEditorScreen.value == true,
+                                            navigator = navigator,
+                                            mediaList = mediaList,
+                                            context = context,
+                                            scope = scope,
+                                            snackbar = snackbar,
+                                            isLoggedIn = isLoggedIn
+                                        )
+                                    })
                             }
 
                             MediaListDisplayMode.GRID -> {
                                 MediaListColumnCard(
                                     list = mediaList,
                                     showIncreaseButton = viewModel.isLoggedInUserList,
-                                    increaseProgress = increaseProgress,
-                                    onClick = onMediaClick,
-                                    onLongClick = onMediaLongClick
-                                )
+                                    increaseProgress = {
+                                        viewModel.increaseProgress(mediaList)
+                                    },
+                                    onClick = {
+                                        onMediaClick(
+                                            openEditorScreen = openEditorScreen.value == true,
+                                            navigator = navigator,
+                                            mediaList = mediaList,
+                                            context = context,
+                                            scope = scope,
+                                            snackbar = snackbar,
+                                            isLoggedIn = isLoggedIn
+                                        )
+                                    },
+                                    onLongClick = {
+                                        onMediaLongClick(
+                                            openEditorScreen = openEditorScreen.value == true,
+                                            navigator = navigator,
+                                            mediaList = mediaList,
+                                            context = context,
+                                            scope = scope,
+                                            snackbar = snackbar,
+                                            isLoggedIn = isLoggedIn
+                                        )
+                                    })
                             }
 
                             MediaListDisplayMode.GRID_COMPACT -> {
                                 MediaListCompactColumnCard(
                                     list = mediaList,
                                     showIncreaseButton = viewModel.isLoggedInUserList,
-                                    increaseProgress = increaseProgress,
-                                    onClick = onMediaClick,
-                                    onLongClick = onMediaLongClick
-                                )
+                                    increaseProgress = {
+                                        viewModel.increaseProgress(mediaList)
+                                    },
+                                    onClick = {
+                                        onMediaClick(
+                                            openEditorScreen = openEditorScreen.value == true,
+                                            navigator = navigator,
+                                            mediaList = mediaList,
+                                            context = context,
+                                            scope = scope,
+                                            snackbar = snackbar,
+                                            isLoggedIn = isLoggedIn
+                                        )
+                                    },
+                                    onLongClick = {
+                                        onMediaLongClick(
+                                            openEditorScreen = openEditorScreen.value == true,
+                                            navigator = navigator,
+                                            mediaList = mediaList,
+                                            context = context,
+                                            scope = scope,
+                                            snackbar = snackbar,
+                                            isLoggedIn = isLoggedIn
+                                        )
+                                    })
                             }
                         }
                     }
@@ -287,6 +351,50 @@ fun MediaListContent(
 
 }
 
+private fun onMediaLongClick(
+    openEditorScreen: Boolean,
+    navigator: Navigator,
+    mediaList: MediaListModel,
+    isLoggedIn: Boolean,
+    context: Context,
+    scope: CoroutineScope,
+    snackbar: SnackbarHostState,
+) {
+    if (openEditorScreen) {
+        navigator.mediaScreen(
+            mediaId = mediaList.mediaId, type = mediaList.media?.type
+        )
+    } else {
+        if (isLoggedIn) {
+            navigator.mediaListEntryEditorScreen(mediaId = mediaList.mediaId)
+        } else {
+            snackbar.showLoginMsg(context = context, scope = scope)
+        }
+    }
+}
+
+private fun onMediaClick(
+    openEditorScreen: Boolean,
+    navigator: Navigator,
+    isLoggedIn: Boolean,
+    context: Context,
+    scope: CoroutineScope,
+    snackbar: SnackbarHostState,
+    mediaList: MediaListModel
+) {
+    if (openEditorScreen) {
+        if (isLoggedIn) {
+            navigator.mediaListEntryEditorScreen(mediaId = mediaList.mediaId)
+        } else {
+            snackbar.showLoginMsg(context = context, scope = scope)
+        }
+    } else {
+        navigator.mediaScreen(
+            mediaId = mediaList.mediaId, type = mediaList.media?.type
+        )
+    }
+}
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -301,8 +409,7 @@ fun MediaListGroupNameBottomSheet(
 
     if (openBottomSheet.value) {
         ModalBottomSheet(
-            onDismissRequest = { openBottomSheet.value = false },
-            sheetState = bottomSheetState
+            onDismissRequest = { openBottomSheet.value = false }, sheetState = bottomSheetState
         ) {
             MediaListGroupNameContent(
                 groupNamesWithCount = groupNamesWithCount,
@@ -310,8 +417,7 @@ fun MediaListGroupNameBottomSheet(
                 onGroupNameSelected = {
                     onGroupNameSelected(it)
                     scope.hideBottomSheet(bottomSheetState, openBottomSheet)
-                }
-            )
+                })
         }
     }
 }
@@ -350,13 +456,11 @@ private fun MediaListFilterBottomSheet(
         behaviors = BottomSheetDefaults.dialogSheetBehaviors(navigationBarColor = BottomSheetDefaults.backgroundColor)
     ) {
         MediaListFilterBottomSheetContent(
-            viewModel = viewModel,
-            dismiss = {
+            viewModel = viewModel, dismiss = {
                 scope.launch {
                     bottomSheetState.collapse()
                 }
-            }
-        ) {
+            }) {
             onFilter(it)
         }
     }
@@ -370,18 +474,14 @@ fun MediaListFilterBottomSheetContent(
     onFilter: (filter: MediaListCollectionFilter) -> Unit,
 ) {
     Column(
-        modifier = modifier
-            .padding(bottom = 4.dp)
+        modifier = modifier.padding(bottom = 4.dp)
     ) {
-        BottomSheetConfirmation(
-            onConfirm = {
-                onFilter.invoke(viewModel.filter)
-                dismiss()
-            },
-            onDismiss = {
-                dismiss()
-            }
-        )
+        BottomSheetConfirmation(onConfirm = {
+            onFilter.invoke(viewModel.filter)
+            dismiss()
+        }, onDismiss = {
+            dismiss()
+        })
 
         Column(
             modifier = Modifier
@@ -401,15 +501,13 @@ fun MediaListFilterBottomSheetContent(
                             selectedFormats.contains(
                                 index
                             )
-                        ),
-                        index to s
+                        ), index to s
                     )
                 },
             ) { selectedItems ->
-                viewModel.filter = viewModel.filter.copy(
-                    formatsIn = selectedItems.takeIf { it.isNotEmpty() }
-                        ?.mapNotNull { MediaFormat.entries.getOrNull(it.first) }
-                )
+                viewModel.filter =
+                    viewModel.filter.copy(formatsIn = selectedItems.takeIf { it.isNotEmpty() }
+                        ?.mapNotNull { MediaFormat.entries.getOrNull(it.first) })
             }
             SelectMenu(
                 label = stringResource(id = I18nR.string.status),
@@ -429,9 +527,8 @@ fun MediaListFilterBottomSheetContent(
                 selectedItemPosition = genreList.indexOf(viewModel.filter.genre),
                 showNoneItem = true
             ) { selectedItem ->
-                viewModel.filter = viewModel.filter.copy(
-                    genre = selectedItem.takeIf { it > -1 }?.let { genreList[it] }
-                )
+                viewModel.filter = viewModel.filter.copy(genre = selectedItem.takeIf { it > -1 }
+                    ?.let { genreList[it] })
             }
 
             val sort = viewModel.filter.sort
@@ -447,8 +544,7 @@ fun MediaListFilterBottomSheetContent(
             val sortMenus =
                 stringArrayResource(id = R.array.media_list_collection_sort).mapIndexed { index, s ->
                     SortMenuItem(
-                        s,
-                        if (index == selectedSortIndex) selectedSortOrder else SortOrder.NONE
+                        s, if (index == selectedSortIndex) selectedSortOrder else SortOrder.NONE
                     )
                 }
 

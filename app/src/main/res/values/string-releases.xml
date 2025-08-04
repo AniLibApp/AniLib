@@ -6,6 +6,14 @@
         - **If the UI is too big**, you can reduce it from **Settings → Appearance → Display Scale**. \n
         - **If there are too many ads**, you can change the frequency from **Settings → Support → Ads**. \n
 
+        ## v2.0.8 \n
+        ## Added \n
+        - Added option to open a random entry from your media list. \n
+        - Added compare with your media list using another user\'s list. \n
+
+        ## Fixed \n
+        - Fixed issue where manga volumes wouldn\'t display correctly beyond volume 10. \n
+
 
         ## v2.0.7 \n
         ### Added \n
