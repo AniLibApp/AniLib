@@ -6,6 +6,11 @@
         - **If the UI is too big**, you can reduce it from **Settings → Appearance → Display Scale**. \n
         - **If there are too many ads**, you can change the frequency from **Settings → Support → Ads**. \n
 
+        ## v2.0.9 \n
+        ## Fixed \n
+        - Incorrect data persists when searching in or switching between anime/manga lists. \n
+
+
         ## v2.0.8 \n
         ## Added \n
         - Added option to open a random entry from your media list. \n
