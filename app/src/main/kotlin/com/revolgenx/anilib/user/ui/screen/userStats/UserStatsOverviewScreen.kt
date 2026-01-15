@@ -26,11 +26,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
-import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
-import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
-import com.patrykandpatrick.vico.core.marker.Marker
-import com.patrykandpatrick.vico.core.scroll.InitialScroll
+import com.patrykandpatrick.vico.compose.common.ProvideVicoTheme
+import com.patrykandpatrick.vico.compose.m3.common.rememberM3VicoTheme
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.app.ui.viewmodel.ScrollTarget
 import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
@@ -39,6 +36,7 @@ import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.common.ui.component.button.SegmentedButton
 import com.revolgenx.anilib.common.ui.component.chart.ColumnChart
 import com.revolgenx.anilib.common.ui.component.chart.LineChart
+import com.revolgenx.anilib.common.ui.component.chart.Marker
 import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.common.HeaderBox
@@ -62,6 +60,9 @@ import com.revolgenx.anilib.user.ui.model.statistics.BaseStatisticModel
 import com.revolgenx.anilib.user.ui.model.statistics.UserStatisticsModel
 import com.revolgenx.anilib.user.ui.viewmodel.userStats.UserStatsOverviewViewModel
 import kotlinx.coroutines.flow.collectLatest
+import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
 import anilib.i18n.R as I18nR
 
 @Composable
@@ -88,7 +89,7 @@ fun UserStatsOverviewScreen(
     ) { user ->
         val stats = user.statistics?.anime ?: user.statistics?.manga ?: return@ResourceScreen
 
-        ProvideChartStyle(m3ChartStyle()) {
+        ProvideVicoTheme(rememberM3VicoTheme()) {
             val marker = rememberMarker()
 
             Column(
@@ -138,9 +139,9 @@ private fun UserStatsYearSection(
     OutlinedCard {
         LineChart(
             marker = marker,
-            model = entryModel,
-            spacing = 50.dp,
-            initialScroll = InitialScroll.End
+            series = entryModel,
+//            spacing = 50.dp,
+//            initialScroll = InitialScroll.End
         )
     }
 }
@@ -168,9 +169,9 @@ private fun UserStatsReleaseYearSection(
     OutlinedCard {
         LineChart(
             marker = marker,
-            model = entryModel,
-            spacing = 50.dp,
-            initialScroll = InitialScroll.End
+            series = entryModel,
+//            spacing = 50.dp,
+//            initialScroll = InitialScroll.End
         )
     }
 }
@@ -253,12 +254,10 @@ private fun UserStatsMediaCountSection(
     OutlinedCard() {
         ColumnChart(
             marker = marker,
-            model = entryModel,
-            bottomAxis = rememberBottomAxis(
-                valueFormatter = { value, _ ->
-                    stats.lengths?.get(value.toInt())?.length ?: unknown
-                }
-            )
+            series = entryModel,
+            bottomAxisValueFormatter = { value ->
+                stats.lengths?.get(value.toInt())?.length ?: unknown
+            }
         )
     }
 }
@@ -287,7 +286,7 @@ private fun UserStatsScoreSection(
     OutlinedCard() {
         ColumnChart(
             marker = marker,
-            model = entryModel
+            series = entryModel
         )
     }
 }

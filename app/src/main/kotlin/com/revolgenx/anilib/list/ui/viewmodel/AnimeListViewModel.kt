@@ -1,5 +1,6 @@
 package com.revolgenx.anilib.list.ui.viewmodel
 
+import com.revolgenx.anilib.common.data.exporter.MALExportService
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.MediaListFilterDataStore
 import com.revolgenx.anilib.entry.data.service.MediaListEntryService
@@ -12,11 +13,13 @@ class AnimeListViewModel(
     mediaListEntryService: MediaListEntryService,
     appPreferencesDataStore: AppPreferencesDataStore,
     mediaListFilterDataStore: MediaListFilterDataStore,
+    malExporter: MALExportService,
 ) : MediaListViewModel(
     mediaListService,
     mediaListEntryService,
     appPreferencesDataStore,
     mediaListFilterDataStore,
+    malExporter
 ) {
     override val field: MediaListCollectionField = MediaListCollectionField(MediaType.ANIME)
 }

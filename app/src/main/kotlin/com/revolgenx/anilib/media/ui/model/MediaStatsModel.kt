@@ -1,11 +1,8 @@
 package com.revolgenx.anilib.media.ui.model
 
-import com.patrykandpatrick.vico.core.entry.ChartEntryModel
-import com.patrykandpatrick.vico.core.entry.FloatEntry
-import com.patrykandpatrick.vico.core.entry.entryModelOf
-import com.patrykandpatrick.vico.core.entry.entryOf
 import com.revolgenx.anilib.MediaStatsQuery
 import com.revolgenx.anilib.common.ext.nullIfEmpty
+import com.revolgenx.anilib.common.ui.component.chart.ChartEntryModel
 import com.revolgenx.anilib.common.ui.model.stats.ScoreDistributionModel
 import com.revolgenx.anilib.common.ui.model.stats.StatusDistributionModel
 import com.revolgenx.anilib.type.MediaListStatus
@@ -13,16 +10,16 @@ import com.revolgenx.anilib.type.MediaRankType
 import com.revolgenx.anilib.type.MediaSeason
 
 
-data class MediaStatsModel(
-    var rankings: List<MediaRankModel>?,
-    var trends: List<MediaTrendModel>?,
-    var statusDistribution: List<StatusDistributionModel>?,
-    var scoreDistribution: List<ScoreDistributionModel>?,
-    var scoreDistributionEntry: ChartEntryModel?,
-    var trendsEntries: ChartEntryModel?,
-    var airingTrends: List<AiringTrendsModel>?,
-    var airingWatchersProgressionEntries: ChartEntryModel?,
-    var airingScoreProgressionEntries: ChartEntryModel?
+class MediaStatsModel(
+    val rankings: List<MediaRankModel>?,
+    val trends: List<MediaTrendModel>?,
+    val statusDistribution: List<StatusDistributionModel>?,
+    val scoreDistribution: List<ScoreDistributionModel>?,
+    val scoreDistributionEntry: ChartEntryModel?,
+    val trendsEntries: ChartEntryModel?,
+    val airingTrends: List<AiringTrendsModel>?,
+    val airingWatchersProgressionEntries: ChartEntryModel?,
+    val airingScoreProgressionEntries: ChartEntryModel?
 )
 
 data class MediaRankModel(
@@ -53,7 +50,6 @@ data class AiringTrendsModel(
     val inProgress: Float
 )
 
-
 fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
     val rankings = rankings?.mapNotNull { rankData ->
         rankData?.let { rank ->
@@ -80,8 +76,8 @@ fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
     }?.nullIfEmpty()
 
     val trendsEntries = trends?.map {
-        entryOf(it.date, it.trending)
-    }?.nullIfEmpty()
+        Pair(it.date, it.trending)
+    }
 
     val statusDistribution = stats?.statusDistribution?.mapNotNull { statusData ->
         statusData?.let { status ->
@@ -90,7 +86,7 @@ fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
                 status = status.status ?: MediaListStatus.UNKNOWN__
             )
         }
-    }
+    }?.nullIfEmpty()
 
     val scoreDistribution = stats?.scoreDistribution?.mapNotNull { scoreData ->
         scoreData?.let { score ->
@@ -99,17 +95,16 @@ fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
                 score = score.score ?: 0
             )
         }
-    }?.sortedBy { it.score }
+    }?.sortedBy { it.score }?.nullIfEmpty()
 
     val scoreDistributionEntry = scoreDistribution?.map {
-        entryOf(it.score, it.amount)
-    }?.nullIfEmpty()
+        Pair(it.score, it.amount)
+    }
 
+    var airingWatchersProgressionEntries: List<Pair<Float, Float>>? = null
+    var airingScoreProgressionEntries: List<Pair<Float, Float>>? = null
 
-    var airingWatchersProgressionEntries: MutableList<FloatEntry>? = null
-    var airingScoreProgressionEntries: MutableList<FloatEntry>? = null
-
-    val airingTrends = airingTrends?.nodes?.takeIf { it.isNotEmpty() }?.mapNotNull {
+    val airingTrends = airingTrends?.nodes?.mapNotNull {
         it?.takeIf { it.episode != null }?.let { trends ->
             AiringTrendsModel(
                 episode = trends.episode!!.toFloat(),
@@ -117,24 +112,26 @@ fun MediaStatsQuery.Media.toModel(): MediaStatsModel {
                 inProgress = trends.inProgress?.toFloat() ?: 0f
             )
         }
-    }?.sortedBy { it.episode }
-        ?.also { airingTrendsModels ->
-            airingWatchersProgressionEntries = mutableListOf()
-            airingScoreProgressionEntries = mutableListOf()
-            airingTrendsModels.forEach {
-                airingWatchersProgressionEntries!! += entryOf(it.episode, it.inProgress)
-                airingScoreProgressionEntries!! += entryOf(it.episode, it.averageScore)
-            }
+    }?.sortedBy { it.episode }?.nullIfEmpty()
+
+    airingTrends?.let { airingTrendsModels ->
+        airingWatchersProgressionEntries = mutableListOf()
+        airingScoreProgressionEntries = mutableListOf()
+        airingTrendsModels.forEach {
+            airingWatchersProgressionEntries.add(Pair(it.episode, it.inProgress))
+            airingScoreProgressionEntries.add(Pair(it.episode, it.averageScore))
         }
+    }
 
     return MediaStatsModel(
         rankings = rankings,
         trends = trends,
         statusDistribution = statusDistribution,
         scoreDistribution = scoreDistribution,
-        scoreDistributionEntry = scoreDistributionEntry?.let { entryModelOf(it) },
-        trendsEntries = trendsEntries?.let { entryModelOf(it) },
+        scoreDistributionEntry = scoreDistributionEntry,
+        trendsEntries = trendsEntries,
         airingTrends = airingTrends,
-        airingWatchersProgressionEntries = airingWatchersProgressionEntries?.let { entryModelOf(it) },
-        airingScoreProgressionEntries = airingScoreProgressionEntries?.let { entryModelOf(it) })
+        airingWatchersProgressionEntries = airingWatchersProgressionEntries,
+        airingScoreProgressionEntries = airingScoreProgressionEntries
+    )
 }

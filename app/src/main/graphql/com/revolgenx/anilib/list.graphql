@@ -12,8 +12,10 @@ query MediaListCollectionQuery(
             isCompletedList: isSplitCompletedList
             entries {
                 ... mediaListEntry
+                score10: score(format: POINT_10)
                 media {
                     ... media
+                    idMal
                     synonyms
                     nextAiringEpisode {
                         episode

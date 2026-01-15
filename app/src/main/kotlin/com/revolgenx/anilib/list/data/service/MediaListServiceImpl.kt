@@ -74,7 +74,7 @@ class MediaListServiceImpl(
                                     val mediaListEntry = media?.mediaListEntry?.let { entry ->
                                         MediaListModel(
                                             id = entry.id,
-                                            status = mutableStateOf(entry.status),
+                                            listStatus = entry.status,
                                             score = entry.score,
                                             user = entry.user?.let { user ->
                                                 UserModel(
@@ -100,7 +100,7 @@ class MediaListServiceImpl(
                                             ?.copy(mediaListEntry = mediaListEntry),
                                         mediaId = media?.id ?: -1,
                                         score = mediaListCompare.score,
-                                        status = mutableStateOf(mediaListCompare.status),
+                                        listStatus = mediaListCompare.status,
                                         user = data.user?.let { user ->
                                             UserModel(
                                                 id = user.id,

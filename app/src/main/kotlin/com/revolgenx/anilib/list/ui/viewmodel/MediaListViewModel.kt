@@ -1,5 +1,7 @@
 package com.revolgenx.anilib.list.ui.viewmodel
 
+import android.content.ContentResolver
+import android.net.Uri
 import android.os.Handler
 import android.os.Looper
 import androidx.compose.runtime.derivedStateOf
@@ -8,6 +10,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewModelScope
+import com.revolgenx.anilib.common.data.exporter.MALExportService
+import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.data.store.MediaListFilterDataStore
 import com.revolgenx.anilib.common.ext.get
@@ -22,10 +26,13 @@ import com.revolgenx.anilib.list.data.service.MediaListService
 import com.revolgenx.anilib.list.data.sort.MediaListCollectionSortComparator
 import com.revolgenx.anilib.list.ui.model.MediaListCollectionModel
 import com.revolgenx.anilib.list.ui.model.MediaListModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import java.util.stream.Collectors.toList
 
 abstract class MediaListViewModel(
@@ -33,15 +40,17 @@ abstract class MediaListViewModel(
     private val mediaListEntryService: MediaListEntryService,
     private val appPreferencesDataStore: AppPreferencesDataStore,
     private val mediaListDataStore: MediaListFilterDataStore,
+    private val malExporter: MALExportService,
 ) :
     ResourceViewModel<MediaListCollectionModel, MediaListCollectionField>() {
-
 
     companion object {
         private const val searchSplitKeyword = "|#|,"
     }
 
     val searchHistory = mutableStateOf(emptyList<String>())
+    val exportState = mutableStateOf<ResourceState<Boolean>?>(null)
+    val exportMimeType = malExporter.mimeType
 
     init {
         launch {
@@ -68,12 +77,20 @@ abstract class MediaListViewModel(
 
     var filter: MediaListCollectionFilter by mutableStateOf(MediaListCollectionFilter())
     var mediaListCollection = mutableStateListOf<MediaListModel>()
-
+    var isFiltered by mutableStateOf(checkFiltered)
+    private val checkFiltered
+        get() = filter.run {
+            sort != null
+                    || year != null
+                    || genre != null
+                    || status != null
+                    || formatsIn.isNullOrEmpty().not()
+                    || isHentai != null
+        }
 
     var groupNamesWithCount by mutableStateOf(mapOf("All" to 0))
     val currentGroupName by derivedStateOf { currentGroupNameWithCount.let { "${it.first} ${it.second}" } }
     var currentGroupNameWithCount by mutableStateOf("All" to 0)
-
 
     var query by mutableStateOf("")
     var search: String = ""
@@ -95,12 +112,14 @@ abstract class MediaListViewModel(
     }
 
     override fun onInit() {
-        launch {
-            if (isLoggedInUserList) {
-                filter = mediaListDataStore.get()
+        if (isLoggedInUserList) {
+            filter = mediaListDataStore.get()
+            isFiltered = checkFiltered
+            launch {
                 mediaListDataStore.data.collect {
                     if (filter != it) {
                         filter = it
+                        isFiltered = checkFiltered
                         onFilterUpdate()
                     }
                 }
@@ -209,6 +228,7 @@ abstract class MediaListViewModel(
             }
         } else {
             this@MediaListViewModel.filter = filter
+            isFiltered = checkFiltered
             onFilterUpdate()
         }
     }
@@ -216,7 +236,7 @@ abstract class MediaListViewModel(
     fun increaseProgress(mediaList: MediaListModel) {
         mediaListEntryService.increaseProgress(mediaList)
             .onEach {
-                it?.let {listModel->
+                it?.let { listModel ->
                     mediaList.progress = listModel.progress
                     mediaList.progressState?.value = listModel.progress
                     mediaList.status.value = listModel.status.value
@@ -258,4 +278,25 @@ abstract class MediaListViewModel(
 
     fun getRandomMedia() = mediaListCollection.randomOrNull()
 
+    fun export(
+        uri: Uri,
+        contentResolver: ContentResolver
+    ) {
+        if (!isSuccess) return
+
+        launch {
+            try {
+                exportState.value = ResourceState.loading()
+                withContext(Dispatchers.IO) {
+                    contentResolver.openOutputStream(uri)?.use { outputStream ->
+                        malExporter.export(mediaListCollection, outputStream)
+                    } ?: throw Exception("Could not open output stream")
+                }
+                exportState.value = ResourceState.success(true)
+            } catch (ex: Exception) {
+                Timber.e(ex, "Failed to export to MAL")
+                exportState.value = ResourceState.error()
+            }
+        }
+    }
 }

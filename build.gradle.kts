@@ -4,16 +4,17 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
-    id("com.android.application") version "8.9.1" apply false
-    id("com.android.library") version "8.9.1" apply false
-    kotlin("android") version "2.0.20" apply false
-    kotlin("plugin.serialization") version "2.0.20" apply false
-    kotlin("plugin.compose") version "2.0.0" apply false
-    id("com.mikepenz.aboutlibraries.plugin") version "11.2.2" apply false
-    id("com.google.gms.google-services") version "4.4.2" apply false
-    id("com.google.firebase.crashlytics") version "3.0.2" apply false
+    alias(libs.plugins.android.application) apply false
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.android) apply false
+    alias(libs.plugins.kotlin.serialization) apply false
+    alias(libs.plugins.kotlin.compose) apply false
+    alias(libs.plugins.kotlin.parcelize) apply false
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
+    alias(libs.plugins.apollo) apply false
+    alias(libs.plugins.aboutlibraries) apply false
 }
-
 
 subprojects {
     tasks.withType<KotlinJvmCompile>().configureEach {
@@ -24,17 +25,18 @@ subprojects {
 
     plugins.withType<BasePlugin> {
         configure<BaseExtension> {
-            compileSdkVersion(AndroidConfig.compileSdk)
+            compileSdkVersion(libs.versions.android.compileSdk.get().toInt())
+
             defaultConfig {
-                minSdk = AndroidConfig.minSdk
-                targetSdk = AndroidConfig.targetSdk
+                minSdk = libs.versions.android.minSdk.get().toInt()
+                targetSdk = libs.versions.android.targetSdk.get().toInt()
             }
 
             compileOptions {
                 sourceCompatibility = JavaVersion.VERSION_17
                 targetCompatibility = JavaVersion.VERSION_17
             }
-
         }
     }
 }
+

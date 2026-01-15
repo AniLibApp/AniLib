@@ -575,4 +575,7 @@
     <string name="compare_with_your_list">Compare with your list</string>
     <string name="your_score">Your score</string>
     <string name="s_other_score">%1$s score</string>
+    <string name="export_mal">Export(MAL) 🚧</string>
+    <string name="exporting">Exporting</string>
+    <string name="successfully_exported">Successfully exported</string>
 </resources>

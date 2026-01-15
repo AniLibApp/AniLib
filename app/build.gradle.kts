@@ -2,29 +2,25 @@ import com.android.build.api.dsl.ApplicationBuildType
 import java.io.FileInputStream
 import java.util.*
 
-
 plugins {
-    id("com.android.application")
-    kotlin("android")
-    kotlin("plugin.serialization")
-    kotlin("plugin.parcelize")
-    kotlin("plugin.compose")
-    id("com.apollographql.apollo3") version "3.7.3"
-    id("com.mikepenz.aboutlibraries.plugin")
-    id("com.google.gms.google-services")
-    id("com.google.firebase.crashlytics")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.apollo)
+    alias(libs.plugins.aboutlibraries)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
-
-
 
 android {
     namespace = "com.revolgenx.anilib"
 
     defaultConfig {
         applicationId = "com.revolgenx.anilib"
-
-        versionCode = 51
-        versionName = "2.0.9"
+        versionCode = 52
+        versionName = "2.0.10"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -68,7 +64,6 @@ android {
         isCoreLibraryDesugaringEnabled = true
     }
 
-
     buildFeatures {
         compose = true
         buildConfig = true
@@ -82,10 +77,18 @@ android {
         }
     }
 
-
     packaging {
         resources {
-            excludes.addAll(PackagingOptions.excludes)
+            // Replaced PackagingOptions.excludes with literal list
+            excludes.addAll(
+                listOf(
+                    "META-INF/LICENSE",
+                    "META-INF/LICENSE.txt",
+                    "META-INF/NOTICE",
+                    "META-INF/NOTICE.txt",
+                    "/META-INF/{AL2.0,LGPL2.1}"
+                )
+            )
         }
     }
 
@@ -96,7 +99,7 @@ android {
     }
 }
 
-fun ApplicationBuildType.loadConfig(file: String){
+fun ApplicationBuildType.loadConfig(file: String) {
     val secretProps = rootProject.loadProperties(file)
     buildConfigField(
         "String",
@@ -117,41 +120,51 @@ fun ApplicationBuildType.loadConfig(file: String){
 
 dependencies {
     implementation(project(":i18n"))
-    core()
-    compose()
-    voyager()
-    koin()
-    apollo()
-    paging()
-    timber()
-    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:${Versions.desugar}")
-    coil()
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1")
-    datastore()
-    markwon()
-    eventbus()
-    browser()
-    jwtDecode()
-    prettytime()
-    chart()
-    sheetsM3()
-    accompanist()
-    aboutLibraries()
-    reorderable()
-    glance()
-    firebase()
-    admob()
-    billing()
 
-    implementation("com.materialkolor:material-kolor:1.4.4")
+    // Replaced all extension functions with Catalog Bundles or Libraries
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.bundles.compose)
+    implementation(libs.bundles.voyager)
+    implementation(libs.bundles.koin)
+    implementation(libs.bundles.apollo)
+    implementation(libs.bundles.paging)
+    implementation(libs.timber)
 
-    testImplementation("junit:junit:4.13.2")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
-    testImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    coreLibraryDesugaring(libs.desugar.jdk.libs)
+
+    implementation(libs.bundles.coil)
+    implementation(libs.kotlinx.serialization.json)
+
+    implementation(libs.bundles.datastore)
+    implementation(libs.bundles.markwon)
+    implementation(libs.eventbus)
+    implementation(libs.androidx.browser)
+    implementation(libs.jwtdecode)
+    implementation(libs.prettytime)
+    implementation(libs.bundles.chart)
+    implementation(libs.bundles.aboutlibraries)
+    implementation(libs.sheets.m3)
+    implementation(libs.accompanist.permissions)
+    implementation(libs.aboutlibraries.compose)
+    implementation(libs.reorderable)
+    implementation(libs.bundles.glance)
+
+    // Firebase is a platform/BOM + bundles
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
+
+    implementation(libs.play.services.ads)
+    implementation(libs.billing.ktx)
+
+    implementation(libs.material.kolor)
+
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.test.ext.junit)
+    androidTestImplementation(libs.androidx.test.espresso.core)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 }
-
 
 apollo {
     service("anilist") {

@@ -48,12 +48,10 @@ data class UserModel(
     val isMutual get() = isFollower && isFollowing
 }
 
-
 data class UserSocialCountModel(
     val following: Int = 0,
     val followers: Int = 0,
 )
-
 
 fun UserQuery.User.toModel(): UserModel {
     val avatar = avatar?.userAvatar?.toModel()

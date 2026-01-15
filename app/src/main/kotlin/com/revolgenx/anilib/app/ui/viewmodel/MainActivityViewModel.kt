@@ -3,7 +3,9 @@ package com.revolgenx.anilib.app.ui.viewmodel
 import android.content.Context
 import android.content.Intent
 import android.text.Spanned
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -33,9 +35,12 @@ import com.revolgenx.anilib.user.data.field.UserSettingsField
 import com.revolgenx.anilib.user.data.service.UserService
 import com.revolgenx.anilib.user.ui.model.toMediaTitleType
 import com.revolgenx.anilib.user.ui.screen.UserScreen
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.isActive
+import timber.log.Timber
 
 enum class DeepLinkPath {
     HOME,
@@ -64,7 +69,6 @@ val mainScreenTabs = listOf(
     userScreen
 )
 
-
 class MainActivityViewModel(
     private val preferencesDataStore: AppPreferencesDataStore,
     private val userService: UserService,
@@ -82,9 +86,7 @@ class MainActivityViewModel(
     )
 
     var tabWrapperNavigator: Navigator? = null
-
     var previousScreen: Screen? = null
-
     val mainPageOrder = MainPageOrder.entries.map { p ->
         ContentOrderData(
             value = p,
@@ -99,6 +101,14 @@ class MainActivityViewModel(
     var isNotificationPermissionChecked = false
 
     val deepLinkPath = mutableStateOf<Pair<DeepLinkPath, Any>?>(null)
+    var notificationCount by mutableIntStateOf(0)
+    val notificationCountText by derivedStateOf {
+        when {
+            notificationCount > 9 -> "9+"
+            notificationCount == 0 -> null
+            else -> notificationCount.toString()
+        }
+    }
 
     init {
         launch {
@@ -111,10 +121,16 @@ class MainActivityViewModel(
                     titleType = mediaTitleType,
                     coverImageType = mediaCoverImageType
                 )
-
                 userId?.let {
                     getUserSettings(it)
                 }
+            }
+        }
+
+        launch {
+            while(isActive){
+                delay(1800000)
+                userState.userId?.let (::getUserSettings)
             }
         }
     }
@@ -131,14 +147,16 @@ class MainActivityViewModel(
             it.userId = userId
         }).onEach { userModel ->
             userModel?.let { settings ->
+                notificationCount = userModel.unreadNotificationCount ?: 0
                 settings.options?.let {
                     preferencesDataStore.mediaTitleType.set(it.titleLanguage.toMediaTitleType())
                 }
             }
-        }.catch {}
+        }.catch {
+            Timber.e(it)
+        }
             .launchIn(viewModelScope)
     }
-
 
     fun logout(context: Context){
         launch {

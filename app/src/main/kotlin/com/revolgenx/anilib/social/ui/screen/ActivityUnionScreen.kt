@@ -33,6 +33,7 @@ import com.revolgenx.anilib.common.ui.component.appbar.AppBar
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomNestedScrollConnection
 import com.revolgenx.anilib.common.ui.component.bottombar.ScrollState
+import com.revolgenx.anilib.common.ui.component.button.BadgeIconButton
 import com.revolgenx.anilib.common.ui.component.button.RefreshButton
 import com.revolgenx.anilib.common.ui.component.menu.SelectMenu
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
@@ -113,7 +114,7 @@ object ActivityUnionScreen : BaseTabScreen() {
                             )
                         },
                         actions = {
-                            ActionMenu(icon = AppIcons.IcFilter) {
+                            BadgeIconButton(icon = AppIcons.IcFilter, showBadge = viewModel.isFiltered) {
                                 scope.launch {
                                     filterViewModel.field = viewModel.field.copy()
                                     filterBottomSheetState.expand()

@@ -7,8 +7,10 @@ import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleFilterViewModel
 import com.revolgenx.anilib.airing.ui.viewmodel.AiringScheduleViewModel
 import com.revolgenx.anilib.common.data.store.AiringScheduleFilterDataStore
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
+import com.revolgenx.anilib.type.AiringSort
 import java.time.LocalDate
 import java.time.ZoneOffset
+import java.time.ZonedDateTime
 import java.time.format.TextStyle
 import java.util.Locale
 
@@ -17,15 +19,23 @@ class ExploreAiringScheduleViewModel(
     airingScheduleFilterDataStore: AiringScheduleFilterDataStore,
     appPreferencesDataStore: AppPreferencesDataStore
 ) : AiringScheduleViewModel(service, airingScheduleFilterDataStore, appPreferencesDataStore){
+
     val weekDaysFromToday = mutableStateOf(mapOf<String, Long>())
     var selectedDay = mutableStateOf("")
+    val isFiltered get() = field.run { showOnlyPlanning || showOnlyWatching || isWeeklyTypeDate || sort != AiringSort.TIME || !notYetAired }
 
     init {
-        refreshWeekDaysFromToday()
+        initializeWeekDays(LocalDate.now())
     }
 
-    fun refreshWeekDaysFromToday() {
-        val todayDate = LocalDate.now()
+    fun refreshWeekDays(){
+        val now = ZonedDateTime.now()
+        initializeWeekDays(now.toLocalDate())
+        updateStartDate(now.toEpochSecond())
+        refresh()
+    }
+
+    private fun initializeWeekDays(todayDate: LocalDate) {
         val weekDays = mutableMapOf<String, Long>()
         for (i in 0 until 7) {
             val newDate = todayDate.plusDays(i.toLong())

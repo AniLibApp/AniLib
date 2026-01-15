@@ -1,5 +1,8 @@
 package com.revolgenx.anilib.list.ui.screen
 
+import android.content.Context
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Arrangement
@@ -9,14 +12,17 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -28,8 +34,10 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.dokar.sheets.rememberBottomSheetState
+import com.revolgenx.anilib.common.data.state.ResourceState
 import com.revolgenx.anilib.common.data.store.MediaListDisplayMode
 import com.revolgenx.anilib.common.data.store.toStringRes
+import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.mediaScreen
 import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.OverflowMenu
@@ -37,12 +45,14 @@ import com.revolgenx.anilib.common.ui.component.action.OverflowMenuItem
 import com.revolgenx.anilib.common.ui.component.action.OverflowRadioMenuItem
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayout
 import com.revolgenx.anilib.common.ui.component.appbar.AppBarLayoutDefaults
+import com.revolgenx.anilib.common.ui.component.button.BadgeIconButton
 import com.revolgenx.anilib.common.ui.component.chip.ClearAssistChip
 import com.revolgenx.anilib.common.ui.component.scaffold.ScreenScaffold
 import com.revolgenx.anilib.common.ui.component.search.RowDockedSearchBar
 import com.revolgenx.anilib.common.ui.composition.localNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCancel
+import com.revolgenx.anilib.common.ui.icons.appicon.IcFileExport
 import com.revolgenx.anilib.common.ui.icons.appicon.IcFilter
 import com.revolgenx.anilib.common.ui.icons.appicon.IcLayoutStyle
 import com.revolgenx.anilib.common.ui.icons.appicon.IcMoreVert
@@ -80,7 +90,7 @@ private fun MediaListScreenContent(
     val openFilterBottomSheet = rememberBottomSheetState()
     val scope = rememberCoroutineScope()
     val navigator = localNavigator()
-
+    val context = localContext()
 
     var active by rememberSaveable { mutableStateOf(false) }
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
@@ -90,6 +100,18 @@ private fun MediaListScreenContent(
         animationSpec = tween(durationMillis = 300),
         label = ""
     )
+
+
+    val exportLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument(viewModel.exportMimeType)
+    ) { uri ->
+        if (uri != null) {
+            viewModel.export(
+                uri = uri,
+                contentResolver = context.contentResolver,
+            )
+        }
+    }
 
     val isAnime = viewModel.field.type.isAnime
 
@@ -166,20 +188,15 @@ private fun MediaListScreenContent(
                                         }
                                     }
                                 }
-                                IconButton(onClick = {
+
+                                BadgeIconButton(icon = AppIcons.IcFilter, showBadge = viewModel.isFiltered) {
                                     scope.launch {
                                         viewModel.filter.let {
                                             filterViewModel.filter = it.copy()
                                             openFilterBottomSheet.expand()
                                         }
                                     }
-                                }) {
-                                    Icon(
-                                        imageVector = AppIcons.IcFilter,
-                                        contentDescription = stringResource(id = I18nR.string.filter)
-                                    )
                                 }
-
 
                                 OverflowMenu(icon = AppIcons.IcMoreVert) { isOpen ->
                                     OverflowMenuItem(
@@ -189,6 +206,18 @@ private fun MediaListScreenContent(
                                         isOpen.value = false
                                         viewModel.getRandomMedia()?.media?.let {
                                             navigator.mediaScreen(mediaId = it.id, type = it.type)
+                                        }
+                                    }
+                                    if (viewModel.isSuccess) {
+                                        OverflowMenuItem(
+                                            textRes = anilib.i18n.R.string.export_mal,
+                                            icon = AppIcons.IcFileExport
+                                        ) {
+                                            exportLauncher.launch(
+                                                "mal_" + (if (isAnime) "anime" else "manga") + "_${
+                                                    System.currentTimeMillis() / 1000
+                                                }.xml"
+                                            )
                                         }
                                     }
                                 }
@@ -217,7 +246,7 @@ private fun MediaListScreenContent(
                 }
             }
         },
-    ) {
+    ) { snackbarHostState ->
         Box(
             modifier = Modifier
                 .nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -227,6 +256,32 @@ private fun MediaListScreenContent(
                 filterViewModel = filterViewModel,
                 bottomSheetState = openFilterBottomSheet
             )
+        }
+
+        ExportState(viewModel, snackbarHostState, context)
+    }
+}
+
+@Composable
+private fun ExportState(
+    viewModel: MediaListViewModel,
+    snackbarHostState: SnackbarHostState,
+    context: Context
+){
+    LaunchedEffect(viewModel.exportState.value) {
+        when(viewModel.exportState.value){
+            is ResourceState.Error<*> -> {
+                snackbarHostState.showSnackbar(context.getString(anilib.i18n.R.string.operation_failed), withDismissAction = true)
+                viewModel.exportState.value = null
+            }
+            is ResourceState.Loading<*> -> {
+                snackbarHostState.showSnackbar(context.getString(anilib.i18n.R.string.exporting), withDismissAction = true)
+            }
+            is ResourceState.Success<*> -> {
+                snackbarHostState.showSnackbar(context.getString(anilib.i18n.R.string.successfully_exported), withDismissAction = true)
+                viewModel.exportState.value = null
+            }
+            null -> {}
         }
     }
 }

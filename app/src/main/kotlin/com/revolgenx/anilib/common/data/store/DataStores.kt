@@ -128,7 +128,6 @@ val Context.activityUnionFilterDataStore by dataStore(
     serializer = ActivityUnionFilterDataSerializer()
 )
 
-
 val Context.airingScheduleWidgetDataStore by dataStore(
     fileName = "airing_schedule_widget_data_store.json",
     serializer = AiringScheduleWidgetDataSerializer()

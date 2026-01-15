@@ -39,10 +39,13 @@ import anilib.i18n.R as I18nR
 
 data class MediaListModel(
     val id: Int = -1,
+    val idMal: Int? = null,
     val userId: Int = -1,
     val mediaId: Int = -1,
-    val status: MutableState<MediaListStatus?> = mutableStateOf(null),
+    val listStatus: MediaListStatus? = null,
+    val status: MutableState<MediaListStatus?> = mutableStateOf(listStatus),
     val score: Double? = null,
+    val score10: Int? = null,
     var progress: Int? = null,
     val progressState: MutableState<Int?>? = null,
     val progressVolumes: Int? = null,
@@ -81,7 +84,7 @@ fun MediaListPageQuery.MediaList.toModel() = MediaListModel(
 fun MediaListEntry.toModel() = MediaListModel(
     id = id,
     mediaId = mediaId,
-    status = mutableStateOf(status) ,
+    listStatus = status,
     score = score,
     progress = progress,
     progressVolumes = progressVolumes,

@@ -106,7 +106,6 @@ private fun MediaFilterBottomSheetContent(
             val selectedFormats = field.formatsIn?.map { it.ordinal }.orEmpty()
             val formats = stringArrayResource(id = R.array.media_format)
 
-
             MultiSelectMenu(
                 label = stringResource(id = I18nR.string.format),
                 text = { it.second },

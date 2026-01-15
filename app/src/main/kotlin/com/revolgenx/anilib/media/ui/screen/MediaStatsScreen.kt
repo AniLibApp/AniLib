@@ -30,17 +30,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
-import com.patrykandpatrick.vico.compose.m3.style.m3ChartStyle
-import com.patrykandpatrick.vico.compose.style.ProvideChartStyle
-import com.patrykandpatrick.vico.core.marker.Marker
-import com.patrykandpatrick.vico.core.scroll.InitialScroll
+import com.patrykandpatrick.vico.compose.common.ProvideVicoTheme
+import com.patrykandpatrick.vico.compose.m3.common.rememberM3VicoTheme
+import com.patrykandpatrick.vico.core.cartesian.Scroll
 import com.revolgenx.anilib.R
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.prettyNumberFormat
 import com.revolgenx.anilib.common.ui.component.card.Card
 import com.revolgenx.anilib.common.ui.component.chart.ColumnChart
 import com.revolgenx.anilib.common.ui.component.chart.LineChart
+import com.revolgenx.anilib.common.ui.component.chart.Marker
 import com.revolgenx.anilib.common.ui.component.chart.rememberMarker
 import com.revolgenx.anilib.common.ui.component.common.Grid
 import com.revolgenx.anilib.common.ui.component.common.HeaderBox
@@ -75,9 +74,8 @@ fun MediaStatsScreen(viewModel: MediaStatsViewModel, mediaType: MediaType) {
     ResourceScreen(
         viewModel = viewModel
     ) { statsModel ->
-        ProvideChartStyle(m3ChartStyle()) {
+        ProvideVicoTheme(rememberM3VicoTheme()) {
             val marker = rememberMarker()
-
             Column(
                 modifier = Modifier
                     .verticalScroll(rememberScrollState())
@@ -160,7 +158,7 @@ private fun StatsScoreDistributionSection(
     val scoreDistributionEntry = statsModel.scoreDistributionEntry ?: return
     MediaStatsHeaderText(text = stringResource(id = I18nR.string.score_distribution))
     OutlinedCard {
-        ColumnChart(marker = marker, model = scoreDistributionEntry)
+        ColumnChart(marker = marker, series = scoreDistributionEntry)
     }
 }
 
@@ -168,7 +166,7 @@ private fun StatsScoreDistributionSection(
 private fun StatsStatusDistributionSection(
     statsModel: MediaStatsModel,
     mediaType: MediaType,
-    onAmountClick: (amount: Int)->Unit
+    onAmountClick: (amount: Int) -> Unit
 ) {
     val statusDistribution = statsModel.statusDistribution ?: return
     MediaStatsHeaderText(text = stringResource(id = I18nR.string.status_distribution))
@@ -244,9 +242,8 @@ private fun StatsAiringWatcherProgressionSection(
     OutlinedCard {
         LineChart(
             marker = marker,
-            model = airingWatchersProgressionEntries,
-            spacing = 50.dp,
-            initialScroll = InitialScroll.End
+            series = airingWatchersProgressionEntries,
+            initialScroll = Scroll.Absolute.End
         )
     }
 }
@@ -262,9 +259,8 @@ private fun StatsAiringScoreProgressionSection(
     OutlinedCard {
         LineChart(
             marker = marker,
-            model = airingScoreProgressionEntries,
-            spacing = 50.dp,
-            initialScroll = InitialScroll.End
+            series = airingScoreProgressionEntries,
+            initialScroll = Scroll.Absolute.End
         )
     }
 }
@@ -280,13 +276,13 @@ private fun StatsRecentActivityPerDaySection(
     OutlinedCard {
         LineChart(
             marker = marker,
-            model = trendEntries,
-            bottomAxis = rememberBottomAxis(valueFormatter = { value, _ ->
+            series = trendEntries,
+            bottomAxisValueFormatter = { value ->
                 LocalDateTime.ofInstant(
                     Instant.ofEpochSecond(value.toLong()),
                     ZoneId.systemDefault()
                 ).dayOfMonth.toString()
-            })
+            }
         )
     }
 }

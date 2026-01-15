@@ -53,7 +53,6 @@ class WidgetSettingsViewModel(
         AiringScheduleWidget().updateAll(context = context)
     }
 
-
     private fun foregroundColor(color: Int): Color {
         val bg = Color(color)
         val bgHct = bg.toHct()
@@ -78,7 +77,7 @@ class WidgetSettingsViewModel(
                 )
             },
             secondBackground = null,
-            contrastCurve = ContrastCurve(3.0, 3.0, 4.5, 7.0),
+            contrastCurve = { ContrastCurve(3.0, 3.0, 4.5, 7.0) },
             toneDeltaPair = null,
         ).getColor(scheme)
     }

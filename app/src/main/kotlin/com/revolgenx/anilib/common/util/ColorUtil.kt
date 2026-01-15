@@ -23,3 +23,6 @@ fun colorAtElevation(
     val alpha = ((4.5f * ln(elevation.value + 1)) + 2f) / 100f
     return tint.copy(alpha = alpha).compositeOver(color)
 }
+
+val Int.colorHex: String
+    get()="#%08X".format(this)

@@ -1,7 +1,7 @@
 package com.revolgenx.anilib.user.ui.model.statistics
 
-import com.patrykandpatrick.vico.core.entry.ChartEntryModel
 import com.revolgenx.anilib.common.ext.nullIfEmpty
+import com.revolgenx.anilib.common.ui.component.chart.ChartEntryModel
 import com.revolgenx.anilib.fragment.UserMediaStatistics
 import com.revolgenx.anilib.type.MediaListStatus
 
@@ -16,7 +16,7 @@ data class UserStatisticsModel(
     val volumesRead: Int = 0,
 
     val scores: List<UserScoreStatisticModel>? = null,
-    val scoresTitleEntry: ChartEntryModel? = null,
+    val scoresTitleEntry: List<Pair<Number, Number>>? = null,
     val scoresHourEntry: ChartEntryModel? = null,
 
     val lengths: List<UserLengthStatisticModel>? = null,

@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.0.10]
+### Added
+- Added MAL export service (experimental).
+- Added badge to filter icon button in home, media list and activity screen.
+- Added monochrome icon for the launcher.
+- Added badge to notification icon.
+
+### Changed
+- Updated chart library.
+- Refactored gradle files to use version catalogs.
+- Min SDK 23
+
+## [v2.0.9]
+## Fixed
+- Incorrect data persists when searching in or switching between anime/manga lists. \n
+
 ## [v2.0.8]
 ## Added
 - Added option to open a random entry from your media list.
@@ -82,7 +98,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Note**: Any missing feature like filter settings will be added later on. ML translate is removed and won\'t be added.
 - **Enjoy AniLib!**
 
-
+[v2.0.9]: https://github.com/AniLibApp/AniLib/compare/v2.0.8...v2.0.9
 [v2.0.8]: https://github.com/AniLibApp/AniLib/compare/v2.0.7...v2.0.8
 [v2.0.7]: https://github.com/AniLibApp/AniLib/compare/v2.0.6...v2.0.7
 [v2.0.6]: https://github.com/AniLibApp/AniLib/compare/v2.0.3...v2.0.6

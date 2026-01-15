@@ -6,19 +6,27 @@
         - **If the UI is too big**, you can reduce it from **Settings → Appearance → Display Scale**. \n
         - **If there are too many ads**, you can change the frequency from **Settings → Support → Ads**. \n
 
+        ## v2.0.10 \n
+        ### Added \n
+        - Added badge to filter icon button in home, media list and activity screen.  \n
+        - Added badge to notification icon.  \n
+        - Added MAL export service (experimental).  \n
+        - Added monochrome icon for the launcher.  \n
+
+        ### Changed \n
+        - Updated chart library. \n
+
         ## v2.0.9 \n
-        ## Fixed \n
+        ### Fixed \n
         - Incorrect data persists when searching in or switching between anime/manga lists. \n
 
-
         ## v2.0.8 \n
-        ## Added \n
+        ### Added \n
         - Added option to open a random entry from your media list. \n
         - Added compare with your media list using another user\'s list. \n
 
         ## Fixed \n
         - Fixed issue where manga volumes wouldn\'t display correctly beyond volume 10. \n
-
 
         ## v2.0.7 \n
         ### Added \n

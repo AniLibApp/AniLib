@@ -9,7 +9,6 @@ import com.materialkolor.Contrast
 import com.materialkolor.dynamicColorScheme
 import com.materialkolor.dynamiccolor.ContrastCurve
 import com.materialkolor.dynamiccolor.DynamicColor
-import com.materialkolor.dynamiccolor.MaterialDynamicColors
 import com.materialkolor.ktx.getColor
 import com.materialkolor.ktx.toHct
 import com.materialkolor.palettes.TonalPalette
@@ -42,10 +41,6 @@ class AppearanceSettingsViewModel(
     private val widgetThemeDataStore: WidgetThemeDataStore,
     private val appPreferencesDataStore: AppPreferencesDataStore
 ) : ViewModel() {
-    companion object {
-        val colors = MaterialDynamicColors(false)
-    }
-
     val displayScale = appPreferencesDataStore.displayScale
 
     fun setDisplayScale(scale: Float) {
@@ -237,7 +232,9 @@ class AppearanceSettingsViewModel(
                 )
             },
             secondBackground = null,
-            contrastCurve = ContrastCurve(3.0, 3.0, 4.5, 7.0),
+            contrastCurve = {
+                ContrastCurve(3.0, 3.0, 4.5, 7.0)
+            },
             toneDeltaPair = null,
         ).getColor(scheme)
     }

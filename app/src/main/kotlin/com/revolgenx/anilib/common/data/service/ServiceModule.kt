@@ -7,6 +7,7 @@ import com.revolgenx.anilib.browse.data.service.BrowseService
 import com.revolgenx.anilib.browse.data.service.BrowseServiceImpl
 import com.revolgenx.anilib.character.data.service.CharacterService
 import com.revolgenx.anilib.character.data.service.CharacterServiceImpl
+import com.revolgenx.anilib.common.data.exporter.MALExportService
 import com.revolgenx.anilib.common.data.store.airingScheduleWidgetDataStore
 import com.revolgenx.anilib.common.data.store.genreCollectionDataStore
 import com.revolgenx.anilib.common.data.store.mediaTagCollectionDataStore
@@ -62,4 +63,5 @@ val serviceModules = module {
     }
     factoryOf(::ToggleServiceImpl) { bind<ToggleService>() }
     factory { AiringScheduleWidgetService(get(), get(), androidContext().airingScheduleWidgetDataStore) }
+    single{ MALExportService()}
 }

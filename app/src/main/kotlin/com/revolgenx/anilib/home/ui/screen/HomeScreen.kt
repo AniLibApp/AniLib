@@ -14,10 +14,13 @@ import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import cafe.adriel.voyager.navigator.tab.TabOptions
+import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
+import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.browseScreen
 import com.revolgenx.anilib.common.ext.notificationScreen
 import com.revolgenx.anilib.common.ext.topWindowInsets
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
+import com.revolgenx.anilib.common.ui.component.button.BadgeIconButton
 import com.revolgenx.anilib.common.ui.component.common.ShowIfLoggedIn
 import com.revolgenx.anilib.common.ui.component.scaffold.PagerScreenScaffold
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -28,6 +31,7 @@ import com.revolgenx.anilib.common.ui.icons.appicon.IcNotification
 import com.revolgenx.anilib.common.ui.icons.appicon.IcSearch
 import com.revolgenx.anilib.common.ui.screen.pager.PagerScreen
 import com.revolgenx.anilib.common.ui.screen.tab.BaseTabScreen
+import com.revolgenx.anilib.common.util.OnClick
 import com.revolgenx.anilib.home.explore.ui.screen.ExploreScreen
 import com.revolgenx.anilib.home.recommendation.ui.screen.RecommendationScreen
 import com.revolgenx.anilib.home.season.ui.screen.SeasonScreen
@@ -79,6 +83,7 @@ fun HomeScreenContent() {
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val pagerState = rememberPagerState() { pages.size }
     val navigator = localNavigator()
+    val mainActivityViewModel: MainActivityViewModel = activityViewModel()
 
     PagerScreenScaffold(
         pages = pages,
@@ -90,7 +95,7 @@ fun HomeScreenContent() {
                 navigator.browseScreen()
             }
             ShowIfLoggedIn {
-                ActionMenu(icon = AppIcons.IcNotification) {
+                Notification(mainActivityViewModel = mainActivityViewModel){
                     navigator.notificationScreen()
                 }
             }
@@ -113,6 +118,15 @@ fun HomeScreenContent() {
 
 }
 
+@Composable
+private fun Notification(mainActivityViewModel: MainActivityViewModel, onClick: OnClick){
+    BadgeIconButton(
+        icon = AppIcons.IcNotification,
+        badgeText = mainActivityViewModel.notificationCountText,
+        showBadge = mainActivityViewModel.notificationCount != 0,
+        onClick = onClick
+    )
+}
 
 @Preview
 @Composable

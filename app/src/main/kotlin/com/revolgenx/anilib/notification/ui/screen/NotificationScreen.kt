@@ -31,6 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.revolgenx.anilib.R
+import com.revolgenx.anilib.app.ui.viewmodel.MainActivityViewModel
+import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.horizontalBottomWindowInsets
 import com.revolgenx.anilib.common.ext.localSnackbarHostState
 import com.revolgenx.anilib.common.ext.mediaScreen
@@ -74,6 +76,7 @@ object NotificationScreen : AndroidScreen() {
 private fun NotificationScreenContent(
     viewModel: NotificationViewModel = koinViewModel()
 ) {
+    val activityViewModel: MainActivityViewModel = activityViewModel()
     val scrollBehavior = TopAppBarDefaults.pinnedScrollBehavior(rememberTopAppBarState())
     val navigator = localNavigator()
     ScreenScaffold(
@@ -81,12 +84,13 @@ private fun NotificationScreenContent(
         scrollBehavior = scrollBehavior,
         contentWindowInsets = horizontalBottomWindowInsets()
     ) {
-        viewModel.field?: return@ScreenScaffold
-
         val snackbarHostState = localSnackbarHostState()
         val scope = rememberCoroutineScope()
         val pagingItems = viewModel.collectAsLazyPagingItems()
 
+        if(pagingItems.itemCount > 0){
+            activityViewModel.notificationCount = 0
+        }
         LazyPagingList(
             pagingItems = pagingItems,
             onRefresh = {

@@ -143,7 +143,7 @@ fun Media.toModel(): MediaModel {
         mediaListEntry = mediaListEntry?.let { list ->
                 MediaListModel(
                     progress = list.progress ?: 0,
-                    status = mutableStateOf(list.status)
+                    listStatus = list.status
                 )
         }
     )
@@ -208,7 +208,7 @@ fun MediaOverviewQuery.Media.toModel(): MediaModel {
             }
         },
         mediaListEntry = mediaListEntry?.let {
-            MediaListModel(it.id, status = mutableStateOf(it.status) )
+            MediaListModel(it.id, listStatus = it.status)
         } ?: MediaListModel(),
         nextAiringEpisode = nextAiringEpisode?.let {
             AiringScheduleModel(

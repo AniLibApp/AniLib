@@ -168,8 +168,11 @@ object GeneralSettingsScreen : PreferencesScreen() {
                 },
                 onConfirm = {
                     viewModel.updateExploreSectionSettings()
-                    scope.launch { 
-                        snackbar.showSnackbar(message = context.getString(R.string.restart_required_msg), withDismissAction = true)
+                    scope.launch {
+                        snackbar.showSnackbar(
+                            message = context.getString(R.string.restart_required_msg),
+                            withDismissAction = true
+                        )
                     }
                 }
             )
@@ -196,7 +199,10 @@ object GeneralSettingsScreen : PreferencesScreen() {
                 onConfirm = {
                     viewModel.updateMainPageSettings()
                     scope.launch {
-                        snackbar.showSnackbar(message = context.getString(R.string.restart_required_msg), withDismissAction = true)
+                        snackbar.showSnackbar(
+                            message = context.getString(R.string.restart_required_msg),
+                            withDismissAction = true
+                        )
                     }
                 }
             )
@@ -205,7 +211,7 @@ object GeneralSettingsScreen : PreferencesScreen() {
     }
 
     @Composable
-    private fun <T: ContentOrder> ReorderDialog(
+    private fun <T : ContentOrder> ReorderDialog(
         showOrderingDialog: MutableState<Boolean>,
         list: List<ContentOrderData<T>>,
         title: String,
@@ -223,43 +229,44 @@ object GeneralSettingsScreen : PreferencesScreen() {
                     onSettle = onSettle
                 ) { _, item, _ ->
                     key(item) {
-                        val interactionSource = remember { MutableInteractionSource() }
-                        Card(
-                            modifier = Modifier.padding(vertical = 4.dp),
-                            onClick = {},
-                            interactionSource = interactionSource,
-                        ) {
-                            Row(
-                                modifier = Modifier.fillMaxWidth(),
-                                verticalAlignment = Alignment.CenterVertically
+                        ReorderableItem {
+                            val interactionSource = remember { MutableInteractionSource() }
+                            Card(
+                                modifier = Modifier.padding(vertical = 4.dp),
+                                onClick = {},
+                                interactionSource = interactionSource,
                             ) {
-                                MediumText(
-                                    stringResource(id = item.value.toStringRes()),
-                                    Modifier.padding(horizontal = 8.dp)
-                                )
-                                Spacer(modifier = Modifier.weight(1f))
-
-                                if(canDisable){
-                                    val isEnabled = remember { mutableStateOf(item.isEnabled) }
-                                    Switch(checked = isEnabled.value, onCheckedChange = {
-                                        isEnabled.value = it
-                                        item.isEnabled = it
-                                    })
-                                }
-
-                                IconButton(
-                                    modifier = Modifier.draggableHandle(
-                                        interactionSource = interactionSource,
-                                    ),
-                                    onClick = {},
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
-                                    Icon(
-                                        imageVector = AppIcons.IcUnfold,
-                                        contentDescription = "Reorder"
+                                    MediumText(
+                                        stringResource(id = item.value.toStringRes()),
+                                        Modifier.padding(horizontal = 8.dp)
                                     )
+                                    Spacer(modifier = Modifier.weight(1f))
+
+                                    if (canDisable) {
+                                        val isEnabled = remember { mutableStateOf(item.isEnabled) }
+                                        Switch(checked = isEnabled.value, onCheckedChange = {
+                                            isEnabled.value = it
+                                            item.isEnabled = it
+                                        })
+                                    }
+
+                                    IconButton(
+                                        modifier = Modifier.draggableHandle(
+                                            interactionSource = interactionSource,
+                                        ),
+                                        onClick = {},
+                                    ) {
+                                        Icon(
+                                            imageVector = AppIcons.IcUnfold,
+                                            contentDescription = "Reorder"
+                                        )
+                                    }
                                 }
                             }
-
                         }
                     }
                 }

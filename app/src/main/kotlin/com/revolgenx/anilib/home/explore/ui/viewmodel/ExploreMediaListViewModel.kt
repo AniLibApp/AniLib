@@ -30,15 +30,21 @@ sealed class ExploreMediaListViewModel(
     private val appPreferencesDataStore: AppPreferencesDataStore
 ) : PagingViewModel<MediaListModel, MediaListField, MediaListPagingSource>() {
     override val field: MediaListField =
-        MediaListField(type = type, status = MediaListStatus.CURRENT, userId = -1, sort =
-        appPreferencesDataStore.data.map { if (type == MediaType.MANGA) it[AppPreferencesDataStore.exploreReadingSortKey] else it[AppPreferencesDataStore.exploreWatchingSortKey] }
-            .get()?.let { MediaListSort.entries[it] })
+        MediaListField(
+            type = type,
+            status = MediaListStatus.CURRENT,
+            userId = -1,
+            sort = appPreferencesDataStore.data
+                .map { if (type == MediaType.MANGA) it[AppPreferencesDataStore.exploreReadingSortKey] else it[AppPreferencesDataStore.exploreWatchingSortKey] }
+                .get()?.let { MediaListSort.entries[it] })
+
     override val pagingSource: MediaListPagingSource
         get() = MediaListPagingSource(this.field, service)
 
     val openEditorScreen = appPreferencesDataStore.openMediaListEntryEditorOnClick
 
     var saveResource by mutableStateOf<ResourceState<Any>?>(null)
+    var isFiltered by mutableStateOf(field.sort != null)
 
     private fun saveFailed(it: Throwable) {
         saveResource = ResourceState.error(it)
@@ -46,6 +52,7 @@ sealed class ExploreMediaListViewModel(
 
     fun updateMediaListSort(sort: MediaListSort?) {
         field.sort = sort
+        isFiltered = sort != null
         launch {
             appPreferencesDataStore.dataStore.edit {
                 if (sort == null) {
@@ -61,7 +68,7 @@ sealed class ExploreMediaListViewModel(
     fun increaseProgress(mediaList: MediaListModel) {
         mediaListEntryService.increaseProgress(mediaList)
             .onEach {
-                it?.let {listModel->
+                it?.let { listModel ->
                     mediaList.progress = listModel.progress
                     mediaList.progressState?.value = listModel.progress
                     mediaList.status.value = listModel.status.value

@@ -69,6 +69,7 @@ private fun ExploreMediaHeader(viewModel: ExploreMediaViewModel, onFilter: OnCli
     ExploreScreenHeader(
         text = stringResource(id = headerPair.first),
         icon = headerPair.second,
+        isFiltered = viewModel.isFiltered,
         onFilter = onFilter,
         onMore = onMore
     )

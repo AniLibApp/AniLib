@@ -2,6 +2,7 @@ package com.revolgenx.anilib.list.ui.model
 
 import androidx.compose.runtime.mutableStateOf
 import com.revolgenx.anilib.MediaListCollectionQuery
+import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.media.ui.model.toModel
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
@@ -19,6 +20,7 @@ fun MediaListCollectionQuery.Data.toModel(field: MediaListCollectionField): Medi
     val userModel = mediaListCollection?.user?.run {
         UserModel(
             id = id,
+            name = name,
             mediaListOptions = mediaListOptions?.let { option ->
                 MediaListOptionModel(
                     scoreFormat = option.scoreFormat,
@@ -52,6 +54,8 @@ fun MediaListCollectionQuery.Data.toModel(field: MediaListCollectionField): Medi
                             ?.toModel()
                             ?.let { entryModel ->
                                 entryModel.copy(
+                                    idMal = entry.media?.idMal,
+                                    score10 = entry.score10?.toInt().orZero(),
                                     userId = userModel?.id ?: -1,
                                     user = userModel,
                                     progressState = mutableStateOf(entryModel.progress),
@@ -66,8 +70,7 @@ fun MediaListCollectionQuery.Data.toModel(field: MediaListCollectionField): Medi
                                 }
                             }
                     }?.toMutableList(),
-
-                    )
+                )
             }
         }
             .toMutableList().also {

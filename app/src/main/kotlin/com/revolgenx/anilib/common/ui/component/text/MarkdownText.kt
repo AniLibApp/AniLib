@@ -77,7 +77,7 @@ fun MarkdownText(
 
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize)
                 if (text.isNullOrBlank().not()) {
-                    markdown.setMarkdown(textView, text!!)
+                    markdown.setMarkdown(textView, text)
                 } else if (spanned.isNotNull()) {
                     markdown.setParsedMarkdown(textView, spanned!!)
                 }

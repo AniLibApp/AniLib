@@ -1,63 +1,155 @@
 package com.revolgenx.anilib.common.ui.component.chart
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.unit.Dp
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
-import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
-import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
-import com.patrykandpatrick.vico.compose.chart.Chart
-import com.patrykandpatrick.vico.compose.chart.column.columnChart
-import com.patrykandpatrick.vico.compose.chart.line.lineChart
-import com.patrykandpatrick.vico.compose.chart.scroll.rememberChartScrollSpec
-import com.patrykandpatrick.vico.compose.style.currentChartStyle
-import com.patrykandpatrick.vico.core.axis.AxisPosition
-import com.patrykandpatrick.vico.core.axis.AxisRenderer
-import com.patrykandpatrick.vico.core.chart.values.AxisValuesOverrider
-import com.patrykandpatrick.vico.core.entry.ChartEntryModel
-import com.patrykandpatrick.vico.core.marker.Marker
-import com.patrykandpatrick.vico.core.scroll.InitialScroll
+import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottom
+import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStart
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberColumnCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLine
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
+import com.patrykandpatrick.vico.compose.cartesian.rememberVicoScrollState
+import com.patrykandpatrick.vico.compose.common.component.rememberLineComponent
+import com.patrykandpatrick.vico.compose.common.fill
+import com.patrykandpatrick.vico.compose.common.vicoTheme
+import com.patrykandpatrick.vico.core.cartesian.Scroll
+import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
+import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianLayerRangeProvider
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
+import com.patrykandpatrick.vico.core.cartesian.data.ColumnCartesianLayerModel
+import com.patrykandpatrick.vico.core.cartesian.data.LineCartesianLayerModel
+import com.patrykandpatrick.vico.core.cartesian.layer.ColumnCartesianLayer
+import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
+import com.patrykandpatrick.vico.core.cartesian.marker.CartesianMarker
+import com.patrykandpatrick.vico.core.common.data.ExtraStore
+import com.patrykandpatrick.vico.core.common.shader.ShaderProvider
+import com.patrykandpatrick.vico.core.common.shape.CorneredShape
+import com.patrykandpatrick.vico.core.common.shape.CorneredShape.Corner
+import kotlin.math.ceil
 
-@Composable
-fun ColumnChart(
-    marker: Marker,
-    model: ChartEntryModel,
-    bottomAxis: AxisRenderer<AxisPosition.Horizontal.Bottom> = rememberBottomAxis()
-) {
-    Chart(
-        marker = marker,
-        chart = columnChart(
-            spacing = 12.dp,
-            innerSpacing = 2.dp
-        ),
-        model = model,
-        startAxis = rememberStartAxis(
-            valueFormatter = { value, _ -> value.toInt().toString() }
-        ),
-        bottomAxis = bottomAxis
-    )
+
+typealias ChartEntryModel = List<Pair<Number, Number>>
+typealias Marker = CartesianMarker
+
+private object AdaptiveRangeProvider : CartesianLayerRangeProvider {
+    override fun getMinY(minY: Double, maxY: Double, extraStore: ExtraStore): Double {
+        return ceil(minY - yPadding(minY, maxY)).takeIf { it >= 0 } ?: 0.0
+    }
+
+    override fun getMaxY(minY: Double, maxY: Double, extraStore: ExtraStore): Double {
+        return ceil(maxY + yPadding(minY, maxY))
+    }
+
+    private fun yPadding(minY: Double, maxY: Double): Double {
+        return ceil((maxY - minY) * 0.2)
+    }
 }
 
 @Composable
 fun LineChart(
-    marker: Marker,
-    model: ChartEntryModel,
-    startAxis: AxisRenderer<AxisPosition.Vertical.Start> = rememberStartAxis(
-        valueFormatter = { value, _ -> value.toInt().toString() }
-    ),
-    bottomAxis: AxisRenderer<AxisPosition.Horizontal.Bottom> = rememberBottomAxis(),
-    spacing: Dp = currentChartStyle.lineChart.spacing,
-    initialScroll: InitialScroll = InitialScroll.Start,
+    marker: Marker? = null,
+    series: List<Pair<Number, Number>>,
+    bottomAxisValueFormatter: ((value: Double) -> String)? = null,
+    initialScroll: Scroll.Absolute = Scroll.Absolute.Start
 ) {
-    Chart(
-        marker = marker,
-        chart = lineChart(
-            spacing = spacing,
-            axisValuesOverrider = AxisValuesOverrider.adaptiveYValues(yFraction = 1.2f)
+    val modelProducer = remember { CartesianChartModelProducer() }
+    LaunchedEffect(series) {
+        modelProducer.runTransaction {
+            this.add(LineCartesianLayerModel.Partial(listOf(series.map {
+                LineCartesianLayerModel.Entry(
+                    it.first,
+                    it.second
+                )
+            })))
+        }
+    }
+    CartesianChartHost(
+        rememberCartesianChart(
+            rememberLineCartesianLayer(
+                rangeProvider = AdaptiveRangeProvider,
+                lineProvider = LineCartesianLayer.LineProvider.series(
+                    vicoTheme.lineCartesianLayerColors.map { color ->
+                        LineCartesianLayer.rememberLine(
+                            pointConnector = LineCartesianLayer.PointConnector.cubic(),
+                            fill = LineCartesianLayer.LineFill.single(fill(color)),
+                            areaFill = LineCartesianLayer.AreaFill.single(
+                                fill(
+                                    ShaderProvider.verticalGradient(
+                                        colors = intArrayOf(
+                                            color.copy(0.3f).toArgb(),
+                                            color.copy(0.0f).toArgb()
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    }
+                ),
+            ),
+            marker = marker,
+            startAxis = VerticalAxis.rememberStart(),
+            bottomAxis = HorizontalAxis.rememberBottom(valueFormatter = bottomAxisValueFormatter?.let {
+                CartesianValueFormatter { _, value, _ ->
+                    bottomAxisValueFormatter(
+                        value
+                    )
+                }
+            } ?: CartesianValueFormatter.Default),
         ),
-        model = model,
-        startAxis = startAxis,
-        bottomAxis = bottomAxis,
-        chartScrollSpec = rememberChartScrollSpec(initialScroll = initialScroll)
+        modelProducer,
+        scrollState = rememberVicoScrollState(initialScroll = initialScroll)
+    )
+}
+
+@Composable
+fun ColumnChart(
+    marker: Marker? = null,
+    series: List<Pair<Number, Number>>,
+    bottomAxisValueFormatter: ((value: Double) -> String)? = null,
+) {
+    val modelProducer = remember { CartesianChartModelProducer() }
+    LaunchedEffect(series) {
+        modelProducer.runTransaction {
+            this.add(ColumnCartesianLayerModel.Partial(listOf(series.map {
+                ColumnCartesianLayerModel.Entry(
+                    it.first,
+                    it.second
+                )
+            })))
+        }
+    }
+    CartesianChartHost(
+        rememberCartesianChart(
+            rememberColumnCartesianLayer(
+                columnProvider = ColumnCartesianLayer.ColumnProvider.series(
+                    vicoTheme.columnCartesianLayerColors.map { color ->
+                        rememberLineComponent(
+                            fill(color),
+                            16.dp,
+                            shape = CorneredShape(
+                                topLeft = Corner.Rounded,
+                                topRight = Corner.Rounded
+                            )
+                        )
+                    }
+                ),
+            ),
+            marker = marker,
+            startAxis = VerticalAxis.rememberStart(),
+            bottomAxis = HorizontalAxis.rememberBottom(valueFormatter = bottomAxisValueFormatter?.let {
+                CartesianValueFormatter { _, value, _ ->
+                    bottomAxisValueFormatter(
+                        value
+                    )
+                }
+            } ?: CartesianValueFormatter.Default),        ),
+        modelProducer,
     )
 }
 

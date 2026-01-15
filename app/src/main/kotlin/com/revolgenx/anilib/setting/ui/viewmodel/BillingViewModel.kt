@@ -173,7 +173,7 @@ class BillingViewModel(
         billingClient.queryProductDetailsAsync(params) { billingResult, productDetailsList ->
             launchingBillingFlow = false
             if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                productDetailsList.firstOrNull()?.let { productDetails ->
+                productDetailsList.productDetailsList.firstOrNull()?.let { productDetails ->
                     val billingFlowParams = BillingFlowParams.newBuilder()
                         .setProductDetailsParamsList(
                             listOf(

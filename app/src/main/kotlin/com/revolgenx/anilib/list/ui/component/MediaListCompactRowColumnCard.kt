@@ -187,9 +187,7 @@ private fun MediaListCompactColumnCardPreview() {
                 currentEpisode = 10,
                 averageScore = 20,
                 mediaListEntry = MediaListModel(
-                    status = remember {
-                        mutableStateOf(MediaListStatus.CURRENT)
-                    }
+                    listStatus = MediaListStatus.CURRENT
                 )
             ),
             progressState = remember {

@@ -2,6 +2,7 @@ package com.revolgenx.anilib.social.ui.viewmodel
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import com.revolgenx.anilib.common.data.store.ActivityUnionFilterDataStore
 import com.revolgenx.anilib.common.ext.get
@@ -33,12 +34,17 @@ class MainActivityUnionViewModel(
     private var filter = activityUnionFilterDataStore.data.get()
     override var field: ActivityUnionField = filter.toField()
 
+    var isFiltered by mutableStateOf(checkFiltered)
+    private val checkFiltered: Boolean
+        get() = filter.run { type != null || isFollowing }
+
     init {
         launch {
             activityUnionFilterDataStore.data.collect {
                 if (it == filter) return@collect
                 filter = it
                 field = it.toField()
+                isFiltered = checkFiltered
                 refresh()
             }
         }

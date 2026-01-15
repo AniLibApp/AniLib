@@ -67,6 +67,7 @@ fun ExploreAiringScheduleSection(viewModel: ExploreAiringScheduleViewModel) {
         ExploreScreenHeader(
             text = stringResource(id = I18nR.string.airing),
             icon = AppIcons.IcAiring,
+            isFiltered = viewModel.isFiltered,
             onFilter = {
                 scope.launch {
                     filterViewModel.field = viewModel.field.copy()

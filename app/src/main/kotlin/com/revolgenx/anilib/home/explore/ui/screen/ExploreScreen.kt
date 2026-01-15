@@ -32,6 +32,7 @@ import com.revolgenx.anilib.common.data.constant.ExploreSectionOrder
 import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.browseScreen
 import com.revolgenx.anilib.common.ui.component.action.ActionMenu
+import com.revolgenx.anilib.common.ui.component.button.BadgeIconButton
 import com.revolgenx.anilib.common.ui.component.button.RefreshButton
 import com.revolgenx.anilib.common.ui.component.common.HeaderText
 import com.revolgenx.anilib.common.ui.composition.localNavigator
@@ -102,11 +103,7 @@ fun ExploreScreen() {
         viewModel.exploreSectionContentOrderData.forEach {
             if (!it.isEnabled) return@forEach
             when (it.value) {
-                ExploreSectionOrder.AIRING -> {
-                    exploreAiringScheduleViewModel.refreshWeekDaysFromToday()
-                    exploreAiringScheduleViewModel.refresh()
-                }
-
+                ExploreSectionOrder.AIRING -> exploreAiringScheduleViewModel.refreshWeekDays()
                 ExploreSectionOrder.TRENDING -> exploreTrendingViewModel.refresh()
                 ExploreSectionOrder.POPULAR -> explorePopularViewModel.refresh()
                 ExploreSectionOrder.NEWLY_ADDED -> exploreNewlyAddedViewModel.refresh()
@@ -118,7 +115,7 @@ fun ExploreScreen() {
 
     val scrollState = rememberScrollState()
 
-    LaunchedEffect(scrollViewModel){
+    LaunchedEffect(scrollViewModel) {
         scrollViewModel.scrollEventFor(ScrollTarget.HOME).collectLatest {
             scrollState.animateScrollTo(0)
         }
@@ -144,48 +141,57 @@ fun ExploreScreen() {
                     }
 
                     ExploreSectionOrder.TRENDING -> {
-                        ExploreMediaSection(viewModel = exploreTrendingViewModel, onFilter = {
-                            filterViewModel.value = exploreTrendingFilterViewModel
-                            scope.launch {
-                                bottomSheetState.expand()
-                            }
-                        }, onMore = {
-                            navigator.browseScreen(
-                                BrowseFilterData(
-                                    sort = MediaSort.TRENDING_DESC
+                        ExploreMediaSection(
+                            viewModel = exploreTrendingViewModel,
+                            onFilter = {
+                                filterViewModel.value = exploreTrendingFilterViewModel
+                                scope.launch {
+                                    bottomSheetState.expand()
+                                }
+                            },
+                            onMore = {
+                                navigator.browseScreen(
+                                    BrowseFilterData(
+                                        sort = MediaSort.TRENDING_DESC
+                                    )
                                 )
-                            )
-                        })
+                            })
                     }
 
                     ExploreSectionOrder.POPULAR -> {
-                        ExploreMediaSection(viewModel = explorePopularViewModel, onFilter = {
-                            filterViewModel.value = explorePopularFilterViewModel
-                            scope.launch {
-                                bottomSheetState.expand()
-                            }
-                        }, onMore = {
-                            navigator.browseScreen(
-                                BrowseFilterData(
-                                    sort = MediaSort.POPULARITY_DESC
+                        ExploreMediaSection(
+                            viewModel = explorePopularViewModel,
+                            onFilter = {
+                                filterViewModel.value = explorePopularFilterViewModel
+                                scope.launch {
+                                    bottomSheetState.expand()
+                                }
+                            },
+                            onMore = {
+                                navigator.browseScreen(
+                                    BrowseFilterData(
+                                        sort = MediaSort.POPULARITY_DESC
+                                    )
                                 )
-                            )
-                        })
+                            })
                     }
 
                     ExploreSectionOrder.NEWLY_ADDED -> {
-                        ExploreMediaSection(viewModel = exploreNewlyAddedViewModel, onFilter = {
-                            filterViewModel.value = exploreNewlyAddedFilterViewModel
-                            scope.launch {
-                                bottomSheetState.expand()
-                            }
-                        }, onMore = {
-                            navigator.browseScreen(
-                                BrowseFilterData(
-                                    sort = MediaSort.ID_DESC
+                        ExploreMediaSection(
+                            viewModel = exploreNewlyAddedViewModel,
+                            onFilter = {
+                                filterViewModel.value = exploreNewlyAddedFilterViewModel
+                                scope.launch {
+                                    bottomSheetState.expand()
+                                }
+                            },
+                            onMore = {
+                                navigator.browseScreen(
+                                    BrowseFilterData(
+                                        sort = MediaSort.ID_DESC
+                                    )
                                 )
-                            )
-                        })
+                            })
                     }
 
                     ExploreSectionOrder.WATCHING -> {
@@ -223,6 +229,7 @@ private fun ExploreFilterBottomSheet(
 internal fun ExploreScreenHeader(
     text: String,
     icon: ImageVector,
+    isFiltered: Boolean,
     onFilter: OnClick? = null,
     onMore: OnClick? = null
 ) {
@@ -233,35 +240,22 @@ internal fun ExploreScreenHeader(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        ExploreHeaderText(text, icon)
-        ExploreHeaderFilterButton(onFilter, onMore)
-    }
-}
-
-
-@Composable
-private fun ExploreHeaderText(text: String, icon: ImageVector) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(6.dp)
-    ) {
-        Icon(modifier = Modifier.padding(start = 4.dp), imageVector = icon, contentDescription = text)
-        HeaderText(
-            text = text,
-        )
-    }
-}
-
-@Composable
-private fun ExploreHeaderFilterButton(filter: OnClick?, more: OnClick?) {
-    Row {
-        filter?.let {
-            ActionMenu(icon = AppIcons.IcFilter, onClick = filter)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(6.dp)
+        ) {
+            Icon(
+                modifier = Modifier.padding(start = 4.dp),
+                imageVector = icon,
+                contentDescription = text
+            )
+            HeaderText(
+                text = text,
+            )
         }
-        more?.let {
-            ActionMenu(icon = AppIcons.IcMoreHoriz, onClick = more)
+        Row {
+            onFilter?.let { BadgeIconButton(icon = AppIcons.IcFilter, showBadge = isFiltered, onClick = it) }
+            onMore?.let { ActionMenu(icon = AppIcons.IcMoreHoriz, onClick = it) }
         }
     }
 }
-
-

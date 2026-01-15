@@ -12,6 +12,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -19,12 +20,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.mikepenz.aboutlibraries.entity.Library
-import com.mikepenz.aboutlibraries.ui.compose.m3.HtmlText
+import com.mikepenz.aboutlibraries.ui.compose.android.produceLibraries
 import com.mikepenz.aboutlibraries.ui.compose.m3.LibrariesContainer
-import com.mikepenz.aboutlibraries.ui.compose.m3.util.htmlReadyLicenseContent
+import com.mikepenz.aboutlibraries.ui.compose.util.htmlReadyLicenseContent
 import com.revolgenx.anilib.common.ext.localContext
 import com.revolgenx.anilib.common.ext.openUri
 import com.revolgenx.anilib.common.ui.component.text.LightText
+import com.revolgenx.anilib.common.ui.component.text.MarkdownText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcPublic
 
@@ -33,11 +35,14 @@ fun AppLibrariesScreen() {
     val openDialog = remember { mutableStateOf<Library?>(null) }
     val context = localContext()
 
-    LibrariesContainer(
+    val libraries by produceLibraries()
+    LibrariesContainer (
+        libraries = libraries,
         modifier = Modifier.fillMaxSize(),
-    ){ library ->
-        openDialog.value = library
-    }
+        onLibraryClick = { library ->
+            openDialog.value = library
+        }
+    )
 
     val library = openDialog.value
     if (library != null) {
@@ -59,7 +64,7 @@ fun AppLibrariesScreen() {
                     Box(
                         modifier = Modifier.verticalScroll(rememberScrollState())
                     ) {
-                        HtmlText(html = it)
+                        MarkdownText(text = it) {  }
                     }
                 }
             },

@@ -71,13 +71,13 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.core.graphics.toColorInt
 import anilib.i18n.R
-import com.patrykandpatrick.vico.core.extension.colorHex
 import com.revolgenx.anilib.common.data.store.AppPreferencesDataStore
 import com.revolgenx.anilib.common.ui.component.text.MediumText
 import com.revolgenx.anilib.common.ui.icons.AppIcons
 import com.revolgenx.anilib.common.ui.icons.appicon.IcCheck
 import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronLeft
 import com.revolgenx.anilib.common.ui.icons.appicon.IcChevronRight
+import com.revolgenx.anilib.common.util.colorHex
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 import kotlin.math.max

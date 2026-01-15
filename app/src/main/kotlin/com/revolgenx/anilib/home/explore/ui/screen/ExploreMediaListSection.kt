@@ -72,14 +72,28 @@ fun ExploreMediaListSection(viewModel: ExploreMediaListViewModel) {
     ExploreMediaListHeader(
         type = type,
         filter = {
+
+        }) {
+    }
+
+    val header = when (type) {
+        MediaType.MANGA -> stringResource(id = R.string.reading) to AppIcons.IcBook
+        else -> stringResource(id = R.string.watching) to AppIcons.IcMedia
+    }
+
+    ExploreScreenHeader(
+        text = header.first,
+        icon = header.second,
+        isFiltered = viewModel.isFiltered,
+        onFilter = {
             scope.launch {
                 filterViewModel.sort = viewModel.field.sort
                 filterBottomSheetState.expand()
             }
-        }) {
-        tabNavigator.current = if (type == MediaType.MANGA) MangaListScreen else AnimeListScreen
-    }
-
+        },
+        onMore = {
+            tabNavigator.current = if (type == MediaType.MANGA) MangaListScreen else AnimeListScreen
+        })
 
     val openMediaListEditorScreen: OnClickWithValue<MediaListModel> by rememberUpdatedState(newValue = { mediaList ->
         if (isLoggedIn) {
@@ -148,7 +162,6 @@ private fun ResourceSaveSection(
                     SnackbarResult.Dismissed -> {
                         viewModel.saveResource = null
                     }
-
                     else -> {}
                 }
             }
@@ -174,8 +187,6 @@ private fun ExploreMediaListFilterBottomSheet(
             stringArrayResource(id = com.revolgenx.anilib.R.array.media_list_sort)
 
         val currentSort = viewModel.sort
-
-
         var currentSortIndex: Int? = null
         var currentSortOrder: SortOrder = SortOrder.NONE
 
@@ -205,7 +216,6 @@ private fun ExploreMediaListFilterBottomSheet(
                 },
                 onDismiss = onDismiss
             )
-
 
             SortSelectMenu(
                 label = stringResource(id = R.string.sort),
@@ -262,12 +272,7 @@ private fun ExploreMediaListContent(
 
 @Composable
 private fun ExploreMediaListHeader(type: MediaType, filter: OnClick, more: OnClick) {
-    val header = when (type) {
-        MediaType.MANGA -> stringResource(id = R.string.reading) to AppIcons.IcBook
-        else -> stringResource(id = R.string.watching) to AppIcons.IcMedia
-    }
 
-    ExploreScreenHeader(text = header.first, icon = header.second, onFilter = filter, onMore = more)
 }
 
 val ExploreMediaListCardWidth = 160.dp

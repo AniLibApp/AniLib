@@ -1,0 +1,226 @@
+[versions]
+android-compileSdk = "36"
+android-minSdk = "23"
+android-targetSdk = "36"
+
+# Library Versions
+agp = "8.13.1"
+kotlin = "2.2.21"
+kotlin-compose = "2.2.21"
+kotlinx-coroutines = "1.3.9"
+
+google-services = "4.4.4"
+firebase-crashlytics-plugin = "3.0.6"
+material-kolor = "4.0.5"
+kotlinx-serialization = "1.9.0"
+junit = "4.13.2"
+androidx-junit = "1.3.0"
+espresso = "3.7.0"
+
+aboutLibraries = "13.1.0"
+accompanist = "0.37.3"
+admob = "24.8.0"
+apollo = "3.8.6"
+billing = "8.1.0"
+coil = "2.7.0"
+compose-activity = "1.12.0"
+compose-bom = "2025.11.01"
+compose-material = "1.4.0"
+compose-material-icon = "1.7.8"
+coreKtx = "1.17.0"
+customTabs = "1.9.0"
+dataStore = "1.2.0"
+desugar = "2.1.5"
+eventbus = "3.3.1"
+firebase = "34.6.0"
+glance = "1.1.1"
+jwtdecode = "2.0.2"
+koin = "3.5.6"
+markwon = "4.6.2"
+okhttp = "5.3.2"
+paging = "3.3.6"
+prettytime = "5.0.4.Final"
+reorderable = "3.0.0"
+sheetsM3 = "0.5.7"
+timber = "5.0.1"
+vico = "2.3.6"
+voyager = "1.1.0-beta03"
+jetbrainsKotlinJvm = "2.2.21"
+
+
+
+[libraries]
+# --- Android / Core ---
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "customTabs" }
+desugar-jdk-libs = { group = "com.android.tools", name = "desugar_jdk_libs", version.ref = "desugar" }
+
+# --- Compose ---
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "compose-activity" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "compose-bom" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "compose-material" }
+androidx-compose-material-icons = { group = "androidx.compose.material", name = "material-icons-core", version.ref = "compose-material-icon" }
+
+# --- Coroutine ---
+kotlinx-coroutine = { group = 'org.jetbrains.kotlinx', name = 'kotlinx-coroutines-android', version.ref = 'kotlinx-coroutines' }
+
+androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
+androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
+
+# --- Accompanist ---
+accompanist-permissions = { group = "com.google.accompanist", name = "accompanist-permissions", version.ref = "accompanist" }
+
+# --- Voyager ---
+voyager-navigator = { group = "cafe.adriel.voyager", name = "voyager-navigator", version.ref = "voyager" }
+voyager-tab-navigator = { group = "cafe.adriel.voyager", name = "voyager-tab-navigator", version.ref = "voyager" }
+
+# --- Koin ---
+koin-bom = { group = "io.insert-koin", name = "koin-bom", version.ref = "koin" }
+koin-android = { group = "io.insert-koin", name = "koin-android", version.ref = "koin" }
+koin-androidx-compose = { group = "io.insert-koin", name = "koin-androidx-compose", version.ref = "koin" }
+koin-androidx-workmanager = { group = "io.insert-koin", name = "koin-androidx-workmanager", version.ref = "koin" }
+
+# --- Networking / Apollo ---
+apollo-runtime = { group = "com.apollographql.apollo3", name = "apollo-runtime", version.ref = "apollo" }
+okhttp-logging-interceptor = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+
+# --- Paging ---
+androidx-paging-runtime = { group = "androidx.paging", name = "paging-runtime", version.ref = "paging" }
+androidx-paging-compose = { group = "androidx.paging", name = "paging-compose", version.ref = "paging" }
+
+# --- Timber ---
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+
+# --- Coil ---
+coil-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
+coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coil" }
+coil-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+
+# --- DataStore ---
+androidx-datastore = { group = "androidx.datastore", name = "datastore", version.ref = "dataStore" }
+androidx-datastore-preferences = { group = "androidx.datastore", name = "datastore-preferences", version.ref = "dataStore" }
+
+# --- Markwon ---
+markwon-core = { group = "io.noties.markwon", name = "core", version.ref = "markwon" }
+markwon-html = { group = "io.noties.markwon", name = "html", version.ref = "markwon" }
+markwon-editor = { group = "io.noties.markwon", name = "editor", version.ref = "markwon" }
+markwon-ext-strikethrough = { group = "io.noties.markwon", name = "ext-strikethrough", version.ref = "markwon" }
+markwon-linkify = { group = "io.noties.markwon", name = "linkify", version.ref = "markwon" }
+markwon-inline-parser = { group = "io.noties.markwon", name = "inline-parser", version.ref = "markwon" }
+markwon-simple-ext = { group = "io.noties.markwon", name = "simple-ext", version.ref = "markwon" }
+
+# --- Utils ---
+eventbus = { group = "org.greenrobot", name = "eventbus", version.ref = "eventbus" }
+jwtdecode = { group = "com.auth0.android", name = "jwtdecode", version.ref = "jwtdecode" }
+prettytime = { group = "org.ocpsoft.prettytime", name = "prettytime", version.ref = "prettytime" }
+sheets-m3 = { group = "io.github.dokar3", name = "sheets-m3", version.ref = "sheetsM3" }
+reorderable = { group = "sh.calvin.reorderable", name = "reorderable", version.ref = "reorderable" }
+aboutlibraries-core = { group = "com.mikepenz", name = "aboutlibraries-compose-core", version.ref = "aboutLibraries" }
+aboutlibraries-compose = { group = "com.mikepenz", name = "aboutlibraries-compose-m3", version.ref = "aboutLibraries" }
+
+# --- Charts (Vico) ---
+vico-compose = { group = "com.patrykandpatrick.vico", name = "compose", version.ref = "vico" }
+vico-compose-m3 = { group = "com.patrykandpatrick.vico", name = "compose-m3", version.ref = "vico" }
+
+# --- Widgets (Glance) ---
+androidx-glance-appwidget = { group = "androidx.glance", name = "glance-appwidget", version.ref = "glance" }
+androidx-glance-material3 = { group = "androidx.glance", name = "glance-material3", version.ref = "glance" }
+
+# --- Firebase / Google ---
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" } # Managed by BOM
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics" } # Managed by BOM
+play-services-ads = { group = "com.google.android.gms", name = "play-services-ads", version.ref = "admob" }
+billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billing" }
+
+material-kolor = { group = "com.materialkolor", name = "material-kolor", version.ref = "material-kolor" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
+
+# Testing
+junit = { group = "junit", name = "junit", version.ref = "junit" }
+androidx-test-ext-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidx-junit" }
+androidx-test-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espresso" }
+androidx-compose-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" } # BOM managed
+androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" } # BOM managed
+
+[bundles]
+compose = [
+    "androidx-activity-compose",
+    "androidx-compose-material3",
+    "androidx-compose-ui-tooling-preview",
+    "androidx-compose-material-icons"
+]
+
+koin = [
+    "koin-android",
+    "koin-androidx-compose",
+    "koin-androidx-workmanager"
+]
+
+apollo = [
+    "apollo-runtime",
+    "okhttp-logging-interceptor"
+]
+
+chart = [
+    "vico-compose",
+    "vico-compose-m3"
+]
+
+aboutlibraries = [
+    "aboutlibraries-core",
+    "aboutlibraries-compose"
+]
+
+markwon = [
+    "markwon-core",
+    "markwon-html",
+    "markwon-editor",
+    "markwon-ext-strikethrough",
+    "markwon-linkify",
+    "markwon-inline-parser",
+    "markwon-simple-ext"
+]
+
+voyager = [
+    "voyager-navigator",
+    "voyager-tab-navigator"
+]
+
+paging = [
+    "androidx-paging-runtime",
+    "androidx-paging-compose"
+]
+
+coil = [
+    "coil-compose",
+    "coil-gif",
+    "coil-svg"
+]
+
+datastore = [
+    "androidx-datastore",
+    "androidx-datastore-preferences"
+]
+
+glance = [
+    "androidx-glance-appwidget",
+    "androidx-glance-material3"
+]
+
+firebase = [
+    "firebase-analytics",
+    "firebase-crashlytics"
+]
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin-compose" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+aboutlibraries = { id = "com.mikepenz.aboutlibraries.plugin.android", version.ref = "aboutLibraries" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebase-crashlytics-plugin" }
+apollo = { id = "com.apollographql.apollo3", version.ref = "apollo" }

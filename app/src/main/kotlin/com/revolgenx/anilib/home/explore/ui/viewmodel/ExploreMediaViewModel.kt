@@ -1,5 +1,8 @@
 package com.revolgenx.anilib.home.explore.ui.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.datastore.core.DataStore
 import com.revolgenx.anilib.common.ext.get
 import com.revolgenx.anilib.common.ext.launch
@@ -18,6 +21,21 @@ sealed class ExploreMediaViewModel(
     private var filter = dataStore.data.get()
     override var field: MediaField = filter.toMediaField()
 
+    var isFiltered by mutableStateOf(checkFiltered)
+    val checkFiltered
+        get() = field.run {
+            seasonYear != null
+                    || year != null
+                    || season != null
+                    || status != null
+                    || formatsIn.isNullOrEmpty().not()
+                    || genreIn.isNullOrEmpty().not()
+                    || tagIn.isNullOrEmpty().not()
+                    || genreNotIn.isNullOrEmpty().not()
+                    || tagNotIn.isNullOrEmpty().not()
+                    || isAdult != null
+        }
+
     init {
         launch {
             dataStore.data.collect { newFilter ->
@@ -25,6 +43,7 @@ sealed class ExploreMediaViewModel(
 
                 filter = newFilter
                 field = newFilter.toMediaField()
+                isFiltered = checkFiltered
                 refresh()
             }
         }

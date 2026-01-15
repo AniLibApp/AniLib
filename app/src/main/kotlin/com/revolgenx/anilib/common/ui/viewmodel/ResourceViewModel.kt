@@ -25,7 +25,6 @@ abstract class ResourceViewModel<M : Any, F : BaseField<*>> : BaseViewModel<F>()
 
     val isSuccess get() = resource.value is ResourceState.Success
 
-
     protected abstract fun load(): Flow<M?>
     
     open fun save(){

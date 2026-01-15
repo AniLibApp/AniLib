@@ -29,8 +29,8 @@ open class AiringScheduleViewModel(
 
     private var filter = airingScheduleFilterDataStore.data.get()
     private val weekFields = WeekFields.of(Locale.getDefault())
-    var startDateTime by mutableStateOf(ZonedDateTime.now().with(LocalTime.MIN))
-    var endDateTime by mutableStateOf(ZonedDateTime.now().with(LocalTime.MAX))
+    var startDateTime: ZonedDateTime by mutableStateOf(ZonedDateTime.now().with(LocalTime.MIN))
+    var endDateTime: ZonedDateTime by mutableStateOf(ZonedDateTime.now().with(LocalTime.MAX))
 
     override var field by mutableStateOf(
         filter.toField().also { field ->
@@ -86,12 +86,7 @@ open class AiringScheduleViewModel(
     }
 
     fun updateStartDate(startDate: Long) {
-        startDateTime =
-            Instant.ofEpochMilli(startDate).atZone(ZoneOffset.UTC).with(LocalTime.MIN)
-        endDateTime =
-            Instant.ofEpochMilli(startDate).atZone(ZoneOffset.UTC).with(LocalTime.MAX)
-        updateFieldDateTime()
-        refresh()
+        updateDates(startDate, startDate)
     }
 
     fun updateDates(startDate: Long, endDate: Long) {
