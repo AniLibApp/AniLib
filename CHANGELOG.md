@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.1.0]
+### Added
+- Add badge icon to season screen as well.
+
+### Fixed
+- Fix crash on score change in MediaListEntryComponent.
+- Fixed crash on stats screen.
+
 ## [v2.0.10]
 ### Added
 - Added MAL export service (experimental).

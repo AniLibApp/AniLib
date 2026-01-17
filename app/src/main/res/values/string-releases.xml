@@ -6,6 +6,14 @@
         - **If the UI is too big**, you can reduce it from **Settings → Appearance → Display Scale**. \n
         - **If there are too many ads**, you can change the frequency from **Settings → Support → Ads**. \n
 
+        ## v2.1.0 \n
+        ### Added \n
+        - Add badge in season screen filter icon. \n
+
+        ### Fixed \n
+        - Fixed crash on stats screen. \n
+        - Fix crash on score change in MediaListEntryComponent. \n
+
         ## v2.0.10 \n
         ### Added \n
         - Added badge to filter icon button in home, media list and activity screen.  \n
