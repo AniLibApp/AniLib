@@ -95,7 +95,6 @@ fun CountEditor(
         )
     }
 
-
     fun increaseScore() {
         count.plus(1).let(::getScoreWithInRange).let { onScoreChange(it) }
     }
@@ -117,9 +116,7 @@ fun CountEditor(
             modifier = Modifier.weight(1f),
             value = textFieldValueState,
             onValueChange = { textFieldValue ->
-                val newScore =
-                    (textFieldValue.text.ifBlank { "0" }.toInt()).let(::getScoreWithInRange)
-                onScoreChange(newScore)
+                textFieldValue.text.ifBlank { "0" }.toIntOrNull()?.let(::getScoreWithInRange)?.let(onScoreChange)
             },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
