@@ -20,36 +20,18 @@ import com.patrykandpatrick.vico.core.cartesian.Scroll
 import com.patrykandpatrick.vico.core.cartesian.axis.HorizontalAxis
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianLayerRangeProvider
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.cartesian.data.ColumnCartesianLayerModel
 import com.patrykandpatrick.vico.core.cartesian.data.LineCartesianLayerModel
 import com.patrykandpatrick.vico.core.cartesian.layer.ColumnCartesianLayer
 import com.patrykandpatrick.vico.core.cartesian.layer.LineCartesianLayer
 import com.patrykandpatrick.vico.core.cartesian.marker.CartesianMarker
-import com.patrykandpatrick.vico.core.common.data.ExtraStore
 import com.patrykandpatrick.vico.core.common.shader.ShaderProvider
 import com.patrykandpatrick.vico.core.common.shape.CorneredShape
 import com.patrykandpatrick.vico.core.common.shape.CorneredShape.Corner
-import kotlin.math.ceil
-
 
 typealias ChartEntryModel = List<Pair<Number, Number>>
 typealias Marker = CartesianMarker
-
-private object AdaptiveRangeProvider : CartesianLayerRangeProvider {
-    override fun getMinY(minY: Double, maxY: Double, extraStore: ExtraStore): Double {
-        return ceil(minY - yPadding(minY, maxY)).takeIf { it >= 0 } ?: 0.0
-    }
-
-    override fun getMaxY(minY: Double, maxY: Double, extraStore: ExtraStore): Double {
-        return ceil(maxY + yPadding(minY, maxY))
-    }
-
-    private fun yPadding(minY: Double, maxY: Double): Double {
-        return ceil((maxY - minY) * 0.2)
-    }
-}
 
 @Composable
 fun LineChart(
@@ -72,7 +54,6 @@ fun LineChart(
     CartesianChartHost(
         rememberCartesianChart(
             rememberLineCartesianLayer(
-                rangeProvider = AdaptiveRangeProvider,
                 lineProvider = LineCartesianLayer.LineProvider.series(
                     vicoTheme.lineCartesianLayerColors.map { color ->
                         LineCartesianLayer.rememberLine(
@@ -148,7 +129,8 @@ fun ColumnChart(
                         value
                     )
                 }
-            } ?: CartesianValueFormatter.Default),        ),
+            } ?: CartesianValueFormatter.Default),
+        ),
         modelProducer,
     )
 }

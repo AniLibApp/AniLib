@@ -43,7 +43,7 @@ prettytime = "5.0.4.Final"
 reorderable = "3.0.0"
 sheetsM3 = "0.5.7"
 timber = "5.0.1"
-vico = "2.3.6"
+vico = "2.4.1"
 voyager = "1.1.0-beta03"
 jetbrainsKotlinJvm = "2.2.21"
 
