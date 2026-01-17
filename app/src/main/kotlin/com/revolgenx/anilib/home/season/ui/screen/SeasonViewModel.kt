@@ -10,6 +10,7 @@ import com.revolgenx.anilib.common.ui.viewmodel.PagingViewModel
 import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.data.service.MediaService
 import com.revolgenx.anilib.media.data.source.MediaPagingSource
+import com.revolgenx.anilib.media.data.store.MediaFilterData
 import com.revolgenx.anilib.media.ui.model.MediaModel
 import com.revolgenx.anilib.media.ui.model.nextSeason
 import com.revolgenx.anilib.media.ui.model.previousSeason
@@ -23,7 +24,19 @@ class SeasonViewModel(
     PagingViewModel<MediaModel, MediaField?, MediaPagingSource>() {
     private var filter = seasonFilterDataStore.data.get()
     override var field by mutableStateOf(filter.toMediaField())
-
+    var isFiltered by mutableStateOf(checkFilter)
+    private val checkFilter: Boolean
+        get() = filter.run {
+            status != null
+                || season != MediaFilterData.defaultSeason
+                || seasonYear != MediaFilterData.defaultSeasonYear
+                || sort != null
+                || formatsIn.isNullOrEmpty().not()
+                || genreIn.isNullOrEmpty().not()
+                || tagIn.isNullOrEmpty().not()
+                || tagNotIn.isNullOrEmpty().not()
+                || isAdult != null
+        }
     init {
         launch {
             seasonFilterDataStore.data.collect { newFilter ->
@@ -31,6 +44,7 @@ class SeasonViewModel(
 
                 filter = newFilter
                 field = filter.toMediaField()
+                isFiltered = checkFilter
                 refresh()
             }
         }

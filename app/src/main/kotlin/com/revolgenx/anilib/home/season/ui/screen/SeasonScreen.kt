@@ -25,6 +25,7 @@ import com.revolgenx.anilib.app.ui.viewmodel.ScrollViewModel
 import com.revolgenx.anilib.common.ext.activityViewModel
 import com.revolgenx.anilib.common.ext.orNa
 import com.revolgenx.anilib.common.ui.component.bottombar.BottomBarLayout
+import com.revolgenx.anilib.common.ui.component.button.BadgeIconButton
 import com.revolgenx.anilib.common.ui.compose.paging.LazyPagingList
 import com.revolgenx.anilib.common.ui.composition.LocalMainNavigator
 import com.revolgenx.anilib.common.ui.icons.AppIcons
@@ -57,7 +58,6 @@ fun SeasonScreen() {
     val mediaComponentState = rememberMediaComponentState(navigator = navigator)
     val scope = rememberCoroutineScope()
 
-
     val scrollState = rememberLazyListState()
 
     LaunchedEffect(scrollViewModel) {
@@ -68,6 +68,7 @@ fun SeasonScreen() {
 
     BottomBarLayout(bottomBar = {
         SeasonFilter(
+            showFilterBadge = viewModel.isFiltered,
             field = viewModel.field,
             onPrevious = {
                 viewModel.previousSeason()
@@ -110,6 +111,7 @@ private fun SeasonItem(
 
 @Composable
 private fun SeasonFilter(
+    showFilterBadge: Boolean,
     field: MediaField,
     onNext: OnClick,
     onPrevious: OnClick,
@@ -170,14 +172,11 @@ private fun SeasonFilter(
                         contentDescription = "right"
                     )
                 }
-                IconButton(
-                    onClick = { onFilter() }) {
-                    Icon(
-                        modifier = Modifier.size(iconSize),
-                        imageVector = AppIcons.IcFilter,
-                        contentDescription = "filter"
-                    )
-                }
+                BadgeIconButton(
+                    icon = AppIcons.IcFilter,
+                    showBadge = showFilterBadge,
+                    onClick = { onFilter() }
+                )
             }
         }
     }

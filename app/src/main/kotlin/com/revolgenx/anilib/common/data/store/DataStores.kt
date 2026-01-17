@@ -59,8 +59,8 @@ val Context.seasonFilterDataStore by dataStore(
     fileName = "season_filter_data_store.json",
     serializer = MediaFilterDataSerializer(
         MediaFilterData(
-            seasonYear = LocalDateTime.now().year,
-            season = seasonFromMonth(LocalDateTime.now().monthValue)
+            seasonYear = MediaFilterData.defaultSeasonYear,
+            season = MediaFilterData.defaultSeason
         )
     )
 )

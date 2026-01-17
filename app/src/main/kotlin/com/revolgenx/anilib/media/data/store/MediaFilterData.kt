@@ -6,11 +6,13 @@ import com.revolgenx.anilib.media.data.field.MediaField
 import com.revolgenx.anilib.media.ui.model.MediaExternalLinkModel
 import com.revolgenx.anilib.media.ui.model.MediaGenreModel
 import com.revolgenx.anilib.media.ui.model.MediaTagModel
+import com.revolgenx.anilib.media.ui.model.seasonFromMonth
 import com.revolgenx.anilib.type.MediaFormat
 import com.revolgenx.anilib.type.MediaSeason
 import com.revolgenx.anilib.type.MediaSort
 import com.revolgenx.anilib.type.MediaStatus
 import kotlinx.serialization.Serializable
+import java.time.LocalDateTime
 
 @Serializable
 data class MediaFilterData(
@@ -27,6 +29,11 @@ data class MediaFilterData(
     val idIn: List<Int>? = null,
     val isAdult: Boolean? = null
 ) {
+    companion object{
+        val defaultSeasonYear by lazy { LocalDateTime.now().year }
+        val defaultSeason by lazy { seasonFromMonth(LocalDateTime.now().monthValue) }
+    }
+
     fun toMediaField(): MediaField {
         return MediaField(
             seasonYear = seasonYear,

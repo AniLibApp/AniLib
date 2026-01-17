@@ -19,7 +19,18 @@ abstract class MediaFilterBottomSheetViewModel(
     genreCollectionDataStore: GenreCollectionDataStore,
     appPreferencesDataStore: AppPreferencesDataStore
 ) : BaseViewModel<MediaField>() {
-    override var field: MediaField = mediaFilterDataDataStore.data.get().toMediaField()
+    private var filter = mediaFilterDataDataStore.data.get()
+    override var field: MediaField = filter.toMediaField()
+
+    init {
+        launch {
+            mediaFilterDataDataStore.data.collect { newFilter ->
+                if (filter == newFilter) return@collect
+                filter = newFilter
+                field = filter.toMediaField()
+            }
+        }
+    }
 
     private val canShowAdultContent = appPreferencesDataStore.displayAdultContent.get()!!
 
