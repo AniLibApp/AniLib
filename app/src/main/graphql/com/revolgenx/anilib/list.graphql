@@ -11,8 +11,12 @@ query MediaListCollectionQuery(
             isCustomList
             isCompletedList: isSplitCompletedList
             entries {
-                ... mediaListEntry
+                score100: score(format: POINT_100)
                 score10: score(format: POINT_10)
+                score10d: score(format: POINT_10_DECIMAL)
+                score5: score(format: POINT_5)
+                score3: score(format: POINT_3)
+                ... mediaListEntry
                 media {
                     ... media
                     idMal
@@ -256,7 +260,7 @@ fragment mediaListEntry on MediaList {
     id
     mediaId
     status
-    score
+    score(format: null)
     progress
     progressVolumes
     repeat

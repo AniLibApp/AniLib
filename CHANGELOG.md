@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v2.1.1]
+### Fixed
+- Fix score always showing in 10 points.
+
 ## [v2.1.0]
 ### Added
 - Add badge icon to season screen as well.

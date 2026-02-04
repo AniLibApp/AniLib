@@ -5,6 +5,7 @@ import com.revolgenx.anilib.MediaListCollectionQuery
 import com.revolgenx.anilib.common.ext.orZero
 import com.revolgenx.anilib.list.data.field.MediaListCollectionField
 import com.revolgenx.anilib.media.ui.model.toModel
+import com.revolgenx.anilib.type.ScoreFormat
 import com.revolgenx.anilib.user.ui.model.MediaListOptionModel
 import com.revolgenx.anilib.user.ui.model.UserModel
 import com.revolgenx.anilib.user.ui.model.getRowOrder
@@ -32,6 +33,8 @@ fun MediaListCollectionQuery.Data.toModel(field: MediaListCollectionField): Medi
         )
     }
 
+    val scoreFormat = userModel?.mediaListOptions?.scoreFormat
+
     val sectionOrder =
         userModel?.mediaListOptions?.let { it.animeList ?: it.mangaList }?.sectionOrder
 
@@ -55,6 +58,14 @@ fun MediaListCollectionQuery.Data.toModel(field: MediaListCollectionField): Medi
                             ?.let { entryModel ->
                                 entryModel.copy(
                                     idMal = entry.media?.idMal,
+                                    score = when(scoreFormat){
+                                        ScoreFormat.POINT_100 -> entry.score100
+                                        ScoreFormat.POINT_10_DECIMAL ->  entry.score10d
+                                        ScoreFormat.POINT_10 -> entry.score10
+                                        ScoreFormat.POINT_5 -> entry.score5
+                                        ScoreFormat.POINT_3 -> entry.score3
+                                        else -> null
+                                    },
                                     score10 = entry.score10?.toInt().orZero(),
                                     userId = userModel?.id ?: -1,
                                     user = userModel,

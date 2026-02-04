@@ -6,6 +6,10 @@
         - **If the UI is too big**, you can reduce it from **Settings → Appearance → Display Scale**. \n
         - **If there are too many ads**, you can change the frequency from **Settings → Support → Ads**. \n
 
+        ## v2.1.1 \n
+        ### Fixed \n
+        - Fixed score always showing in 10 points. \n
+
         ## v2.1.0 \n
         ### Added \n
         - Add badge in season screen filter icon. \n
